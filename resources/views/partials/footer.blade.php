@@ -1,0 +1,1 @@
+<div class="footer">All Rights Reserved by NBCC.</div>

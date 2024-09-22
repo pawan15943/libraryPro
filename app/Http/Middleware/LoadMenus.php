@@ -27,9 +27,31 @@ class LoadMenus
         $iscomp = false;
         $isProfile = false;
         $isEmailVeri = false;
-         // Fetch menus based on user role, if needed
-         $menus = Menu::whereNull('parent_id')->with('children')->orderBy('order')->get();
-         view()->share('menus', $menus);
+
+        $menus = collect();
+
+        if (Auth::guard('web')->check()) {
+            $user = Auth::guard('web')->user();
+            $menus = Menu::where(function ($query) {
+                $query->where('guard', 'web')
+                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+            })->with('children')->orderBy('order')->get();
+        } elseif (Auth::guard('library')->check()) {
+            $user = Auth::guard('library')->user();
+            $menus = Menu::where(function ($query) {
+                $query->where('guard', 'library')
+                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+            })->with('children')->orderBy('order')->get();
+        } elseif (Auth::guard('learner')->check()) {
+            $user = Auth::guard('learner')->user();
+            $menus = Menu::where(function ($query) {
+                $query->where('guard', 'learner')
+                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+            })->with('children')->orderBy('order')->get();
+        }
+
+        view()->share('menus', $menus);
+
      
          if (Auth::check()) {
          $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->exists();

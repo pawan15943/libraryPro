@@ -19,11 +19,20 @@
     <div class="col-lg-12">
         <div class="steps">
             <ul>
-                <li class="active"><a href="{{route('subscriptions.choosePlan')}}">Choose Plan</a></li>
-                <li><a href="{{route('subscriptions.payment')}}">Make Payment</a></li>
-                <li><a href="{{route('profile')}}">Update Profile</a></li>
-                <li ><a href="{{route('library.master')}}">Configure Library</a></li>
+                <li class="active">
+                    <a href="{{ $isEmailVeri ? route('subscriptions.choosePlan') : '#' }}">Choose Plan</a>
+                </li>
+                <li>
+                    <a href="{{ $checkSub ? route('subscriptions.payment') : '#' }}">Make Payment</a>
+                </li>
+                <li >
+                    <a href="{{ $ispaid ? route('profile') : '#' }}">Update Profile</a>
+                </li>
+                <li>
+                    <a href="{{ $isProfile ? route('library.master') : '#' }}">Configure Library</a>
+                </li>
             </ul>
+            
             
         </div>
     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLibraryRequest;
+use App\Models\City;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
 use App\Models\State;
@@ -18,6 +19,7 @@ use DB;
 
 class LibraryController extends Controller
 {
+    
     public function index(){
         $libraries=Library::get();
         return view('library.index',compact('libraries'));
@@ -40,7 +42,7 @@ class LibraryController extends Controller
             'library_type'   => 'nullable|string|max:255',
             'library_owner'  => 'nullable|string|max:255',
             'library_logo'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'password'       => 'required|string|confirmed|min:8',
+            'password'       => 'required|string|min:8',
             'terms'          => 'accepted',
         ];
 
@@ -146,10 +148,9 @@ class LibraryController extends Controller
     }
     public function choosePlan()
     {
-        // Retrieve all subscriptions from the database
+        
         $subscriptions = Subscription::with('permissions')->get();
-     
-        // Pass the subscriptions to the view
+      
         return view('library.plan', compact('subscriptions'));
     }
 
@@ -242,8 +243,9 @@ class LibraryController extends Controller
         $library = Library::where('id', auth()->user()->id)->first();  
         
         $states=State::where('is_active',1)->get();
+        $citis=City::where('is_active',1)->get();
         
-        return view('library.profile', compact('library', 'states'));
+        return view('library.profile', compact('library', 'states','citis'));
     }
 
     public function updateProfile(Request $request)

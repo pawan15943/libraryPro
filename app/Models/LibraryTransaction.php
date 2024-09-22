@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\LibraryScope;
 class LibraryTransaction extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory;
     protected $guarded = [];
     protected $table = 'library_transactions';
     protected static function booted()

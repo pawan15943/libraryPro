@@ -45,8 +45,9 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
  
   Route::get('/library/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
   Route::get('library/choose-plan', [LibraryController::class, 'choosePlan'])->name('subscriptions.choosePlan');
-  Route::post('/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
   Route::get('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
+
+  Route::post('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
   Route::post('/library/payment-store', [LibraryController::class, 'paymentStore'])->name('library.payment.store');
 
   Route::get('/library/profile', [LibraryController::class, 'profile'])->name('profile');

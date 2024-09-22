@@ -68,7 +68,7 @@
                                 </span>
                                 @enderror
                         </div>
-                        <div class="col-lg-12">
+                        {{-- <div class="col-lg-12">
                             <label for="">Confirm Password <span>*</span></label>
                             <input type="password" class="form-control confirm-password @error('password_confirmation') is-invalid @enderror" name="password_confirmation">
                                 @error('password_confirmation')
@@ -76,7 +76,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                        </div>
+                        </div> --}}
                         <div class="col-lg-12 form-group">
                             <input type="checkbox" class="form-check-input @error('terms') is-invalid @enderror" name="terms" id="terms">
                             <label class="form-check-label" for="terms">

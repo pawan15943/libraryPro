@@ -1,37 +1,46 @@
 @php
 $current_route = Route::currentRouteName();
-// $menus = App\Models\Menu::orderBy('order','ASC')->get();
-// $submenu = App\Models\SubMenu::orderBy('order','ASC')->get();
-// $i = 1;
-
 @endphp
-<div class="sidebar">
-    {{-- <h4>Library <b>Pro</b></h4> --}}
 
-    <ul>
+<div class="sidebar">
+    <h4>Library <b>Pro</b></h4>
+    <ul class="list-unstyled ps-0 mt-4">
         @foreach($menus as $menu)
-            @if(is_null($menu->parent_id) && ($menu->guard === null || Auth::guard($menu->guard)->check()))  <!-- Check if it's a parent menu and the guard matches -->
-                <li>
-                    <a href="{{ route($menu->url) ?? '#' }}">
+            {{-- Check if it's a parent menu and the guard matches --}}
+            @if(is_null($menu->parent_id) && ($menu->guard === null || Auth::guard($menu->guard)->check()))
+                {{-- Parent menu logic --}}
+                <li class="mb-1 {{ $current_route == $menu->url ? 'active' : '' }}">
+                    <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 {{ $menu->children->count() ? '' : 'flex-start' }}" 
+                       href="{{ route($menu->url) ?? '#' }}" 
+                       data-bs-toggle="{{ $menu->children->count() ? 'collapse' : '' }}" 
+                       data-bs-target="#menu_{{ $menu->id }}" 
+                       aria-expanded="false">
                         <i class="{{ $menu->icon }}"></i> {{ $menu->name }}
+                        @if($menu->children->count())
+                            <i class="fa-solid fa-angle-right ms-auto"></i>
+                        @endif
                     </a>
-                    @if($menu->children->count())  <!-- Check if it has children -->
-                        <ul class="submenu">
-                            @foreach($menu->children as $submenu)
-                                @if($submenu->guard === null || Auth::guard($submenu->guard)->check())  <!-- Check guard for submenu -->
-                                    <li>
-                                        <a href="{{ route($submenu->url) }}">{{ $submenu->name }}</a>
-                                    </li>
-                                @endif
-                            @endforeach
-                        </ul>
+                    
+                    {{-- If menu has children (submenu) --}}
+                    @if($menu->children->count())
+                        <div class="collapse" id="menu_{{ $menu->id }}">
+                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                @foreach($menu->children as $submenu)
+                                    {{-- Check guard for submenu --}}
+                                    @if($submenu->guard === null || Auth::guard($submenu->guard)->check())
+                                        <li>
+                                            <a href="{{ route($submenu->url) }}" 
+                                               class="{{ $current_route == $submenu->url ? 'active' : '' }}">
+                                                {{ $submenu->name }}
+                                            </a>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
                 </li>
             @endif
         @endforeach
     </ul>
-    
-    
-    
-
 </div>

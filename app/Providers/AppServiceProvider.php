@@ -35,6 +35,18 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('home'),
                 'Complete Profile' => route('profile')
             ],
+            'subscriptions.choosePlan' => [
+                'Dashboard' => route('home'),
+                'Choose Plan' => route('subscriptions.choosePlan')
+            ],
+            'subscriptions.payment' => [
+                'Dashboard' => route('home'),
+                'Make Payment' => route('subscriptions.payment')
+            ],
+            'library.master' => [
+                'Dashboard' => route('home'),
+                'Configure Library' => route('library.master')
+            ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -46,7 +58,9 @@ class AppServiceProvider extends ServiceProvider
         $titles = [
             'home' => 'Dashboard',
             'profile' => 'Complete Profile',
-            // Add more route-to-title mappings as needed
+            'subscriptions.choosePlan' => 'Choose Plan',
+            'subscriptions.payment' => 'Make Payment',
+            'c' => 'Configure Library',
         ];
 
         // Return title or format from the route name

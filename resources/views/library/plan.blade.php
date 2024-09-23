@@ -2,19 +2,6 @@
 
 @section('content')
 
-<!-- Breadcrumb -->
-<div class="row">
-    <div class="d-flex bradcrumb">
-        <h4>Choose Plan</h4>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Choose Plan</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">

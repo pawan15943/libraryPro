@@ -507,7 +507,6 @@ ul.list-unstyled.ps-0 li a {
     color: #fff;
     width: 100%;
     padding: 0;
-    font-size: 1rem !important;
 }
 
 a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.collapsed {
@@ -1281,4 +1280,8 @@ ul.dropdown-menu.show li+li a .fas {
 
 .steps ul li.active a {
     color: #fff;
+}
+
+a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
+    justify-content: flex-start;
 }

@@ -87,11 +87,12 @@
                 success: function(response) {
                 
                     if (response.success) {
+
                         $("#success-message").text(response.message).show();
                         $("#error-message").hide();
                         $('.form-fields').hide();
-
                         $("#" + formId)[0].reset(); 
+                        
                     } else if (response.errors) {
                         $(".is-invalid").removeClass("is-invalid");
                         $(".invalid-feedback").remove();

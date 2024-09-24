@@ -24,25 +24,26 @@
                 <img src="" alt="">
             </div>
             <div class="middle">
-                <h2>Register your Library</h2>
+                <h2>Get Started with Us!</h2>
+                <small>Register and Unlock Exciting Opportunities!</small>
                 <form action="{{ route('library.store') }}" method="POST" class="validateForm" enctype="multipart/form-data">
                     @csrf
                     <div class="row g-3 mt-1">
                         <div class="col-lg-12">
                             <label>Library Name<span>*</span></label>
-                            <input type="text" class="form-control char-only @error('library_name') is-invalid @enderror" name="library_name" 
+                            <input type="text" class="form-control char-only @error('library_name') is-invalid @enderror" name="library_name"
                                 value="{{ old('library_name') }}">
                             @error('library_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            
+
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Library Email Id <span>*</span></label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" 
-                                    value="{{ old('email') }}">
+                            <label for="">Email Id <span>*</span></label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                                value="{{ old('email') }}">
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -50,9 +51,9 @@
                             @enderror
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Library Contact No. <span>*</span></label>
+                            <label for="">Contact No. <span>*</span></label>
                             <input type="text" class="form-control digit-only @error('library_mobile') is-invalid @enderror" name="library_mobile" maxlength="10"
-                                value="{{ old('library_mobile') }}" >
+                                value="{{ old('library_mobile') }}">
                             @error('library_mobile')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -60,13 +61,13 @@
                             @enderror
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Password <span>*</span></label>
+                            <label for="">Create Password <span>*</span></label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                            @error('password')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
                         {{-- <div class="col-lg-12">
                             <label for="">Confirm Password <span>*</span></label>
@@ -74,34 +75,35 @@
                                 @error('password_confirmation')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                        </div> --}}
-                        <div class="col-lg-12 form-group">
-                            <input type="checkbox" class="form-check-input @error('terms') is-invalid @enderror" name="terms" id="terms">
-                            <label class="form-check-label" for="terms">
-                                I agree to the <a href="#">Terms and Conditions</a><sup class="text-danger">*</sup>
-                            </label>
-                            <div class="error-msg"></div>
-                            @error('terms')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        
-                        <div class="col-lg-12">
-                            <button type="submit" value="Login" class="btn btn-primary button">Register Now  <i class="bi bi-arrow-right"></i></button>
-                        </div>
-                        <div class="col-lg-12 text-center">
-                            <p >If Already Register ? <a href="{{route('login.library')}}" class="links d-inline">Login Now</a></p>
-                        </div>
-                        
+                        </span>
+                        @enderror
+                    </div> --}}
+                    <div class="col-lg-12 form-group">
+                        <input type="checkbox" class="form-check-input @error('terms') is-invalid @enderror" name="terms" id="terms">
+                        <label class="form-check-label" for="terms">
+                            I agree to the <a href="#">Terms and Conditions</a><sup class="text-danger">*</sup>
+                        </label>
+                        <div class="error-msg"></div>
+                        @error('terms')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
-                </form>
+
+                    <div class="col-lg-12">
+                        <button type="submit" value="Login" class="btn btn-primary button">Register Now</button>
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <p>Already a member? <a href="{{route('login.library')}}" class="links d-inline"><em>Log in now.</em></a>
+                        </p>
+                    </div>
+
             </div>
-            <div class="bottom"></div>
+            </form>
         </div>
+        <div class="bottom"></div>
+    </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>

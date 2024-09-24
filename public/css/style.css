@@ -246,7 +246,7 @@ span {
 
 .form-control,
 input[type="submit"] {
-    height: 40px !important;
+    height: 45px !important;
     border-color: #dcdcdc;
 }
 
@@ -256,8 +256,9 @@ select {
 }
 
 .btn {
-    height: 40px !important;
+    height: 45px !important;
     box-shadow: var(--bs-1);
+    border: none;
 }
 
 .form-check {

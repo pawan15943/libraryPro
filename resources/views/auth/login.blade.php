@@ -10,6 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -23,10 +25,11 @@
             <div class="top">
                 <img src="" alt="">
             </div>
-            <div class="middle" style="ba">
+            <div class="middle">
                 <h5>Welcome Back, </h5>
-                <h2>Library Administrator</h2>
-                <form method="POST" action="{{ route('login.store') }}">
+                <h2>Library Administrator!</h2>
+                <small>We're happy to see you again! 🌟</small>
+                <form method="POST" action="{{ route('login.store') }}" class="validateForm">
                     @csrf
                     <input type="hidden" name="user_type" value="superadmin">
                     <div class="row g-3 mt-1">
@@ -51,7 +54,8 @@
                        
                        
                         <div class="col-lg-12">
-                            <button type="submit" class="btn btn-primary button">Login Now <i class="bi bi-arrow-right"></i></button>
+                            <button type="submit" class="btn btn-primary button">Login Now                            
+                        </button>
                         </div>
                         
                     </div>
@@ -61,8 +65,18 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+
+    <script src="{{ url('public/js/main-scripts.js') }}"></script>
+    <script src="{{ url('public/js/main-validation.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('input').attr('autocomplete', 'off');
+        });
+    </script>
+
 </body>
 
 </html>

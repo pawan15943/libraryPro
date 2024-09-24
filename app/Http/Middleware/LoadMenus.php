@@ -32,21 +32,21 @@ class LoadMenus
 
         if (Auth::guard('web')->check()) {
             $user = Auth::guard('web')->user();
-            $menus = Menu::where(function ($query) {
+            $menus = Menu::where('status',1)->where(function ($query) {
                 $query->where('guard', 'web')
-                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+                      ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
         } elseif (Auth::guard('library')->check()) {
             $user = Auth::guard('library')->user();
-            $menus = Menu::where(function ($query) {
+            $menus = Menu::where('status',1)->where(function ($query) {
                 $query->where('guard', 'library')
-                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+                      ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
         } elseif (Auth::guard('learner')->check()) {
             $user = Auth::guard('learner')->user();
-            $menus = Menu::where(function ($query) {
+            $menus = Menu::where('status',1)->where(function ($query) {
                 $query->where('guard', 'learner')
-                      ->orWhereNull('guard'); // Allow all users to see menus without guard
+                      ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
         }
 
@@ -54,17 +54,21 @@ class LoadMenus
 
      
          if (Auth::check()) {
-         $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->exists();
-         $ispaid = Library::where('id', Auth::user()->library_id)->where('is_paid', 1)->exists();
-         $iscomp = Library::where('id', Auth::user()->library_id)->where('status', 1)->exists();
-         $isProfile = Library::where('id', Auth::user()->library_id)->where('is_profile', 1)->exists();
-         $isEmailVeri = Library::where('id', Auth::user()->library_id)->whereNotNull('email_verified_at')->exists();
+            $isEmailVeri = Library::where('id', Auth::user()->id)->whereNotNull('email_verified_at')->exists();
+         $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->where('status',1)->exists();
+         $ispaid = Library::where('id', Auth::user()->id)->where('is_paid', 1)->exists();
+         $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
+         $isProfile = Library::where('id', Auth::user()->id)->where('is_profile', 1)->exists();
+         
          }
          // Share the variables with all views
          View::share('checkSub', $checkSub);
          View::share('ispaid', $ispaid);
          View::share('isProfile', $isProfile);
          View::share('isEmailVeri', $isEmailVeri);
+         View::share('iscomp', $iscomp);
+
+        
      
          return $next($request);
      }

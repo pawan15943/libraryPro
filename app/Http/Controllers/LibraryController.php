@@ -14,11 +14,17 @@ use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Services\LibraryService;
 use Auth;
 use DB;
 
 class LibraryController extends Controller
 {
+    protected $libraryService;
+    public function __construct(LibraryService $libraryService)
+    {
+        $this->libraryService = $libraryService;
+    }
     
     public function index(){
         $libraries=Library::get();
@@ -69,7 +75,7 @@ class LibraryController extends Controller
         }
 
         $validated['password'] = bcrypt($validated['password']);
-
+        
         try {
             $library = Library::create($validated);
 
@@ -146,6 +152,14 @@ class LibraryController extends Controller
             return redirect()->back()->withErrors(['email_otp' => 'Invalid OTP. Please try again.']);
         }
     }
+
+    public function sidebarRedirect(){
+        $redirectUrl = $this->libraryService->checkLibraryStatus();
+       
+            if ($redirectUrl) {
+                return redirect($redirectUrl);
+            }
+    }
     public function choosePlan()
     {
         
@@ -215,20 +229,27 @@ class LibraryController extends Controller
     public function paymentStore(Request $request)
     {
         
-        $transaction = DB::table('library_transactions')->where('id', $request->transaction_id)->first();
+        $transaction = LibraryTransaction::where('id', $request->transaction_id)->first();
 
-        // Check if the transaction exists
         if ($transaction) {
+        
+            $duration = $transaction->month ?? 0; 
+
+            $start_date = now(); 
+            $endDate = $start_date->copy()->addMonths($duration);
             // Update the transaction details
-            DB::table('library_transactions')->where('id', $request->transaction_id)->update([
+            LibraryTransaction::where('id', $request->transaction_id)->update([
                 'start_date' => now()->format('Y-m-d'),
+                'end_date' => $endDate->format('Y-m-d'),
                 'transaction_date' => now()->format('Y-m-d'),
                 'is_paid' => 1,
+                'status' => 1,
             ]);
 
             // Update the corresponding library's `is_paid` status
             Library::where('id', $transaction->library_id)->update([
                 'is_paid' => 1,
+               
             ]);
 
             return redirect()->route('profile')->with('success', 'Payment successfully processed.');
@@ -250,7 +271,7 @@ class LibraryController extends Controller
 
     public function updateProfile(Request $request)
     {
-        // Validate the request data
+        
         $validated = $request->validate([
             'library_name' => 'required|string|max:255',
             'library_mobile' => 'required|string|max:10',
@@ -261,9 +282,11 @@ class LibraryController extends Controller
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
             'library_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'library_owner_email' => 'required|email',
+            'library_owner_contact' => 'required|string|max:10',
         ]);
 
-        // Handle the logo upload if a new file is provided
+      
         if ($request->hasFile('library_logo')) {
             $library_logo = $request->file('library_logo');
             $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();
@@ -271,11 +294,16 @@ class LibraryController extends Controller
             $validated['library_logo'] = 'uploads/' . $library_logoNewName;
         }
 
-        // Find the library based on the authenticated user's ID
+      
         $library = Library::where('id', auth()->user()->id)->first();
        
-        // Update the library record with validated data
-        $library->update($validated);
+        $update=$library->update($validated);
+        if($update){
+            $library->update([
+                'is_profile' => 1
+            ]);
+        }
+        
 
         return redirect()->route('library.master')->with('success', 'Profile updated successfully!');
     }

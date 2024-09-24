@@ -20,4 +20,5 @@ trait LearnerQueryTrait
                         ->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
                         ->where('learners.library_id', auth()->user()->id);
     }
+    
 }

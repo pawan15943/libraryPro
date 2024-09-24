@@ -3,22 +3,24 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-
+{{-- @php
+    dd($checkSub);
+@endphp --}}
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
             <ul>
-                <li>
-                    <a href="{{ $isEmailVeri ? route('subscriptions.choosePlan') : '#' }}">Choose Plan</a>
+                <li >
+                    <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Choose Plan</a>
                 </li>
-                <li>
-                    <a href="{{ $checkSub ? route('subscriptions.payment') : '#' }}">Make Payment</a>
+                <li >
+                    <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
                 </li>
                 <li class="active">
-                    <a href="{{ ($checkSub||$ispaid || $isProfile) ? route('profile') : '#' }}">Update Profile</a>
+                    <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>
                 </li>
-                <li>
-                    <a href="{{ ($checkSub || $ispaid || $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
+                <li >
+                    <a href="{{ ($checkSub && $ispaid && $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
                 </li>
             </ul>
             
@@ -33,8 +35,7 @@
 </div>
 <!-- Content -->
 <div class="card  mb-4 mt-4">
-    
-
+   
     
     <form action="{{ route('library.profile.update') }}" class="validateForm" method="POST" enctype="multipart/form-data">
         @csrf

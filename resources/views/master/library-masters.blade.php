@@ -9,10 +9,19 @@
     <div class="col-lg-12">
         <div class="steps">
             <ul>
-                <li ><a href="{{route('subscriptions.choosePlan')}}">Choose Plan</a></li>
-                <li><a href="{{route('subscriptions.payment')}}">Make Payment</a></li>
-                <li ><a href="{{route('profile')}}">Update Profile</a></li>
-                <li class="active"><a href="{{route('library.master')}}">Configure Library</a></li>
+             
+                <li >
+                    <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Choose Plan</a>
+                </li>
+                <li >
+                    <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
+                </li>
+                <li>
+                    <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>
+                </li>
+                <li  class="active">
+                    <a href="{{ ($checkSub && $ispaid && $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
+                </li>
             </ul>
            
         </div>
@@ -123,7 +132,7 @@
                 <ul>
                     <li>
                         <div class="d-flex">
-                            <h4>{{$total_seat}}</h4>
+                            <h4>{{($total_seat)}}</h4>
                             <ul>
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
                                 <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}"><i class="fa fa-edit"></i></a></li>
@@ -152,7 +161,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Extend Days <span>*</span></label>
-                                <input type="text" class="form-control @error('extend_days') is-invalid @enderror" name="extend_days">
+                                <input type="text" class="form-control digit-only @error('extend_days') is-invalid @enderror" name="extend_days">
                                 @error('extend_days')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -264,7 +273,7 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    <form id="planTypeForm" enctype="multipart/form-data" class="validateForm">
+                    <form id="planTypeForm" enctype="multipart/form-data" >
                         @csrf
                         <input type="hidden" name="id" value="" >
                         <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
@@ -452,6 +461,14 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div class="col-lg-4">
+        @if($seat_button)
+        <a href="{{route('seats')}}" type="button"class="btn btn-primary button">Next<i
+            class="fa fa-arrow-right"></i> </a>
+            
+        @endif
+       
     </div>
 </div>
 

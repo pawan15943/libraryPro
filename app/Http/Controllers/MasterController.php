@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Hour;
+use App\Models\Library;
 use App\Models\Plan;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
+use App\Models\Seat;
 use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,6 +16,7 @@ use Spatie\Permission\Models\Permission;
 use Exception;
 use DB;
 use Yajra\DataTables\Facades\DataTables;
+use Auth;
 
 class MasterController extends Controller
 {
@@ -82,9 +86,10 @@ class MasterController extends Controller
         $plantype=PlanType::withTrashed()->where('library_id',auth()->user()->id)->get();
         $plantypes=PlanType::where('library_id',auth()->user()->id)->get();
         $planprice=PlanPrice::withTrashed()->where('library_id',auth()->user()->id)->get();
-        $total_seat=DB::table('seats')->where('library_id',auth()->user()->id)->count();
-        
-        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes'));
+        $total_seat=Seat::where('library_id',auth()->user()->id)->count();
+        $seat_button=Library::where('id',Auth::user()->id)->where('status',1)->exists();
+       
+        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button'));
     }
     
     public function storemaster(Request $request, $id = null)
@@ -103,11 +108,11 @@ class MasterController extends Controller
             $data = $request->except(['timming']);
 
             if ($request->image == 'orange') {
-                $data['image'] = 'public/img/first-half.svg';
+                $data['image'] = 'public/img/booked.png';
             } elseif ($request->image == 'light_orange') {
-                $data['image'] = 'public/img/second-half.svg';
+                $data['image'] = 'public/img/booked.png';
             } else {
-                $data['image'] = 'public/img/full-day.svg';
+                $data['image'] = 'public/img/booked.png';
             }
     
             $first_record = DB::table('hour')->where('library_id', $request->library_id)->first();
@@ -178,7 +183,25 @@ class MasterController extends Controller
                     $modelInstance=DB::table($table)->where('id', $data['id'])->update($data);
                 }
             }
-            
+            $hourexist = Hour::count();
+            $extendexist = Hour::whereNotNull('extend_days')->count();
+            $seatExist = Seat::count();
+            $plan = Plan::count();
+            $plantype = PlanType::where('library_id', auth()->user()->id) 
+                            ->where(function ($query) {
+                                $query->where('day_type_id', 1)
+                                      ->orWhere('day_type_id', 2)
+                                      ->orWhere('day_type_id', 3);
+                            })
+                            ->count();
+            $planPrice = PlanPrice::count();
+    
+            if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice > 0) {
+                $id=Auth::user()->id;
+                $library=Library::findOrFail($id);
+                $library->status = 1; 
+                $library->save();  
+            }
     
             return response()->json([
                 'success' => true, 

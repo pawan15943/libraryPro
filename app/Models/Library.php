@@ -24,5 +24,7 @@ class Library extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+
+  
     
 }

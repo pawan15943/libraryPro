@@ -41,10 +41,12 @@ Route::get('library/create', [LibraryController::class, 'create'])->name('librar
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
-  Route::get('/library/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
  
   Route::get('/library/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
+  Route::get('/library/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
+
   Route::get('library/choose-plan', [LibraryController::class, 'choosePlan'])->name('subscriptions.choosePlan');
+  Route::get('library/master/account', [LibraryController::class, 'sidebarRedirect'])->name('library.master.account');
   Route::get('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
 
   Route::post('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');

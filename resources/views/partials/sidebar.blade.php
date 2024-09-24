@@ -28,12 +28,25 @@ $current_route = Route::currentRouteName();
                                 @foreach($menu->children as $submenu)
                                     {{-- Check guard for submenu --}}
                                     @if($submenu->guard === null || Auth::guard($submenu->guard)->check())
+                                            
+                                        @if($submenu->guard !== 'library')
                                         <li>
                                             <a href="{{ route($submenu->url) }}" 
-                                               class="{{ $current_route == $submenu->url ? 'active' : '' }}">
+                                            class="{{ $current_route == $submenu->url ? 'active' : '' }}">
                                                 {{ $submenu->name }}
                                             </a>
                                         </li>
+                                        {{-- Show submenu for library guard only if conditions are met --}}
+                                        @elseif(Auth::guard('library')->check() && $checkSub && $ispaid && $isProfile && $iscomp)
+                                            <li>
+                                                <a href="{{ route($submenu->url) }}" 
+                                                class="{{ $current_route == $submenu->url ? 'active' : '' }}">
+                                                    {{ $submenu->name }}
+                                                </a>
+                                            </li>
+                                        @endif
+                                       
+                                        
                                     @endif
                                 @endforeach
                             </ul>

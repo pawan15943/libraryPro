@@ -10,16 +10,16 @@
         <div class="steps">
             <ul>
                 <li >
-                    <a href="{{ $isEmailVeri ? route('subscriptions.choosePlan') : '#' }}">Choose Plan</a>
+                    <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Choose Plan</a>
                 </li>
                 <li class="active">
-                    <a href="{{ $checkSub ? route('subscriptions.payment') : '#' }}">Make Payment</a>
+                    <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
                 </li>
                 <li >
-                    <a href="{{ $ispaid ? route('profile') : '#' }}">Update Profile</a>
+                    <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>
                 </li>
-                <li>
-                    <a href="{{ $isProfile ? route('library.master') : '#' }}">Configure Library</a>
+                <li >
+                    <a href="{{ ($checkSub && $ispaid && $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
                 </li>
             </ul>
         </div>

@@ -252,7 +252,7 @@ class MasterController extends Controller
            
         }
     
-        $lastSeatNo = DB::table('seats')->where('library_id',$request->library_id)->orderBy('seat_no', 'desc')->value('seat_no');
+        $lastSeatNo = Seat::where('library_id',$request->library_id)->orderBy('seat_no', 'desc')->value('seat_no');
     
         $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1;
     
@@ -267,8 +267,8 @@ class MasterController extends Controller
                 'updated_at' => now(),
             ];
         }
+        Seat::create($seats);
        
-        DB::table('seats')->insert($seats);
         return response()->json([
             'success' => true, 
             'message' => 'Seat Added/Updated successfully',

@@ -56,13 +56,13 @@ class LearnerController extends Controller
         $seats = Seat::get();
  
         foreach($seats as $seat){
-            $total_hourse=Learner::where('status', 1)->where('seat_no',$seat->seat_no)->sum('hours');
+            $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat->seat_no)->sum('hours');
            
-            $updateseat=Seat::where('id', $seat->id)->update(['total_hours' => $total_hourse]);
+            $updateseat=Seat::where('library_id',Auth::user()->id)->where('id', $seat->id)->update(['total_hours' => $total_hourse]);
         
         }
     
-       $userUpdates = Learner::where('status', 1)->get();
+       $userUpdates = Learner::where('library_id',Auth::user()->id)->where('status', 1)->get();
   
        foreach ($userUpdates as $userUpdate) {
            $today = date('Y-m-d'); 
@@ -118,10 +118,17 @@ class LearnerController extends Controller
     }
 
     protected function seat_availablity(Request $request){
-
+   
         $plan_type_id=$request->plan_type_id;
         $seat_id=$request->seat_id;
-      
+        
+        if(!$seat_id){
+            $learnerData=Learner::where('id',$request->user_id)->first();
+            $library_id=$learnerData->library_id;
+            $seat=Seat::where('library_id',$library_id)->where('seat_no',$request->seat_no)->first();
+            $seat_id=$seat->id;
+        }
+       
        $this->seat_availablity_update($seat_id,$plan_type_id);
         
     }
@@ -430,6 +437,142 @@ class LearnerController extends Controller
         return view('learner.learner', compact('learners','learnerHistory'));
         
     }
+    //learner Edit and Upgrade
+    public function userUpdate(Request $request, $id = null)
+    {
+        $validator = $this->validateCustomer($request);
+
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            } else {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+        }
+
+        // Determine user_id based on $id or request input
+        $user_id = $id ?: $request->input('user_id');
+      
+
+        $customer = Learner::findOrFail($user_id);
+    
+         // Fetch existing bookings for the same seat
+        $existingBookings =$this->getLearnersByLibrary()->where('seat_no', $customer->seat_no)
+            ->where('learners.id', '!=', $customer->id) // Exclude the current booking
+            ->get();
+        // Determine hours based on plan_type_id
+        
+        $planType = PlanType::find($request->plan_type_id);
+        $startTime = $planType->start_time;
+        $endTime = $planType->end_time;
+        $hours = $planType->slot_hours;
+
+        // Check for overlaps with existing bookings
+        foreach ($existingBookings as $booking) {
+            $bookingPlanType = PlanType::find($booking->plan_type_id);
+            
+            if ($bookingPlanType) {
+                $bookingStartTime = $bookingPlanType->start_time;
+                $bookingEndTime = $bookingPlanType->end_time;
+
+                
+                if (
+                    ($startTime < $bookingEndTime && $endTime > $bookingStartTime) ||
+                    ($endTime > $bookingStartTime && $startTime < $bookingEndTime)
+                ) {
+                    return redirect()->back()->with('error', 'The selected plan type overlaps with an existing booking.');
+                }
+            }
+        }
+
+            
+        $first_record = Hour::first();
+        $total_hour = $first_record ? $first_record->hour : 0;
+
+        if ($total_hour === 0) {
+            return redirect()->back()->with('error', 'Total available hours not set.');
+        }
+
+        // Calculate total hours booked on this seat
+        $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $customer->seat_no)->sum('hours');
+
+        // Check if the selected plan type exceeds available hours
+        if ($hours > ($total_hour - ($total_cust_hour - $customer->hours))) {
+            return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
+        } else {
+            $plan_type = $request->plan_type_id;
+        }
+       
+        // Calculate new plan_end_date by adding duration to the current plan_end_date
+        $months=Plan::where('id',$request->plan_id)->value('plan_id');
+        $duration = $months ?? 0;
+        $currentEndDate = Carbon::parse($customer->plan_end_date);
+        $start_date = Carbon::parse($request->input('plan_start_date'));
+        if($request->input('plan_end_date')){
+            $newEndDate= Carbon::parse($request->input('plan_end_date'));
+        }elseif($request->input('plan_start_date')){
+            $start_date = Carbon::parse($request->input('plan_start_date'));
+            $newEndDate = $start_date->copy()->addMonths($duration);
+        }else{
+           
+            $newEndDate = $currentEndDate->addMonths($duration);
+        }
+        // Handle the file upload
+        if ($request->hasFile('id_proof_file')) {
+            $id_proof_file = $request->file('id_proof_file');
+            $id_proof_fileNewName = "id_proof_file_" . time() . "_" . $id_proof_file->getClientOriginalName();
+            
+            // Store the file in the 'public/uploads' directory
+            $id_proof_file->move(public_path('uploads'), $id_proof_fileNewName);
+            $id_proof_filePath = 'uploads/' . $id_proof_fileNewName;
+
+            // Set the path in the customer model
+            $customer->id_proof_file = $id_proof_filePath;
+        }
+
+        // Update customer details only if the field is provided
+        $customer->name = $request->input('name', $customer->name);
+        $customer->mobile = $request->input('mobile', $customer->mobile);
+        $customer->email = $request->input('email', $customer->email);
+        $customer->dob = $request->input('dob', $customer->dob);
+        $customer->payment_mode = $request->input('payment_mode', $customer->payment_mode);
+        $customer->id_proof_name = $request->input('id_proof_name', $customer->id_proof_name);
+        $customer->hours = $hours;
+        // Save the customer details
+        $customer->save();
+       
+             // some field in customer deatl table so Update the learner_detail table
+        $LearnerDetail =LearnerDetail::where('learner_id', $customer->id)->first();
+        if ($LearnerDetail) {
+            if($request->input('plan_start_date')){
+                $LearnerDetail->plan_start_date =$start_date;
+            }
+            $LearnerDetail->plan_id = $request->input('plan_id');
+            $LearnerDetail->plan_type_id = $plan_type;
+            $LearnerDetail->plan_price_id = $request->input('plan_price_id');
+            $LearnerDetail->plan_end_date = $newEndDate->toDateString();
+            $LearnerDetail->save();
+        }
+        // Update seat availability
+        $this->seat_availablity($request);
+
+        $this->dataUpdate();
+        if($request->expectsJson()){
+            // Return a JSON response
+            return response()->json([
+                'success' => true,
+                'message' => 'Learner updated successfully!',
+            ], 200);
+        }else{
+            return redirect()->route('learners')->with('success', 'Learner updated successfully.');
+        }
+
+       
+       
+    }
     public function getUser(Request $request, $id = null)
     {
        
@@ -515,142 +658,7 @@ class LearnerController extends Controller
             return view('learner.learnerEdit', compact('customer', 'plans', 'planTypes','available_seat'));
         }
     }
-    //learner Edit and Upgrade
-    public function userUpdate(Request $request, $id = null)
-    {
-        $validator = $this->validateCustomer($request);
-
-        if ($validator->fails()) {
-            if ($request->expectsJson()) {
-                return response()->json([
-                    'success' => false,
-                    'errors' => $validator->errors()
-                ], 422);
-            } else {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
-        }
-
-        // Determine user_id based on $id or request input
-        $user_id = $id ?: $request->input('user_id');
-        
-
-        $customer = Learner::findOrFail($user_id);
-        
-         // Fetch existing bookings for the same seat
-        $existingBookings = Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->where('seat_no', $customer->seat_no)
-            ->where('learners.id', '!=', $customer->id) // Exclude the current booking
-            ->get();
-        // Determine hours based on plan_type_id
-        
-        $planType = PlanType::find($request->plan_type_id);
-        $startTime = $planType->start_time;
-        $endTime = $planType->end_time;
-        $hours = $planType->slot_hours;
-
-        // Check for overlaps with existing bookings
-        foreach ($existingBookings as $booking) {
-            $bookingPlanType = PlanType::find($booking->plan_type_id);
-            
-            if ($bookingPlanType) {
-                $bookingStartTime = $bookingPlanType->start_time;
-                $bookingEndTime = $bookingPlanType->end_time;
-
-                // Check if the new plan type's time slot overlaps with an existing booking
-                if (
-                    ($startTime < $bookingEndTime && $endTime > $bookingStartTime) ||
-                    ($endTime > $bookingStartTime && $startTime < $bookingEndTime)
-                ) {
-                    return redirect()->back()->with('error', 'The selected plan type overlaps with an existing booking.');
-                }
-            }
-        }
-
-             // Total available hours check
-        $first_record = Hour::first();
-        $total_hour = $first_record ? $first_record->hour : 0;
-
-        if ($total_hour === 0) {
-            return redirect()->back()->with('error', 'Total available hours not set.');
-        }
-
-        // Calculate total hours booked on this seat
-        $total_cust_hour = Learner::where('seat_no', $customer->seat_no)->sum('hours');
-
-        // Check if the selected plan type exceeds available hours
-        if ($hours > ($total_hour - ($total_cust_hour - $customer->hours))) {
-            return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
-        } else {
-            $plan_type = $request->plan_type_id;
-        }
-       
-        // Calculate new plan_end_date by adding duration to the current plan_end_date
-        $months=Plan::where('id',$request->plan_id)->value('plan_id');
-        $duration = $months ?? 0;
-        $currentEndDate = Carbon::parse($customer->plan_end_date);
-        $start_date = Carbon::parse($request->input('plan_start_date'));
-        if($request->input('plan_end_date')){
-            $newEndDate= Carbon::parse($request->input('plan_end_date'));
-        }elseif($request->input('plan_start_date')){
-            $start_date = Carbon::parse($request->input('plan_start_date'));
-            $newEndDate = $start_date->copy()->addMonths($duration);
-        }else{
-           
-            $newEndDate = $currentEndDate->addMonths($duration);
-        }
-        // Handle the file upload
-        if ($request->hasFile('id_proof_file')) {
-            $id_proof_file = $request->file('id_proof_file');
-            $id_proof_fileNewName = "id_proof_file_" . time() . "_" . $id_proof_file->getClientOriginalName();
-            
-            // Store the file in the 'public/uploads' directory
-            $id_proof_file->move(public_path('uploads'), $id_proof_fileNewName);
-            $id_proof_filePath = 'uploads/' . $id_proof_fileNewName;
-
-            // Set the path in the customer model
-            $customer->id_proof_file = $id_proof_filePath;
-        }
-
-        // Update customer details only if the field is provided
-        $customer->name = $request->input('name', $customer->name);
-        $customer->mobile = $request->input('mobile', $customer->mobile);
-        $customer->email = $request->input('email', $customer->email);
-        $customer->dob = $request->input('dob', $customer->dob);
-        $customer->payment_mode = $request->input('payment_mode', $customer->payment_mode);
-        $customer->id_proof_name = $request->input('id_proof_name', $customer->id_proof_name);
-        $customer->hours = $hours;
-        // Save the customer details
-        $customer->save();
-       
-             // some field in customer deatl table so Update the learner_detail table
-        $LearnerDetail =LearnerDetail::where('learner_id', $customer->id)->first();
-        if ($LearnerDetail) {
-            if($request->input('plan_start_date')){
-                $LearnerDetail->plan_start_date =$start_date;
-            }
-            $LearnerDetail->plan_id = $request->input('plan_id');
-            $LearnerDetail->plan_type_id = $plan_type;
-            $LearnerDetail->plan_price_id = $request->input('plan_price_id');
-            $LearnerDetail->plan_end_date = $newEndDate->toDateString();
-            $LearnerDetail->save();
-        }
-        // Update seat availability
-        $this->seat_availablity($request);
-
-        $this->dataUpdate();
-        if($request->expectsJson()){
-            // Return a JSON response
-            return response()->json([
-                'success' => true,
-                'message' => 'Learner updated successfully!',
-            ], 200);
-        }else{
-            return redirect()->route('learners')->with('success', 'Learner updated successfully.');
-        }
-
-       
-       
-    }
+    
     public function swapSeat(Request $request)
     {
         try {

@@ -76,7 +76,7 @@
                             </div>
                         </div>
                     </h4>
-                    <input id="user_id" type="hidden" name="customer_id" value="{{ $customer->id}}">
+                    <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
                     <div class="row">
                         <div class="col-lg-6">
                             <label for="">Current Seat No. <span>*</span></label>
@@ -85,7 +85,7 @@
                         </div>
                         <div class="col-lg-6">
                             <label for="">Select Seat<span>*</span></label>
-                            <select name="seat_no" id="new_seat_id" class="form-control form-control-sm h-auto">
+                            <select name="seat_id" id="new_seat_id" class="form-control form-control-sm h-auto">
                                 <option>Select Seat</option>
                                 @foreach($available_seat as $id => $seat_no)
                                 <option value="{{ $id }}"> {{ $seat_no }}</option>

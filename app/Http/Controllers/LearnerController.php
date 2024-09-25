@@ -67,9 +67,11 @@ class LearnerController extends Controller
        foreach ($userUpdates as $userUpdate) {
            $today = date('Y-m-d'); 
            $customerdatas=LearnerDetail::where('learner_id',$userUpdate->id)->where('status',1)->get();
-          
+           $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+           $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
            foreach($customerdatas as $customerdata){
-                if ($customerdata->plan_end_date <= $today) {
+                $planEndDateWithExtension = Carbon::parse($customerdata->plan_end_date)->addDays($extend_day);
+                if ($planEndDateWithExtension->lte($today)) {
                     $userUpdate->update(['status' => 0]);
                     $customerdata->update(['status' => 0]);
                 }else{
@@ -121,14 +123,15 @@ class LearnerController extends Controller
    
         $plan_type_id=$request->plan_type_id;
         $seat_id=$request->seat_id;
-        
+      
         if(!$seat_id){
             $learnerData=Learner::where('id',$request->user_id)->first();
             $library_id=$learnerData->library_id;
             $seat=Seat::where('library_id',$library_id)->where('seat_no',$request->seat_no)->first();
             $seat_id=$seat->id;
         }
-       
+        
+     
        $this->seat_availablity_update($seat_id,$plan_type_id);
         
     }
@@ -180,14 +183,14 @@ class LearnerController extends Controller
 
         $seats = Seat::get();
         $this->dataUpdate();
-        $users = Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->where('learners.status', 1)->where('learner_detail.library_id',auth()->user()->id);
+        $users = $this->getLearnersByLibrary()->where('learners.status', 1)->where('learner_detail.library_id',auth()->user()->id);
       
         $plans=Plan::get();
         $plan_types=PlanType::get();
-        $count_fullday=Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',1)->where('learners.status',1)->count();
-        $count_firstH=Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',2)->where('learners.status',1)->count();
-        $count_secondH=Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',3)->where('learners.status',1)->count();
-        $count_hourly=Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->whereIn('plan_types.day_type_id',[4,5,6,7])->where('learners.status',1)->count();
+        $count_fullday=$this->getLearnersByLibrary()->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',1)->where('learners.status',1)->count();
+        $count_firstH=$this->getLearnersByLibrary()->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',2)->where('learners.status',1)->count();
+        $count_secondH=$this->getLearnersByLibrary()->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->where('plan_types.day_type_id',3)->where('learners.status',1)->count();
+        $count_hourly=$this->getLearnersByLibrary()->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id',auth()->user()->id)->whereIn('plan_types.day_type_id',[4,5,6,7])->where('learners.status',1)->count();
         $available=Seat::where('total_hours',0)->count();
         $not_available=Seat::where('is_available',0)->count();
         return view('learner.seat', compact('seats', 'users','plans','plan_types','count_fullday','count_firstH','count_secondH','available','not_available','total_hour','count_hourly'));
@@ -440,6 +443,7 @@ class LearnerController extends Controller
     //learner Edit and Upgrade
     public function userUpdate(Request $request, $id = null)
     {
+        
         $validator = $this->validateCustomer($request);
 
         if ($validator->fails()) {
@@ -455,7 +459,7 @@ class LearnerController extends Controller
 
         // Determine user_id based on $id or request input
         $user_id = $id ?: $request->input('user_id');
-      
+        
 
         $customer = Learner::findOrFail($user_id);
     
@@ -664,23 +668,23 @@ class LearnerController extends Controller
         try {
             DB::transaction(function () use ($request) {
 
+             
+                $customer = $this->getLearnersByLibrary()->where('learners.id',$request->learner_id)->select('learners.id as id','learners.*','learner_detail.plan_type_id','learner_detail.seat_id')->first();
                
-                $customer = $this->getLearnersByLibrary()->where('learners.id',$request->learner_id)->select('learners.id as id','learners.*','learner_detail.plan_type_id')->first();
-                $newSeatId = $request->seat_no;
-              
+                $newSeatId = $request->seat_id;
+          
                 $first_record = Hour::first();
                 $total_hour = $first_record ? $first_record->hour : null;
-              
-              
-               $total_cust_hour=Learner::where('seat_no',$newSeatId)->sum('hours');
-               $new_seat_remainig=$total_hour-$total_cust_hour;
+             
+                $hourCheck = Seat::where('id', $newSeatId)->select('total_hours','seat_no')->first();
+                $newSeatNo=$hourCheck->seat_no;
                
-                $hourCheck = Seat::where('seat_no', $newSeatId)->select('total_hours')->first();
-
+               $total_cust_hour=Learner::where('library_id',Auth::user()->id)->where('seat_no',$hourCheck->seat_no)->sum('hours');
+               $new_seat_remainig=$total_hour-$total_cust_hour;
               
                 if (($hourCheck->total_hours > 0) && ($customer->hours > $new_seat_remainig)) {
                     throw new Exception('Not available according to your hours.');
-                } elseif ($this->getLearnersByLibrary()->where('seat_no', $newSeatId)
+                } elseif ($this->getLearnersByLibrary()->where('learner_detail.seat_id', $newSeatId)
                     ->where('plan_type_id', $customer->plan_type_id)
                     ->where('learners.status', 1)
                     ->where('learner_detail.status', 1)
@@ -689,24 +693,28 @@ class LearnerController extends Controller
                 } else {
                  
                     // Update seat availability for the old seat
-                    $this->seat_availablity_update($customer->seat_no, $customer->plan_type_id);
-                    $old_total_hour = Seat::where('seat_no', $customer->seat_no)->value('total_hours');
+                    $this->seat_availablity_update($customer->seat_id, $customer->plan_type_id);
+                    $old_total_hour = Seat::where('id', $customer->seat_id)->value('total_hours');
     
                     // Adjust old seat's total hours
                     $remaining = $old_total_hour - $customer->hours;
-                    Seat::where('seat_no', $customer->seat_no)->update(['total_hours' => $remaining]);
+                    Seat::where('id', $customer->seat_id)->update(['total_hours' => $remaining]);
                    
-                    // Update the customer's seat
-                    $customer->seat_no = $newSeatId;
-                    $customer->save();
+                    // Update the learner's seat_id and seat_no
+                    $data=Learner::findOrFail($request->learner_id);
+                    $data->seat_no = $newSeatNo;
+                    $data->save();
+                    $learner_detail=LearnerDetail::where('learner_id',$request->learner_id)->update([
+                        'seat_id'=>$newSeatId,
+                    ]);
     
                     // Update seat availability for the new seat
-                    $new_total_hour = Seat::where('seat_no', $newSeatId)->value('total_hours');
+                    $new_total_hour = Seat::where('id', $newSeatId)->value('total_hours');
                     $this->seat_availablity_update($newSeatId, $customer->plan_type_id);
     
                     // Adjust new seat's total hours
                     $total_remain = $new_total_hour + $customer->hours;
-                    Seat::where('seat_no', $newSeatId)->update(['total_hours' => $total_remain]);
+                    Seat::where('id', $newSeatId)->update(['total_hours' => $total_remain]);
                 }
             });
     
@@ -774,7 +782,7 @@ class LearnerController extends Controller
                 return redirect()->back()->with('error', 'Total available hours not set.');
             }
 
-            $total_cust_hour = Learner::where('seat_no', $request->seat_no)->sum('hours');
+            $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $request->seat_no)->sum('hours');
 
             if ($hours > ($total_hour - $total_cust_hour)) {
                 return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
@@ -801,7 +809,7 @@ class LearnerController extends Controller
                 'plan_end_date' => $endDate->format('Y-m-d'),
                 'join_date' => date('Y-m-d'),
             ]);
-            $total_hourse=Learner::where('status', 1)->where('seat_no',$request->seat_no)->sum('hours');
+            $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$request->seat_no)->sum('hours');
            
             $updateseat=Seat::where('seat_no', $request->seat_no)->update(['total_hours' => $total_hourse]);
 
@@ -886,7 +894,7 @@ class LearnerController extends Controller
         $first_record = Hour::first();
         $total_hour = $first_record ? $first_record->hour : null;
 
-        $total_cust_hour = Learner::where('seat_no', $request->new_seat_id)->sum('hours');
+        $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $request->new_seat_id)->sum('hours');
         $new_seat_remaining = $total_hour - $total_cust_hour;
 
         $hourCheck = Seat::where('seat_no', $request->new_seat_id)->select('total_hours')->first();

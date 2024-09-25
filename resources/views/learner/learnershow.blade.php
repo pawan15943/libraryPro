@@ -78,6 +78,7 @@ $readonlyStyle = '';
                     <h4 class="mb-4">Actionables</h4>
                     <div class="row g-4">
                         <input id="edit_seat" type="hidden" name="seat_no" value="{{ old('seat_no', $customer->seat_no) }}">
+                        <input type="hidden" name="user_id" value="{{ old('user_id', $customer->id) }}">
             
                         <div class="col-lg-4">
                             <label for=""> Plan <span>*</span></label>

@@ -9,13 +9,6 @@ $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
 @endphp
 
-<div class="row">
-    <!-- Page Main Content -->
-    <div class="col-lg-12">
-        <!-- Add City Fields -->
-        <div class="">
-            <!-- Add City Fields -->
-            <div class="card-body p-0">
             @if($current_route=='learners.edit')
                 <form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -30,7 +23,12 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <div class="col-lg-9">
                             <div class="actions">
                                 <div class="upper-box">
+                                    <div class="d-flex">
                                     <h4 class="mb-3">Leraners Info</h4>
+                                    <a href="javascript:void(0);" class="go-back"
+                                    onclick="window.history.back();">Go
+                                    Back <i class="fa-solid fa-backward pl-2"></i></a>
+                                    </div>
                                     <div class="row g-4">
                                         <div class="col-lg-6">
                                             <label for="">Seat Owner Name <span>*</span></label>
@@ -89,7 +87,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                         </div>
                                         <div class="col-lg-6" >
                                             <label for="">Upload Scan Copy of Proof </label>
-                                            <input type="file" class="form-control @error('id_proof_file') is-invalid @enderror" name="id_proof_file" id="id_proof_file" >
+                                            <input type="file" class="form-control @error('id_proof_file') is-invalid @enderror" name="id_proof_file" id="id_proof_file" autocomplete="off">
                                             @error('id_proof_file')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -104,7 +102,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-3">
-                                            <input type="submit" class="btn btn-primary btn-block " id="submit" value="Update Seat Info">
+                                            <input type="submit" class="btn btn-primary btn-block button" id="submit" value="Update Seat Info" autocomplete="off">
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +129,12 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="col-lg-9">
                         <div class="actions">
                             <div class="upper-box">
+                                <div class="d-flex">
                                 <h4 class="mb-3">Leraners Info</h4>
+                                <a href="javascript:void(0);" class="go-back"
+                                onclick="window.history.back();">Go
+                                Back <i class="fa-solid fa-backward pl-2"></i></a>
+                                </div>
                                 <div class="row g-4">
                                     <div class="col-lg-6">
                                         <label for="">Seat Owner Name <span>*</span></label>
@@ -325,7 +328,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-lg-3">
-                                            <input type="submit" class="btn btn-primary btn-block" id="submit" value="Update">
+                                            <input type="submit" class="btn btn-primary btn-block button" id="submit" value="Update">
                                         </div>
                                     </div>
                                 </form>
@@ -351,7 +354,12 @@ $diffInDays = $today->diffInDays($endDate, false);
                 <div class="col-lg-9">
                     <div class="actions">
                         <div class="upper-box">
-                            <h4 class="mb-3">Leraners Info</h4>
+                            <div class="d-flex">
+                                <h4 class="mb-3">Leraners Info</h4>
+                                <a href="javascript:void(0);" class="go-back"
+                                onclick="window.history.back();">Go
+                                Back <i class="fa-solid fa-backward pl-2"></i></a>
+                                </div>
                             <div class="row g-4">
                                 <div class="col-lg-6">
                                     <span>Seat Owner Name</span>
@@ -447,12 +455,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                 </div>
             </div>
 
-           
-
             @endif
-        </div>
-    </div>
-</div>
-</div>
+       
 @include('library.script')
 @endsection

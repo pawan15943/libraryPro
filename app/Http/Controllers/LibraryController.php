@@ -26,10 +26,49 @@ class LibraryController extends Controller
         $this->libraryService = $libraryService;
     }
     
-    public function index(){
-        $libraries=Library::get();
-        return view('library.index',compact('libraries'));
+    public function index(Request $request){
+        $query =  Library::leftJoin('library_transactions', 'libraries.id', '=', 'library_transactions.library_id')
+            ->where('library_transactions.is_paid', 1)
+            ->select('libraries.*', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
+            ->groupBy('libraries.id');
+            // Filter by Plan
+        if ($request->filled('plan_id')) {
+            $query->where('libraries.library_type', $request->plan_id);
+        }
+
+        // Filter by Payment Status
+        if ($request->filled('is_paid')) {
+            $query->whereHas('library_transactions', function($q) use ($request) {
+                $q->where('is_paid', $request->is_paid);
+            });
+        }
+
+        // Filter by Active/Expired
+        if ($request->filled('status')) {
+            if ($request->status == 'active') {
+                $query->where('libraries.status', 1);
+            } elseif ($request->status == 'expired') {
+                $query->where('libraries.status', 0);
+            }
+        }
+
+        // Search by Name, Mobile, or Email
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('libraries.name', 'LIKE', "%{$search}%")
+                ->orWhere('libraries.mobile', 'LIKE', "%{$search}%")
+                ->orWhere('libraries.email', 'LIKE', "%{$search}%");
+            });
+        }
+        $libraries = $query->get();
+
+        $plans = Subscription::get();
+        
+        return view('library.index',compact('libraries','plans'));
     }
+  
+
     public function create(){
         $states=State::where('is_active',1)->get();
         return view('library.create',compact('states'));
@@ -80,15 +119,14 @@ class LibraryController extends Controller
             $library = Library::create($validated);
 
             if ($library) {
-                // Send email verification notification
-                $otp = Str::random(6); // Generate a 6-digit OTP
+               
+                $otp = Str::random(6); 
                 $library->email_otp = $otp;
                 $library->save();
-                 // Send verification email with the OTP
+                
                 $this->sendVerificationEmail($library);
                 session(['library_email' => $library->email]);
 
-                // Redirect to the verification page with a success message
                 return redirect()->route('verification.notice')
                     ->with('message', 'Please verify your email to continue.');
             } else {

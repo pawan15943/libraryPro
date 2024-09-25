@@ -51,7 +51,7 @@ class LoginController extends Controller
 
         // Retrieve email and password from request
         $credentials = $request->only('email', 'password');
-        
+       
         // Check the user type and attempt login with the appropriate guard
         switch ($request->input('user_type')) {
             

@@ -51,7 +51,7 @@ class DashboardController extends Controller
 
     public function libraryDashboard()
     {
-        
+      
         $user=Auth::user();
  
         if ($user->hasRole('admin')) {
@@ -83,7 +83,6 @@ class DashboardController extends Controller
                     }
                 }
             }
-
 
            
             $redirectUrl = $this->libraryService->checkLibraryStatus();

@@ -1,58 +1,54 @@
 @extends('layouts.admin')
 @section('content')
-
+@php
+     use Carbon\Carbon;
+@endphp
 <!-- Breadcrumb -->
-<div class="row">
-    <div class="d-flex bradcrumb">
-        <h4>Library List</h4>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Library List</li>
-            </ol>
-        </nav>
-    </div>
-</div>
 
 <div class="row">
     <div class="col-lg-12">
         <div class="filter-box bg-white">
             <h4 class="mb-3">Filter Library By</h4>
-            <form action="">
+            <form action="{{ route('library') }}" method="GET">
                 <div class="row">
                     <div class="col-lg-3">
                         <label for="">Filter By Plan</label>
-                        <select name="" id="" class="form-select">
+                        <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
+                            @foreach($plans as $plan)
+                                <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Filter By Payment Status</label>
-                        <select name="" id="" class="form-select">
+                        <select name="is_paid" id="is_paid" class="form-select">
                             <option value="">Choose Payment Status</option>
+                            <option value="1">Paid</option>
+                            <option value="0">Unpaid</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Filter By Active / Expired</label>
-                        <select name="" id="" class="form-select">
-                            <option value="">Choose Payment Status</option>
-                            <option value="">Active</option>
-                            <option value="">Expired</option>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">Choose Status</option>
+                            <option value="active">Active</option>
+                            <option value="expired">Expired</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Search By Name, Mobile &amp; Email</label>
-                        <input type="text" class="form-control" name="filter">
+                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email">
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-lg-2">
-                        <button class="btn btn-primary button"><i class="fa fa-search"></i> Search
-                            Records</button>
+                        <button class="btn btn-primary button"><i class="fa fa-search"></i> Search Records</button>
                     </div>
                 </div>
             </form>
         </div>
+        
         
         <div class="heading-list">
             <h4 class="">Library List </h4>
@@ -73,27 +69,62 @@
                 </thead>
                 <tbody>
                     @foreach($libraries as $key => $value)
+                    @php
+                   
+                         $libraryplan=App\Models\Subscription::where('id',$value->library_type)->value('name');
+                         $libraryplanData=App\Models\LibraryTransaction::where('id',$value->latest_transaction_id)->first();
 
+                         $endDate = ($libraryplanData && $libraryplanData->end_date != null) ? Carbon::parse($libraryplanData->end_date) : null;
+                         $diffInDays = $endDate ? $today->diffInDays($endDate, false) : 0;
+                   @endphp
 
                     <tr>
                         <td>1</td>
-                        <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="Pawan Kumar Rathore" data-bs-placement="bottom"> {{$value->library_name}}</span>
-                            <small>210202152</small>
+                        <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->library_name}}" data-bs-placement="bottom"> {{$value->library_name}}</span>
+                            <small>{{$value->library_owner_contact}}</small>
                         </td>
                         <td><span class="truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->email}}" data-bs-placement="bottom"><i class="fa-solid fa-times text-danger"></i>
                                 {{$value->email}}</span>
                             <small>+91-{{$value->library_mobile}}</small>
                         </td>
-                        <td>BASIC PLAN<br>
-                            <small>MONTHLY</small>
+                        <td>{{$libraryplan}}<br>
+                           
+                            @if($libraryplanData && $libraryplanData->month == 12)
+                                <small>Yearly</small>
+                            @else
+                                <small>Monthly</small>
+                            @endif
+                        
+                            
                         </td>
-                        <td><span class="d-block m-auto">
-                                30-04-2024
+                        <td>
+                            @if($libraryplanData && $libraryplanData->start_date != null)
+                            <span class="d-block m-auto">
+                                {{ \Carbon\Carbon::parse($libraryplanData->start_date)->toFormattedDateString() }}
                             </span>
+                             @endif
+                        
+                            @if($value->status==1)
                             <small class="text-success">Active</small>
+                            @else
+                            <small class="text-success">InActive</small>
+                            @endif
+                           
                         </td>
-                        <td>30-04-2024<br>
-                            <small class="text-success">20 Days Pending</small>
+                        <td>
+                            {{ $endDate ? $endDate->toFormattedDateString() : 'N/A' }}
+                           
+                           
+                            <br>
+                            @if ($diffInDays > 0)
+                            <small class="text-success ">{{ $diffInDays }} Days Pending</small>
+                            @elseif ($diffInDays < 0)
+                                <small class="text-danger ">Expired {{ abs($diffInDays) }} Days ago</small>
+                                
+                            @else
+                                <small class="text-warning ">Expires today</small>
+                            @endif
+                            
                         </td>
 
                         <td>

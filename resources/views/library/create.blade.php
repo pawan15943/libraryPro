@@ -62,19 +62,20 @@
                     </div>
                 </div>
 
+              
+                <!-- Address -->
                 <div class="col-lg-12">
                     <div class="form-group">
-                        <label>Library Owner Name<sup class="text-danger">*</sup></label>
-                        <input type="text" class="form-control @error('library_owner') is-invalid @enderror" name="library_owner"
-                            value="{{ old('library_owner') }}" >
-                        @error('library_owner')
+                        <label>Address</label>
+                        <textarea class="form-control h-auto @error('library_address') is-invalid @enderror" name="library_address"
+                            >{{ old('library_address') }}</textarea>
+                        @error('library_address')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
                 </div>
-
 
                 <!-- State -->
                 <div class="col-lg-6">
@@ -111,19 +112,7 @@
                     </div>
                 </div>
 
-                <!-- Address -->
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <label>Address</label>
-                        <textarea class="form-control h-auto @error('library_address') is-invalid @enderror" name="library_address"
-                            >{{ old('library_address') }}</textarea>
-                        @error('library_address')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <!-- ZIP Code -->
                 <div class="col-lg-6">
@@ -138,7 +127,37 @@
                         @enderror
                     </div>
                 </div>
-
+                <h6 class="mt-5">Library Owner Info :</h6>
+                <div class="row g-4">
+        
+                    <div class="col-lg-12">
+                        <label for="">Owner Name <span>*</span></label>
+                        <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner') }}">
+                        @error('library_owner')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Owner Email Id <span>*</span></label>
+                        <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email') }}">
+                        @error('library_owner_email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Owner Contact Number (WhatsApp) <span>*</span></label>
+                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" value="{{ old('library_owner_contact') }}">
+                        @error('library_owner_contact')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+              
                 <!-- Library Type -->
                 <div class="col-lg-6">
                     <div class="form-group">
@@ -165,22 +184,7 @@
                     </div>
                 </div>
 
-                <!-- Status -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>Status</label>
-                        <select name="status" class="form-control @error('status') is-invalid @enderror">
-                            <option value="">Status</option>
-                            <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                            <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                        </select>
-                        @error('status')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
+               
             </div>
 
             <div class="row mt-3">

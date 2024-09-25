@@ -24,6 +24,13 @@ class Library extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+    
+    public function library_transactions()
+    {
+        return $this->hasMany(LibraryTransaction::class, 'library_id', 'id'); 
+        // Adjust the foreign key and local key if necessary
+    }
+
 
   
     

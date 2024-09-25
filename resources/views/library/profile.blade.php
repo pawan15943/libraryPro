@@ -52,6 +52,16 @@
                 </span>
                 @enderror
             </div>
+            <div class="col-lg-6">
+                <label for="">Library EMail Id <span>*</span></label>
+                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+                    value="{{ old('email', $library->email ?? '') }}">
+                @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
 
             <div class="col-lg-6">
                 <label for="">Library Contact No (WhatsApp No.) <span>*</span></label>
@@ -64,16 +74,7 @@
                 @enderror
             </div>
 
-            <div class="col-lg-6">
-                <label for="">Library Mail Id <span>*</span></label>
-                <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                    value="{{ old('email', $library->email ?? '') }}">
-                @error('email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
+       
 
             <div class="col-lg-12">
                 <label for="">Library Address <span>*</span></label>
@@ -139,20 +140,35 @@
 
             <div class="col-lg-12">
                 <label for="">Owner Name <span>*</span></label>
-                <input type="text" class="form-control char-only" name="library_owner" value="{{ old('library_owner', $library->library_owner ?? '') }}">
+                <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner', $library->library_owner ?? '') }}">
+                @error('library_owner')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="col-lg-6">
                 <label for="">Owner Email Id <span>*</span></label>
-                <input type="email" class="form-control" name="library_owner_email" value="{{ old('library_owner_email', $library->library_owner_email ?? '') }}">
+                <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email', $library->library_owner_email ?? '') }}">
+                @error('library_owner_email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
             <div class="col-lg-6">
                 <label for="">Owner Contact Number (WhatsApp) <span>*</span></label>
-                <input type="text" class="form-control digit-only" name="library_owner_contact" value="{{ old('library_owner_contact', $library->library_owner_contact ?? '') }}">
+                <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" value="{{ old('library_owner_contact', $library->library_owner_contact ?? '') }}">
+                @error('library_owner_contact')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
             </div>
 
 
             <div class="col-lg-6">
-                <label for="">Upload Logo Image <span>*</span></label>
+                <label for="">Upload Library Logo <span>*</span></label>
                 <input type="file" class="form-control" name="library_logo">
                 @error('library_logo')
                 <span class="invalid-feedback" role="alert">

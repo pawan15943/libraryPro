@@ -427,7 +427,7 @@ class LearnerController extends Controller
        
         $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
         $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0);
-        return view('learner.customer', compact('learners','learnerHistory'));
+        return view('learner.learner', compact('learners','learnerHistory'));
         
     }
     public function getUser(Request $request, $id = null)

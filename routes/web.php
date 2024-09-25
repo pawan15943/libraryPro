@@ -104,6 +104,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/subscriptions/{id}/permissions', [MasterController::class, 'getPermissions'])->name('subscriptions.getPermissions');
 
         Route::get('library', [LibraryController::class, 'index'])->name('library');
+       
+        
     });
 });
 

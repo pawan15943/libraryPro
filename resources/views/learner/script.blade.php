@@ -21,7 +21,7 @@
             $('#seat_id').val(seatId);
             $('#seat_no_head').text('Book Seat No ' + seatNo);
             $('#seatAllotmentModal').modal('show');
-            console.log("seatId",seatId);
+           
             getTypeSeatwise(seatId);
         });
         $('.second_popup').on('click', function() {
@@ -29,9 +29,10 @@
             var userId = $(this).data('userid');
             var seatId = $(this).data('id');
             var seatNo=$(this).data('seat_no');
+            $('#user_id').val(userId);
             $('#seatAllotmentModal2').modal('show');
-            
-            console.log("seat_id",userId)
+           
+          
             if (userId) {
                 $.ajax({
                     url: '{{ route('learners.show')}}',
@@ -94,8 +95,10 @@
 
         });
         $('#upgrade').on('click', function() {
+            
             $("#update_plan_id").trigger('change');
             var user_id = $('#user_id').val();
+           
             var seat_no_id = $('#seat_name').text().trim();
           
             var endOnDate = $('#endOn').text().trim();
@@ -109,7 +112,8 @@
             $('#update_seat_no').val(seat_no_id);
             $('#update_user_id').val(user_id);
             $('#seat_number_upgrades').text('Renew Library Membership for Seat No '  + seat_no_id);
-            
+          
+           
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
         
@@ -156,7 +160,7 @@
             var plan_type_id = $(this).val();
             var plan_id = $('#plan_id').val();
             var plan_id2 = $('#plan_id2').val();
-          
+         
             if((plan_type_id && plan_id)||(plan_type_id && plan_id2)){
                 getPlanPrice(plan_type_id,plan_id);
                 getPlanPrice(plan_type_id,plan_id2);
@@ -403,9 +407,9 @@
                 contentType: false,
                 dataType: 'json',
                 success: function(response) {
-
+                    console.log("renew",response);
                     if (response.success) {
-
+                        
                         $("#success-message").text('Form submission successful').show();
                         $("#error-message").hide();
                         setTimeout(function() {

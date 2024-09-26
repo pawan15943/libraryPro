@@ -356,7 +356,7 @@ $hourlyCount = 0;
                             <div class="row">
                                 <div class="col-lg-4">
                                     <input type="hidden" value="" id="user_id">
-                                    <a id="upgrade" class="btn btn-primary btn-block mt-2" style="height : auto;">Renew Library Membership</a>
+                                    <a id="upgrade" class="btn btn-primary btn-block mt-2 button" style="height : auto;">Renew Library Membership</a>
                                 </div>
                             </div>
                         </div>
@@ -410,7 +410,7 @@ $hourlyCount = 0;
     
                                     <input type="hidden" class="form-control char-only" name="seat_no" value="" id="update_seat_no">
                                     <input type="hidden" class="form-control char-only" name="user_id" value="" id="update_user_id">
-                                    <input type="submit" class="btn btn-primary btn-block" id="submit" value="Renew Membership Now">
+                                    <input type="submit" class="btn btn-primary btn-block button" id="submit" value="Renew Membership Now">
                                 </div>
                             </div>
                         </div>

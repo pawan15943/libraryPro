@@ -1,212 +1,307 @@
 @extends('layouts.admin')
 @section('content')
+
 @php
 $current_route = Route::currentRouteName();
 use Carbon\Carbon;
 $today = Carbon::today();
 $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
-
-if (Route::currentRouteName() == 'learners.upgrade') {
-$displayNone = 'style="display: none;"';
-
-$readonlyStyle = 'pointer-events: none; background-color: #e9ecef;'; // Simulate read-only by disabling interactions
-
-} else {
-$displayNone = '';
-
-$readonlyStyle = '';
-}
 @endphp
 
 
-
-<form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
-    
-    <div class="row">
-        <div class="col-lg-9">
-            <div class="actions">
-                <div class="upper-box">
-                    <div class="d-flex">
-                        <h4 class="mb-3">Leraners Info</h4>
-                        <a href="javascript:void(0);" class="go-back"
-                            onclick="window.history.back();">Go
-                            Back <i class="fa-solid fa-backward pl-2"></i></a>
+<!-- View Customer Information -->
+<div class="row">
+    <div class="col-lg-9">
+        <div class="actions">
+            <div class="upper-box">
+                <div class="d-flex">
+                    <h4 class="mb-3">Leraners Info</h4>
+                    <a href="javascript:void(0);" class="go-back"
+                    onclick="window.history.back();">Go
+                    Back <i class="fa-solid fa-backward pl-2"></i></a>
                     </div>
-                    <div class="row g-4">
-                        <div class="col-lg-6">
-                            <label for="">Seat Owner Name <span>*</span></label>
-                            <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->name) }}" readonly>
-                            @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="">DOB <span>*</span></label>
-                            <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}" readonly>
-                            @error('dob')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="">Mobile Number <span>*</span></label>
-                            <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}" readonly>
-                            @error('mobile')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-6">
-                            <label for="">Email Id <span>*</span></label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" readonly>
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <span>Seat Owner Name</span>
+                        <h5 class="uppercase">{{ $customer->name }}</h5>
                     </div>
-                </div>
-                <div class="action-box">
-                    <h4 class="mb-4">Actionables</h4>
-                    <div class="row g-4">
-                        <input id="edit_seat" type="hidden" name="seat_no" value="{{ old('seat_no', $customer->seat_no) }}">
-                        <input type="hidden" name="user_id" value="{{ old('user_id', $customer->id) }}">
-            
-                        <div class="col-lg-4">
-                            <label for=""> Plan <span>*</span></label>
-                            <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id"  style="{{ $readonlyStyle }}">
-                                <option value="">Select Plan</option>
-                                @foreach($plans as $key => $value)
-                                <option value="{{ $value->id }}" {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
-                                @endforeach
-                            </select>
-                            @error('plan_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="">Plan Type <span>*</span></label>
-                            <select id="plan_type_id2" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" >
-                                <option value="">Select Plan Type</option>
-                                @foreach($planTypes as $planType)
-                                    <option value="{{ $planType->id }}"
-                                        {{ old('plan_type_id', $customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
-                                        {{ $planType->name }}
-                                    </option>
-                                @endforeach
-                                
-
-                            </select>
-                            @error('plan_type_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="">Plan Price <span>*</span></label>
-                            <input id="plan_price_id" class="form-control @error('plan_price_id') is-invalid @enderror" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id) }}" readonly>
-                            @error('plan_price_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="">Plan Starts On <span>*</span></label>
-                            <input type="date" class="form-control @error('plan_start_date') is-invalid @enderror" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date" value="{{ old('plan_start_date', $customer->plan_start_date) }}" readonly disabled>
-                            @error('plan_start_date')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    
-                        <div class="col-lg-4">
-                            <label for="">Plan End On <span>*</span></label>
-                            <input type="date" class="form-control @error('plan_end_date') is-invalid @enderror" placeholder="Plan Starts On" name="plan_end_date" id="plan_end_date" value="{{ old('plan_end_date', $customer->plan_end_date) }}" readonly>
-                            @error('plan_end_date')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-            
-                        {{-- <div class="col-lg-4" {!! $displayNone !!}>
-                            <label for="">Payment Mode <span>*</span></label>
-                            <select name="payment_mode" id="payment_mode" class="form-control @error('payment_mode') is-invalid @enderror" {{$readonly}}>
-                                <option value="">Select Payment Mode</option>
-                                <option value="1" {{ old('payment_mode', $customer->payment_mode) == 1 ? 'selected' : '' }}>Online</option>
-                                <option value="2" {{ old('payment_mode', $customer->payment_mode) == 2 ? 'selected' : '' }}>Offline</option>
-                                <option value="3" {{ old('payment_mode', $customer->payment_mode) == 3 ? 'selected' : '' }}>Pay Later</option>
-                            </select>
-                            @error('payment_mode')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-4" {!! $displayNone !!}>
-                            <label for="">Id Proof Received </label>
-                            <select id="id_proof_name" class="form-control @error('id_proof_name') is-invalid @enderror" name="id_proof_name" {{$readonly}}>
-                                <option value="">Select Id Proof</option>
-                                <option value="1" {{ old('id_proof_name', $customer->id_proof_name) == 1 ? 'selected' : '' }}>Aadhar</option>
-                                <option value="2" {{ old('id_proof_name', $customer->id_proof_name) == 2 ? 'selected' : '' }}>Driving License</option>
-                                <option value="3" {{ old('id_proof_name', $customer->id_proof_name) == 3 ? 'selected' : '' }}>Other</option>
-                            </select>
-                            @error('id_proof_name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        <div class="col-lg-12" {!! $displayNone !!}>
-                            <label for="">Upload Scan Copy of Proof </label>
-                            <input type="file" class="form-control @error('id_proof_file') is-invalid @enderror" name="id_proof_file" id="id_proof_file" {{$readonly}}>
-                            @error('id_proof_file')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                            <span class="text-info">Uploading ID proof is optional; you can upload it later.</span>
-                            @if($customer->id_proof_file)
-                            <a href="{{ asset('storage/' . $customer->id_proof_file) }}" target="_blank">View</a>
-                            @endif
-                        </div> --}}
-
+                    <div class="col-lg-6">
+                        <span>Date Of Birth </span>
+                        <h5>{{ $customer->dob }}</h5>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-3">
-                            <input type="submit" class="btn btn-primary btn-block button" id="submit" value="Update Seat Info">
-                        </div>
+                    <div class="col-lg-6">
+                        <span>Mobile Number</span>
+                        <h5>+91-{{ $customer->mobile }}</h5>
+                    </div>
+                    <div class="col-lg-6">
+                        <span>Email Id</span>
+                        <h5>{{ $customer->email }}</h5>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="seat--info">
-                <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
-                <p>{{ $customer->plan_name}}</p>
-                <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-                <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+            <div class="action-box">
+                <h4>Seat Plan Info</h4>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <span>Plan</span>
+                        <h5>{{ $customer->plan_name }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Plan Type</span>
+                        <h5>{{ $customer->plan_type_name }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Plan Price</span>
+                        <h5>{{ $customer->plan_price_id }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Seat Booked On</span>
+                        <h5>{{ $customer->join_date }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Plan Starts On</span>
+                        <h5>{{ $customer->plan_start_date }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Plan Ends On</span>
+                        
+                        <h5>{{ $customer->plan_end_date }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Seat Timings</span>
+                        <h5>{{$customer->hours}} Hours ({{ $customer->start_time }} to {{ $customer->end_time }})</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Plan Expired In</span>
+                        <h5><span class="text-success">Plan Expires in {{$diffInDays}} Days</span></h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Current Plan Status</span>
+                        <h5>
+                            @if($customer->status==1)
+                            <span class="text-success">Active</span>
+                            @else
+                            <span class="text-danger">InActive</span>
+                            @endif
+                        </h5>
+                    </div>
+                    
+                   
+                </div>
+                <h4 class="mt-4"> Seat Other Info :</h4>
+                <div class="row g-4">
+                   
+                    <div class="col-lg-4">
+                        <span>Id Proof</span>
+                        <h5>
+                            @if($customer->id_proof_name==1)
+                            Aadhar
+                            @elseif($customer->id_proof_name==2)
+                            Driving License
+                            @else
+                            Other
+                            @endif
+                            @if($customer->id_proof_file)
+                            <img src="{{ asset($customer->id_proof_file) }}" width="150" height="150">
+                            @else
+                            <img src="">
+
+                            @endif
+                        </h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Id Proof Document</span>
+                        <h5>
+                            NA
+                        </h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Seat Created At</span>
+                        <h5>{{ $customer->created_at }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Seat Modified At</span>
+                        <h5>{{ $customer->updated_at }}</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Seat Deleted At</span>
+                        <h5> {{ $customer->deleted_at ? $customer->deleted_at : 'NA'}}</h5>
+                    </div>
+                </div>
+                <h4 class="mt-4"> Seat Payment Info :</h4>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <span>Payment Mode</span>
+                        @if($customer->payment_mode == 1)
+                        <h5>{{ 'Online' }}</h5>
+                        @elseif($customer->payment_mode == 2)
+                        <h5>{{ 'Offline' }}</h5>
+                        @else
+                        <h5>{{ 'Pay Later' }}</h5>
+                        
+                        @endif
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Payment Status</span>
+                        <h5>
+                            <span class="text-danger">Pending</span> / 
+                            <span class="text-success">Paid</span>
+                        </h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Transaction Id</span>
+                        <h5>NA</h5>
+                    </div>
+                    <div class="col-lg-4">
+                        <span>Payment Date</span>
+                        <h5>NA</h5>
+                    </div>
+                </div>
+                <h4 class="mt-4"> Plan Re-New History :</h4>
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Plan </th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Amount</th>
+                                        <th>Payment Mode</th>
+                                        <th>Paid On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            1 MONTHLY <br> 
+                                            <small class="text-success">FULLDAY</small>
+                                        </td>
+                                        <td>2024-09-08</td>
+                                        <td>2024-09-09</td>
+                                        <td>600</td>
+                                        <td>Cash</td>
+                                        <td>2024-09-09</td>
+                                        <td>
+                                            <ul class="actionalbls" style="width: 90px;">
+                                                <li><a href="javascript:;" data-toggle="modal"
+                                                        data-target="#bookingDetailsModal"
+                                                        title="View Transaction Details"><i
+                                                            class="fa-solid fa-eye"></i></a></li>
+                                                <li><a href="" title="Print Receipt"><i
+                                                            class="fa-solid fa-print"></i></a></li>
+                                                <li><a href="" title="Download Receipt"><i
+                                                            class="fa-solid fa-download"></i></a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="mt-4"> Seat Previous Booking History</h4>
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Owner Name</th>
+                                        <th>Mobile</th>
+                                        <th>Email</th>
+                                        <th>Plan</th>
+                                        <th>Start Date</th>
+                                        <th>End Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Pawan Rathore</td>
+                                        <td>+91-811447968</td>
+                                        <td>info@gmail.com</td>
+                                        <td>1 MONTHLY <br> <small class="text-success">FULL
+                                                DAY</small></td>
+                                        <td>2024-09-08</td>
+                                        <td>2024-09-09</td>
+                                        <td>
+                                            <ul class="actionalbls" style="width: 90px;">
+                                                <li><a href="javascript:;" data-toggle="modal"
+                                                        data-target="#bookingDetailsModal"
+                                                        title="View Transaction Details"><i
+                                                            class="fa-solid fa-eye"></i></a></li>
+                                                <li><a href="" title="Print Receipt"><i
+                                                            class="fa-solid fa-print"></i></a></li>
+                                                <li><a href="" title="Download Receipt"><i
+                                                            class="fa-solid fa-download"></i></a>
+                                                </li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    
-</form>
-               
-        
+    <div class="col-lg-3">
+        <div class="seat--info">
+            <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+            <p>{{ $customer->plan_name}}</p>
+            <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
+            <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+        </div>
+        <div class="request-logs mt-4">
+            <h5>Learners Request</h5>
+            <ul class="request_list">
+                <li>
+                    <div class="d-flex">
+                        <div class="icon"></div>
+                        <div class="detials">
+                            <p class="m-0"><i class="fa-solid fa-arrow-turn-down"></i> Request Name
+                                : Swap Seat</p>
+                            <span class="description">Message Send by <b>[Seat Owner]</b> on
+                                10-05-2024.</span>
+                            <span class="timestamp"><i class="fa-solid fa-calendar"></i> 29-05-2024
+                                10:15:21 AM</span>
+                            <small class="status"> <b>Status : </b> <span
+                                    class=" text-danger d-inline">Pending</span> </small>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex">
+                        <div class="icon"></div>
+                        <div class="detials">
+                            <p class="m-0"><i class="fa-solid fa-arrow-turn-up"></i> Request Name :
+                                Upgrade Plan</p>
+                            <span class="description">Seat is Swapped by <b>[Seat Owner]</b> on
+                                10-05-2024.</span>
+                            <span class="timestamp"><i class="fa-solid fa-calendar"></i> 29-05-2024
+                                10:15:21 AM</span>
+                            <small class="status"> <b>Status : </b> <span
+                                    class=" text-success d-inline">Resolved (By Admin)</span>
+                            </small>
 
-@include('library.script')
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+       
+@include('learner.script')
 @endsection

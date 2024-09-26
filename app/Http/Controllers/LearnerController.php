@@ -596,17 +596,28 @@ class LearnerController extends Controller
            
         }
     }
-    public function getSwapUser($id){
+    public function showLearner(Request $request, $id = null)
+    {
        
-        $customerId=$id;
-        $firstRecord = Hour::first();
-        $totalHour = $firstRecord ? $firstRecord->hour : null;
+        $customerId = $request->id ?? $id;
+        $is_renew = $this->learnerService->getRenewalStatus($customerId);
         
-        $available_seat = Seat::where('total_hours', '!=', $totalHour)->pluck('seat_no', 'id');
-        
-        $customer = $this->fetchCustomerData($customerId, false, $status=1, $detailStatus=1);
-        return view('learner.swap', compact('customer','available_seat'));
+        $plans = $this->learnerService->getPlans();
+        $planTypes = $this->learnerService->getPlanTypes();
+        $available_seat = $this->learnerService->getAvailableSeats();
+       
+        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
+       
+        //renew History
+       $renew_detail= LearnerDetail::where('learner_id',$customerId)->get();
+        if ($request->expectsJson() || $request->has('id')) {
+            return response()->json($customer);
+        } else {
+            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail'));
+           
+        }
     }
+    //upgrade form view
     public function getLearner(Request $request, $id = null){
       
         $customerId = $request->id ?? $id;
@@ -619,8 +630,20 @@ class LearnerController extends Controller
         $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
         
            
-       return view('learner.learnershow', compact('customer', 'plans', 'planTypes','available_seat'));
+       return view('learner.learnerUpgrade', compact('customer', 'plans', 'planTypes','available_seat'));
     }
+    public function getSwapUser($id){
+       
+        $customerId=$id;
+        $firstRecord = Hour::first();
+        $totalHour = $firstRecord ? $firstRecord->hour : null;
+        
+        $available_seat = Seat::where('total_hours', '!=', $totalHour)->pluck('seat_no', 'id');
+        
+        $customer = $this->fetchCustomerData($customerId, false, $status=1, $detailStatus=1);
+        return view('learner.swap', compact('customer','available_seat'));
+    }
+   
     public function seatHistory(){
         $seats = Seat::get();
         $learners_seats= $this->getLearnersByLibrary()->get();
@@ -730,7 +753,7 @@ class LearnerController extends Controller
     {
        
         $rules = [
-            'seat_no' => 'required|integer',
+            'seat_id' => 'required|integer',
             'plan_id' => 'required',
             'plan_type_id' => 'required',
             'plan_price_id' => 'required',
@@ -746,9 +769,9 @@ class LearnerController extends Controller
 
         try {
             $customer = Learner::findOrFail($request->user_id);
-
+            $seat_no=Seat::where('id',$request->seat_id)->value('seat_no');
             $existingBookings = $this->getLearnersByLibrary()
-                ->where('seat_no', '=', $request->seat_no)
+                ->where('seat_no', '=', $seat_no)
                 ->where('learners.status', 1)
                 ->where('learner_detail.status', 1)
                 ->select('learner_detail.plan_type_id')
@@ -782,7 +805,7 @@ class LearnerController extends Controller
                 return redirect()->back()->with('error', 'Total available hours not set.');
             }
 
-            $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $request->seat_no)->sum('hours');
+            $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $seat_no)->sum('hours');
 
             if ($hours > ($total_hour - $total_cust_hour)) {
                 return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
@@ -793,30 +816,34 @@ class LearnerController extends Controller
             $start_date = Carbon::parse($request->input('plan_start_date'));
             $endDate = $start_date->copy()->addMonths($duration);
 
-            $customer->seat_no = $request->seat_no;
+            $customer->seat_no = $seat_no;
             $customer->hours = $hours;
             $customer->status = 1;
             if (!$customer->save()) {
                 throw new \Exception('Failed to update customer');
             }
 
-           LearnerDetail::create([
-                'learner_id' => $customer->id,
-                'plan_id' => $request->plan_id,
-                'plan_type_id' => $request->input('plan_type_id'),
-                'plan_price_id' => $request->input('plan_price_id'),
-                'plan_start_date' => $start_date->format('Y-m-d'),
-                'plan_end_date' => $endDate->format('Y-m-d'),
-                'join_date' => date('Y-m-d'),
-            ]);
-            $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$request->seat_no)->sum('hours');
+            LearnerDetail::create([
+                'library_id'=>$customer->library_id,
+               'learner_id' => $customer->id, 
+               'plan_id' => $request->input('plan_id'),
+               'plan_type_id' => $request->input('plan_type_id'),
+               'plan_price_id' => $request->input('plan_price_id'),
+               'plan_start_date' => $start_date->format('Y-m-d'),
+               'plan_end_date' => $endDate->format('Y-m-d'),
+               'join_date' => date('Y-m-d'),
+               'hour' =>$hours,
+               'seat_id' =>$request->seat_id,
+              
+           ]);
+            $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat_no)->sum('hours');
            
-            $updateseat=Seat::where('seat_no', $request->seat_no)->update(['total_hours' => $total_hourse]);
+            $updateseat=Seat::where('seat_no', $seat_no)->update(['total_hours' => $total_hourse]);
 
             $this->seat_availablity($request);
             DB::commit();
 
-            return redirect('learner/list')->with('success', 'User Update successfully.');
+            return redirect('learner/list')->with('success', 'Learner Update successfully.');
         } catch (\Exception $e) {
             DB::rollBack(); 
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
@@ -841,7 +868,7 @@ class LearnerController extends Controller
         if (!$customer) {
             return response()->json([
                 'success' => false,
-                'message' => 'Customer not found.'
+                'message' => 'Learner not found.'
             ], 404);
         }
        
@@ -861,6 +888,7 @@ class LearnerController extends Controller
        $endDate = $start_date->copy()->addMonths($duration);
        
       LearnerDetail::create([
+            'library_id'=>$customer->library_id,
            'learner_id' => $customer->id, 
            'plan_id' => $request->input('plan_id'),
            'plan_type_id' => $request->input('plan_type_id'),
@@ -868,8 +896,11 @@ class LearnerController extends Controller
            'plan_start_date' => $start_date->format('Y-m-d'),
            'plan_end_date' => $endDate->format('Y-m-d'),
            'join_date' => date('Y-m-d'),
+           'hour' =>$learner_detail->hour,
+           'seat_id' =>$learner_detail->seat_id,
            'status'=>0
        ]);
+      
 
        return response()->json([
            'success' => true,
@@ -940,20 +971,19 @@ class LearnerController extends Controller
         
         try {
             DB::transaction(function () use ($id) {
-                // Find the customer by ID
+                
                 $customer = Learner::findOrFail($id);
                 
-                // Delete related records from the learner_detail table
-                DB::table('learner_detail')->where('learner_id', $customer->id)->delete();
-                
-                // Delete the customer
+               
+                LearnerDetail::where('learner_id', $customer->id)->delete();
+              
                 $customer->delete();
             });
     
-            // Return a JSON response if the operation was successful
+           
             return response()->json(['success' => 'Learner and related details deleted successfully.']);
         } catch (\Exception $e) {
-            // If there's an error, roll back the transaction and return an error response
+           
             return response()->json(['error' => 'An error occurred while deleting the customer: ' . $e->getMessage()], 500);
         }
     

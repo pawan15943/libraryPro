@@ -71,7 +71,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
 
    Route::get('learner/list', [LearnerController::class, 'learnerList'])->name('learners');
    Route::get('learner/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
-   Route::get('learner/show/{id?}', [LearnerController::class, 'getUser'])->name('learners.show');
+   Route::get('learner/show/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
    Route::get('learner/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
    Route::put('user/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
    // Route::post('user/update/', [LearnerController::class, 'userUpdate'])->name('learners.update');

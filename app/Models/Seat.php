@@ -18,4 +18,11 @@ class Seat extends Model
         
         static::addGlobalScope(new LibraryScope());
     }
+    public function learners()
+    {
+        return $this->hasMany(Learner::class, 'seat_no', 'seat_no')
+                    ->where('library_id', auth()->user()->id);  // Learners specific to library
+    }
+
+
 }

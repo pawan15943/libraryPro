@@ -130,6 +130,6 @@
 <script>
     document.getElementById("swapsubmit").disabled = true;
 </script>
-@include('library.script')
+@include('learner.script')
 
 @endsection

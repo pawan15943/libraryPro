@@ -241,7 +241,7 @@ class MasterController extends Controller
 
     }
     
-    public function seatsStore(Request $request){
+    public function seatsStore(Request $request) {
         $totalSeats = $request->input('total_seats');
     
         if (!$totalSeats || $totalSeats <= 0) {
@@ -249,10 +249,11 @@ class MasterController extends Controller
                 'error' => true,
                 'message' => 'Invalid number of seats'
             ], 400);
-           
         }
     
-        $lastSeatNo = Seat::where('library_id',$request->library_id)->orderBy('seat_no', 'desc')->value('seat_no');
+        $lastSeatNo = Seat::where('library_id', $request->library_id)
+                          ->orderBy('seat_no', 'desc')
+                          ->value('seat_no');
     
         $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1;
     
@@ -261,21 +262,22 @@ class MasterController extends Controller
         for ($i = 0; $i < $totalSeats; $i++) {
             $seats[] = [
                 'seat_no' => $startSeatNo + $i,
-                'library_id'=>$request->library_id,
+                'library_id' => $request->library_id,
                 'is_available' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
         }
-        Seat::create($seats);
-       
+    
+        // Use insert() for batch insertion
+        Seat::insert($seats);
+    
         return response()->json([
             'success' => true, 
-            'message' => 'Seat Added/Updated successfully',
-              
+            'message' => 'Seat(s) added/updated successfully',
         ]);
-        
     }
+    
     public function masterEdit(Request $request){
         $id=$request->id;
         try {

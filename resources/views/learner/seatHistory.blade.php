@@ -36,17 +36,17 @@ $today = Carbon::today();
                                     @foreach($seats as $seat)
                                         @php
                                         // First, check if there are any customers with status 1 for the given seat
-                                        $usersForSeat = App\Models\Customers::leftJoin('customer_detail','customer_detail.customer_id','=','customers.id')->where('seat_no', $seat->seat_no)
-                                            ->where('customers.status', 1)
-                                            ->select('customers.*','customer_detail.customer_id','customer_detail.join_date','customer_detail.plan_start_date','customer_detail.plan_end_date','customer_detail.plan_id','customer_detail.plan_type_id','customer_detail.plan_price_id','customer_detail.status')
+                                        $usersForSeat = App\Models\Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')->where('learners.library_id', auth()->user()->id)->where('seat_no', $seat->seat_no)
+                                            ->where('learners.status', 1)
+                                            ->select('learners.*','learner_detail.learner_id','learner_detail.join_date','learner_detail.plan_start_date','learner_detail.plan_end_date','learner_detail.plan_id','learner_detail.plan_type_id','learner_detail.plan_price_id','learner_detail.status')
                                             ->get();
                                         
-                                        // If no customers with status 1 are found, check for customers with status 0
+                                        // If no learners with status 1 are found, check for learners with status 0
                                         if ($usersForSeat->isEmpty()) {
-                                            $usersForSeat = App\Models\Customers::leftJoin('customer_detail','customer_detail.customer_id','=','customers.id')->where('seat_no', $seat->seat_no)
-                                            ->select('customers.*','customer_detail.customer_id','customer_detail.join_date','customer_detail.plan_start_date','customer_detail.plan_end_date','customer_detail.plan_id','customer_detail.plan_type_id','customer_detail.plan_price_id','customer_detail.status')
+                                            $usersForSeat = App\Models\Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')->where('learners.library_id', auth()->user()->id)->where('seat_no', $seat->seat_no)
+                                            ->select('learners.*','learner_detail.learner_id','learner_detail.join_date','learner_detail.plan_start_date','learner_detail.plan_end_date','learner_detail.plan_id','learner_detail.plan_type_id','learner_detail.plan_price_id','learner_detail.status')
 
-                                            ->where('customers.status', 0)
+                                            ->where('learners.status', 0)
                                                 ->get();
                                         }
                                         @endphp
@@ -103,6 +103,6 @@ $today = Carbon::today();
         </div>
     </div>
 </div>
-@include('library.script')
+@include('learner.script')
 <!-- /.row (main row) -->
 @endsection

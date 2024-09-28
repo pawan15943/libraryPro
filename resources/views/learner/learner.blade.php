@@ -6,48 +6,54 @@
       use Carbon\Carbon;
       $current_route = Route::currentRouteName();
 @endphp
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="filter-box">
-                                <h4 class="mb-3">Filter Box</h4>
-                                <form action="">
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <label for="">Filter By Plan</label>
-                                            <select name="" id="" class="form-select">
-                                                <option value="">Choose Plan</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="">Filter By Payment Status</label>
-                                            <select name="" id="" class="form-select">
-                                                <option value="">Choose Payment Status</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="">Filter By Active / Expired</label>
-                                            <select name="" id="" class="form-select">
-                                                <option value="">Choose Payment Status</option>
-                                                <option value="">Active</option>
-                                                <option value="">Expired</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="">Search By Name, Mobile & Email</label>
-                                            <input type="text" class="form-control" name="filter">
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col-lg-2">
-                                            <button class="btn btn-primary button"><i class="fa fa-search"></i> Search
-                                                Records</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            
-                        </div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="filter-box">
+            <h4 class="mb-3">Filter Box</h4>
+           
+            <form action="{{ route('learners') }}" method="GET">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <label for="">Filter By Plan</label>
+                        <select name="plan_id" id="plan_id" class="form-select">
+                            <option value="">Choose Plan</option>
+                            @foreach($plans as $plan)
+                                <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                    <div class="col-lg-3">
+                        <label for="">Filter By Payment Status</label>
+                        <select name="is_paid" id="is_paid" class="form-select">
+                            <option value="">Choose Payment Status</option>
+                            <option value="1">Paid</option>
+                            <option value="0">Unpaid</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">Filter By Active / Expired</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">Choose Status</option>
+                            <option value="active">Active</option>
+                            <option value="expired">Expired</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-3">
+                        <label for="">Search By Name, Mobile &amp; Email</label>
+                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-2">
+                        <button class="btn btn-primary button"><i class="fa fa-search"></i> Search Records</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
 
 
 <div class="row">

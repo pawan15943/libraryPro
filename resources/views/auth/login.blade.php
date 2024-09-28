@@ -29,6 +29,15 @@
                 <h5>Welcome Back, </h5>
                 <h2>Library Administrator!</h2>
                 <small>We're happy to see you again! 🌟</small>
+                @if(session('success'))
+                <div class="alert alert-success mb-0 mt-1">
+                    {{ session('success') }}
+                </div>
+                @elseif($errors->has('error'))
+                    <div class="alert alert-danger mb-0 mt-1">
+                        {{ $errors->first('error') }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('login.store') }}" class="validateForm">
                     @csrf
                     <input type="hidden" name="user_type" value="superadmin">

@@ -63,8 +63,6 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
   });
   
-
- 
    //**LEARNER**//
    Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
    
@@ -110,6 +108,10 @@ Route::middleware(['auth:web'])->group(function () {
        
         
     });
+});
+
+Route::middleware(['auth:learner'])->group(function () {
+  Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');
 });
 
 

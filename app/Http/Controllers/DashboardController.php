@@ -27,24 +27,15 @@ class DashboardController extends Controller
      
         if ($user->hasRole('superadmin')) {
            
-     
-            // for library booked seat
         
             return view('dashboard.administrator');
         }if ($user->hasRole('admin')) {
-            dd("admin");
-     
-            // for library booked seat
-        
+           
             return view('dashboard.admin');
         }if ($user->hasRole('learner')) {
-            
-     
-            // for library booked seat
+           
         
             return view('dashboard.learner');
-        }else{
-           dd("no");
         }
        
     }
@@ -96,9 +87,16 @@ class DashboardController extends Controller
         }if ($user->hasRole('learner')) {
           
             return view('dashboard.learner');
-        }else{
-           dd("no");
         }
        
+    }
+
+
+    public function learnerDashboard(){
+        $user=Auth::user();
+        if ($user->hasRole('learner')) {
+          
+            return view('dashboard.learner');
+        }
     }
 }

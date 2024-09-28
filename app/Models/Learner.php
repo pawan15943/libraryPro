@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\LibraryScope;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
-class Learner extends Model
+class Learner extends Authenticatable
 {
+    use HasRoles;
     use HasFactory;
     protected $guarded = [];
     

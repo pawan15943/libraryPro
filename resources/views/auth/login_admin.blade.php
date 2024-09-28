@@ -23,15 +23,7 @@
             <div class="top">
                 <img src="" alt="">
             </div>
-            @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @elseif($errors->has('error'))
-            <div class="alert alert-error">
-                {{ $errors->first('error') }}
-            </div>
-        @endif
+            
         
             
         
@@ -39,6 +31,15 @@
                 <h5>Welcome Back, </h5>
                 <h2>Library Admin!</h2>
                 <small>We’re glad to see you again! 🎉</small>
+                @if(session('success'))
+                <div class="alert alert-success mb-0 mt-1">
+                    {{ session('success') }}
+                </div>
+                @elseif($errors->has('error'))
+                    <div class="alert alert-danger mb-0 mt-1">
+                        {{ $errors->first('error') }}
+                    </div>
+                @endif
                 <form method="POST" action="{{ route('login.store') }}" class="validateForm">
                     @csrf
                     <input type="hidden" name="user_type" value="admin">

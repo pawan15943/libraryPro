@@ -48,8 +48,32 @@ class AppServiceProvider extends ServiceProvider
                 'Configure Library' => route('library.master')
             ],
             'seats' => [
-                'Dashboard' => route('home'),
+                'Dashboard' => route('library.home'),
                 'Seat Assignment' => route('seats')
+            ],
+            'learners' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners')
+            ],
+            'learners.show' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Booking Info' => route('learners.show')
+            ],
+            'learners.edit' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Edit Seat Booking Info' => route('learners.edit')
+            ],
+            'learners.swap' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Swap Seat' => route('learners.swap')
+            ],
+            'learners.upgrade' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Upgrade Seat' => route('learners.upgrade')
             ],
         ];
 
@@ -65,6 +89,11 @@ class AppServiceProvider extends ServiceProvider
             'subscriptions.choosePlan' => 'Choose Plan',
             'subscriptions.payment' => 'Make Payment',
             'seats' => 'Seat Assignment',
+            'learners' => 'Learners List',
+            'learners.show' => 'Booking Info',
+            'learners.edit' => 'Edit Seat Booking Info',
+            'learners.swap' => 'Swap Seat',
+            'learners.upgrade' => 'Upgrade Seat',
             'c' => 'Configure Library',
         ];
 

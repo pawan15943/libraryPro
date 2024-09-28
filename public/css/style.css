@@ -253,6 +253,7 @@ input[type="submit"] {
 select {
     font-size: .9rem;
     font-weight: 600;
+    height: 45px;
 }
 
 .btn {

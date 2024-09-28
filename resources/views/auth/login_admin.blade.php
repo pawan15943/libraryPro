@@ -23,6 +23,18 @@
             <div class="top">
                 <img src="" alt="">
             </div>
+            @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @elseif($errors->has('error'))
+            <div class="alert alert-error">
+                {{ $errors->first('error') }}
+            </div>
+        @endif
+        
+            
+        
             <div class="middle">
                 <h5>Welcome Back, </h5>
                 <h2>Library Admin!</h2>

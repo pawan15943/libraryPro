@@ -115,52 +115,26 @@ class MasterController extends Controller
                 $data['image'] = 'public/img/booked.png';
             }
     
-            $first_record = DB::table('hour')->where('library_id', $request->library_id)->first();
-            $total_hour = $first_record ? $first_record->hour : null;
-    
-           
-            if ($total_hour && $data['slot_hours'] == $total_hour) {
-                $day_type = 1;
-            } elseif ($total_hour && $data['slot_hours'] == $total_hour / 2) {
-                if ($data['start_time'] > '14:00') {
-                    $day_type = 2; 
-                } else {
-                    $day_type = 3; 
-                }
-            } elseif ($total_hour && $data['slot_hours'] == $total_hour / 4) {
-             
-                switch ($request->timming) {
-                    case 'Morning1':
-                        $day_type = 4;
-                        break;
-                    case 'Morning2':
-                        $day_type = 5;
-                        break;
-                    case 'Evening1':
-                        $day_type = 6;
-                        break;
-                    case 'Evening2':
-                        $day_type = 7;
-                        break;
-                    default:
-                        $request->validate([
-                            'timming' => 'required', // Validate timing if needed
-                        ]);
-                        break;
-                }
-    
-              
-            } else {
-                return response()->json([
-                    'error' => true,
-                    'message' => 'Plan Type is full'
-                ], 400);
-            }
+           if($request->day_type==1){
+            $plan_type_name='Full Day';
+           }elseif($request->day_type==2){
+            $plan_type_name='First Half';
+           }elseif($request->day_type==3){
+            $plan_type_name='Second Half';
+           }elseif($request->day_type==4){
+            $plan_type_name='Hourly Slot 1';
+           }elseif($request->day_type==5){
+            $plan_type_name='Hourly Slot 2';
+           }elseif($request->day_type==6){
+            $plan_type_name='Hourly Slot 3';
+           }elseif($request->day_type==7){
+            $plan_type_name='Hourly Slot 4';
+           }
 
             
-            $data['day_type_id'] = $day_type;
+            $data['name'] = $plan_type_name;
         }
-        $this->conditionFunction($request,$day_type);
+        $this->conditionFunction($request,$plan_type_name);
         try {
             unset($data['databasemodel']); 
             unset($data['databasetable']); 
@@ -350,7 +324,7 @@ class MasterController extends Controller
             $check_to_id = $request->plan_id;
         } elseif ($request->databasemodel == 'PlanType') {
             $check_from_id = 'day_type_id';
-            $check_to_id = $day_type;
+            $check_to_id = $request->day_type;
         }
 
         
@@ -387,7 +361,7 @@ class MasterController extends Controller
        
         if($request->databasemodel == 'PlanType'){
             $request->validate([
-                'name' => 'required',
+                'day_type' => 'required',
                 'start_time' => 'required',
                 'end_time' => 'required',
                 'slot_hours' => 'required', 

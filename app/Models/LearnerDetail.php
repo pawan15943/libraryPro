@@ -15,4 +15,13 @@ class LearnerDetail extends Model
         
         static::addGlobalScope(new LibraryScope());
     }
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class, 'plan_id');
+    }
+
+    public function planType()
+    {
+        return $this->belongsTo(PlanType::class, 'plan_type_id');
+    }
 }

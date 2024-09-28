@@ -281,8 +281,18 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Plan Type Name <span>*</span></label>
-                                <input type="text" name="name" id="plantype_name" class="form-control char-only @error('name') is-invalid @enderror" placeholder="Enter Plan Type" value="{{ old('name', isset($planType) ? $planType->name : '') }}">
-                                @error('name')
+                                <select class="form-control @error('day_type') is-invalid @enderror" name="day_type" id="plantype_name">
+                                    <option value="">Select Plan Type</option>
+                                    <option value="1" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 1 ? 'selected' : '' }}>Fullday</option>
+                                    <option value="2" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 3 ? 'selected' : '' }}>First Half</option>
+                                    <option value="3" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 6 ? 'selected' : '' }}>Second Half</option>
+                                    <option value="4" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 9 ? 'selected' : '' }}>Hourly Slot 1</option>
+                                    <option value="5" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 2</option>
+                                    <option value="6" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 3</option>
+                                    <option value="7" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 4</option>
+                                </select>
+                                {{-- <input type="text" name="name" id="plantype_name" class="form-control char-only @error('name') is-invalid @enderror" placeholder="Enter Plan Type" value="{{ old('name', isset($planType) ? $planType->name : '') }}"> --}}
+                                @error('day_type')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -326,7 +336,7 @@
                                 </select>
                             </div>
                             
-                            <div class="col-lg-6">
+                            {{-- <div class="col-lg-6">
                                 <label for="">Day Type </label>
                                 <select class="form-control @error('timming') is-invalid @enderror no-validate" name="timming">
                                     <option value="">Select time</option>
@@ -340,7 +350,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="col-lg-12">
                                 <button type="submit" id="savePlanTypeBtn" class="btn btn-primary button"><i
                                         class="fa fa-plus"></i>

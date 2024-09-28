@@ -609,11 +609,24 @@ class LearnerController extends Controller
         $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
        
         //renew History
-       $renew_detail= LearnerDetail::where('learner_id',$customerId)->get();
+        $renew_detail = LearnerDetail::with(['plan', 'planType'])
+        ->where('learner_id', $customerId)
+        ->get();
+
+        //seat history
+        $seat_history = $this->getAllLearnersByLibrary()
+        ->where('learners.seat_no', $customer->seat_no)
+        ->where('learners.id', '!=', $customerId) // Exclude the specific customer
+        ->with(['plan', 'planType'])
+        ->get();
+
+    
+
+    
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail'));
+            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history'));
            
         }
     }

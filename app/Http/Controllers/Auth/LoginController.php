@@ -41,69 +41,58 @@ class LoginController extends Controller
     // Handle Login
     public function login(Request $request)
     {
-        
-        // // Validate login input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'user_type' => 'required', // Ensure user type is selected
+            'user_type' => 'required',
         ]);
-
-        // Retrieve email and password from request
+    
         $credentials = $request->only('email', 'password');
-       
-        // Check the user type and attempt login with the appropriate guard
+    
         switch ($request->input('user_type')) {
-            
             case 'superadmin':
                 if (Auth::guard('web')->attempt($credentials)) {
-               
                     return redirect()->intended(route('home'));
+                } else {
+                    return redirect()->back()->withErrors(['error' => 'Invalid email or password for Superadmin.']);
                 }
                 break;
-
+    
             case 'admin':
-
                 if (Auth::guard('library')->attempt($credentials)) {
                     $user = Auth::guard('library')->user();
-                    
-                    // Check if the user's email is verified
                     if (is_null($user->email_verified_at)) {
-                        // Logout the user since email is not verified
                         Auth::guard('library')->logout();
-            
-                        // Redirect back with an error message
-                        return redirect()->back()->withErrors(['email' => 'Your email address is not verified. Please verify your email to proceed.']);
+                        return redirect()->back()->withErrors(['error' => 'Your email address is not verified.']);
                     }
-                    
-                    if ($user && !$user->hasRole('admin', 'library')) {
+    
+                    if (!$user->hasRole('admin', 'library')) {
                         $user->assignRole('admin');
                     }
-            
                     return redirect()->intended(route('library.home'));
+                } else {
+                    return redirect()->back()->withErrors(['error' => 'Invalid email or password for Admin.']);
                 }
-                
                 break;
-                
-
+    
             case 'learner':
                 if (Auth::guard('learner')->attempt($credentials, $request->filled('remember'))) {
                     $user = Auth::guard('learner')->user();
-                        if (!$user->hasRole('learner')) {
-                            $user->assignRole('learner');
-                        }
-                    // return redirect()->intended('/learner/dashboard');
+                    if (!$user->hasRole('learner')) {
+                        $user->assignRole('learner');
+                    }
                     return redirect()->intended(route('home'));
+                } else {
+                    return redirect()->back()->withErrors(['error' => 'Invalid email or password for Learner.']);
                 }
                 break;
-
+    
             default:
-                return back()->withErrors(['message' => 'Invalid user type selected.']);
+                return back()->withErrors(['error' => 'Invalid user type selected.']);
         }
-
-        // If login attempt fails
-        return back()->withErrors(['message' => 'Login failed. Check your credentials and try again.']);
     }
+    
+    
 
     /**
      * Where to redirect users after login.

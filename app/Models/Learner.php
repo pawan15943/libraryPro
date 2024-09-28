@@ -17,5 +17,11 @@ class Learner extends Model
                     ->where('library_id', auth()->user()->id);  // PlanType specific to library
     }
 
+    public function plan()
+    {
+        return $this->belongsTo(Plan::class, 'plan_id', 'id')
+                    ->where('library_id', auth()->user()->id); 
+    }
+
     
 }

@@ -175,15 +175,25 @@ $diffInDays = $today->diffInDays($endDate, false);
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($renew_detail as $key => $value)
                                     <tr>
                                         <td>
-                                            1 MONTHLY <br> 
-                                            <small class="text-success">FULLDAY</small>
+                                            {{$value->plan->name}} <br> 
+                                            <small class="text-success">{{$value->planType->name}}</small>
                                         </td>
-                                        <td>2024-09-08</td>
-                                        <td>2024-09-09</td>
-                                        <td>600</td>
-                                        <td>Cash</td>
+                                        <td>{{$value->plan_start_date}}</td>
+                                        <td>{{$value->plan_end_date}}</td>
+                                        <td>{{$value->plan_price_id}}</td>
+                                       
+                                            @if($value->payment_mode == 1)
+                                            <td>{{ 'Online' }}</td>
+                                            @elseif($value->payment_mode == 2)
+                                            <td>{{ 'Offline' }}</td>
+                                            @else
+                                            <td>{{ 'Pay Later' }}</td>
+                                            
+                                            @endif
+                                        
                                         <td>2024-09-09</td>
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
@@ -199,6 +209,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                                             </ul>
                                         </td>
                                     </tr>
+                                    @endforeach
+                                    
 
                                 </tbody>
                             </table>
@@ -222,14 +234,17 @@ $diffInDays = $today->diffInDays($endDate, false);
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($seat_history as $key => $value)
                                     <tr>
-                                        <td>Pawan Rathore</td>
-                                        <td>+91-811447968</td>
-                                        <td>info@gmail.com</td>
-                                        <td>1 MONTHLY <br> <small class="text-success">FULL
-                                                DAY</small></td>
-                                        <td>2024-09-08</td>
-                                        <td>2024-09-09</td>
+                                        <td>{{$value->name}}</td>
+                                        <td>+91-{{$value->library_mobile}}</td>
+                                        <td>{{$value->email}}</td>
+                                        <td>{{ $value->plan->name ?? 'NA' }} <br>
+
+                                            <small class="text-success">
+                                                {{$value->planType->name}}</small></td>
+                                        <td>{{$value->plan_start_date}}</td>
+                                        <td>{{$value->plan_end_date}}</td>
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
                                                 <li><a href="javascript:;" data-toggle="modal"
@@ -244,6 +259,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                                             </ul>
                                         </td>
                                     </tr>
+                                    @endforeach
+                                   
 
                                 </tbody>
                             </table>

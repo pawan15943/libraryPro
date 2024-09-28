@@ -41,49 +41,52 @@ Route::get('library/create', [LibraryController::class, 'create'])->name('librar
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
- 
-  Route::get('/library/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
-  Route::get('/library/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
-
-  Route::get('library/choose-plan', [LibraryController::class, 'choosePlan'])->name('subscriptions.choosePlan');
-  Route::get('library/master/account', [LibraryController::class, 'sidebarRedirect'])->name('library.master.account');
-  Route::get('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
-
-  Route::post('library/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
-  Route::post('/library/payment-store', [LibraryController::class, 'paymentStore'])->name('library.payment.store');
-
-  Route::get('/library/profile', [LibraryController::class, 'profile'])->name('profile');
-  Route::post('/library/profile/update', [LibraryController::class, 'updateProfile'])->name('library.profile.update');
- 
-  Route::post('library/master/store', [MasterController::class, 'storemaster'])->name('master.store');
-  Route::get('library/master/edit', [MasterController::class, 'masterEdit'])->name('master.edit');
-  Route::post('library/seats', [MasterController::class, 'seatsStore'])->name('seats.store');
-  Route::post('library/extend-day', [MasterController::class, 'extendDay'])->name('extendDay.store');
+  Route::prefix('library')->group(function () {
+    Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
+    Route::get('/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
   
-  Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
+    Route::get('/choose-plan', [LibraryController::class, 'choosePlan'])->name('subscriptions.choosePlan');
+    Route::get('/master/account', [LibraryController::class, 'sidebarRedirect'])->name('library.master.account');
+    Route::get('/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
+  
+    Route::post('/subscriptions/payment-add', [LibraryController::class, 'paymentProcess'])->name('subscriptions.payment');
+    Route::post('/payment-store', [LibraryController::class, 'paymentStore'])->name('library.payment.store');
+  
+    Route::get('/profile', [LibraryController::class, 'profile'])->name('profile');
+    Route::post('/profile/update', [LibraryController::class, 'updateProfile'])->name('library.profile.update');
+   
+    Route::post('/master/store', [MasterController::class, 'storemaster'])->name('master.store');
+    Route::get('/master/edit', [MasterController::class, 'masterEdit'])->name('master.edit');
+    Route::post('/seats', [MasterController::class, 'seatsStore'])->name('seats.store');
+    Route::post('/extend-day', [MasterController::class, 'extendDay'])->name('extendDay.store');
+    
+    Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
+  });
+  
 
  
    //**LEARNER**//
-
-  //  Route::get('seats/list', [LearnerController::class, 'index'])->name('seats');
-  Route::get('/library/learner', [LearnerController::class, 'index'])->name('seats');
-  Route::post('learner/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
-
-   Route::get('learner/list', [LearnerController::class, 'learnerList'])->name('learners');
-   Route::get('learner/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
-   Route::get('learner/show/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
-   Route::get('learner/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
-   Route::put('user/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
-   // Route::post('user/update/', [LearnerController::class, 'userUpdate'])->name('learners.update');
-   Route::get('user/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
-   Route::put('learners/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
-   Route::get('learner/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
-   Route::post('user/close', [LearnerController::class, 'userclose'])->name('learners.close');
-   Route::delete('/learners/{Customers}', [LearnerController::class, 'destroy'])->name('learners.destroy');
+   Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
+   
+  Route::prefix('library/learners')->group(function () {
+    Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
+   Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
+   Route::get('/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
+   Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
+   Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
+   Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
+  
+   Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
+   Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
+   Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
+   Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
+   Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
+   Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
+   Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
+  });
    Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
    Route::get('seats/history/{id?}', [LearnerController::class, 'history'])->name('seats.history.show');
-   Route::get('learner/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
-   Route::put('learner/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
+  
  //condition base route
    Route::post('learner/renew/', [LearnerController::class, 'learnerRenew'])->name('learners.renew');
    Route::get('getSeatStatus', [LearnerController::class, 'getSeatStatus'])->name('getSeatStatus');

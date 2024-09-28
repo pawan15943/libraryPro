@@ -47,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('home'),
                 'Configure Library' => route('library.master')
             ],
+            'seats' => [
+                'Dashboard' => route('home'),
+                'Seat Assignment' => route('seats')
+            ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -60,6 +64,7 @@ class AppServiceProvider extends ServiceProvider
             'profile' => 'Complete Profile',
             'subscriptions.choosePlan' => 'Choose Plan',
             'subscriptions.payment' => 'Make Payment',
+            'seats' => 'Seat Assignment',
             'c' => 'Configure Library',
         ];
 

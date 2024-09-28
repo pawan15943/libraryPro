@@ -84,13 +84,14 @@ class DashboardController extends Controller
                 }
             }
 
-           
+            $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
-            if ($redirectUrl) {
-                return redirect($redirectUrl);
-            }else{
+            if($iscomp){
                 return view('dashboard.admin',compact('diffInDays'));
+            }else{
+                return redirect($redirectUrl);
             }
+           
             
         }if ($user->hasRole('learner')) {
           

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
-
+use Illuminate\Support\Carbon;
 class LoadMenus
 {
     /**
@@ -37,6 +37,16 @@ class LoadMenus
                       ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
         } elseif (Auth::guard('library')->check()) {
+            $value = LibraryTransaction::where('library_id', Auth::user()->id)
+            ->where('status', 1)
+            ->first();
+
+            if ($value) {
+                $today = Carbon::today();
+                $endDate = Carbon::parse($value->end_date);
+                $diffInDays = $today->diffInDays($endDate, false);
+            }
+
             $user = Auth::guard('library')->user();
             $menus = Menu::where('status',1)->where(function ($query) {
                 $query->where('guard', 'library')
@@ -67,6 +77,7 @@ class LoadMenus
          View::share('isProfile', $isProfile);
          View::share('isEmailVeri', $isEmailVeri);
          View::share('iscomp', $iscomp);
+         View::share('diffInDays', $diffInDays);
 
         
      

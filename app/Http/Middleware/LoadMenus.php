@@ -74,13 +74,13 @@ class LoadMenus
             }
         
                   // Share the variables with all views
-        View::share('checkSub', $checkSub);
-        View::share('ispaid', $ispaid);
-        View::share('isProfile', $isProfile);
-        View::share('isEmailVeri', $isEmailVeri);
-        View::share('iscomp', $iscomp);
-        View::share('diffInDays', $diffInDays); // Ensure this is always set
-        
+            View::share('checkSub', $checkSub);
+            View::share('ispaid', $ispaid);
+            View::share('isProfile', $isProfile);
+            View::share('isEmailVeri', $isEmailVeri);
+            View::share('iscomp', $iscomp);
+            View::share('diffInDays', $diffInDays); // Ensure this is always set
+            
         }
         
 

@@ -38,9 +38,8 @@ class LibraryController extends Controller
 
         // Filter by Payment Status
         if ($request->filled('is_paid')) {
-            $query->whereHas('library_transactions', function($q) use ($request) {
-                $q->where('is_paid', $request->is_paid);
-            });
+            $query->where('is_paid', $request->is_paid);
+           
         }
 
         // Filter by Active/Expired

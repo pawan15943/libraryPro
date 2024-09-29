@@ -9,6 +9,7 @@ class LearnerTransaction extends Model
 {
     use HasFactory;
     protected $table = 'learner_transactions';
+    protected $guarded = [];
     protected static function booted()
     {
         

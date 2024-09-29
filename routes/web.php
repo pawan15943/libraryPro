@@ -41,6 +41,7 @@ Route::get('library/create', [LibraryController::class, 'create'])->name('librar
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
+  
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
     Route::get('/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
@@ -61,6 +62,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::post('/extend-day', [MasterController::class, 'extendDay'])->name('extendDay.store');
     
     Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
+    
   });
   
    //**LEARNER**//
@@ -81,9 +83,12 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
    Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
    Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
    Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
+   Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
+   Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
   });
    Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
    Route::get('seats/history/{id?}', [LearnerController::class, 'history'])->name('seats.history.show');
+   
   
  //condition base route
    Route::post('learner/renew/', [LearnerController::class, 'learnerRenew'])->name('learners.renew');

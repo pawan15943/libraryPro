@@ -578,3 +578,12 @@
         
 
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var paidDateInput = document.getElementById('paid_date');
+        if (!paidDateInput.value) { // If no value is already set
+            var today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+            paidDateInput.value = today;
+        }
+    });
+</script>

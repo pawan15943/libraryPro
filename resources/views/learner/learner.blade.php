@@ -135,7 +135,7 @@
                                 <!-- Deletr Seat -->
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
                                 <!-- Make payment -->
-                                <li><a href="#" data-id="{{$value->id}}" title="PAyment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                                <li><a href="{{route('learner.payment',$value->id)}}"  title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                                  <!-- Sent Mail -->
                                  <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
                                 <!-- Sent Mail -->

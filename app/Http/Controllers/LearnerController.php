@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
+use App\Models\LearnerTransaction;
 use App\Models\Plan;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
@@ -19,6 +20,7 @@ use App\Services\LearnerService;
 use Exception;
 use App\Traits\LearnerQueryTrait;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class LearnerController extends Controller
 {
@@ -1062,6 +1064,57 @@ class LearnerController extends Controller
     }
     
     public function makePayment(Request $request){
-        return view('');
+        $customerId = $request->id;
+        $customer = $this->fetchCustomerData($customerId, $isRenew = false, $status=1, $detailStatus=1);
+        return view('learner.payment',compact('customer'));
     }
+
+    public function paymentStore(Request $request)
+    {
+        $this->validate($request, [
+            'learner_id' => 'required|exists:learners,id',
+            'paid_amount' => 'required|numeric',
+            'transaction_image' => 'nullable|mimes:webp,png,jpg,jpeg|max:200',
+        ]);
+        $data=$request->all();
+        $total_amount = 0;
+        $pending_amount = 0;
+    
+        $learnerDetail = LearnerDetail::where('learner_id', $request->learner_id)
+            ->where('plan_price_id', $request->paid_amount)
+            ->where('is_paid', 0)
+            ->first();
+    
+        if ($learnerDetail) {
+            $total_amount = $learnerDetail->plan_price_id;
+            $pending_amount = $total_amount - $request->paid_amount;
+        }
+    
+        if ($request->hasFile('transaction_image')) {
+            $transaction_image = $request->file('transaction_image');
+            $transaction_imageNewName = 'transaction_image_' . time() . '_' . $transaction_image->getClientOriginalName();
+            $transaction_image->move(public_path('uploads'), $transaction_imageNewName);
+            $data['transaction_image'] = 'uploads/' . $transaction_imageNewName;
+        } else {
+            $data['transaction_image'] = null;
+        }
+    
+        $data['total_amount'] = $total_amount;
+        $data['pending_amount'] = $pending_amount;
+      
+        try {
+            $learner_transaction=LearnerTransaction::create($data);
+            if($learner_transaction){
+                LearnerDetail::where('learner_id',$request->learner_id)->where('plan_price_id',$request->paid_amount)->update([
+                    'is_paid'=>1,
+                ]);
+            }
+
+            return redirect()->route('learners')->with('success', 'Payment successfully recorded.');
+        } catch (\Exception $e) {
+            \Log::error('Payment Error: ' . $e->getMessage());
+            return redirect()->route('learners')->withErrors(['error' => 'An error occurred while processing the payment.']);
+        }
+    }
+    
 }

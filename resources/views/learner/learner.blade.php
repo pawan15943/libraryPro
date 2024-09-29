@@ -310,7 +310,7 @@
 </script>
 <script>
     $(document).on('click', '.link-close-plan', function() {
-        const customer_id = this.getAttribute('data-id');
+        const learner_id = this.getAttribute('data-id');
         var url = '{{ route('learners.close') }}'; // Adjust the route as necessary
 
         Swal.fire({
@@ -328,7 +328,7 @@
                     type: 'POST',  // Use POST or PATCH for this type of operation
                     data: {
                         _token: '{{ csrf_token() }}',
-                        customer_id: customer_id
+                        learner_id: learner_id
                     },
                     success: function(response) {
                         Swal.fire(

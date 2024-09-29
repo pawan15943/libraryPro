@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerDetail;
 use App\Models\Customers;
+use App\Models\LearnerDetail;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
+use App\Models\Seat;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Auth;
@@ -75,10 +77,18 @@ class DashboardController extends Controller
                 }
             }
 
+            
+            $availble_seats=Seat::where('total_hours','==',0)->count(); 
+          
+            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
+            $total_seats=Seat::count();
+            $library_revenue=  LearnerDetail::whereMonth('join_date', date('m'))
+            ->whereYear('join_date', date('Y'))->where('is_paid',1)
+            ->sum('plan_price_id');  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
             if($iscomp){
-                return view('dashboard.admin',compact('diffInDays'));
+                return view('dashboard.admin',compact('diffInDays','availble_seats','booked_seats','total_seats','library_revenue'));
             }else{
                 return redirect($redirectUrl);
             }

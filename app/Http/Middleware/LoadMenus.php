@@ -37,15 +37,7 @@ class LoadMenus
                       ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
         } elseif (Auth::guard('library')->check()) {
-            $value = LibraryTransaction::where('library_id', Auth::user()->id)
-            ->where('status', 1)
-            ->first();
-
-            if ($value) {
-                $today = Carbon::today();
-                $endDate = Carbon::parse($value->end_date);
-                $diffInDays = $today->diffInDays($endDate, false);
-            }
+          
 
             $user = Auth::guard('library')->user();
             $menus = Menu::where('status',1)->where(function ($query) {
@@ -62,24 +54,36 @@ class LoadMenus
 
         view()->share('menus', $menus);
 
-     
-         if (Auth::check()) {
+        if (Auth::check()) {
             $isEmailVeri = Library::where('id', Auth::user()->id)->whereNotNull('email_verified_at')->exists();
-         $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->where('status',1)->exists();
-         $ispaid = Library::where('id', Auth::user()->id)->where('is_paid', 1)->exists();
-         $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
-         $isProfile = Library::where('id', Auth::user()->id)->where('is_profile', 1)->exists();
-         
-         }
-         // Share the variables with all views
-         View::share('checkSub', $checkSub);
-         View::share('ispaid', $ispaid);
-         View::share('isProfile', $isProfile);
-         View::share('isEmailVeri', $isEmailVeri);
-         View::share('iscomp', $iscomp);
-         View::share('diffInDays', $diffInDays);
-
+            $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->where('status', 1)->exists();
+            $ispaid = Library::where('id', Auth::user()->id)->where('is_paid', 1)->exists();
+            $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
+            $isProfile = Library::where('id', Auth::user()->id)->where('is_profile', 1)->exists();
         
+            $diffInDays = 0; // Initialize the variable to a default value
+        
+            $value = LibraryTransaction::where('library_id', Auth::user()->id)
+                ->where('status', 1)
+                ->first();
+        
+            if ($value) {
+                $today = Carbon::today();
+                $endDate = Carbon::parse($value->end_date);
+                $diffInDays = $today->diffInDays($endDate, false);
+            }
+        
+                  // Share the variables with all views
+        View::share('checkSub', $checkSub);
+        View::share('ispaid', $ispaid);
+        View::share('isProfile', $isProfile);
+        View::share('isEmailVeri', $isEmailVeri);
+        View::share('iscomp', $iscomp);
+        View::share('diffInDays', $diffInDays); // Ensure this is always set
+        
+        }
+        
+
      
          return $next($request);
      }

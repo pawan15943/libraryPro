@@ -107,57 +107,15 @@
                             @endif
                         </td>
                         <td>
+                            @if($value->status==1)
                             <button class="active-status">Active</button>
+                            @else
+                            <button class="active-status">InActive</button>
+                            @endif
+                           
                         </td>
                         <td>
-                            <ul class="actionalbls d-none">
-                                <!-- View Seat Info -->
-                                <li><a href="#" data-bs-toggle="tooltip"
-                                        data-bs-title="View Seat Details"
-                                        data-bs-placement="bottom"><i class="fas fa-eye"></i></a>
-                                </li>
-
-                                <!-- Edit Seat Info -->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        title="" data-bs-title="Edit Seat Info"><i
-                                            class="fas fa-edit"></i></a></li>
-
-                                <!-- Swap Seat-->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        title="" data-original-title="Swap Seat "><i
-                                            class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-
-                                <!-- Swap Seat-->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        title="" data-original-title="Upgrade Plan"><i
-                                            class="fa fa-arrow-up-short-wide"></i></a></li>
-                                <!-- Reactive Seat-->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                        title="" data-original-title="Upgrade Plan"><i
-                                            class="fa fa-refresh"></i></a></li>
-
-                                <!-- Close Seat -->
-                                <li><a href="#;" class="link-close-plan" data-id="11"
-                                        data-bs-toggle="tooltip" data-bs-placement="bottom" title=""
-                                        data-original-title="Close Seat"><i
-                                            class="fas fa-times"></i></a></li>
-
-                                <!-- Deletr Seat -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="" class="delete-customer"
-                                        data-original-title="Delete Lerners"><i
-                                            class="fas fa-trash"></i></a></li>
-                                <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="" class="delete-customer"
-                                        data-original-title="Delete Lerners"><i
-                                            class="fas fa-envelope"></i></a></li>
-                                <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip"
-                                        data-bs-placement="bottom" title="" class="delete-customer"
-                                        data-original-title="Delete Lerners"><i
-                                            class="fa-brands fa-whatsapp"></i></a></li>
-                            </ul>
+                           
                             <ul class="actionalbls">
                                 <!-- View Seat Info -->
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
@@ -176,10 +134,13 @@
 
                                 <!-- Deletr Seat -->
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
+                                <!-- Make payment -->
+                                <li><a href="#" data-id="{{$value->id}}" title="PAyment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                                  <!-- Sent Mail -->
                                  <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
                                 <!-- Sent Mail -->
                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
+
                             </ul>
                         </td>
                     </tr>

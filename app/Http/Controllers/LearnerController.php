@@ -1061,4 +1061,7 @@ class LearnerController extends Controller
         return response()->json(['message' => 'Learner closed successfully.']);
     }
     
+    public function makePayment(Request $request){
+        return view('');
+    }
 }

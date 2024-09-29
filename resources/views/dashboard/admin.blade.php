@@ -11,25 +11,25 @@
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Total Seats</span>
-                    <h4>50</h4>
+                    <h4>{{$total_seats}}</h4>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Booked Seats</span>
-                    <h4>50</h4>
+                    <h4>{{$booked_seats}}</h4>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Available Seats</span>
-                    <h4>50</h4>
+                    <h4>{{$availble_seats}}</h4>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Revenue</span>
-                    <h4>2500</h4>
+                    <h4>{{$library_revenue}}</h4>
                 </div>
             </div>
         </div>

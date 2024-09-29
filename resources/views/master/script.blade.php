@@ -175,7 +175,7 @@
                     if(response.plantype){
                         $('input[name="id"]').val(response.plantype.id);
                         
-                        $('#plantype_name').val(response.plantype.name);
+                        $('#plantype_name').val(response.plantype.day_type_id);
                         $('#start_time').val(response.plantype.start_time);
                         $('#end_time').val(response.plantype.end_time);
                         $('#slot_hours').val(response.plantype.slot_hours);

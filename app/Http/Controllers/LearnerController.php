@@ -395,8 +395,9 @@ class LearnerController extends Controller
         return response()->json($filteredPlanTypes);
     }
 
-    public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1)
+    public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1, $filters = [])
     {
+        // Initialize the query
         $query = $this->getAllLearnersByLibrary()
             ->where('learners.status', $status)
             ->where('learner_detail.status', $detailStatus)
@@ -407,37 +408,85 @@ class LearnerController extends Controller
                 'learners.*',
                 'plan_types.start_time',
                 'plan_types.end_time',
-                'learner_detail.learner_id','learner_detail.plan_start_date','learner_detail.plan_end_date','learner_detail.plan_type_id','learner_detail.plan_id','learner_detail.plan_price_id','learner_detail.status',
+                'learner_detail.learner_id', 
+                'learner_detail.plan_start_date', 
+                'learner_detail.plan_end_date', 
+                'learner_detail.plan_type_id', 
+                'learner_detail.plan_id', 
+                'learner_detail.plan_price_id', 
+                'learner_detail.status',
                 'plan_types.image'
             );
-    
+
+        // Apply filters only if provided
+        if (!empty($filters)) {
+            // Filter by Plan ID
+            if (!empty($filters['plan_id'])) {
+                $query->where('learner_detail.plan_id', $filters['plan_id']);
+            }
+
+            // Filter by Payment Status
+            if (!empty($filters['is_paid'])) {
+                $query->where('learner_detail.is_paid', $filters['is_paid']);
+            }
+
+            // Filter by Active/Expired Status
+            if (!empty($filters['status'])) {
+                if ($filters['status'] == 'active') {
+                    $query->where('learners.status', 1);
+                } elseif ($filters['status'] == 'expired') {
+                    $query->where('learners.status', 0)->orWhere('learner_detail.status', 0);
+                }
+            }
+
+            // Search by Name, Mobile, or Email
+            if (!empty($filters['search'])) {
+                $search = $filters['search'];
+                $query->where(function ($q) use ($search) {
+                    $q->where('learners.name', 'LIKE', "%{$search}%")
+                    ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
+                    ->orWhere('learners.email', 'LIKE', "%{$search}%");
+                });
+            }
+        }
+
+        // If fetching a specific customer
         if ($customerId) {
             $query->where('learners.id', $customerId);
-            
+
+            // Handle renew cases
             if ($isRenew) {
                 $query->selectRaw('learner_detail.learner_id, learner_detail.plan_start_date, learner_detail.join_date, learner_detail.plan_end_date, learner_detail.plan_type_id, learner_detail.plan_id, learner_detail.plan_price_id, learner_detail.status, 1 as is_renew');
             } else {
                 $query->selectRaw('learner_detail.learner_id, learner_detail.plan_start_date, learner_detail.join_date, learner_detail.plan_end_date, learner_detail.plan_type_id, learner_detail.plan_id, learner_detail.plan_price_id, learner_detail.status, 0 as is_renew');
             }
-    
+
             $customer = $query->firstOrFail();
-        
+
             if ($customer) {
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
             }
-            
+
             return $customer;
         } else {
             return $query->get();
         }
     }
 
-    public function learnerList(){
-       
-        $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
+
+    public function learnerList(Request $request){
+        $filters = [
+            'plan_id' => $request->plan_id,
+            'is_paid' => $request->is_paid,
+            'status'  => $request->status,
+            'search'  => $request->search,
+        ];
+        // $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
+        $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
         $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0);
-        return view('learner.learner', compact('learners','learnerHistory'));
+        $plans = $this->learnerService->getPlans();
+        return view('learner.learner', compact('learners','learnerHistory','plans'));
         
     }
     //learner Edit and Upgrade

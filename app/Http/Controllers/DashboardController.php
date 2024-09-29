@@ -27,24 +27,15 @@ class DashboardController extends Controller
      
         if ($user->hasRole('superadmin')) {
            
-     
-            // for library booked seat
         
             return view('dashboard.administrator');
         }if ($user->hasRole('admin')) {
-            dd("admin");
-     
-            // for library booked seat
-        
+           
             return view('dashboard.admin');
         }if ($user->hasRole('learner')) {
-            
-     
-            // for library booked seat
+           
         
             return view('dashboard.learner');
-        }else{
-           dd("no");
         }
        
     }
@@ -84,20 +75,28 @@ class DashboardController extends Controller
                 }
             }
 
-           
+            $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
-            if ($redirectUrl) {
-                return redirect($redirectUrl);
-            }else{
+            if($iscomp){
                 return view('dashboard.admin',compact('diffInDays'));
+            }else{
+                return redirect($redirectUrl);
             }
+           
             
         }if ($user->hasRole('learner')) {
           
             return view('dashboard.learner');
-        }else{
-           dd("no");
         }
        
+    }
+
+
+    public function learnerDashboard(){
+        $user=Auth::user();
+        if ($user->hasRole('learner')) {
+          
+            return view('dashboard.learner');
+        }
     }
 }

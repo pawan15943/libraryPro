@@ -20,7 +20,7 @@ class LibraryService
             $iscomp = Library::where('id', $library_id)->where('status', 1)->exists();
             
             // if ($iscomp) {
-            //     return route('library.home');
+            //     return view('dashboard.admin');
             // }
 
             if (($checkSub && $ispaid && $isProfile)) {

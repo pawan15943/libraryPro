@@ -76,12 +76,12 @@ class LoginController extends Controller
                 break;
     
             case 'learner':
-                if (Auth::guard('learner')->attempt($credentials, $request->filled('remember'))) {
+                if (Auth::guard('learner')->attempt($credentials)) {
                     $user = Auth::guard('learner')->user();
                     if (!$user->hasRole('learner')) {
                         $user->assignRole('learner');
                     }
-                    return redirect()->intended(route('home'));
+                    return redirect()->intended(route('learner.home'));
                 } else {
                     return redirect()->back()->withErrors(['error' => 'Invalid email or password for Learner.']);
                 }

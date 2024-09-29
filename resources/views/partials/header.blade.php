@@ -1,6 +1,13 @@
 <div class="header">
     <div class="d-flex">
-        <i class="fa fa-bars" id="sidebar"></i>
+        <div class="conatent flex">
+            <i class="fa fa-bars mr-2" id="sidebar"></i>
+            <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$diffInDays}} Days</small>
+            @if($diffInDays<=5)
+                <a href="{{route('library.home')}}" type="button" class="btn btn-primary button">Renew Plan<i
+                    class="fa fa-arrow-right"></i> </a>
+                @endif
+        </div>
         <div class="profile">
             <div class="dropdown">
                 <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">

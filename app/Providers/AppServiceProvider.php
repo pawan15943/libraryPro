@@ -31,6 +31,7 @@ class AppServiceProvider extends ServiceProvider
 
         $breadcrumbs = [
             'home' => ['Dashboard' => route('home')],
+            'library.home' => ['Dashboard' => route('library.home')],
             'profile' => [
                 'Dashboard' => route('home'),
                 'Complete Profile' => route('profile')
@@ -85,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
         // Simple logic to convert route name to page title
         $titles = [
             'home' => 'Dashboard',
+            'library.home' => 'Library Dashboard',
             'profile' => 'Complete Profile',
             'subscriptions.choosePlan' => 'Choose Plan',
             'subscriptions.payment' => 'Make Payment',

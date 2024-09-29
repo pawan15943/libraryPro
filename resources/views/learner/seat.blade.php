@@ -420,7 +420,9 @@ $hourlyCount = 0;
 
 @include('learner.script')
 <script>
-    $(document).ready(function() {
+   $(document).ready(function() {
+    // Check if the animation has already been run in the current session
+    if (!sessionStorage.getItem('seatsAnimated')) {
         // Animate each seat one by one
         $('.seat').each(function(index) {
             $(this).delay(index * 200).queue(function(next) {
@@ -432,12 +434,19 @@ $hourlyCount = 0;
             });
         });
 
-        // Remove the animation class after first load
-        $(window).on('load', function() {
-            setTimeout(function() {
-                $('.seat').css('transition', 'none'); // Remove the animation after all are done
-            }, $('.seat').length * 200 + 500); // Wait for the last seat to finish
+        // After all animations complete, set the sessionStorage flag
+        setTimeout(function() {
+            sessionStorage.setItem('seatsAnimated', 'true');
+        }, $('.seat').length * 200 + 500); // Wait for all seats to animate
+    } else {
+        // If the animation has already run, make all seats visible immediately
+        $('.seat').css({
+            'opacity': '1',
+            'transform': 'translateY(0)',
+            'transition': 'none' // Disable the transition so they don't animate again
         });
-    });
+    }
+});
+
 </script>
 @endsection

@@ -281,18 +281,18 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Plan Type Name <span>*</span></label>
-                                <select class="form-control @error('day_type') is-invalid @enderror" name="day_type" id="plantype_name">
+                                <select class="form-control @error('day_type_id') is-invalid @enderror" name="day_type_id" id="plantype_name">
                                     <option value="">Select Plan Type</option>
-                                    <option value="1" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 1 ? 'selected' : '' }}>Fullday</option>
-                                    <option value="2" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 3 ? 'selected' : '' }}>First Half</option>
-                                    <option value="3" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 6 ? 'selected' : '' }}>Second Half</option>
-                                    <option value="4" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 9 ? 'selected' : '' }}>Hourly Slot 1</option>
-                                    <option value="5" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 2</option>
-                                    <option value="6" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 3</option>
-                                    <option value="7" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 12 ? 'selected' : '' }}>Hourly Slot 4</option>
+                                    <option value="1" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 1 ? 'selected' : '' }}>Fullday</option>
+                                    <option value="2" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 2 ? 'selected' : '' }}>First Half</option>
+                                    <option value="3" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 3 ? 'selected' : '' }}>Second Half</option>
+                                    <option value="4" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 4 ? 'selected' : '' }}>Hourly Slot 1</option>
+                                    <option value="5" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 5 ? 'selected' : '' }}>Hourly Slot 2</option>
+                                    <option value="6" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 6 ? 'selected' : '' }}>Hourly Slot 3</option>
+                                    <option value="7" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 7 ? 'selected' : '' }}>Hourly Slot 4</option>
                                 </select>
                                 {{-- <input type="text" name="name" id="plantype_name" class="form-control char-only @error('name') is-invalid @enderror" placeholder="Enter Plan Type" value="{{ old('name', isset($planType) ? $planType->name : '') }}"> --}}
-                                @error('day_type')
+                                @error('day_type_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

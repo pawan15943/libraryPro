@@ -1053,6 +1053,7 @@ class LearnerController extends Controller
     }
     public function userclose(Request $request){
         $customer = Learner::findOrFail($request->learner_id);
+       
         $today = date('Y-m-d');
         LearnerDetail::where('learner_id', $customer->id)->where('status',1)->update(['plan_end_date' => $today,'status'=>0]);
         $customer->status=0;

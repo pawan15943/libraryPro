@@ -94,12 +94,12 @@ class MasterController extends Controller
     
     public function storemaster(Request $request, $id = null)
     {
-        
+       
         $this->validationfunction($request);
         $modelClass = 'App\\Models\\' . $request->databasemodel;
         $table=$request->databasetable;
         $data=$request->all();
-        $day_type=null;
+        $plan_type_name=null;
         
         if ($request->databasemodel == 'Plan'){
             $data['name']=$request->plan_id . ' MONTHS';
@@ -115,24 +115,26 @@ class MasterController extends Controller
                 $data['image'] = 'public/img/booked.png';
             }
     
-           if($request->day_type==1){
+           if($request->day_type_id==1){
             $plan_type_name='Full Day';
-           }elseif($request->day_type==2){
+           }elseif($request->day_type_id==2){
             $plan_type_name='First Half';
-           }elseif($request->day_type==3){
+           }elseif($request->day_type_id==3){
             $plan_type_name='Second Half';
-           }elseif($request->day_type==4){
+           }elseif($request->day_type_id==4){
             $plan_type_name='Hourly Slot 1';
-           }elseif($request->day_type==5){
+           }elseif($request->day_type_id==5){
             $plan_type_name='Hourly Slot 2';
-           }elseif($request->day_type==6){
+           }elseif($request->day_type_id==6){
             $plan_type_name='Hourly Slot 3';
-           }elseif($request->day_type==7){
+           }elseif($request->day_type_id==7){
             $plan_type_name='Hourly Slot 4';
            }
 
             
             $data['name'] = $plan_type_name;
+           
+           
         }
         $this->conditionFunction($request,$plan_type_name);
         try {
@@ -324,7 +326,7 @@ class MasterController extends Controller
             $check_to_id = $request->plan_id;
         } elseif ($request->databasemodel == 'PlanType') {
             $check_from_id = 'day_type_id';
-            $check_to_id = $request->day_type;
+            $check_to_id = $request->day_type_id;
         }
 
         
@@ -361,7 +363,7 @@ class MasterController extends Controller
        
         if($request->databasemodel == 'PlanType'){
             $request->validate([
-                'day_type' => 'required',
+                'day_type_id' => 'required',
                 'start_time' => 'required',
                 'end_time' => 'required',
                 'slot_hours' => 'required', 

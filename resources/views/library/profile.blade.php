@@ -11,7 +11,7 @@
         <div class="steps">
             <ul>
                 <li >
-                    <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Choose Plan</a>
+                    <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Pick Your Perfect Plan</a>
                 </li>
                 <li >
                     <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>

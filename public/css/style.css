@@ -770,6 +770,7 @@ ul.actionalbls li i:hover {
     padding: 1rem;
     border: 1px solid #e7e7e7;
     border-radius: .8rem;
+    background: #fff;
 }
 
 .filter-box h4 {

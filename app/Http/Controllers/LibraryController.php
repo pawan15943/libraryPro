@@ -345,4 +345,18 @@ class LibraryController extends Controller
         return redirect()->route('library.master')->with('success', 'Profile updated successfully!');
     }
 
+    public function transaction(){
+        $transaction=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1)->get();
+        return view('library.transaction',compact('transaction'));
+    }
+    public function myplan(){
+        $data = Library::where('id', Auth::user()->id)
+        ->with('subscription.permissions')  // Fetch associated subscription and permissions
+        ->first();
+        $month=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1)->get();
+        $plan=Subscription::where('id',$data->library_type)->first();
+        // dd($data);
+        return view('library.my-plan',compact('data','month','plan'));
+    }
+
 }

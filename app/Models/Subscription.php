@@ -19,7 +19,9 @@ class Subscription extends Model
 
     public function permissions()
     {
-        return $this->belongsToMany(Permission::class, 'subscription_permission');
+        return $this->belongsToMany(Permission::class, 'subscription_permission', 'subscription_id', 'permission_id');
     }
+    
+    
     
 }

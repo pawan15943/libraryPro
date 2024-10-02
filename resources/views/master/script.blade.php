@@ -60,7 +60,7 @@
 <script>
     $(document).ready(function() {
         $(document.body).off('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour')
-            .on('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour', function(event) {
+            .on('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour,#library_expense', function(event) {
             event.preventDefault(); 
             
             var formData = new FormData(this);
@@ -68,12 +68,12 @@
             var url;
 
           
-            if (formId === 'planForm' || formId === 'operating_hour' || formId === 'planTypeForm' || formId === 'planPriceForm') {
-                url = '{{ route('master.store') }}';
-            }else if (formId === 'library_seat'){
+            if (formId === 'library_seat'){
                 url = '{{ route('seats.store') }}';
             } else if (formId === 'extend_hour'){
                 url = '{{ route('extendDay.store') }}';
+            }else{
+                url = '{{ route('master.store') }}';
             }
 
             
@@ -121,34 +121,14 @@
             return false; 
         });
 
-        $(document.body).on('click', '.plan_edit ,.plantype_edit, .hour_edit,.seat_edit,.extend_day_edit ,.planPrice_edit', function() {
+        $(document.body).on('click', '.plan_edit ,.plantype_edit, .hour_edit,.seat_edit,.extend_day_edit ,.planPrice_edit,.expense_edit', function() {
             var id = $(this).data('id');
             $(this).closest('.master-box').find('.form-fields').toggle();
 
             var formId = $(this).attr('class');  
           
-            var url;
-            var modeltable;
-
-            if (formId === 'plan_edit') {
-                
-                modeltable='Plan';
-            } else if (formId === 'plantype_edit') {
-                
-                modeltable='PlanType';
-            }else if (formId === 'hour_edit' || formId ==='extend_day_edit') {
-               
-                modeltable='hour';
-            }else if (formId === 'seat_edit') {
-               
-                modeltable='seats';
-            }else if (formId === 'planPrice_edit') {
-                
-                modeltable='PlanPrice';
-            }
-
-
-        
+            var modeltable=$(this).data('table');
+           
             $.ajax({
                 url: '{{ route('master.edit') }}',
                 headers: {
@@ -163,29 +143,29 @@
 
                 dataType: 'json',
                 success: function(response) {
-                    
-                    if(response.plan){
-                        $('input[name="id"]').val(response.plan.id);
+                    console.log(response);
+                    if(response.Plan){
+                        $('input[name="id"]').val(response.Plan.id);
                 
-                        $('#plan_id').val(response.plan.plan_id);
+                        $('#plan_id').val(response.Plan.plan_id);
 
                         $('#savePlanBtn').text('Update Plan');
                     }
             
-                    if(response.plantype){
-                        $('input[name="id"]').val(response.plantype.id);
+                    if(response.PlanType){
+                        $('input[name="id"]').val(response.PlanType.id);
                         
-                        $('#plantype_name').val(response.plantype.day_type_id);
-                        $('#start_time').val(response.plantype.start_time);
-                        $('#end_time').val(response.plantype.end_time);
-                        $('#slot_hours').val(response.plantype.slot_hours);
-                        if(response.plantype.day_type_id == 4){
+                        $('#plantype_name').val(response.PlanType.day_type_id);
+                        $('#start_time').val(response.PlanType.start_time);
+                        $('#end_time').val(response.PlanType.end_time);
+                        $('#slot_hours').val(response.PlanType.slot_hours);
+                        if(response.PlanType.day_type_id == 4){
                             $('select[name="timming"]').val('Morning1');
-                        } else if(response.plantype.day_type_id == 5){
+                        } else if(response.PlanType.day_type_id == 5){
                             $('select[name="timming"]').val('Morning2');
-                        } else if(response.plantype.day_type_id == 6){
+                        } else if(response.PlanType.day_type_id == 6){
                             $('select[name="timming"]').val('Evening1');
-                        } else if(response.plantype.day_type_id == 7){ 
+                        } else if(response.PlanType.day_type_id == 7){ 
                             $('select[name="timming"]').val('Evening2');
                         }
 
@@ -193,23 +173,29 @@
                         $('#savePlanTypeBtn').text('Update Plan Type');
                     }
 
-                    if(response.planprice){
-                        $('input[name="id"]').val(response.planprice.id);
+                    if(response.PlanPrice){
+                        $('input[name="id"]').val(response.PlanPrice.id);
                 
-                        $('#price_plan_id').val(response.planprice.plan_id);
-                        $('#plan_type_id').val(response.planprice.plan_type_id);
-                        $('#price').val(response.planprice.price);
+                        $('#price_plan_id').val(response.PlanPrice.plan_id);
+                        $('#plan_type_id').val(response.PlanPrice.plan_type_id);
+                        $('#price').val(response.PlanPrice.price);
                     }
 
-                    if(response.hour){
-                        $('input[name="id"]').val(response.hour.id);
-                        $('#hour').val(response.hour.hour).change();
-                        $('input[name="extend_days"]').val(response.hour.extend_days);
+                    if(response.Hour){
+                        $('input[name="id"]').val(response.Hour.id);
+                        $('#hour').val(response.Hour.hour).change();
+                        $('input[name="extend_days"]').val(response.Hour.extend_days);
                     }
 
-                    if(response.seats){
-                        $('input[name="total_seats"]').val(response.seats);
+                    if(response.Seat){
+                        $('input[name="total_seats"]').val(response.Seat);
                         
+                    }
+                    if(response.Expense){
+                        $('input[name="id"]').val(response.Expense.id);
+                
+                       
+                        $('input[name="name"]').val(response.Expense.name);
                     }
 
                 

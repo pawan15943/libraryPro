@@ -38,42 +38,19 @@
         <div class="dashibox">
             <h4>Available Seats</h4>
             <ul>
+                @foreach($available_seats as $key => $value)
                 <li>
                     <div class="d-flex">
                         <img src="{{ asset('public/img/available.png') }}" alt="">
                         <div class="booking">
-                            <p>Seat No. 2</p>
+                            <p>Seat No. {{$value}}</p>
                             <a href="">Book Now</a>
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Book Now</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Book Now</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Book Now</a>
-                        </div>
-                    </div>
-                </li>
+                @endforeach
+             
+               
             </ul>
         </div>
     </div>
@@ -82,42 +59,18 @@
             <h4>Expired in 5 Days</h4>
             <span>Show Expired in 5 Days Seats & Extended Seats </span>
             <ul>
+                @foreach($renewSeats as $key => $value)
                 <li>
                     <div class="d-flex">
                         <img src="{{ asset('public/img/available.png') }}" alt="">
                         <div class="booking">
-                            <p>Seat No. 2</p>
+                            <p>Seat No. {{$value->seat_no}}</p>
                             <a href="">Renew Plan</a>
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Renew Plan</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Renew Plan</a>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ asset('public/img/available.png') }}" alt="">
-                        <div class="booking">
-                            <p>Seat No. 2</p>
-                            <a href="">Renew Plan</a>
-                        </div>
-                    </div>
-                </li>
+                @endforeach
+                
             </ul>
         </div>
     </div>

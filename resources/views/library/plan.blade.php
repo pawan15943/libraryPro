@@ -2,6 +2,7 @@
 
 @section('content')
 
+@if($iscomp==false)
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
@@ -30,6 +31,8 @@
         <h2 class="text-center">Pick the plan that fits you best!</h2>
     </div>
 </div>
+@endif
+
 
 
 <div class="row g-4 justify-content-center mt-1">

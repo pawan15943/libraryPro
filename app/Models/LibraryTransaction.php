@@ -16,5 +16,6 @@ class LibraryTransaction extends Model
         
         static::addGlobalScope(new LibraryScope());
     }
+   
     
 }

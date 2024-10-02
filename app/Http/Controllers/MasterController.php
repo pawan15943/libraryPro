@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\Expense;
 use App\Models\Hour;
 use App\Models\Library;
 use App\Models\Plan;
@@ -33,11 +34,72 @@ class MasterController extends Controller
     public function index()
     {
         $subscriptions = Subscription::all();
-        $permissions = Permission::all();
+        $permissions = Permission::where('guard_name','library')->get();
         $users = User::all();
 
         return view('master.subscriptionPermission', compact('subscriptions', 'permissions', 'users'));
     }
+    
+    public function managePermissions($permissionId = null)
+    {
+        
+        $subscriptions = Subscription::with('permissions')->get();
+        $permissions =  Permission::get(); 
+        $permission = $permissionId ? Permission::find($permissionId) : null;
+        return view('master.permissions', compact('subscriptions', 'permission','permissions'));
+    }
+
+    
+    public function storeOrUpdatePermission(Request $request, $permissionId = null)
+    {
+       
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+           
+        ]);
+
+        
+        if ($permissionId) {
+          
+            $permission = Permission::findOrFail($permissionId);
+            $permission->update($request->only('name', 'description', 'guard_name'));
+            $message = 'Permission updated successfully.';
+        } else {
+           
+            $permission = Permission::create($request->only('name', 'description', 'guard_name'));
+          
+            $message = 'Permission added successfully.';
+        }
+
+        return redirect()->route('permissions') ->with('success', $message);
+    }
+
+
+  
+    public function deletePermission($permissionId)
+    {
+        $permission = Permission::findOrFail($permissionId);
+        $permission->delete();
+
+        return redirect()->route('permissions')
+            ->with('success', 'Permission deleted successfully.');
+    }
+    public function deleteSubscriptionPermission(Request $request, $permissionId)
+    {
+        $subscriptionId = $request->subscription_id;
+    
+      
+        DB::table('subscription_permission')
+            ->where('subscription_id', $subscriptionId)
+            ->where('permission_id', $permissionId)
+            ->delete();
+    
+        return redirect()->back()->with('success', 'Permission successfully deleted from the subscription.');
+    }
+    
+    
+
     
     public function getPermissions($id)
     {
@@ -61,22 +123,21 @@ class MasterController extends Controller
 
     public function assignPermissionsToSubscription(Request $request)
     {
-        // Validate the input
+        
         $request->validate([
             'subscription_id' => 'required',
-            'permissions' => 'array', // Ensure it's an array
+            'permissions' => 'array', 
         ]);
 
-        // Find the subscription by ID
         $subscription = Subscription::find($request->subscription_id);
 
         if (!$subscription) {
             return redirect()->back()->withErrors('Subscription not found');
         }
 
-        // Sync the selected permissions (removes unchecked ones, adds new ones)
         $subscription->permissions()->sync($request->permissions);
-
+          // $subscription = Subscription::findOrFail($request->subscription_id);
+            // $subscription->permissions()->attach($permission->id);
         return redirect()->back()->with('success', 'Permissions assigned/updated successfully.');
     }
 
@@ -85,11 +146,11 @@ class MasterController extends Controller
         $hours=DB::table('hour')->where('library_id',auth()->user()->id)->get();
         $plantype=PlanType::withTrashed()->where('library_id',auth()->user()->id)->get();
         $plantypes=PlanType::where('library_id',auth()->user()->id)->get();
-        $planprice=PlanPrice::withTrashed()->where('library_id',auth()->user()->id)->get();
+        $planprice=PlanPrice::withTrashed()->with(['plan', 'planType'])->get();
         $total_seat=Seat::where('library_id',auth()->user()->id)->count();
         $seat_button=Library::where('id',Auth::user()->id)->where('status',1)->exists();
-       
-        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button'));
+       $expenses=Expense::get();
+        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses'));
     }
     
     public function storemaster(Request $request, $id = null)
@@ -257,26 +318,16 @@ class MasterController extends Controller
     public function masterEdit(Request $request){
         $id=$request->id;
         try {
-            if($request->modeltable=='Plan' || $request->modeltable=='PlanType' || $request->modeltable=='PlanPrice'){
+           if($request->modeltable=='Seat'){
+                $data=Seat::count();
+                
+            }else{
                 $modelClass = 'App\\Models\\' . $request->modeltable;
                 $data=$modelClass::findOrFail($id);
-            }elseif($request->modeltable=='hour' ){
-                $data = DB::table('hour')->where('id', $id)->first();
-            }elseif($request->modeltable=='seats'){
-                $data=DB::table('seats')->where('library_id',$id)->count();
-                
             }
-            if($request->modeltable=='Plan'){
-                return response()->json(['plan' => $data]);
-            }elseif($request->modeltable=='PlanType'){
-                return response()->json(['plantype' => $data]);
-            }elseif($request->modeltable=='PlanPrice'){
-                return response()->json(['planprice' => $data]);
-            }elseif($request->modeltable=='hour'){
-                return response()->json(['hour' => $data]);
-            }elseif($request->modeltable=='seats'){
-                return response()->json(['seats' => $data]);
-            }
+
+            return response()->json([$request->modeltable => $data]);
+           
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -327,11 +378,19 @@ class MasterController extends Controller
         } elseif ($request->databasemodel == 'PlanType') {
             $check_from_id = 'day_type_id';
             $check_to_id = $request->day_type_id;
+        }elseif ($request->databasemodel == 'Expense') {
+            $check_from_id = 'name';
+            $check_to_id = $request->name;
+        }else{
+            return response()->json([
+                'error' => true,
+                'message' => 'Something went wrong',
+            ]);
         }
 
         
         if ($request->databasemodel == 'Plan' || $request->databasemodel == 'PlanType'  ) {
-          
+           
             $query = $modelClass::where($check_from_id, $check_to_id)
                 ->where('library_id', $request->library_id);
 
@@ -341,6 +400,10 @@ class MasterController extends Controller
             
         }elseif($request->databasetable=='hour'){
             $query =DB::table('hour')->where('library_id', $request->library_id);
+        }else{
+            $query = $modelClass::where($check_from_id, $check_to_id)
+            ->where('library_id', $request->library_id);
+
         }
 
         if (!empty($request->id)) {
@@ -386,6 +449,11 @@ class MasterController extends Controller
                 'total_seats' => 'required|integer',
             ]);
             
+        }
+        if ($request->databasemodel == 'Expense'){
+            $request->validate([
+                'name' => 'required',
+            ]);
         }
         
     }

@@ -3,9 +3,7 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-{{-- @php
-    dd($checkSub);
-@endphp --}}
+@if($iscomp==false)
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
@@ -33,6 +31,7 @@
         <h2 class="text-center">A few details to make it yours!</h2>
     </div>
 </div>
+@endif
 <!-- Content -->
 <div class="card  mb-4 mt-4">
    
@@ -55,7 +54,7 @@
             <div class="col-lg-6">
                 <label for="">Library EMail Id <span>*</span></label>
                 <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
-                    value="{{ old('email', $library->email ?? '') }}">
+                    value="{{ old('email', $library->email ?? '') }}" readonly>
                 @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>

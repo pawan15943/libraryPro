@@ -62,6 +62,7 @@
                     @endforeach
                 </select>
             </div>
+           
             <div class="col-lg-12">
                 <div class="buttons form-group">
                     <label for="select-all" class="permission">
@@ -89,6 +90,41 @@
             </div>
         </div>
     </form>
+</div>
+<div>
+    @foreach($subscriptions as $subscription)
+        <h4>Permissions for Subscription: {{ $subscription->name }}</h4>
+        @if($subscription->permissions->isEmpty())
+            <p>No permissions available.</p>
+        @else
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($subscription->permissions as $permission)
+                        <tr>
+                            <td>{{ $permission->name }}</td>
+                            <td>{{ $permission->description }}</td>
+                            <td>
+                                
+                                <form action="{{ route('subscriptionPermissions.delete', $permission->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type="hidden" value="{{$subscription->id}}" name="subscription_id">
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
+    @endforeach
 </div>
 
 <script>

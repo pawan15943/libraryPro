@@ -4,7 +4,7 @@
 
 
 <!-- Breadcrumb -->
-
+@if($iscomp==false)
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
@@ -32,7 +32,7 @@
         <h2 class="text-center">Secure your plan in just one step!</h2>
     </div>
 </div>
-
+@endif
 <div class="row justify-content-center mb-4 mt-3">
     <div class="col-lg-9">
         <h4 class="text-center mb-4">Overview Payment</h4>

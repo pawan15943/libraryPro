@@ -11,6 +11,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,9 @@ Route::get('library/register', [RegisterController::class, 'showRegistrationForm
 // Auth routes
 Auth::routes(['register' => false, 'login' => false,'verify' => false]);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
+
+
+
 Route::group(['prefix' => 'library'], function () {
   Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request.library');
   Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email.library');
@@ -43,7 +47,9 @@ Route::post('library/store', [LibraryController::class, 'store'])->name('library
 Route::middleware(['auth:library', 'verified'])->group(function () {
   
   Route::prefix('library')->group(function () {
-    Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); // Library user home
+    Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 
+    Route::get('/transaction', [LibraryController::class, 'transaction'])->name('library.transaction'); 
+    Route::get('/myplan', [LibraryController::class, 'myplan'])->name('library.myplan'); 
     Route::get('/library-master', [MasterController::class, 'masterPlan'])->name('library.master');
   
     Route::get('/choose-plan', [LibraryController::class, 'choosePlan'])->name('subscriptions.choosePlan');
@@ -62,30 +68,33 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::post('/extend-day', [MasterController::class, 'extendDay'])->name('extendDay.store');
     
     Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
-    
+    //Report menu
+    Route::get('monthly/create', [ReportController::class, 'monthlyReport'])->name('report.monthly');
+    Route::get('report/expense/{year}/{month}', [ReportController::class, 'monthlyExpenseCreate'])->name('report.expense');
+    Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
   });
   
    //**LEARNER**//
    Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
    
-  Route::prefix('library/learners')->group(function () {
-    Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
-   Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
-   Route::get('/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
-   Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
-   Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
-   Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
-  
-   Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
-   Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
-   Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
-   Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
-   Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
-   Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
-   Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
-   Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
-   Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
-  });
+    Route::prefix('library/learners')->group(function () {
+      Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
+      Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
+      Route::get('/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
+      Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
+      Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
+      Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
+      
+      Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
+      Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
+      Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
+      Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
+      Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
+      Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
+      Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
+      Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
+      Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
+    });
    Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
    Route::get('seats/history/{id?}', [LearnerController::class, 'history'])->name('seats.history.show');
    
@@ -103,15 +112,23 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin|admin'])->group(function () {
+        Route::get('library', [LibraryController::class, 'index'])->name('library');
 
-        Route::get('subscriptions-permissions', [MasterController::class, 'index'])->name('subscriptions.permissions');
+        
         Route::post('subscriptions/store', [MasterController::class, 'storeSubscription'])->name('subscriptions.store');
         Route::post('subscriptions/assign-permissions', [MasterController::class, 'assignPermissionsToSubscription'])->name('subscriptions.assignPermissions');
         Route::get('/subscriptions/{id}/permissions', [MasterController::class, 'getPermissions'])->name('subscriptions.getPermissions');
 
-        Route::get('library', [LibraryController::class, 'index'])->name('library');
        
+        Route::get('subscriptions-permissions', [MasterController::class, 'index'])->name('subscriptions.permissions');
+        Route::get('permissions/{permissionId?}', [MasterController::class, 'managePermissions'])->name('permissions');
+
+        Route::put('permissions/{permissionId?}', [MasterController::class, 'storeOrUpdatePermission'])->name('permissions.storeOrUpdate');
+
+        Route::delete('permissions/{permissionId}', [MasterController::class, 'deletePermission'])->name('permissions.delete');
+        Route::delete('subscriptionPermissions/{permissionId}', [MasterController::class, 'deleteSubscriptionPermission'])->name('subscriptionPermissions.delete');
         
+            
     });
 });
 

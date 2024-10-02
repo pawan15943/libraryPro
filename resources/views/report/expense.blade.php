@@ -32,7 +32,7 @@
                                 <input type="text" placeholder="Amount" class="form-control" name="amount[]">
                             </div>
                             <div class="col-lg-1 d-inline">
-                                <button id="add_row" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
+                                <button id="add_row" class="btn btn-primary button" type="button"><i class="fa fa-plus"></i></button>
                             </div>
                         </div>
                     @else
@@ -69,7 +69,7 @@
 
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            <input type="submit" class="btn btn-primary btn-block" value="Submit">
+                            <input type="submit" class="btn btn-primary button" value="Submit">
                         </div>
                     </div>
                 </form>

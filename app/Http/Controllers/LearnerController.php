@@ -397,9 +397,10 @@ class LearnerController extends Controller
         return response()->json($filteredPlanTypes);
     }
 
+    
     public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1, $filters = [])
     {
-        // Initialize the query
+        // Initialize the query using the getAllLearnersByLibrary() method
         $query = $this->getAllLearnersByLibrary()
             ->where('learners.status', $status)
             ->where('learner_detail.status', $detailStatus)
@@ -410,17 +411,16 @@ class LearnerController extends Controller
                 'learners.*',
                 'plan_types.start_time',
                 'plan_types.end_time',
-                'learner_detail.learner_id', 
-                'learner_detail.plan_start_date', 
-                'learner_detail.plan_end_date', 
-                'learner_detail.plan_type_id', 
-                'learner_detail.plan_id', 
-                'learner_detail.plan_price_id', 
-                'learner_detail.status',
+                'learner_detail.plan_start_date',
+                'learner_detail.plan_end_date',
+                'learner_detail.plan_type_id',
+                'learner_detail.plan_id',
+                'learner_detail.plan_price_id',
+                'learner_detail.status as learner_detail_status',
                 'plan_types.image'
             );
 
-        // Apply filters only if provided
+        // Apply dynamic filters if provided
         if (!empty($filters)) {
             // Filter by Plan ID
             if (!empty($filters['plan_id'])) {
@@ -437,7 +437,8 @@ class LearnerController extends Controller
                 if ($filters['status'] == 'active') {
                     $query->where('learners.status', 1);
                 } elseif ($filters['status'] == 'expired') {
-                    $query->where('learners.status', 0)->orWhere('learner_detail.status', 0);
+                    $query->where('learners.status', 0)
+                        ->orWhere('learner_detail.status', 0);
                 }
             }
 
@@ -466,26 +467,32 @@ class LearnerController extends Controller
             $customer = $query->firstOrFail();
 
             if ($customer) {
+                // Format start and end time
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
             }
 
             return $customer;
-        } else {
-            return $query->get();
         }
+
+        // Return the result of the query
+        return $query->get();
     }
+
 
 
     public function learnerList(Request $request){
         $filters = [
-            'plan_id' => $request->plan_id,
-            'is_paid' => $request->is_paid,
-            'status'  => $request->status,
-            'search'  => $request->search,
+            'plan_id' => $request->get('plan_id'),
+            'is_paid' => $request->get('is_paid'),
+            'status'  => $request->get('status'),
+            'search'  => $request->get('search'),
         ];
-        // $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
+    
         $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
+
+        // $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
+        
         $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0);
         $plans = $this->learnerService->getPlans();
         return view('learner.learner', compact('learners','learnerHistory','plans'));

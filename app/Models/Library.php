@@ -30,7 +30,12 @@ class Library extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(LibraryTransaction::class, 'library_id', 'id'); 
         // Adjust the foreign key and local key if necessary
     }
-
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class, 'library_type', 'id'); // Assuming 'library_type' in libraries matches 'id' in subscriptions
+    }
+    
+    
 
   
     

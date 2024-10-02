@@ -4,7 +4,7 @@
 <!-- Main content -->
 
 <!-- Breadcrumb -->
-
+@if($iscomp==false)
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
@@ -33,7 +33,7 @@
         <h2 class="text-center">You’re all set! Let’s get things ready for you!</h2>
     </div>
 </div>
-
+@endif
 <div id="success-message" class="alert alert-success" style="display:none;"></div>
 <div id="error-message" class="alert alert-danger" style="display:none;"></div>
 <!-- Masters -->
@@ -86,7 +86,7 @@
                                     @else
                                     <i class="fa fa-check"></i>
                                     @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" ><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
@@ -135,7 +135,7 @@
                             <h4>{{($total_seat)}}</h4>
                             <ul>
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
-                                <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}" data-table="Seat"><i class="fa fa-edit"></i></a></li>
                                
                                 <li><a href=""><i class="fa fa-trash"></i></a></li>
                             </ul>
@@ -188,8 +188,8 @@
                                     @else
                                     <i class="fa fa-check"></i>
                                     @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="extend_day_edit" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
-                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="hour" title="Delete"><i class="fa fa-trash"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="extend_day_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Hour" title="Delete"><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
                     </li>
@@ -253,7 +253,7 @@
                                         @else
                                         <i class="fa fa-check"></i>
                                         @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="plan_edit" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="plan_edit" data-id="{{$value->id}}" data-table="Plan"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="Plan" title="Delete"><i class="fa fa-trash"></i></a></li>
 
                             </ul>
@@ -335,22 +335,7 @@
                                     <option value="blue">Blue</option>
                                 </select>
                             </div>
-                            
-                            {{-- <div class="col-lg-6">
-                                <label for="">Day Type </label>
-                                <select class="form-control @error('timming') is-invalid @enderror no-validate" name="timming">
-                                    <option value="">Select time</option>
-                                    <option value="Morning1">Morning1</option>
-                                    <option value="Morning2">Morning2</option>
-                                    <option value="Evening1">Evening1</option>
-                                    <option value="Evening2">Evening2</option>
-                                </select>
-                                @error('timming')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div> --}}
+                           
                             <div class="col-lg-12">
                                 <button type="submit" id="savePlanTypeBtn" class="btn btn-primary button"><i
                                         class="fa fa-plus"></i>
@@ -371,7 +356,7 @@
                                     @else
                                     <i class="fa fa-check"></i>
                                     @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="plantype_edit" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="plantype_edit" data-id="{{$value->id}}" data-table="PlanType"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="PlanType" title="Delete"><i class="fa fa-trash"></i></a></li>
 
                             </ul>
@@ -453,6 +438,8 @@
                     <li>
                         <div class="d-flex">
                             <h4>{{$value->price}}</h4>
+                            <h4>{{ $value->plan->name ?? 'N/A' }}</h4>
+                            <h4>{{ $value->planType->name ?? 'N/A' }}</h4>
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="PlanPrice" title="Active/Deactive">
                                     @if($value->deleted_at)
@@ -460,7 +447,7 @@
                                     @else
                                     <i class="fa fa-check"></i>
                                     @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="planPrice_edit" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="javascript:void(0)" type="button" class="planPrice_edit" data-id="{{$value->id}}" data-table="PlanPrice"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="PlanPrice" title="Delete"><i class="fa fa-trash"></i></a></li>
 
                             </ul>
@@ -468,6 +455,64 @@
                     </li>
                     @endforeach
                    
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="master-box">
+            <div class="d-flex">
+                <h4>Add Expense</h4>
+                <i class="fa fa-plus-circle toggle-button"></i>
+            </div>
+            <div class="master-form mt-3">
+                <div class="form-fields">
+                    
+                    <form id="library_expense"  enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id" value="" >
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
+                        <input type="hidden" name="databasemodel" value="Expense">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="class_name"> Expense Name<sup class="text-danger">*</sup> </label>
+                                <input type="text"  name="name" value="" class="form-control @error('name') is-invalid @enderror">
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    {{ $message }}
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <button type="submit" class="btn btn-primary button"><i
+                                        class="fa fa-plus"></i>
+                                    Add Expense</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <ul>
+                    @foreach($expenses as $key => $value)
+                    <li>
+                        <div class="d-flex">
+                            <h4>{{$value->name}}</h4>
+                            
+                            <ul>
+                                <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="Expense" title="Active/Deactive">
+                                    @if($value->deleted_at)
+                                    <i class="fas fa-cross"></i>
+                                    @else
+                                    <i class="fa fa-check"></i>
+                                    @endif</a></li>
+                                <li><a href="javascript:void(0)" type="button" class="expense_edit" data-table="Expense"  data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Expense" title="Delete"><i class="fa fa-trash"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    @endforeach
+                    
                 </ul>
             </div>
         </div>

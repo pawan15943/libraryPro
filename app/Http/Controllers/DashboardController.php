@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerDetail;
 use App\Models\Customers;
+use App\Models\Hour;
 use App\Models\LearnerDetail;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
@@ -14,13 +15,22 @@ use Auth;
 use DB;
 use Illuminate\Support\Carbon;
 use App\Services\LibraryService;
+use App\Services\LearnerService;
+use App\Traits\LearnerQueryTrait;
+
 
 class DashboardController extends Controller
 {
+    use LearnerQueryTrait;
     protected $libraryService;
-    public function __construct(LibraryService $libraryService)
+    protected $learnerService;
+
+
+    public function __construct(LibraryService $libraryService, LearnerService $learnerService)
     {
+        
         $this->libraryService = $libraryService;
+        $this->learnerService = $learnerService;
     }
     public function index()
     {
@@ -87,8 +97,18 @@ class DashboardController extends Controller
             ->sum('plan_price_id');  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
+            $available_seats=$this->learnerService->getAvailableSeats();
+           
+            $today = Carbon::today();
+            $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+            $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+            $fiveDaysBefore = $today->copy()->subDays(5);
+            $renewSeats = $this->getLearnersByLibrary()
+            ->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)  // plan_end_date is today - 5 days
+            ->orWhereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
+            ->get();
             if($iscomp){
-                return view('dashboard.admin',compact('diffInDays','availble_seats','booked_seats','total_seats','library_revenue'));
+                return view('dashboard.admin',compact('diffInDays','availble_seats','booked_seats','total_seats','library_revenue','available_seats','renewSeats'));
             }else{
                 return redirect($redirectUrl);
             }

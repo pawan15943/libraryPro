@@ -48,6 +48,7 @@
                     <div class="col-lg-2">
                         <button class="btn btn-primary button"><i class="fa fa-search"></i> Search Records</button>
                     </div>
+                    
                 </div>
             </form>
         </div>
@@ -74,6 +75,12 @@
                 
                 @if($current_route=='learners')
                 <tbody>
+                    @php
+                        $user = Auth::user();
+                        $permissions = $user->subscription ? $user->subscription->permissions : null;
+                    @endphp
+
+
                     @foreach($learners as $key => $value)
                         @php
                             $today = Carbon::today();
@@ -124,8 +131,9 @@
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
 
                                 <!-- Swap Seat-->
+                                @can('has-permission', 'swap_seat')
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-
+                               @endcan
                                 <!-- Swap Seat-->
                                 <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
 
@@ -314,5 +322,17 @@
 </script>
 <script>
     let table = new DataTable('#datatable');
+</script>
+<script>
+    $(document).ready(function () {
+        // Get the current URL
+        var url = window.location.href;
+
+        // Check if there are any URL parameters
+        if (url.includes('?')) {
+            // Redirect to the URL without parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    });
 </script>
 @endsection

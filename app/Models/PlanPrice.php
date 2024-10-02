@@ -17,4 +17,16 @@ class PlanPrice extends Model
         
         static::addGlobalScope(new LibraryScope());
     }
+
+     // Relationship to the Plan model
+     public function plan()
+     {
+         return $this->belongsTo(Plan::class, 'plan_id');
+     }
+ 
+     // Relationship to the PlanType model
+     public function planType()
+     {
+         return $this->belongsTo(PlanType::class, 'plan_type_id');
+     }
 }

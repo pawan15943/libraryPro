@@ -39,7 +39,7 @@ a.go-back {
 .detailes select,
 .detailes textarea {
     font-size: .9rem !important;
-    height: 35px;
+    height: 45px;
     font-weight: 600 !important;
 }
 
@@ -721,9 +721,8 @@ ul.actionalbls {
     padding: 0;
     display: flex;
     gap: .5rem;
-    justify-content: flex-start;
+    justify-content: center;
     margin: 0;
-    margin-left: 1.5rem;
 }
 
 ul.actionalbls li i {
@@ -1289,12 +1288,19 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     justify-content: flex-start;
 }
 
-.conatent.flex {
-    gap: 0.8rem !important;;
-    display: flex;
-    align-items: center;
+.conatent.flex .button {
+    width: 100px;
+    font-size: .8rem;
+    border-radius: 1rem;
+    background-color: red !important;
 }
 
+.conatent.flex {
+    gap: 0.8rem !important;
+    display: flex;
+    align-items: center;
+    width: 500px;
+}
 .conatent.flex small {
     font-weight: 700;
     font-size: .8rem;

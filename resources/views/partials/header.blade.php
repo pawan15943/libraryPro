@@ -4,8 +4,7 @@
             <i class="fa fa-bars mr-2" id="sidebar"></i>
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$diffInDays}} Days</small>
             @if($diffInDays<=5)
-                <a href="{{route('library.home')}}" type="button" class="btn btn-primary button">Renew Plan<i
-                    class="fa fa-arrow-right"></i> </a>
+                <a href="{{route('library.home')}}" type="button" class="btn btn-primary button">Renew Plan</a>
                 @endif
         </div>
         <div class="profile">

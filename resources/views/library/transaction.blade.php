@@ -5,51 +5,52 @@
 
 <!-- Breadcrumb -->
 
-<div class="row justify-content-center mb-4 mt-3">
-    <div class="col-lg-9">
-        <h4 class="text-center mb-4">Overview Payment</h4>
-        <div class="payment-detaile">
-          
-        @foreach($transaction as $key => $value)
-        <div class="payment-information">
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <span>Payment Method</span>
-                    <h4>{{$value->payment_mode ? $value->payment_mode : 'NA'}}</h4>
-                </div>
-                <div class="col-lg-6">
-                    <span>Amount Paid</span>
-                    <h4>{{$value->paid_amount}}</h4>
-                </div>
-                <div class="col-lg-6">
-                    <span>Payment Status</span>
-                    @if($value->is_paid==1)
-                    <h4>Success</h4>
-                    @else
-                    <h4>Unsuccess</h4>
-                    @endif
-                   
-                </div>
-                <div class="col-lg-6">
-                    <span>Transaction Id</span>
-                    <h4>{{$value->transaction_id ? $value->transaction_id : 'NA'}}</h4>
-                </div>
-                <div class="col-lg-6">
-                    <span>Tran Date</span>
-                    <h4>{{$value->transaction_date}}</h4>
-                </div>
-                <div class="col-lg-6">
-                    <span>Print Receipt</span>
-                    <h4><a href="">Download</a></h4>
-                </div>
-            </div>
-        </div>
-        @endforeach
-            
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table text-center datatable">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Plan Name</th>
+                        <th>Price</th>
+                        <th>Payment Method</th>
+                        <th>Paid On</th>
+                        <th>Trxn Id</th>
+                        <th>Trxn Date</th>
+                        <th>Trxn Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach($transaction as $key => $value)
+                    <tr>
+                        <td>1</td>
+                        <td>{{$value->paid_amount}}</td>
+                        <td>{{$value->paid_amount}}</td>
+                        <td>{{$value->payment_mode ? $value->payment_mode : 'NA'}}</td>
+                        <td>{{$value->paid_amount}}</td>
+                        <td>{{$value->transaction_id ? $value->transaction_id : 'NA'}}</td>
+                        <td>{{$value->transaction_date}}</td>
+                        <td>@if($value->is_paid==1)
+                            <span>Success</span>
+                            @else
+                            <span>Unsuccess</span>
+                            @endif
+                        </td>
+                        <td>
+                            <ul class="actionalbls">
+                                <li><a href=""><i class="fa fa-print"></i></a></li>
+                            </ul>
+                        </td>
+                    </tr>
 
 
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-       
     </div>
 </div>
 

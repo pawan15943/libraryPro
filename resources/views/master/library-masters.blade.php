@@ -9,21 +9,21 @@
     <div class="col-lg-12">
         <div class="steps">
             <ul>
-             
-                <li >
+
+                <li>
                     <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Choose Plan</a>
                 </li>
-                <li >
+                <li>
                     <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
                 </li>
                 <li>
                     <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>
                 </li>
-                <li  class="active">
+                <li class="active">
                     <a href="{{ ($checkSub && $ispaid && $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
                 </li>
             </ul>
-           
+
         </div>
     </div>
 </div>
@@ -46,15 +46,15 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    <form id="operating_hour"  enctype="multipart/form-data">
+                    <form id="operating_hour" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="databasetable" value="hour">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Operating Hours <span>*</span></label>
-                                <select class="form-control @error('hour') is-invalid @enderror" name="hour" id="hour">
+                                <select class="form-select @error('hour') is-invalid @enderror" name="hour" id="hour">
                                     <option value="">Select Hour</option>
                                     <option value="16" {{ old('hour', isset($hour) ? $hour->hour : '') == 16 ? 'selected' : '' }}>16</option>
                                     <option value="14" {{ old('hour', isset($hour) ? $hour->hour : '') == 14 ? 'selected' : '' }}>14</option>
@@ -67,7 +67,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <button  class="btn btn-primary button" id="saveHourBtn"><i
+                                <button class="btn btn-primary button" id="saveHourBtn"><i
                                         class="fa fa-plus"></i>
                                     Add Hours</button>
                             </div>
@@ -81,18 +81,18 @@
                             <h4>{{$value->hour}} hours</h4>
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="hour" title="Active/Deactive">
-                                    @if($value->deleted_at)
-                                    <i class="fas fa-cross"></i>
-                                    @else
-                                    <i class="fa fa-check"></i>
-                                    @endif</a></li>
+                                        @if($value->deleted_at)
+                                        <i class="fas fa-cross"></i>
+                                        @else
+                                        <i class="fa fa-check"></i>
+                                        @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
-                                <li><a href="#" ><i class="fa fa-trash"></i></a></li>
+                                <li><a href="#"><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
                     </li>
                     @endforeach
-                    
+
                 </ul>
             </div>
         </div>
@@ -105,12 +105,12 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    
-                    <form id="library_seat"  enctype="multipart/form-data">
+
+                    <form id="library_seat" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
-                        <input type="hidden" name="databasetable" value="seats" >
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
+                        <input type="hidden" name="databasetable" value="seats">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Library Seats <span>*</span></label>
@@ -136,7 +136,7 @@
                             <ul>
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
                                 <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}" data-table="Seat"><i class="fa fa-edit"></i></a></li>
-                               
+
                                 <li><a href=""><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
@@ -155,9 +155,9 @@
                 <div class="form-fields">
                     <form id="extend_hour" class="validateForm" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
-                        
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
+
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Extend Days <span>*</span></label>
@@ -183,18 +183,18 @@
                             <h4>{{$value->extend_days}} Days</h4>
                             <ul>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="hour" title="Active/Deactive">
-                                    @if($value->deleted_at)
-                                    <i class="fas fa-cross"></i>
-                                    @else
-                                    <i class="fa fa-check"></i>
-                                    @endif</a></li>
+                                        @if($value->deleted_at)
+                                        <i class="fas fa-cross"></i>
+                                        @else
+                                        <i class="fa fa-check"></i>
+                                        @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="extend_day_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Hour" title="Delete"><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
                     </li>
                     @endforeach
-                    
+
                 </ul>
             </div>
         </div>
@@ -218,7 +218,7 @@
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Plan Name <span>*</span></label>
-                                <select class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" id="plan_id">
+                                <select class="form-select @error('plan_id') is-invalid @enderror" name="plan_id" id="plan_id">
                                     <option value="">Select Plan</option>
                                     <option value="1" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 1 ? 'selected' : '' }}>1 MONTH</option>
                                     <option value="3" {{ old('plan_id', isset($plan) ? $plan->plan_id : '') == 3 ? 'selected' : '' }}>3 MONTHS</option>
@@ -241,7 +241,7 @@
                     </form>
 
                 </div>
-                <ul  id="plan-list">
+                <ul id="plan-list">
                     @foreach($plans as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -273,17 +273,17 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    <form id="planTypeForm" enctype="multipart/form-data" >
+                    <form id="planTypeForm" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="databasemodel" value="PlanType">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Plan Type Name <span>*</span></label>
-                                <select class="form-control @error('day_type_id') is-invalid @enderror" name="day_type_id" id="plantype_name">
+                                <select class="form-select @error('day_type_id') is-invalid @enderror" name="day_type_id" id="plantype_name">
                                     <option value="">Select Plan Type</option>
-                                    <option value="1" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 1 ? 'selected' : '' }}>Fullday</option>
+                                    <option value="1" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 1 ? 'selected' : '' }}>Full Day</option>
                                     <option value="2" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 2 ? 'selected' : '' }}>First Half</option>
                                     <option value="3" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 3 ? 'selected' : '' }}>Second Half</option>
                                     <option value="4" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 4 ? 'selected' : '' }}>Hourly Slot 1</option>
@@ -327,7 +327,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="seat_color">Select Seat Color <span>*</span></label>
-                                <select name="image" id="seat_color" class="form-control no-validate">
+                                <select name="image" id="seat_color" class="form-select no-validate">
                                     <option value="">Select Color</option>
                                     <option value="orange">Orange</option>
                                     <option value="light_orange">Light Orange</option>
@@ -335,7 +335,7 @@
                                     <option value="blue">Blue</option>
                                 </select>
                             </div>
-                           
+
                             <div class="col-lg-12">
                                 <button type="submit" id="savePlanTypeBtn" class="btn btn-primary button"><i
                                         class="fa fa-plus"></i>
@@ -351,11 +351,11 @@
                             <h4>{{$value->name}}</h4>
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="PlanType" title="Active/Deactive">
-                                    @if($value->deleted_at)
-                                    <i class="fas fa-cross"></i>
-                                    @else
-                                    <i class="fa fa-check"></i>
-                                    @endif</a></li>
+                                        @if($value->deleted_at)
+                                        <i class="fas fa-cross"></i>
+                                        @else
+                                        <i class="fa fa-check"></i>
+                                        @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="plantype_edit" data-id="{{$value->id}}" data-table="PlanType"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="PlanType" title="Delete"><i class="fa fa-trash"></i></a></li>
 
@@ -364,7 +364,7 @@
                     </li>
                     @endforeach
                 </ul>
-               
+
             </div>
         </div>
     </div>
@@ -377,15 +377,15 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    <form id="planPriceForm" enctype="multipart/form-data" >
+                    <form id="planPriceForm" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="databasemodel" value="PlanPrice">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Plan Name <span>*</span></label>
-                                <select name="plan_id" id="price_plan_id" class="form-control @error('plan_id') is-invalid @enderror event">
+                                <select name="plan_id" id="price_plan_id" class="form-select @error('plan_id') is-invalid @enderror event">
                                     <option value="">Select Plan</option>
                                     @foreach ($plans as $value)
                                     <option value="{{ $value->id }}" {{ isset($planPrice) && $planPrice->plan_id == $value->id ? 'selected' : '' }}>
@@ -401,14 +401,14 @@
                             </div>
                             <div class="col-lg-6">
                                 <label> Plan Type<sup class="text-danger">*</sup></label>
-                                <select name="plan_type_id" id="plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror event">
+                                <select name="plan_type_id" id="plan_type_id" class="form-select @error('plan_type_id') is-invalid @enderror event">
                                     <option value="">Select Plan Type</option>
                                     @foreach($plantypes as $planType)
                                     <option value="{{ $planType->id }}" {{ isset($planPrice) && $planPrice->plan_type_id == $planType->id ? 'selected' : '' }}>
                                         {{ $planType->name }}
                                     </option>
                                     @endforeach
-                                 
+
                                 </select>
                                 @error('plan_type_id')
                                 <span class="invalid-feedback" role="alert">
@@ -419,11 +419,11 @@
                             <div class="col-lg-6">
                                 <label for="">Plan Price <span>*</span></label>
                                 <input type="text" name="price" class="form-control digit-only @error('price') is-invalid @enderror" id="price" placeholder="Enter Price" value="{{ old('price', isset($planPrice) ? $planPrice->price : '') }}">
-                            @error('price')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                                @error('price')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
                             </div>
                             <div class="col-lg-12">
                                 <button type="submit" class="btn btn-primary button"><i
@@ -433,7 +433,7 @@
                         </div>
                     </form>
                 </div>
-                <ul  id="planPrice-list">
+                <ul id="planPrice-list">
                     @foreach($planprice as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -442,11 +442,11 @@
                             <h4>{{ $value->planType->name ?? 'N/A' }}</h4>
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="PlanPrice" title="Active/Deactive">
-                                    @if($value->deleted_at)
-                                    <i class="fas fa-cross"></i>
-                                    @else
-                                    <i class="fa fa-check"></i>
-                                    @endif</a></li>
+                                        @if($value->deleted_at)
+                                        <i class="fas fa-cross"></i>
+                                        @else
+                                        <i class="fa fa-check"></i>
+                                        @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="planPrice_edit" data-id="{{$value->id}}" data-table="PlanPrice"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="PlanPrice" title="Delete"><i class="fa fa-trash"></i></a></li>
 
@@ -454,12 +454,12 @@
                         </div>
                     </li>
                     @endforeach
-                   
+
                 </ul>
             </div>
         </div>
     </div>
-    
+
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -468,16 +468,16 @@
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
-                    
-                    <form id="library_expense"  enctype="multipart/form-data">
+
+                    <form id="library_expense" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="id" value="" >
-                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}" >
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="databasemodel" value="Expense">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="class_name"> Expense Name<sup class="text-danger">*</sup> </label>
-                                <input type="text"  name="name" value="" class="form-control @error('name') is-invalid @enderror">
+                                <input type="text" name="name" value="" class="form-control @error('name') is-invalid @enderror">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     {{ $message }}
@@ -497,36 +497,39 @@
                     <li>
                         <div class="d-flex">
                             <h4>{{$value->name}}</h4>
-                            
+
                             <ul>
                                 <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="Expense" title="Active/Deactive">
-                                    @if($value->deleted_at)
-                                    <i class="fas fa-cross"></i>
-                                    @else
-                                    <i class="fa fa-check"></i>
-                                    @endif</a></li>
-                                <li><a href="javascript:void(0)" type="button" class="expense_edit" data-table="Expense"  data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
+                                        @if($value->deleted_at)
+                                        <i class="fas fa-cross"></i>
+                                        @else
+                                        <i class="fa fa-check"></i>
+                                        @endif</a></li>
+                                <li><a href="javascript:void(0)" type="button" class="expense_edit" data-table="Expense" data-id="{{$value->id}}"><i class="fa fa-edit"></i></a></li>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Expense" title="Delete"><i class="fa fa-trash"></i></a></li>
                             </ul>
                         </div>
                     </li>
-                    
+
                     @endforeach
-                    
+
                 </ul>
             </div>
         </div>
     </div>
-    <div class="col-lg-4">
-        @if($seat_button)
-        <a href="{{route('seats')}}" type="button"class="btn btn-primary button">Next<i
-            class="fa fa-arrow-right"></i> </a>
-            
-        @endif
-       
-    </div>
+
 </div>
 
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-4">
+        @if($seat_button)
+        <a href="{{route('seats')}}" type="button" class="btn btn-primary btn-lg button">Take me to My Dashboard <i
+                class="fa fa-arrow-right"></i> </a>
+
+        @endif
+
+    </div>
+</div>
 
 <!-- /.content -->
 @include('master.script')

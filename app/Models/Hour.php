@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Scopes\LibraryScope;
 class Hour extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $guarded = [];
     protected $table = 'hour';
     protected static function booted()

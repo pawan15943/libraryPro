@@ -42,7 +42,11 @@
         <div class="master-box">
             <div class="d-flex">
                 <h4>Add Operating Hours</h4>
-                <i class="fa fa-plus-circle toggle-button"></i>
+               
+                @if($hours->isEmpty())
+                <i class="fa fa-plus-circle toggle-button"></i> 
+                @endif
+                
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
@@ -50,7 +54,7 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
-                        <input type="hidden" name="databasetable" value="hour">
+                        <input type="hidden" name="databasemodel" value="Hour">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Operating Hours <span>*</span></label>
@@ -80,14 +84,14 @@
                         <div class="d-flex">
                             <h4>{{$value->hour}} hours</h4>
                             <ul>
-                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="hour" title="Active/Deactive">
+                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Hour" title="Active/Deactive">
                                         @if($value->deleted_at)
                                         <i class="fas fa-cross"></i>
                                         @else
                                         <i class="fa fa-check"></i>
                                         @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
-                                <li><a href="#"><i class="fa fa-trash"></i></a></li>
+                                
                             </ul>
                         </div>
                     </li>
@@ -101,7 +105,9 @@
         <div class="master-box">
             <div class="d-flex">
                 <h4>Add Library Seats</h4>
+                @if($total_seat==0)
                 <i class="fa fa-plus-circle toggle-button"></i>
+                @endif
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
@@ -110,7 +116,8 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
-                        <input type="hidden" name="databasetable" value="seats">
+                        <input type="hidden" name="databasemodel" value="Seat">
+                        
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Library Seats <span>*</span></label>
@@ -130,6 +137,7 @@
                     </form>
                 </div>
                 <ul>
+                    @if($total_seat>0)
                     <li>
                         <div class="d-flex">
                             <h4>{{($total_seat)}}</h4>
@@ -137,10 +145,12 @@
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
                                 <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}" data-table="Seat"><i class="fa fa-edit"></i></a></li>
 
-                                <li><a href=""><i class="fa fa-trash"></i></a></li>
+                                
                             </ul>
                         </div>
                     </li>
+                    @endif
+                   
                 </ul>
             </div>
         </div>
@@ -149,7 +159,9 @@
         <div class="master-box">
             <div class="d-flex">
                 <h4>Add Extend Days</h4>
+                @if($is_extendday==false)
                 <i class="fa fa-plus-circle toggle-button"></i>
+                @endif
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
@@ -157,7 +169,7 @@
                         @csrf
                         <input type="hidden" name="id" value="">
                         <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
-
+                        <input type="hidden" name="databasemodel" value="Hour">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Extend Days <span>*</span></label>
@@ -177,12 +189,13 @@
                     </form>
                 </div>
                 <ul id="extend-day-list">
+                    @if($is_extendday==true)
                     @foreach($hours as $key => $value)
                     <li>
                         <div class="d-flex">
                             <h4>{{$value->extend_days}} Days</h4>
                             <ul>
-                                <li><a href="#" class="delete" data-id="{{ $value->id }}" data-table="hour" title="Active/Deactive">
+                                <li><a href="#" >
                                         @if($value->deleted_at)
                                         <i class="fas fa-cross"></i>
                                         @else
@@ -194,6 +207,7 @@
                         </div>
                     </li>
                     @endforeach
+                    @endif
 
                 </ul>
             </div>

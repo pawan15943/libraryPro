@@ -143,14 +143,15 @@ class MasterController extends Controller
 
     public function masterPlan(Request $request){
         $plans=Plan::where('library_id',auth()->user()->id)->withTrashed()->get();
-        $hours=DB::table('hour')->where('library_id',auth()->user()->id)->get();
+        $hours=Hour::withTrashed()->get();
         $plantype=PlanType::withTrashed()->where('library_id',auth()->user()->id)->get();
         $plantypes=PlanType::where('library_id',auth()->user()->id)->get();
         $planprice=PlanPrice::withTrashed()->with(['plan', 'planType'])->get();
         $total_seat=Seat::where('library_id',auth()->user()->id)->count();
         $seat_button=Library::where('id',Auth::user()->id)->where('status',1)->exists();
        $expenses=Expense::get();
-        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses'));
+       $is_extendday=Hour::whereNotNull('extend_days')->exists();
+        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses','is_extendday'));
     }
     
     public function storemaster(Request $request, $id = null)
@@ -220,25 +221,7 @@ class MasterController extends Controller
                     $modelInstance=DB::table($table)->where('id', $data['id'])->update($data);
                 }
             }
-            $hourexist = Hour::count();
-            $extendexist = Hour::whereNotNull('extend_days')->count();
-            $seatExist = Seat::count();
-            $plan = Plan::count();
-            $plantype = PlanType::where('library_id', auth()->user()->id) 
-                            ->where(function ($query) {
-                                $query->where('day_type_id', 1)
-                                      ->orWhere('day_type_id', 2)
-                                      ->orWhere('day_type_id', 3);
-                            })
-                            ->count();
-            $planPrice = PlanPrice::count();
-    
-            if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice > 0) {
-                $id=Auth::user()->id;
-                $library=Library::findOrFail($id);
-                $library->status = 1; 
-                $library->save();  
-            }
+            
     
             return response()->json([
                 'success' => true, 
@@ -337,19 +320,26 @@ class MasterController extends Controller
         
     }
 
-    public function activeDeactive(Request $request,$id)
+    public function activeDeactive(Request $request, $id)
     {
-        
-        $modelClass = 'App\\Models\\' . $request->dataTable; // Dynamically build the model class name
+        $modelClass = 'App\\Models\\' . $request->dataTable;
 
-            if (!class_exists($modelClass)) {
-                return response()->json(['status' => 'error', 'message' => 'Invalid model'], 400);
+        if (!class_exists($modelClass)) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid model'], 400);
+        }
+       
+        if ($request->dataTable == 'Hour') {
+            $hour = Hour::find($id);
+            if ($hour) {
+                $hour->update(['extend_days' => null]);
+                return response()->json(['status' => 'success', 'message' => 'Hour successfully updated', 'data_status' => 'updated']);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Hour not found'], 404);
             }
-
+        } else {
             $data = $modelClass::withTrashed()->find($id);
 
             if ($data) {
-              
                 if ($data->trashed()) {
                     $data->restore();
                     $status = 'activated';
@@ -357,13 +347,18 @@ class MasterController extends Controller
                     $data->delete();
                     $status = 'deactivated';
                 }
-            
-                return response()->json(['status' => 'success', 'message' => 'Data successfully ' . $status, 'data_status' => $status]);
-            }else{
-                
-            } return response()->json(['status' => 'error', 'message' => 'Data not found'], 404);
-        
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Data successfully ' . $status,
+                    'data_status' => $status
+                ]);
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'Data not found'], 404);
+            }
+        }
     }
+
 
     protected function conditionFunction(Request $request, $day_type = null)
     {

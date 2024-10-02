@@ -2,9 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Hour;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
 use App\Models\Menu;
+use App\Models\Plan;
+use App\Models\PlanPrice;
+use App\Models\PlanType;
+use App\Models\Seat;
 use Closure;
 use Illuminate\Support\Facades\View;
 
@@ -73,7 +78,8 @@ class LoadMenus
                 $diffInDays = $today->diffInDays($endDate, false);
             }
         
-                  // Share the variables with all views
+            $this->updateLibraryStatus();
+            
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
             View::share('isProfile', $isProfile);
@@ -87,5 +93,31 @@ class LoadMenus
      
          return $next($request);
      }
+
+     protected function updateLibraryStatus()
+    {
+        $hourexist = Hour::count();
+        $extendexist = Hour::whereNotNull('extend_days')->count();
+        $seatExist = Seat::count();
+        $plan = Plan::count();
+        $plantype = PlanType::where('library_id', auth()->user()->id)
+                            ->where(function ($query) {
+                                $query->where('day_type_id', 1)
+                                    ->orWhere('day_type_id', 2)
+                                    ->orWhere('day_type_id', 3);
+                            })
+                            ->count();
+        $planPrice = PlanPrice::count();
+
+        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice > 0) {
+            $id = Auth::user()->id;
+            $library = Library::findOrFail($id);
+
+            if ($library->status != 1) {
+                $library->status = 1;
+                $library->save();
+            }
+        }
+    }
      
 }

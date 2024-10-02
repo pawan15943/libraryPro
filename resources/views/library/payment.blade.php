@@ -35,59 +35,78 @@
 @endif
 <div class="row justify-content-center mb-4 mt-3">
     <div class="col-lg-9">
-        <h4 class="text-center mb-4">Overview Payment</h4>
+        <h4 class="text-center mb-4"> Payment Overview</h4>
         <div class="payment-detaile">
+          
+            @foreach($month as $key => $value)
             <div class="paymentinfo">
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <span>Plan Name</span>
-                            <h4>Basic Plan</h4>
+                            <h4>{{$plan ? $plan->name : $value->plan}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Plan Type</span>
-                            <h4>MONTHLY</h4>
+                            @if($value->month==1)
+                            <h4>{{ 'MONTHLY'}}</h4>
+                            @else
+                            <h4>{{  $value->month}} Months</h4>
+                            @endif
+                          
                         </div>
                         <div class="col-lg-6">
                             <span>Plan Price</span>
-                            <h4>99</h4>
+                            <h4>{{  $value->amount}}</h4>
                         </div>
                         <div class="col-lg-6">
-                            <span>Payment Date</span>
-                            <h4>20-04-2024</h4>
+                            <span>Start Date</span>
+                            <h4>{{  $value->start_date}}</h4>
                         </div>
+                        <small class="status"> <b>Status : </b>
+                            @if($value->status ==1)
+                            <span class=" text-success d-inline">Active</span> 
+                            @else
+                            <span class=" text-danger d-inline">Inactive</span> 
+                            @endif 
+                           
+                        </small>
                     </div>
+                   
                 </div>
+               
             </div>
-
             <div class="payment-information">
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <span>Payment Method</span>
-                        <h4>Phone Pay</h4>
+                        <h4>{{  $value->payment_mode}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <span>Amount Paid</span>
-                        <h4>99</h4>
+                        <h4>{{  $value->amount}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <span>Payment Status</span>
-                        <h4>Success</h4>
+                        @if($value->is_paid ==1)
+                        <span class=" text-success d-inline">Success</span> 
+                        @else
+                        <span class=" text-danger d-inline">Pending</span> 
+                        @endif 
                     </div>
                     <div class="col-lg-6">
                         <span>Transaction Id</span>
-                        <h4>522154892212541522</h4>
+                        <h4>{{  $value->transaction_id}}</h4>
                     </div>
                     <div class="col-lg-6">
-                        <span>Receipt Id</span>
-                        <h4>215214</h4>
+                        <span>Payment Date</span>
+                        <h4>{{  $value->transaction_date}}</h4>
                     </div>
-                    <div class="col-lg-6">
-                        <span>Print Receipt</span>
-                        <h4><a href="">Download</a></h4>
-                    </div>
+                   
                 </div>
             </div>
+            @endforeach
+           
 
 
         </div>

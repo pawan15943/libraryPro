@@ -669,7 +669,7 @@ ul.plan-features li+li {
     display: flex;
     flex-wrap: wrap;
     row-gap: .8rem;
-    column-gap: 5px;
+    column-gap: 7.6px;
 }
 
 .seat {

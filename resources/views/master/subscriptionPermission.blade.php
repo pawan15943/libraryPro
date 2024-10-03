@@ -2,19 +2,6 @@
 
 @section('content')
 
-<!-- Breadcrumb -->
-<div class="row">
-    <div class="d-flex bradcrumb">
-        <h4>Add Library Plan</h4>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Add Library Plan</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
 <!-- Add Library Plan -->
 <div class="card">
     @if(session('success'))
@@ -62,7 +49,7 @@
                     @endforeach
                 </select>
             </div>
-           
+
             <div class="col-lg-12">
                 <div class="buttons form-group">
                     <label for="select-all" class="permission">
@@ -91,39 +78,45 @@
         </div>
     </form>
 </div>
+
 <div>
     @foreach($subscriptions as $subscription)
-        <h4>Permissions for Subscription: {{ $subscription->name }}</h4>
-        @if($subscription->permissions->isEmpty())
-            <p>No permissions available.</p>
-        @else
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($subscription->permissions as $permission)
-                        <tr>
-                            <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->description }}</td>
-                            <td>
-                                
+    <h4 class="py-4">Permissions for Subscription: {{ $subscription->name }}</h4>
+    @if($subscription->permissions->isEmpty())
+    <p>No permissions available.</p>
+    @else
+    <div class="table-responsive">
+        <table class="table text-center datatable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($subscription->permissions as $permission)
+                <tr>
+                    <td>{{ $permission->name }}</td>
+                    <td>{{ $permission->description }}</td>
+                    <td>
+                        <ul class="actionalbls">
+                            <li>
                                 <form action="{{ route('subscriptionPermissions.delete', $permission->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <input type="hidden" value="{{$subscription->id}}" name="subscription_id">
-                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    <button type="submit" ><i class="fa fa-trash"></i></button>
                                 </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        @endif
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
     @endforeach
 </div>
 

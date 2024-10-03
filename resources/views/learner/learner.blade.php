@@ -57,7 +57,7 @@
 </div>
 
 
-<div class="row">
+<div class="row mb-4">
     <div class="col-lg-12">
         <div class="table-responsive mt-4">
             <table class="table text-center datatable" id="datatable">

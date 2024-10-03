@@ -214,13 +214,13 @@ class MasterController extends Controller
                     $modelInstance->update($data);
                 }
             }
-            elseif($request->databasetable){
-                if (empty($data['id'])) {
-                    $modelInstance=DB::table($table)->insert($data);
-                }else {
-                    $modelInstance=DB::table($table)->where('id', $data['id'])->update($data);
-                }
-            }
+            // elseif($request->databasetable){
+            //     if (empty($data['id'])) {
+            //         $modelInstance=DB::table($table)->insert($data);
+            //     }else {
+            //         $modelInstance=DB::table($table)->where('id', $data['id'])->update($data);
+            //     }
+            // }
             
     
             return response()->json([

@@ -27,8 +27,8 @@
                     @foreach($transaction as $key => $value)
                     <tr>
                         <td>1</td>
-                        <td>{{$value->paid_amount}}</td>
-                        <td>{{$value->paid_amount}}</td>
+                        <td>{{$plan ? $plan->name : $value->plan}}</td>
+                        <td>{{$value->amount}}</td>
                         <td>{{$value->payment_mode ? $value->payment_mode : 'NA'}}</td>
                         <td>{{$value->paid_amount}}</td>
                         <td>{{$value->transaction_id ? $value->transaction_id : 'NA'}}</td>
@@ -41,7 +41,19 @@
                         </td>
                         <td>
                             <ul class="actionalbls">
-                                <li><a href=""><i class="fa fa-print"></i></a></li>
+                                <li>
+                                    
+                                <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" id="custId" name="id" value="{{ $value->id }}">
+                                    <input type="hidden"  name="type" value="library">
+
+                                    <button type="submit">
+                                        <i class="fa fa-print"></i> 
+                                    </button>
+                                </form>
+                                
+                                </li>
                             </ul>
                         </td>
                     </tr>

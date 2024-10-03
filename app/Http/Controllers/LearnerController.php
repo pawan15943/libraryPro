@@ -400,10 +400,13 @@ class LearnerController extends Controller
     
     public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1, $filters = [])
     {
-        // Initialize the query using the getAllLearnersByLibrary() method
-        $query = $this->getAllLearnersByLibrary()
-            ->where('learners.status', $status)
-            ->where('learner_detail.status', $detailStatus)
+        
+        $query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+            ->leftJoin('seats', 'learner_detail.seat_id', '=', 'seats.id')
+            ->leftJoin('plans', 'learner_detail.plan_id', '=', 'plans.id')
+            ->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
+            ->where('learners.library_id', Auth::user()->id)
+            ->where('learner_detail.library_id', Auth::user()->id)
             ->select(
                 'plan_types.name as plan_type_name',
                 'plans.name as plan_name',
@@ -419,65 +422,80 @@ class LearnerController extends Controller
                 'learner_detail.status as learner_detail_status',
                 'plan_types.image'
             );
-
+    
         // Apply dynamic filters if provided
         if (!empty($filters)) {
             // Filter by Plan ID
             if (!empty($filters['plan_id'])) {
                 $query->where('learner_detail.plan_id', $filters['plan_id']);
             }
-
+    
             // Filter by Payment Status
             if (!empty($filters['is_paid'])) {
                 $query->where('learner_detail.is_paid', $filters['is_paid']);
             }
-
-            // Filter by Active/Expired Status
+    
+            // If a status filter is provided, apply it and skip the default status conditions
             if (!empty($filters['status'])) {
-                if ($filters['status'] == 'active') {
-                    $query->where('learners.status', 1);
-                } elseif ($filters['status'] == 'expired') {
-                    $query->where('learners.status', 0)
-                        ->orWhere('learner_detail.status', 0);
+                if ($filters['status'] === 'active') {
+                    // Only select active learners and details
+                    $query->where('learners.status', 1)
+                          ->where('learner_detail.status', 1);
+                } elseif ($filters['status'] === 'expired') {
+                    // Only select expired learners or details
+                    $query->where(function ($q) {
+                        $q->where('learners.status', 0)
+                          ->orWhere('learner_detail.status', 0);
+                    });
                 }
+            } else {
+                // Apply default status conditions if no status filter is provided
+                $query->where('learners.status', $status)
+                      ->where('learner_detail.status', $detailStatus);
             }
-
+    
             // Search by Name, Mobile, or Email
             if (!empty($filters['search'])) {
                 $search = $filters['search'];
                 $query->where(function ($q) use ($search) {
                     $q->where('learners.name', 'LIKE', "%{$search}%")
-                    ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
-                    ->orWhere('learners.email', 'LIKE', "%{$search}%");
+                      ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
+                      ->orWhere('learners.email', 'LIKE', "%{$search}%");
                 });
             }
+        } else {
+            // Apply default status conditions if no filters are provided
+            $query->where('learners.status', $status)
+                  ->where('learner_detail.status', $detailStatus);
         }
-
+    
         // If fetching a specific customer
         if ($customerId) {
             $query->where('learners.id', $customerId);
-
+    
             // Handle renew cases
             if ($isRenew) {
                 $query->selectRaw('learner_detail.learner_id, learner_detail.plan_start_date, learner_detail.join_date, learner_detail.plan_end_date, learner_detail.plan_type_id, learner_detail.plan_id, learner_detail.plan_price_id, learner_detail.status, 1 as is_renew');
             } else {
                 $query->selectRaw('learner_detail.learner_id, learner_detail.plan_start_date, learner_detail.join_date, learner_detail.plan_end_date, learner_detail.plan_type_id, learner_detail.plan_id, learner_detail.plan_price_id, learner_detail.status, 0 as is_renew');
             }
-
+    
             $customer = $query->firstOrFail();
-
+    
             if ($customer) {
                 // Format start and end time
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
             }
-
+    
             return $customer;
         }
-
-        // Return the result of the query
+    
+        
         return $query->get();
     }
+    
+
 
 
 

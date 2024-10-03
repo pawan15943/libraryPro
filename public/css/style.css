@@ -1353,7 +1353,7 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
 }
 
 .mCSB_inside>.mCSB_container {
-    margin-right: 10px !important;
+    margin-right: 20px !important;
 }
 
 .dashibox ul p {
@@ -1386,9 +1386,6 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     background: #ffffff20;
 }
 
-.dashibox ul li {
-    border-radius: .5rem;
-    padding: .5rem;
-    background: #ffffff20;
+.dashibox ul li+li {
     margin-top: .5rem;
 }

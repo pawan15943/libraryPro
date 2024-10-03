@@ -2,13 +2,13 @@
 @section('content')
 
 @php
-      use Carbon\Carbon;
-      $today = Carbon::today();
-    $endDate = Carbon::parse($customer->plan_end_date);
-    $diffInDays = $today->diffInDays($endDate, false);
+use Carbon\Carbon;
+$today = Carbon::today();
+$endDate = Carbon::parse($customer->plan_end_date);
+$diffInDays = $today->diffInDays($endDate, false);
 @endphp
 
-               
+
 <input id="plan_type_id" type="hidden" name="plan_type_id" value="{{$customer->plan_type_id }}">
 
 <div class="row">
@@ -69,11 +69,13 @@
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
                     <div class="row">
                         <div class="col-lg-6">
-                            <input type="text" class="form-control "  name="paid_amount" id="paid_amount" value="{{ old('paid_amount', $customer->plan_price_id ) }}" readonly>
+                            <label for="">Plan Price <span>*</span></label>
+                            <input type="text" class="form-control " name="paid_amount" id="paid_amount" value="{{ old('paid_amount', $customer->plan_price_id ) }}" readonly>
 
                         </div>
                         <div class="col-lg-6">
-                            <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="{{ old('paid_date', $customer->paid_date) }}" >
+                            <label for="">Transaction Date <span>*</span></label>
+                            <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="{{ old('paid_date', $customer->paid_date) }}">
                             @error('paid_date')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -83,7 +85,8 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-lg-6">
-                            <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only"  placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}" >
+                            <label for="">Transaction Number <span>*</span></label>
+                            <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
                             @error('transaction_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -91,22 +94,23 @@
                             @enderror
                         </div>
                         <div class="col-lg-6">
-                            <input type="file" class="form-control @error('transaction_image') is-invalid @enderror "  placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}" >
+                            <label for="">Upload Payment Proof <span>*</span></label>
+                            <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">
                             @error('transaction_image')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
-                        
+
                     </div>
-                    
+
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            <input type="submit" class="btn btn-primary btn-block button"  value="Payment">
+                            <input type="submit" class="btn btn-primary btn-block button" value="Payment">
                         </div>
                     </div>
-                    
+
                 </div>
             </form>
         </div>
@@ -122,7 +126,7 @@
     </div>
 </div>
 
-  
+
 
 @include('learner.script')
 

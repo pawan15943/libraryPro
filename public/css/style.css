@@ -555,7 +555,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
 } */
 
 ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
-    padding: .6rem 1rem;
+    padding: .8rem 1rem;
     border-radius: .3rem;
     /* margin-left: 1.5rem; */
     background: #ffffff1a;
@@ -617,7 +617,6 @@ ul.plan-features {
     list-style: none;
     padding: 0;
     margin-top: 1rem;
-    margin-bottom: 2rem !important;
     max-height: 350px;
     overflow: hidden;
 }
@@ -644,6 +643,7 @@ ul.plan-features .d-flex {
 
 ul.plan-features li {
     font-weight: 600;
+    padding: 0 1.5rem;
 }
 
 ul.plan-features li+li {
@@ -1149,13 +1149,19 @@ span.timestamp {
 .payment-detaile {
     border: 1px solid #e7e7e7;
     border-radius: 1rem;
+    background: #fff;
+    box-shadow: 1px 0 20px #00000024;
 }
 
 .paymentinfo {
     padding: 2rem;
     border: 1px solid #e7e7e7 !important;
     border-radius: 1rem;
-    background: #e9e9e9;
+    background: #151f38;
+}
+
+.paymentinfo * {
+    color: #fff !IMPORTANT;
 }
 
 .payment-information {
@@ -1169,7 +1175,7 @@ span.timestamp {
 
 /* Master Design */
 .master-box {
-    background: #dedede;
+    background: #96dee1;
     padding: 1.5rem;
     border-radius: .5rem;
 }
@@ -1193,7 +1199,6 @@ span.timestamp {
     list-style: none;
     margin: 0;
     margin-top: .9rem;
-
     padding: 0;
 }
 
@@ -1332,13 +1337,16 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     height: auto !important;
     display: block;
 }
-.dashibox.h-my{
+
+.dashibox.h-my {
     height: 423px;
     overflow-y: auto;
 }
-.dashibox.h-my h4{
+
+.dashibox.h-my h4 {
     font-size: 1.5rem;
 }
+
 .dashibox ul {
     list-style: none;
     padding: 0;
@@ -1388,4 +1396,23 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
 
 .dashibox ul li+li {
     margin-top: .5rem;
+}
+
+a.btn.btn-primary.button.main {
+    padding: 1rem;
+    border-radius: 2.5rem;
+    font-size: 1.1rem;
+    box-shadow: 1px 0 5px #00000045;
+    transition: all .5s;
+}
+
+a.btn.btn-primary.button.main:hover {
+    background: #000 !important;
+    box-shadow: 1px 0 15px #00000045;
+    transition: all .5s;
+}
+
+ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
+    font-size: .8rem !important;
+    color: #27b8ef;
 }

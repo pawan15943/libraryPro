@@ -1301,15 +1301,30 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     align-items: center;
     width: 500px;
 }
+
 .conatent.flex small {
     font-weight: 700;
     font-size: .8rem;
 }
 
 .dashibox {
-    background: #fff;
+    background: linear-gradient(101deg, #506497, #151f38);
     padding: 1rem;
     border-radius: .8rem;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.dashibox h4 {
+    color: #fff !important;
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+.dashibox span {
+    color: #fff;
 }
 
 .dashibox img {
@@ -1317,7 +1332,13 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     height: auto !important;
     display: block;
 }
-
+.dashibox.h-my{
+    height: 423px;
+    overflow-y: auto;
+}
+.dashibox.h-my h4{
+    font-size: 1.5rem;
+}
 .dashibox ul {
     list-style: none;
     padding: 0;
@@ -1325,13 +1346,22 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     flex-direction: column;
     gap: .8rem;
     margin-bottom: 0px;
+    height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    margin-right: -.5rem;
+}
+
+.mCSB_inside>.mCSB_container {
+    margin-right: 10px !important;
 }
 
 .dashibox ul p {
-    margin: 0 !IMPORTANT;
+    margin: 0 !important;
     font-weight: 700;
     margin-bottom: .2rem !important;
     font-size: 1rem;
+    color: #fff;
 }
 
 
@@ -1339,10 +1369,6 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     gap: .8rem;
     justify-content: flex-start;
     align-items: flex-start;
-}
-
-.dashibox h4 {
-    margin-bottom: 1rem;
 }
 
 .dashibox ul li a {
@@ -1356,7 +1382,13 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
 
 .dashibox ul li {
     border-radius: .5rem;
-    border: 1px solid #d6d6d6;
     padding: .5rem;
-    background: #f5f5f5;
+    background: #ffffff20;
+}
+
+.dashibox ul li {
+    border-radius: .5rem;
+    padding: .5rem;
+    background: #ffffff20;
+    margin-top: .5rem;
 }

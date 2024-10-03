@@ -13,7 +13,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css" />
-
 </head>
 
 <body>
@@ -54,7 +53,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
 
     <!-- Include DataTables JS -->
-   
+
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
     <script>
         $(document).ready(function() {
@@ -311,7 +310,7 @@
             });
         });
     </script>
-
+    
 </body>
 
 </html>

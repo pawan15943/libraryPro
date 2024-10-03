@@ -17,7 +17,7 @@ $hourlyCount = 0;
     }
 </style>
 
-<div class="row">
+<div class="row mb-4">
     <div class="col-lg-12">
         <div class="seat-booking">
 

@@ -3,8 +3,8 @@ $current_route = Route::currentRouteName();
 @endphp
 
 <div class="sidebar">
-    {{-- <h4>Library <b>Pro</b></h4> --}}
-    <ul class="list-unstyled ps-0 mt-4">
+    <!-- <h4>Library <b>Pro</b></h4>  -->
+        <ul class="list-unstyled ps-0 mt-4">
         @foreach($menus as $menu)
             {{-- Check if it's a parent menu and the guard matches --}}
             @if(is_null($menu->parent_id) && ($menu->guard === null || Auth::guard($menu->guard)->check()))

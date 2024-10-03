@@ -34,10 +34,12 @@
     </div>
 </div>
 @endif
+
 <div id="success-message" class="alert alert-success" style="display:none;"></div>
 <div id="error-message" class="alert alert-danger" style="display:none;"></div>
 <!-- Masters -->
-<div class="row g-4 mb-4 mt-2">
+<div class="row g-4 mb-4">
+    <!-- Add Operating Hours -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -97,6 +99,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Library Seats -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -145,6 +149,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Extend Days -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -199,6 +205,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Plan -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -265,6 +273,8 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Plan Type -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -369,6 +379,7 @@
         </div>
     </div>
 
+    <!-- Add Plan price -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -460,6 +471,7 @@
         </div>
     </div>
 
+    <!-- Add Expense -->
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -520,14 +532,12 @@
 
 </div>
 
+<!-- Button -->
 <div class="row justify-content-center mb-4">
     <div class="col-lg-4">
         @if($seat_button)
-        <a href="{{route('seats')}}" type="button" class="btn btn-primary btn-lg button">Take me to My Dashboard <i
-                class="fa fa-arrow-right"></i> </a>
-
+        <a href="{{route('seats')}}" type="button" class="btn btn-primary button main">Take me to My Dashboard </a>
         @endif
-
     </div>
 </div>
 

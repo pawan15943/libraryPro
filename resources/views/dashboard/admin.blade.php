@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
-<div class="row">
+<div class="row g-4">
     <div class="col-lg-6">
         <div class="row g-4">
             <div class="col-lg-6">
@@ -57,7 +57,7 @@
     </div>
     <div class="col-lg-3">
         <div class="dashibox h-my">
-            <h4>Expired in 5 Days</h4>
+            <h4>Upcoming Expirations</h4>
             <span>Show Expired in 5 Days Seats & Extended Seats </span>
             <ul>
                 @foreach($renewSeats as $key => $value)
@@ -71,12 +71,91 @@
                     </div>
                 </li>
                 @endforeach
-
             </ul>
         </div>
     </div>
-
+    <div class="col-lg-3">
+        <div class="dashibox h-my">
+            <h4>Recent Transactions</h4>
+            <ul>
+                @foreach($renewSeats as $key => $value)
+                <li>
+                    <div class="d-flex">
+                        <img src="{{ asset('public/img/available.png') }}" alt="">
+                        <div class="booking">
+                            <p>Seat No. {{$value->seat_no}}</p>
+                            <a href="">Renew Plan</a>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox h-my">
+            <h4>Learner Registrations</h4>
+            <ul>
+                @foreach($renewSeats as $key => $value)
+                <li>
+                    <div class="d-flex">
+                        <img src="{{ asset('public/img/available.png') }}" alt="">
+                        <div class="booking">
+                            <p>Seat No. {{$value->seat_no}}</p>
+                            <a href="">Renew Plan</a>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
 </div>
+<div class="row g-4 mt-2">
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Today Bookings</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Extended Seats</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Paid Online</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Paid Offline</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Overdue Seats</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="dashibox">
+            <span>Expired in 5 Days</span>
+            <h4>{{$total_seats}}</h4>
+        </div>
+    </div>
+    
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <h4 class="py-4">Plan Statistics (Show Plan wise) Graph</h4>
+    </div>
+</div>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>

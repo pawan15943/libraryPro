@@ -30,7 +30,10 @@ class AppServiceProvider extends ServiceProvider
     {
 
         $breadcrumbs = [
+            // Administrator Links
             'home' => ['Dashboard' => route('home')],
+
+            // Library Links
             'library.home' => ['Dashboard' => route('library.home')],
             'profile' => [
                 'Dashboard' => route('home'),
@@ -76,6 +79,22 @@ class AppServiceProvider extends ServiceProvider
                 'Learners List' => route('learners'),
                 'Upgrade Seat' => route('learners.upgrade')
             ],
+            'seats.history' => [
+                'Dashboard' => route('library.home'),
+                'Seat Booking History' => route('seats.history')
+            ],
+            'library.myplan' => [
+                'Dashboard' => route('library.home'),
+                'My Plan' => route('library.myplan')
+            ],
+            'library.transaction' => [
+                'Dashboard' => route('library.home'),
+                'My Payment Transactions' => route('library.transaction')
+            ],
+            'report.monthly' => [
+                'Dashboard' => route('library.home'),
+                'Monthly Revenue Report' => route('report.monthly')
+            ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -96,6 +115,10 @@ class AppServiceProvider extends ServiceProvider
             'learners.edit' => 'Edit Seat Booking Info',
             'learners.swap' => 'Swap Seat',
             'learners.upgrade' => 'Upgrade Seat',
+            'seats.history' => 'Seat Booking History',
+            'library.myplan' => 'My Plan',
+            'library.transaction' => 'My Payment Transactions',
+            'report.monthly' => 'Monthly Revenue Report',
             'c' => 'Configure Library',
         ];
 

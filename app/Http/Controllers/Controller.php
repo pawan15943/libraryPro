@@ -33,23 +33,53 @@ class Controller extends BaseController
     {
         if($request->type=='library'){
             $data = LibraryTransaction::where('id', $request->id)->first();
-            $library_data = Library::where('id', $data->library_id)->where('status', 1)->first();
+            $user = Library::where('id', $data->library_id)->where('status', 1)->first();
+            $transactionDate=$data->transaction_date;
+            $paymentMode=$data->payment_mode;
+            $total_amount=$data->amount;
+            $month=$data->month;
+            $start_date=$data->start_date;
+            $end_date=$data->end_date;
+        }
+        if($request->type=='learner'){
+            $data = LearnerTransaction::where('id', $request->id)->first();
+          
+            $user = Learner::where('id', $data->learner_id)->where('status', 1)->first();
+            $transactionDate=$data->paid_date;
+            $paymentMode='Offline';
+            $total_amount=$data->total_amount;
+            $learnerDeatail = LearnerDetail::where('id', $data->learner_deatail_id)
+            ->with(['plan', 'planType'])
+            ->first();
+        
+            if ($learnerDeatail) {
+                $month = $learnerDeatail->plan ? $learnerDeatail->plan->plan_id : null; // Check if 
+                $start_date = $learnerDeatail->plan_start_date;
+                $end_date = $learnerDeatail->plan_end_date;
+            } else {
+            
+                $month = null;
+                $start_date = null;
+                $end_date = null;
+            }
+        
         }
        
         
         $send_data = [
-            'data' => $library_data,
-            'transactiondate' => $data->transaction_date,
-            'paid_amount' => $data->paid_amount,
-            'payment_mode' => $data->payment_mode ? $data->payment_mode : 'Offline',
-            'invoice_ref_no' => $data->transaction_id ? $data->transaction_id : 'NA',
-            'total_amount' => $data->amount,
-            'start_date' => $data->start_date,
-            'end_date' => $data->end_date,
-            'monthly_amount' => $data->amount,
-            'month' => $data->month,
+            'data' => $user,
+            'transactiondate' => $transactionDate ?? 'NA',
+            'paid_amount' => $data->paid_amount ?? 'NA',
+            'payment_mode' => $paymentMode ?? 'NA',
+            'invoice_ref_no' => $data->transaction_id ?? 'NA',
+            'total_amount' => $total_amount ?? 'NA',
+            'start_date' => $start_date ?? 'NA',
+            'end_date' => $end_date ?? 'NA',
+            'monthly_amount' => $total_amount ?? 'NA',
+            'month' => $month ?? 'NA',
             'currency' => 'Rs.',
         ];
+        
 
         // Generate the PDF without saving it on the server
         $pdf = PDF::loadView('recieptPdf', $send_data);
@@ -216,7 +246,7 @@ class Controller extends BaseController
 
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-        // Validate data
+        
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -263,45 +293,125 @@ class Controller extends BaseController
         } else {
             $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
         }
-
-        $learner = Learner::create([
-            'library_id' => Auth::user()->id,
-            'name' => trim($data['name']),
-            'email' => trim($data['email']),
-            'password' => bcrypt(trim($data['mobile'])),
-            'mobile' => trim($data['mobile']),
-            'dob' => $dob,
-            'hours' => trim($hours),
-            'seat_no' => trim($data['seat_no']),
-            'payment_mode' => $payment_mode,
-            'address' => trim($data['address']),
-        ]);
-    
-        LearnerDetail::create([
-            'learner_id' => $learner->id,
-            'plan_id' => $plan->id,
-            'plan_type_id' => $planType->id,
-            'plan_price_id' => $planPrice->id,
-            'plan_start_date' => $start_date,
-            'plan_end_date' => $endDate,
-            'join_date' => $joinDate,
-            'hour' => $hours,
-            'seat_id' => $seat->id,
-            'library_id' => Auth::user()->id,
-        ]);
+        if($endDate > date('Y-m-d')){
+            $status=1;
+        }else{
+            $status=0;
+        }
 
         $pending_amount = $planPrice->price - trim($data['paid_amount']);
         $paid_date = isset($data['paid_date']) ? $this->parseDate(trim($data['paid_date'])) : $start_date;
+        if($pending_amount<=0){
+            $is_paid=1;
+        }else{
+            $is_paid=0;
+        }
+        
+        $exist_check=Learner::where('library_id',Auth::user()->id)->where('email',trim($data['email']))->exists();
+        if($exist_check){
+            $already_data=LearnerDetail::where('plan_start_date',$start_date)->exists();
+            $learnerData=Learner::where('library_id',Auth::user()->id)->where('email',trim($data['email']))->first();
+            if($already_data){
+                Learner::where('id',$learnerData->id)->update([
+                    'mobile' => trim($data['mobile']),
+                    'dob' => $dob,
+                    'hours' => trim($hours),
+                    'seat_no' => trim($data['seat_no']),
+                    'payment_mode' => $payment_mode,
+                    'address' => trim($data['address']),
+                    'status'=>$status,
+                ]);
+                LearnerDetail::where('learner_id',$learnerData->id)->where('plan_start_date',$start_date)->update([
+                    'plan_id' => $plan->id,
+                    'plan_type_id' => $planType->id,
+                    'plan_price_id' => trim($data['plan_price']),
+                    'plan_start_date' => $start_date,
+                    'plan_end_date' => $endDate,
+                    'join_date' => $joinDate,
+                    'hour' => $hours,
+                    'seat_id' => $seat->id,
+                    'is_paid' => $is_paid,
+                    'status'=>$status,
+                ]);
+                // LearnerTransaction::where('learner_id',$learnerData->id)->update([
+                //     'total_amount' => $planPrice->price,
+                //     'paid_amount' => trim($data['paid_amount']),
+                //     'pending_amount' => $pending_amount,
+                //     'paid_date' => $paid_date,
+                // ]);
 
-        // Create related LearnerTransaction record
-        LearnerTransaction::create([
-            'learner_id' => $learner->id,
-            'library_id' => Auth::user()->id,
-            'total_amount' => $planPrice->price,
-            'paid_amount' => trim($data['paid_amount']),
-            'pending_amount' => $pending_amount,
-            'paid_date' => $paid_date,
-        ]);
+            }else{
+                
+                $learner_detail=LearnerDetail::create([
+                    'learner_id' => $learnerData->id,
+                    'plan_id' => $plan->id,
+                    'plan_type_id' => $planType->id,
+                    'plan_price_id' => trim($data['plan_price']),
+                    'plan_start_date' => $start_date,
+                    'plan_end_date' => $endDate,
+                    'join_date' => $joinDate,
+                    'hour' => $hours,
+                    'seat_id' => $seat->id,
+                    'library_id' => Auth::user()->id,
+                    'is_paid' => $is_paid,
+                    'status'=>$status,
+                ]);
+                LearnerTransaction::create([
+                    'learner_id' => $learnerData->id,
+                    'library_id' => Auth::user()->id,
+                    'learner_deatail_id' => $learner_detail->id,
+                    'total_amount' => $planPrice->price,
+                    'paid_amount' => trim($data['paid_amount']),
+                    'pending_amount' => $pending_amount,
+                    'paid_date' => $paid_date,
+                    'is_paid'=>1
+                ]);
+            }
+
+        }else{
+            $learner = Learner::create([
+                'library_id' => Auth::user()->id,
+                'name' => trim($data['name']),
+                'email' => trim($data['email']),
+                'password' => bcrypt(trim($data['mobile'])),
+                'mobile' => trim($data['mobile']),
+                'dob' => $dob,
+                'hours' => trim($hours),
+                'seat_no' => trim($data['seat_no']),
+                'payment_mode' => $payment_mode,
+                'address' => trim($data['address']),
+                'status'=>$status,
+            ]);
+        
+            $learner_detail=LearnerDetail::create([
+                'learner_id' => $learner->id,
+                'plan_id' => $plan->id,
+                'plan_type_id' => $planType->id,
+                'plan_price_id' => trim($data['plan_price']),
+                'plan_start_date' => $start_date,
+                'plan_end_date' => $endDate,
+                'join_date' => $joinDate,
+                'hour' => $hours,
+                'seat_id' => $seat->id,
+                'library_id' => Auth::user()->id,
+                'is_paid' => $is_paid,
+                'status'=>$status,
+            ]);
+    
+            
+            LearnerTransaction::create([
+                'learner_id' => $learner->id,
+                'library_id' => Auth::user()->id,
+                'learner_deatail_id' => $learner_detail->id,
+                'total_amount' => $planPrice->price,
+                'paid_amount' => trim($data['paid_amount']),
+                'pending_amount' => $pending_amount,
+                'paid_date' => $paid_date,
+                'is_paid'=>1
+            ]);
+        }
+
+       
 
         $successRecords[] = $data;
     }

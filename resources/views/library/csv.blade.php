@@ -25,7 +25,9 @@
         </form>
     </div>
 </div>
-
+<div class="col-lg-3">
+    <a href="{{ asset('sample/sample-file.csv') }}" class="btn btn-primary">Download Sample CSV</a>
+</div>
 
 
 

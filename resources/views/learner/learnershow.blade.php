@@ -145,17 +145,31 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="col-lg-4">
                         <span>Payment Status</span>
                         <h5>
-                            <span class="text-danger">Pending</span> / 
+                            @if($transaction->is_paid==1)
                             <span class="text-success">Paid</span>
+                            @else
+                            <span class="text-danger">Pending</span>
+                            @endif
+                             
+                           
                         </h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Transaction Id</span>
+                        @if($transaction->transaction_id)
+                        <h5>{{$transaction->transaction_id}}</h5>
+                        @else
                         <h5>NA</h5>
+                        @endif
+                        
                     </div>
                     <div class="col-lg-4">
                         <span>Payment Date</span>
+                        @if($transaction->paid_date)
+                        <h5>{{$transaction->paid_date}}</h5>
+                        @else
                         <h5>NA</h5>
+                        @endif
                     </div>
                 </div>
                 <h4 class="mt-4"> Plan Re-New History :</h4>
@@ -176,6 +190,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 </thead>
                                 <tbody>
                                     @foreach($renew_detail as $key => $value)
+                                    @php
+                                        $transactionRenew=App\Models\LearnerTransaction::where('learner_deatail_id',$value->id)->where('is_paid',1)->first();
+                                    @endphp
                                     <tr>
                                         <td>
                                             {{$value->plan->name}} <br> 
@@ -183,7 +200,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                         </td>
                                         <td>{{$value->plan_start_date}}</td>
                                         <td>{{$value->plan_end_date}}</td>
-                                        <td>{{$value->plan_price_id}}</td>
+                                        <td>{{$transactionRenew->total_amount}}</td>
                                        
                                             @if($value->payment_mode == 1)
                                             <td>{{ 'Online' }}</td>
@@ -193,19 +210,28 @@ $diffInDays = $today->diffInDays($endDate, false);
                                             <td>{{ 'Pay Later' }}</td>
                                             
                                             @endif
-                                        
-                                        <td>2024-09-09</td>
+                                        <td>{{$transactionRenew->paid_date}}</td>
+                                       
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
                                                 <li><a href="javascript:;" data-toggle="modal"
                                                         data-target="#bookingDetailsModal"
                                                         title="View Transaction Details"><i
                                                             class="fa-solid fa-eye"></i></a></li>
-                                                <li><a href="" title="Print Receipt"><i
-                                                            class="fa-solid fa-print"></i></a></li>
-                                                <li><a href="" title="Download Receipt"><i
-                                                            class="fa-solid fa-download"></i></a>
+                                                <li>
+                        
+                                                <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <input type="hidden"  name="id" value="{{ $transactionRenew->id }}">
+                                                    <input type="hidden"  name="type" value="learner">
+                
+                                                    <button type="submit">
+                                                        <i class="fa fa-print"></i> 
+                                                    </button>
+                                                </form>
+                                                
                                                 </li>
+                                              
                                             </ul>
                                         </td>
                                     </tr>
@@ -217,6 +243,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                     </div>
                 </div>
+               
                 <h4 class="mt-4"> Seat Previous Booking History</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">

@@ -685,24 +685,28 @@ class LearnerController extends Controller
         $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
        
         //renew History
-        $renew_detail = LearnerDetail::with(['plan', 'planType'])
-        ->where('learner_id', $customerId)
+        $renew_detail = LearnerDetail::where('learner_detail.learner_id', $customerId) 
+        ->with(['plan', 'planType']) 
         ->get();
+
+    
 
         //seat history
         $seat_history = $this->getAllLearnersByLibrary()
         ->where('learners.seat_no', $customer->seat_no)
-        ->where('learners.id', '!=', $customerId) // Exclude the specific customer
+        ->where('learners.id', '!=', $customerId) 
         ->with(['plan', 'planType'])
         ->get();
 
-    
-
+        $transaction = LearnerTransaction::where('learner_id', $customerId)
+        ->orderBy('id', 'DESC') 
+        ->first();
+        $all_transactions=LearnerTransaction::where('learner_id',$customerId)->where('is_paid',1)->get();
     
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history'));
+            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions'));
            
         }
     }
@@ -1126,6 +1130,7 @@ class LearnerController extends Controller
     
         $data['total_amount'] = $total_amount;
         $data['pending_amount'] = $pending_amount;
+        $data['learner_deatail_id'] = $learnerDetail->id;
       
         try {
             $learner_transaction=LearnerTransaction::create($data);

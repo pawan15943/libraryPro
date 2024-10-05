@@ -15,7 +15,7 @@ $current_route = Route::currentRouteName();
                        data-bs-toggle="{{ $menu->children->count() ? 'collapse' : '' }}" 
                        data-bs-target="#menu_{{ $menu->id }}" 
                        aria-expanded="false">
-                        <i class="{{ $menu->icon }}"></i> {{ $menu->name }}
+                        <i class="{{ $menu->icon }} me-2"></i> {{ $menu->name }}
                         @if($menu->children->count())
                             <i class="fa-solid fa-angle-right ms-auto"></i>
                         @endif

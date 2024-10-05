@@ -64,7 +64,17 @@ $diffInDays = $today->diffInDays($endDate, false);
                 @csrf
                 @method('POST')
                 <div class="action-box">
-                    <h4 class="mb-4">Actionables </h4>
+                    <h4 class="mb-4">Actionables <div class="info-container">
+                            <i class="fa-solid fa-circle-info info-icon"></i>
+                            <div class="info-card">
+                                <h3 class="info-title">Payment</h3>
+                                <p class="info-details">Learners can request to change their current
+                                    seat to another available seat. If the requested seat is
+                                    available, the learner’s current seat will be swapped with the
+                                    new one.</p>
+                            </div>
+                        </div>
+                    </h4>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
                     <div class="row">

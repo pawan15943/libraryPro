@@ -10,7 +10,7 @@ $diffInDays = $today->diffInDays($endDate, false);
 if (Route::currentRouteName() == 'learners.upgrade') {
 $displayNone = 'style="display: none;"';
 
-$readonlyStyle = 'pointer-events: none; background-color: #e9ecef;'; 
+$readonlyStyle = 'pointer-events: none; background-color: #e9ecef;';
 
 } else {
 $displayNone = '';
@@ -24,7 +24,7 @@ $readonlyStyle = '';
 <form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
     @csrf
     @method('PUT')
-    
+
     <div class="row">
         <div class="col-lg-9">
             <div class="actions">
@@ -75,14 +75,25 @@ $readonlyStyle = '';
                     </div>
                 </div>
                 <div class="action-box">
-                    <h4 class="mb-4">Actionables</h4>
+                    <h4 class="mb-4">Actionables
+                        <div class="info-container">
+                            <i class="fa-solid fa-circle-info info-icon"></i>
+                            <div class="info-card">
+                                <h3 class="info-title">Upgrade Seat</h3>
+                                <p class="info-details">Learners can request to change their current
+                                    seat to another available seat. If the requested seat is
+                                    available, the learner’s current seat will be swapped with the
+                                    new one.</p>
+                            </div>
+                        </div>
+                    </h4>
                     <div class="row g-4">
                         <input id="edit_seat" type="hidden" name="seat_no" value="{{ old('seat_no', $customer->seat_no) }}">
                         <input type="hidden" name="user_id" value="{{ old('user_id', $customer->id) }}">
-            
+
                         <div class="col-lg-4">
                             <label for=""> Plan <span>*</span></label>
-                            <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id"  style="{{ $readonlyStyle }}">
+                            <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" style="{{ $readonlyStyle }}">
                                 <option value="">Select Plan</option>
                                 @foreach($plans as $key => $value)
                                 <option value="{{ $value->id }}" {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
@@ -96,15 +107,15 @@ $readonlyStyle = '';
                         </div>
                         <div class="col-lg-4">
                             <label for="">Plan Type <span>*</span></label>
-                            <select id="plan_type_id2" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" >
+                            <select id="plan_type_id2" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id">
                                 <option value="">Select Plan Type</option>
                                 @foreach($planTypes as $planType)
-                                    <option value="{{ $planType->id }}"
-                                        {{ old('plan_type_id', $customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
-                                        {{ $planType->name }}
-                                    </option>
+                                <option value="{{ $planType->id }}"
+                                    {{ old('plan_type_id', $customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
+                                    {{ $planType->name }}
+                                </option>
                                 @endforeach
-                                
+
 
                             </select>
                             @error('plan_type_id')
@@ -131,7 +142,7 @@ $readonlyStyle = '';
                             </span>
                             @enderror
                         </div>
-                    
+
                         <div class="col-lg-4">
                             <label for="">Plan End On <span>*</span></label>
                             <input type="date" class="form-control @error('plan_end_date') is-invalid @enderror" placeholder="Plan Starts On" name="plan_end_date" id="plan_end_date" value="{{ old('plan_end_date', $customer->plan_end_date) }}" readonly>
@@ -141,7 +152,7 @@ $readonlyStyle = '';
                             </span>
                             @enderror
                         </div>
-            
+
                     </div>
                     <div class="row mt-4">
                         <div class="col-lg-3">
@@ -161,10 +172,10 @@ $readonlyStyle = '';
             </div>
         </div>
     </div>
-    
+
 </form>
-               
-        
+
+
 
 @include('learner.script')
 @endsection

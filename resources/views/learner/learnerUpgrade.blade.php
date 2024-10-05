@@ -80,10 +80,7 @@ $readonlyStyle = '';
                             <i class="fa-solid fa-circle-info info-icon"></i>
                             <div class="info-card">
                                 <h3 class="info-title">Upgrade Seat</h3>
-                                <p class="info-details">Learners can request to change their current
-                                    seat to another available seat. If the requested seat is
-                                    available, the learner’s current seat will be swapped with the
-                                    new one.</p>
+                                <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
                             </div>
                         </div>
                     </h4>

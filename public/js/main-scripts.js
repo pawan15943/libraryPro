@@ -31,11 +31,8 @@ $(document).ready(function () {
     }
   });
 });
-$(document).ready(function () {
-  $('#sidebar').on('click', function () {
-    $('.sidebar').toggleClass('w-120');
-  });
-});
+
+
 
 $(document).ready(function () {
   // Close other collapsibles when one is opened

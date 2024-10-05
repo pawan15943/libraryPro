@@ -85,11 +85,6 @@
                 }
             });
         });
-        $(document).ready(function() {
-            $('#sidebar').on('click', function() {
-                $('.sidebar').toggleClass('w-120');
-            });
-        });
     </script>
 
     <script>
@@ -310,7 +305,30 @@
             });
         });
     </script>
-    
+    <script>
+        $(document).ready(function() {
+            $('.info-icon').on('click', function() {
+                // Toggle the visibility of the corresponding .info-card
+                $(this).next('.info-card').toggle();
+            });
+        });
+
+        $(document).ready(function() {
+            $('#sidebar').on('click', function() {
+                $('.sidebar').toggleClass('w-120');
+            });
+        });
+
+        $(document).ready(function() {
+            // Show loader on page load
+            $("#loader").show();
+
+            // Hide loader when the page is fully loaded
+            $(window).on("load", function() {
+                $("#loader").fadeOut("slow");
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -12,13 +12,13 @@ use Auth;
 
 class ReportController extends Controller
 {
-    
-  
+
+
 
     public function monthlyReport()
     {
         // Fetch monthly revenues
-        $monthlyRevenues =LearnerDetail::selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
+        $monthlyRevenues = LearnerDetail::selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
             ->groupBy('year', 'month')
             ->get();
 
@@ -27,13 +27,13 @@ class ReportController extends Controller
 
         foreach ($monthlyRevenues as $monthlyRevenue) {
             // Fetch corresponding monthly expenses with MIN(id)
-            $monthlyExpenses = DB::table('monthly_expense')->where('library_id',Auth::user()->id)
+            $monthlyExpenses = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
                 ->selectRaw('MIN(id) as expense_id, year, month, SUM(amount) as total_expenses')
                 ->where('year', $monthlyRevenue->year)
                 ->where('month', $monthlyRevenue->month)
                 ->groupBy('year', 'month')
                 ->first();
-           
+
             // Prepare the report data
             $reportData[] = [
                 'year' => $monthlyRevenue->year,
@@ -43,29 +43,30 @@ class ReportController extends Controller
                 'total_expenses' => $monthlyExpenses->total_expenses ?? 0, // Using 0 if no record is found
             ];
         }
-       
+
         return view('report.monthly_report', ['reportData' => $reportData]);
     }
 
 
-    public function monthlyExpenseCreate($year, $month){
-        $monthlyExpenses = DB::table('monthly_expense')->where('library_id',Auth::user()->id)
-                         ->where('year', $year)
-                         ->where('month', $month)
-                         ->get();
-      
-        $library_revenue=  LearnerDetail::whereMonth('join_date', date('m'))
+    public function monthlyExpenseCreate($year, $month)
+    {
+        $monthlyExpenses = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->get();
+
+        $library_revenue =  LearnerDetail::whereMonth('join_date', date('m'))
             ->whereYear('join_date', date('Y'))
             ->sum('plan_price_id');
-        $expenses=Expense::get();
+        $expenses = Expense::get();
         $revenue_expense = DB::table('monthly_expense')
-        ->join('expenses', 'monthly_expense.expense_id', '=', 'expenses.id')
-        ->where('monthly_expense.library_id', Auth::id()) // Optimized to use Auth::id()
-        ->where('expenses.library_id', Auth::id())
-        ->select('monthly_expense.*', 'expenses.name as expense_name')
-        ->get();
-    
-        return view('report.expense',compact('library_revenue','expenses','monthlyExpenses','year', 'month','revenue_expense'));
+            ->join('expenses', 'monthly_expense.expense_id', '=', 'expenses.id')
+            ->where('monthly_expense.library_id', Auth::id()) // Optimized to use Auth::id()
+            ->where('expenses.library_id', Auth::id())
+            ->select('monthly_expense.*', 'expenses.name as expense_name')
+            ->get();
+
+        return view('report.expense', compact('library_revenue', 'expenses', 'monthlyExpenses', 'year', 'month', 'revenue_expense'));
     }
     public function monthlyExpenseStore(Request $request, $id = null)
     {
@@ -77,15 +78,15 @@ class ReportController extends Controller
             'amount' => 'required|array|min:1', // Ensure at least one amount is provided
             'amount.*' => 'required|numeric|min:0', // Validate each amount element
         ]);
-    
+
         $year = $validatedData['year'];
         $month = $validatedData['month'];
         // delete request id's
-        $existingExpenseIds = DB::table('monthly_expense')->where('library_id',Auth::user()->id)
-        ->where('year', $year)
-        ->where('month', $month)
-        ->pluck('expense_id')
-        ->toArray();
+        $existingExpenseIds = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
+            ->where('year', $year)
+            ->where('month', $month)
+            ->pluck('expense_id')
+            ->toArray();
 
         $expenseIdsToDelete = array_diff($existingExpenseIds, $validatedData['expense_id']);
         if (!empty($expenseIdsToDelete)) {
@@ -97,7 +98,7 @@ class ReportController extends Controller
         }
         foreach ($validatedData['expense_id'] as $index => $expenseId) {
             $amount = $validatedData['amount'][$index];
-    
+
             DB::table('monthly_expense')->updateOrInsert(
                 [
                     'library_id' => Auth::user()->id, // Include library_id
@@ -112,13 +113,10 @@ class ReportController extends Controller
                 ]
             );
         }
-    
+
         return redirect()->route('report.monthly')->with('success', 'Expenses recorded successfully!');
     }
-    
 
 
     
-
-
 }

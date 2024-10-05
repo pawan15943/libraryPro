@@ -30,11 +30,14 @@ class AppServiceProvider extends ServiceProvider
     {
 
         $breadcrumbs = [
+            // Administrator Links
             'home' => ['Dashboard' => route('home')],
+
+            // Library Links
             'library.home' => ['Dashboard' => route('library.home')],
             'profile' => [
                 'Dashboard' => route('home'),
-                'Complete Profile' => route('profile')
+                'Library Profile' => route('profile')
             ],
             'subscriptions.choosePlan' => [
                 'Dashboard' => route('home'),
@@ -76,6 +79,27 @@ class AppServiceProvider extends ServiceProvider
                 'Learners List' => route('learners'),
                 'Upgrade Seat' => route('learners.upgrade')
             ],
+            'seats.history' => [
+                'Dashboard' => route('library.home'),
+                'Seat Booking History' => route('seats.history')
+            ],
+            'library.myplan' => [
+                'Dashboard' => route('library.home'),
+                'My Plan' => route('library.myplan')
+            ],
+            'library.transaction' => [
+                'Dashboard' => route('library.home'),
+                'My Payment Transactions' => route('library.transaction')
+            ],
+            'report.monthly' => [
+                'Dashboard' => route('library.home'),
+                'Monthly Revenue Report' => route('report.monthly')
+            ],
+            // 'report.expense' => [
+            //     'Dashboard' => route('library.home'),
+            //     'Monthly Revenue Report' => route('report.monthly'),
+            //     'Manage Monthly Exapanse' => route('report.expense')
+            // ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -85,9 +109,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Simple logic to convert route name to page title
         $titles = [
+            // Administrator Portal
             'home' => 'Dashboard',
+
+            // Library Portal
             'library.home' => 'Library Dashboard',
-            'profile' => 'Complete Profile',
+            'profile' => 'Library Profile',
             'subscriptions.choosePlan' => 'Choose Plan',
             'subscriptions.payment' => 'Make Payment',
             'seats' => 'Seat Assignment',
@@ -96,10 +123,13 @@ class AppServiceProvider extends ServiceProvider
             'learners.edit' => 'Edit Seat Booking Info',
             'learners.swap' => 'Swap Seat',
             'learners.upgrade' => 'Upgrade Seat',
+            'seats.history' => 'Seat Booking History',
+            'library.myplan' => 'My Plan',
+            'library.transaction' => 'My Payment Transactions',
+            'report.monthly' => 'Monthly Revenue Report',
             'c' => 'Configure Library',
         ];
 
-        // Return title or format from the route name
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));
     }
 }

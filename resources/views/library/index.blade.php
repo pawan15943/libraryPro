@@ -128,9 +128,10 @@
                         </td>
 
                         <td>
+                            
                             <ul class="actionalbls">
                                 <!-- View Library Info -->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-title="View Library Details" data-bs-placement="bottom"><i class="fas fa-eye"></i></a>
+                                <li><a href="{{route('library.show',$value->id)}}" data-bs-toggle="tooltip" data-bs-title="View Library Details" data-bs-placement="bottom"><i class="fas fa-eye"></i></a>
                                 </li>
 
                                 <!-- Edit Library Info -->

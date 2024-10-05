@@ -384,6 +384,18 @@ class LibraryController extends Controller
        
         return view('library.my-plan',compact('data','month','plan'));
     }
+
+    // from superadmin side
+    public function showLibrary($id){
+        $library=Library::findOrFail($id);
+        $plan=Subscription::where('id',$library->library_type)->with('permissions')->first();
+        $library_transaction=LibraryTransaction::where('library_id',$library->library_id)->where('is_paid',1)->orderBy('DESC')->first();
+        $library_all_transaction=LibraryTransaction::where('library_id',$library->library_id)->get();
+        
+        return view('library.view',compact('library','plan','library_transaction','library_all_transaction'));
+    }
+
+   
     
 
 

@@ -47,7 +47,8 @@ Route::post('library/store', [LibraryController::class, 'store'])->name('library
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
-  
+  Route::get('/csv/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
+  Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 
     Route::get('/transaction', [LibraryController::class, 'transaction'])->name('library.transaction'); 
@@ -113,7 +114,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
-    Route::middleware(['role:superadmin|admin'])->group(function () {
+    Route::middleware(['role:superadmin'])->group(function () {
         Route::get('library', [LibraryController::class, 'index'])->name('library');
 
         
@@ -129,6 +130,7 @@ Route::middleware(['auth:web'])->group(function () {
 
         Route::delete('permissions/{permissionId}', [MasterController::class, 'deletePermission'])->name('permissions.delete');
         Route::delete('subscriptionPermissions/{permissionId}', [MasterController::class, 'deleteSubscriptionPermission'])->name('subscriptionPermissions.delete');
+        Route::get('library/show/{id?}', [LibraryController::class, 'showLibrary'])->name('library.show');
         
             
     });

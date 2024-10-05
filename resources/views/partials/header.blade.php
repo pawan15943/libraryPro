@@ -1,3 +1,6 @@
+<div id="loader">
+  <div class="spinner"></div>
+</div>
 <div class="header">
     <div class="d-flex">
         <div class="conatent flex">

@@ -1,9 +1,12 @@
 @extends('layouts.admin')
 @section('content')
 <div class="card">
-    <div class="row">
+    <div class="row mb-4">
         <div class="col-lg-6">
-            <h4>Current Month Revenue for {{ $month }} ({{ $year }})</h4>
+            @php
+            $dt = DateTime::createFromFormat('!m', $month);
+            @endphp
+            <h4>Current Month Revenue for {{ $dt->format('F') }}, {{ $year }}</h4>
         </div>
         <div class="col-lg-6">
             <h4><i class="fa fa-inr"></i> {{ number_format($library_revenue, 2) }}</h4>

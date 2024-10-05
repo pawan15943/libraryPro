@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
             'library.home' => ['Dashboard' => route('library.home')],
             'profile' => [
                 'Dashboard' => route('home'),
-                'Complete Profile' => route('profile')
+                'Library Profile' => route('profile')
             ],
             'subscriptions.choosePlan' => [
                 'Dashboard' => route('home'),
@@ -95,6 +95,11 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Monthly Revenue Report' => route('report.monthly')
             ],
+            // 'report.expense' => [
+            //     'Dashboard' => route('library.home'),
+            //     'Monthly Revenue Report' => route('report.monthly'),
+            //     'Manage Monthly Exapanse' => route('report.expense')
+            // ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -104,9 +109,12 @@ class AppServiceProvider extends ServiceProvider
     {
         // Simple logic to convert route name to page title
         $titles = [
+            // Administrator Portal
             'home' => 'Dashboard',
+
+            // Library Portal
             'library.home' => 'Library Dashboard',
-            'profile' => 'Complete Profile',
+            'profile' => 'Library Profile',
             'subscriptions.choosePlan' => 'Choose Plan',
             'subscriptions.payment' => 'Make Payment',
             'seats' => 'Seat Assignment',
@@ -122,7 +130,6 @@ class AppServiceProvider extends ServiceProvider
             'c' => 'Configure Library',
         ];
 
-        // Return title or format from the route name
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));
     }
 }

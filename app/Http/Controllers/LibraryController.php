@@ -26,22 +26,23 @@ class LibraryController extends Controller
         $this->libraryService = $libraryService;
     }
     
-    public function index(Request $request){
-        $query =  Library::leftJoin('library_transactions', 'libraries.id', '=', 'library_transactions.library_id')
+    public function index(Request $request)
+    {
+        $query = Library::leftJoin('library_transactions', 'libraries.id', '=', 'library_transactions.library_id')
             ->where('library_transactions.is_paid', 1)
-            ->select('libraries.*', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
-            ->groupBy('libraries.id');
-            // Filter by Plan
+            ->select('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
+            ->groupBy('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email');
+    
+        // Filter by Plan
         if ($request->filled('plan_id')) {
             $query->where('libraries.library_type', $request->plan_id);
         }
-
+    
         // Filter by Payment Status
         if ($request->filled('is_paid')) {
             $query->where('is_paid', $request->is_paid);
-           
         }
-
+    
         // Filter by Active/Expired
         if ($request->filled('status')) {
             if ($request->status == 'active') {
@@ -50,22 +51,23 @@ class LibraryController extends Controller
                 $query->where('libraries.status', 0);
             }
         }
-
+    
         // Search by Name, Mobile, or Email
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('libraries.name', 'LIKE', "%{$search}%")
-                ->orWhere('libraries.mobile', 'LIKE', "%{$search}%")
-                ->orWhere('libraries.email', 'LIKE', "%{$search}%");
+                  ->orWhere('libraries.mobile', 'LIKE', "%{$search}%")
+                  ->orWhere('libraries.email', 'LIKE', "%{$search}%");
             });
         }
+    
         $libraries = $query->get();
-
         $plans = Subscription::get();
-        
-        return view('library.index',compact('libraries','plans'));
+    
+        return view('library.index', compact('libraries', 'plans'));
     }
+    
   
 
     public function create(){

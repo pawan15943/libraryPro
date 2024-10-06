@@ -218,6 +218,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                                                         data-target="#bookingDetailsModal"
                                                         title="View Transaction Details"><i
                                                             class="fa-solid fa-eye"></i></a></li>
+                                                            
+                                            @can('has-permission', 'Receipt Generation')
                                                 <li>
                         
                                                 <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
@@ -231,7 +233,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                                 </form>
                                                 
                                                 </li>
-                                              
+                                            @endcan  
                                             </ul>
                                         </td>
                                     </tr>

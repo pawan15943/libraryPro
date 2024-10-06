@@ -492,7 +492,7 @@ class LearnerController extends Controller
         }
     
         
-        return $query->get();
+        return $query->paginate(2);
     }
     
 
@@ -509,8 +509,6 @@ class LearnerController extends Controller
     
         $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
 
-        // $learners =$this->fetchCustomerData(null, null, $status=1, $detailStatus=1);
-        
         $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0);
         $plans = $this->learnerService->getPlans();
         return view('learner.learner', compact('learners','learnerHistory','plans'));

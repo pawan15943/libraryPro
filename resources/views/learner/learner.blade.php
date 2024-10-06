@@ -14,47 +14,59 @@
            
             <form action="{{ route('learners') }}" method="GET">
                 <div class="row">
+                    <!-- Filter By Plan -->
                     <div class="col-lg-3">
-                        <label for="">Filter By Plan</label>
+                        <label for="plan_id">Filter By Plan</label>
                         <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
                             @foreach($plans as $plan)
-                                <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                                <option value="{{ $plan->id }}" {{ request()->get('plan_id') == $plan->id ? 'selected' : '' }}>
+                                    {{ $plan->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- Filter By Payment Status -->
                     <div class="col-lg-3">
-                        <label for="">Filter By Payment Status</label>
+                        <label for="is_paid">Filter By Payment Status</label>
                         <select name="is_paid" id="is_paid" class="form-select">
                             <option value="">Choose Payment Status</option>
-                            <option value="1">Paid</option>
-                            <option value="0">Unpaid</option>
+                            <option value="1" {{ request()->get('is_paid') == '1' ? 'selected' : '' }}>Paid</option>
+                            <option value="0" {{ request()->get('is_paid') == '0' ? 'selected' : '' }}>Unpaid</option>
                         </select>
                     </div>
+
+                    <!-- Filter By Active/Expired Status -->
                     <div class="col-lg-3">
-                        <label for="">Filter By Active / Expired</label>
+                        <label for="status">Filter By Active / Expired</label>
                         <select name="status" id="status" class="form-select">
                             <option value="">Choose Status</option>
-                            <option value="active">Active</option>
-                            <option value="expired">Expired</option>
+                            <option value="active" {{ request()->get('status') == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="expired" {{ request()->get('status') == 'expired' ? 'selected' : '' }}>Expired</option>
                         </select>
                     </div>
+
+                    <!-- Search By Name, Mobile & Email -->
                     <div class="col-lg-3">
-                        <label for="">Search By Name, Mobile &amp; Email</label>
-                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email">
+                        <label for="search">Search By Name, Mobile & Email</label>
+                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email"
+                               value="{{ request()->get('search') }}">
                     </div>
                 </div>
+
                 <div class="row mt-3">
                     <div class="col-lg-2">
-                        <button class="btn btn-primary button"><i class="fa fa-search"></i> Search Records</button>
+                        <button class="btn btn-primary button">
+                            <i class="fa fa-search"></i> Search Records
+                        </button>
                     </div>
-                    
                 </div>
             </form>
         </div>
-        
     </div>
 </div>
+
 
 
 <div class="row mb-4">
@@ -125,23 +137,29 @@
                            
                             <ul class="actionalbls">
                                 <!-- View Seat Info -->
+                                @can('has-permission', 'View Seat')
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-
+                                @endcan
                                 <!-- Edit Seat Info -->
+                                @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
-
+                                @endcan
                                 <!-- Swap Seat-->
-                                @can('has-permission', 'swap_seat')
+                                @can('has-permission', 'Swap Seat')
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
                                @endcan
-                                <!-- Swap Seat-->
+                                <!-- upgrade Seat-->
+                                @can('has-permission', 'Upgrade Seat Plan')
                                 <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-
+                                @endcan
                                 <!-- Close Seat -->
+                                @can('has-permission', 'Close Seat')
                                 <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close"><i class="fas fa-times"></i></a></li>
-
+                                @endcan
                                 <!-- Deletr Seat -->
+                                @can('has-permission', 'Delete Seat')
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
+                                @endcan
                                 <!-- Make payment -->
                                 <li><a href="{{route('learner.payment',$value->id)}}"  title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                                  <!-- Sent Mail -->
@@ -205,7 +223,10 @@
                 </tbody>
                 @endif
             </table>
-
+            <!-- Add pagination links -->
+            <div class="d-flex justify-content-center">
+                {{ $learners->links() }}
+            </div>
 
         </div>
     </div>

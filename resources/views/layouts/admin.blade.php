@@ -319,15 +319,15 @@
             });
         });
 
-        $(document).ready(function() {
-            // Show loader on page load
-            $("#loader").show();
+        // $(document).ready(function() {
+        //     // Show loader on page load
+        //     $("#loader").show();
 
-            // Hide loader when the page is fully loaded
-            $(window).on("load", function() {
-                $("#loader").fadeOut("slow");
-            });
-        });
+        //     // Hide loader when the page is fully loaded
+        //     $(window).on("load", function() {
+        //         $("#loader").fadeOut("slow");
+        //     });
+        // });
     </script>
 </body>
 

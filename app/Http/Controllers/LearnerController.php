@@ -492,7 +492,7 @@ class LearnerController extends Controller
         }
     
         
-        return $query->paginate(2);
+        return $query->paginate(10);
     }
     
 

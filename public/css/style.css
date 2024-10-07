@@ -678,14 +678,15 @@ ul.plan-features li+li {
 
 .seat {
     flex: 0 0 calc(100% / 9);
-    /* For 10 seats per row */
     color: white;
     text-align: center;
-    padding: 0px 20px 5px 20px;
+    padding: 5px 20px 9px 20px;
     margin: 5px;
-    border-radius: 8px;
-    border: 1px solid #d8d8d8;
+    border-radius: 20px;
+    border: 1px solid #ffffff;
     position: relative;
+    background: #fff;
+    box-shadow: 1px 0 5px #00000017;
 }
 
 .seat small {
@@ -698,7 +699,7 @@ ul.plan-features li+li {
 .seat img {
     width: 60px;
     display: block;
-    margin: 0 auto;
+    margin: 5px auto;
 }
 
 .seat ul {
@@ -713,7 +714,7 @@ ul.plan-features li+li {
 }
 
 .seat ul .fa-check-circle {
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 .bookedSeat {
@@ -1449,7 +1450,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border:6px solid #f3f3f3;
+    border: 6px solid #f3f3f3;
     border-radius: 50%;
     border-top: 6px solid #3498db;
     /* You can change the color */

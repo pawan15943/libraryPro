@@ -3,15 +3,88 @@
 
 <!-- Content Header (Page header) -->
 @php
-      use Carbon\Carbon;
-      $current_route = Route::currentRouteName();
+use Carbon\Carbon;
+$current_route = Route::currentRouteName();
 @endphp
+<style>
+    /* Pagination container styling */
+    .pagination-container nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
 
+    /* Styling for the pagination links */
+    .pagination-container a,
+    .pagination-container span {
+        text-decoration: none;
+        padding: 8px 12px;
+        margin: 0 4px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        color: #151f38;
+        transition: background-color 0.3s, color 0.3s;
+        height: 41px ! IMPORTANT;
+        display: inline-flex;
+        border-radius: 2rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Hover effect for pagination links */
+    .pagination-container a:hover {
+        background-color: #007bff;
+        /* Blue background on hover */
+        color: white;
+        /* White text on hover */
+    }
+
+    /* Disabled state styling */
+    .pagination-container span.cursor-not-allowed {
+        background-color: #ffffff;
+        color: #000000;
+        cursor: not-allowed;
+        height: 41px !important;
+        display: inline-block;
+        font-size: 1rem;
+        border-radius: 3rem;
+    }
+
+    /* Active page styling */
+    .pagination-container .bg-blue-500 {
+        background-color: #151f38;
+        color: white;
+        font-weight: bold;
+        border-color: #151f38;
+    }
+
+    .pagination-container a:hover {
+        background-color: #e1e9ff ! important;
+        color: #000000;
+    }
+
+    /* Adjusting spacing for the Previous and Next links */
+    .pagination-container .flex {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Styling for the Previous and Next buttons */
+    .pagination-container .pagination-container a:hover,
+    .pagination-container .pagination-container .bg-blue-500 {
+        text-decoration: none;
+        color: white;
+        /* Make sure the text color stays white on hover */
+    }
+</style>
 <div class="row">
     <div class="col-lg-12">
         <div class="filter-box">
             <h4 class="mb-3">Filter Box</h4>
-           
+
             <form action="{{ route('learners') }}" method="GET">
                 <div class="row">
                     <!-- Filter By Plan -->
@@ -20,9 +93,9 @@
                         <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
                             @foreach($plans as $plan)
-                                <option value="{{ $plan->id }}" {{ request()->get('plan_id') == $plan->id ? 'selected' : '' }}>
-                                    {{ $plan->name }}
-                                </option>
+                            <option value="{{ $plan->id }}" {{ request()->get('plan_id') == $plan->id ? 'selected' : '' }}>
+                                {{ $plan->name }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -51,7 +124,7 @@
                     <div class="col-lg-3">
                         <label for="search">Search By Name, Mobile & Email</label>
                         <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email"
-                               value="{{ request()->get('search') }}">
+                            value="{{ request()->get('search') }}">
                     </div>
                 </div>
 
@@ -84,46 +157,46 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-                
+
                 @if($current_route=='learners')
                 <tbody>
                     @php
-                        $user = Auth::user();
-                        $permissions = $user->subscription ? $user->subscription->permissions : null;
+                    $user = Auth::user();
+                    $permissions = $user->subscription ? $user->subscription->permissions : null;
                     @endphp
 
 
                     @foreach($learners as $key => $value)
-                        @php
-                            $today = Carbon::today();
-                            $endDate = Carbon::parse($value->plan_end_date);
-                            $diffInDays = $today->diffInDays($endDate, false);
-                        @endphp
+                    @php
+                    $today = Carbon::today();
+                    $endDate = Carbon::parse($value->plan_end_date);
+                    $diffInDays = $today->diffInDays($endDate, false);
+                    @endphp
                     <tr>
                         <td>{{$value->seat_no}}<br>
                             <small>{{$value->plan_type_name}}</small>
                         </td>
                         <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                            data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
+                                data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
                             <br> <small>{{$value->dob}}</small>
                         </td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
                                 data-bs-title="{{$value->email }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                    {{$value->email }}</span> <br>
+                                {{$value->email }}</span> <br>
                             <small> +91-{{$value->mobile}}</small>
                         </td>
                         <td>{{$value->plan_start_date}}<br>
                             <small>{{$value->plan_name}}</small>
                         </td>
                         <td>{{$value->plan_end_date}}<br>
-                        @if ($diffInDays > 0)
+                            @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
                                 <small class="text-danger fs-10 d-block">Expired {{ abs($diffInDays) }} days ago</small>
-                            @else
+                                @else
                                 <small class="text-warning fs-10 d-block">Expires today</small>
-                            @endif
+                                @endif
                         </td>
                         <td>
                             @if($value->status==1)
@@ -131,10 +204,10 @@
                             @else
                             <button class="active-status">InActive</button>
                             @endif
-                           
+
                         </td>
                         <td>
-                           
+
                             <ul class="actionalbls">
                                 <!-- View Seat Info -->
                                 @can('has-permission', 'View Seat')
@@ -147,7 +220,7 @@
                                 <!-- Swap Seat-->
                                 @can('has-permission', 'Swap Seat')
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-                               @endcan
+                                @endcan
                                 <!-- upgrade Seat-->
                                 @can('has-permission', 'Upgrade Seat Plan')
                                 <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
@@ -161,9 +234,9 @@
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
                                 @endcan
                                 <!-- Make payment -->
-                                <li><a href="{{route('learner.payment',$value->id)}}"  title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
-                                 <!-- Sent Mail -->
-                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
+                                <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                                <!-- Sent Mail -->
+                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
                                 <!-- Sent Mail -->
                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
 
@@ -176,37 +249,37 @@
                 @if($current_route=='learnerHistory')
                 <tbody>
                     @foreach($learnerHistory as $key => $value)
-                        @php
-                            $today = Carbon::today();
-                            $endDate = Carbon::parse($value->plan_end_date);
-                            $diffInDays = $today->diffInDays($endDate, false);
-                        @endphp
+                    @php
+                    $today = Carbon::today();
+                    $endDate = Carbon::parse($value->plan_end_date);
+                    $diffInDays = $today->diffInDays($endDate, false);
+                    @endphp
 
-                            <tr>
-                            <td>{{$value->seat_no}}<br>
+                    <tr>
+                        <td>{{$value->seat_no}}<br>
                             <small>{{$value->plan_type_name}}</small>
                         </td>
                         <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                            data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
+                                data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
                             <br> <small>{{$value->dob}}</small>
                         </td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
                                 data-bs-title="{{$value->email }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                    {{$value->email }}</span> <br>
+                                {{$value->email }}</span> <br>
                             <small> +91-{{$value->mobile}}</small>
                         </td>
                         <td>{{$value->plan_start_date}}<br>
                             <small>{{$value->plan_name}}</small>
                         </td>
                         <td>{{$value->plan_end_date}}<br>
-                        @if ($diffInDays > 0)
+                            @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
                                 <small class="text-danger fs-10 d-block">Expired {{ abs($diffInDays) }} days ago</small>
-                            @else
+                                @else
                                 <small class="text-warning fs-10 d-block">Expires today</small>
-                            @endif
+                                @endif
                         </td>
                         <td>
                             <button class="active-status">Active</button>
@@ -218,67 +291,67 @@
                         </td>
 
                     </tr>
-                    
+
                     @endforeach
                 </tbody>
                 @endif
             </table>
             <!-- Add pagination links -->
             <div class="d-flex justify-content-center">
-                {{ $learners->links() }}
+                <div class="pagination-container">
+                    {{ $learners->links('vendor.pagination.default') }}
+                </div>
             </div>
 
         </div>
     </div>
 </div>
-           
+
 
 <!-- /.content -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
- 
     $(document).on('click', '.delete-customer', function() {
-    var id = $(this).data('id');
-    var url = '{{ route('learners.destroy', ':id') }}';
-    url = url.replace(':id', id);
+        var id = $(this).data('id');
+        var url = '{{ route('learners.destroy', ': id ') }}';
+        url = url.replace(':id', id);
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    Swal.fire(
-                        'Deleted!',
-                        'User has been deleted.',
-                        'success'
-                    ).then(() => {
-                        location.reload(); // Optionally, you can refresh the page
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire(
-                        'Error!',
-                        'An error occurred while deleting the student.',
-                        'error'
-                    );
-                }
-            });
-        }
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        Swal.fire(
+                            'Deleted!',
+                            'User has been deleted.',
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Optionally, you can refresh the page
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while deleting the student.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
     });
-    });
-
 </script>
 <script>
     function confirmSwap(customerId) {
@@ -315,7 +388,7 @@
             if (result.isConfirmed) {
                 $.ajax({
                     url: url,
-                    type: 'POST',  // Use POST or PATCH for this type of operation
+                    type: 'POST', // Use POST or PATCH for this type of operation
                     data: {
                         _token: '{{ csrf_token() }}',
                         learner_id: learner_id
@@ -326,7 +399,7 @@
                             'The user plan has been closed.',
                             'success'
                         ).then(() => {
-                            location.reload();  // Optionally reload the page after closing the plan
+                            location.reload(); // Optionally reload the page after closing the plan
                         });
                     },
                     error: function(xhr, status, error) {
@@ -345,7 +418,7 @@
     let table = new DataTable('#datatable');
 </script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Get the current URL
         var url = window.location.href;
 

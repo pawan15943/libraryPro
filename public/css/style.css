@@ -1468,3 +1468,16 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
         transform: rotate(360deg);
     }
 }
+
+
+.import-data {
+    background: #fff;
+    padding: 1.5rem 1.5rem;
+    border-radius: 20px;
+    box-shadow: 1px 0 5px #00000029;
+}
+
+.import-data a{
+    text-decoration: none;
+    color: #000;
+}

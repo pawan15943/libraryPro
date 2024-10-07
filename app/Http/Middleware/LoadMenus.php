@@ -85,7 +85,7 @@ class LoadMenus
             View::share('isProfile', $isProfile);
             View::share('isEmailVeri', $isEmailVeri);
             View::share('iscomp', $iscomp);
-            View::share('diffInDays', $diffInDays); // Ensure this is always set
+            View::share('diffInDays', $diffInDays); 
             
         }
         

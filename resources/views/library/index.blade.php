@@ -16,7 +16,9 @@
                         <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
                             @foreach($plans as $plan)
-                                <option value="{{ $plan->id }}">{{ $plan->name }}</option>
+                                <option value="{{ $plan->id }}" {{ old('plan_id', request('plan_id')) == $plan->id ? 'selected' : '' }}>
+                                    {{ $plan->name }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -24,21 +26,21 @@
                         <label for="">Filter By Payment Status</label>
                         <select name="is_paid" id="is_paid" class="form-select">
                             <option value="">Choose Payment Status</option>
-                            <option value="1">Paid</option>
-                            <option value="0">Unpaid</option>
+                            <option value="1" {{ old('is_paid', request('is_paid')) == '1' ? 'selected' : '' }}>Paid</option>
+                            <option value="0" {{ old('is_paid', request('is_paid')) == '0' ? 'selected' : '' }}>Unpaid</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Filter By Active / Expired</label>
                         <select name="status" id="status" class="form-select">
                             <option value="">Choose Status</option>
-                            <option value="active">Active</option>
-                            <option value="expired">Expired</option>
+                            <option value="active" {{ old('status', request('status')) == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="expired" {{ old('status', request('status')) == 'expired' ? 'selected' : '' }}>Expired</option>
                         </select>
                     </div>
                     <div class="col-lg-3">
                         <label for="">Search By Name, Mobile &amp; Email</label>
-                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email">
+                        <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email" value="{{ old('search', request('search')) }}">
                     </div>
                 </div>
                 <div class="row mt-3">
@@ -47,6 +49,7 @@
                     </div>
                 </div>
             </form>
+            
         </div>
         
         

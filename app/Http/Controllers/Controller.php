@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customers;
+use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
 use App\Models\LearnerTransaction;
@@ -23,7 +24,7 @@ use Throwable;
 use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class Controller extends BaseController
 {
@@ -229,20 +230,18 @@ class Controller extends BaseController
             }
         });
 
-        // Handle invalid records
         if (!empty($invalidRecords)) {
-            Log::warning('Invalid Records Found: ', $invalidRecords);
-            return $this->exportCsv($invalidRecords);
+            session(['invalidRecords' => $invalidRecords]); // Persist invalid records in the session
+            return redirect()->back()->with([
+                'successCount' => count($successRecords),
+                'autoExportCsv' => true, // This triggers the CSV download
+            ]);
         }
-
-        // Success message if records were imported
-        if (!empty($successRecords)) {
-            Log::info('CSV file uploaded successfully.');
-            return redirect()->back()->with('success', count($successRecords) . ' records imported successfully.');
-        }
-
-        return redirect()->back()->with('error', 'No records were imported.');
+    
+        // Handle success case
+        return redirect()->back()->with('successCount', count($successRecords));
     }
+    
 
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
@@ -278,8 +277,16 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
             return;
         }
-        if (!$plan || !$planType || !$planPrice) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Plan, Plan type, or Plan price not found']);
+        if (!$plan ) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan  not found']);
+            return;
+        }
+        if (!$planType ) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan type  not found']);
+            return;
+        }
+        if ( !$planPrice) {
+            $invalidRecords[] = array_merge($data, ['error' => ' Plan price not found']);
             return;
         }
 
@@ -293,127 +300,114 @@ class Controller extends BaseController
         } else {
             $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
         }
-        if($endDate > date('Y-m-d')){
-            $status=1;
-        }else{
-            $status=0;
-        }
+        
 
         $pending_amount = $planPrice->price - trim($data['paid_amount']);
         $paid_date = isset($data['paid_date']) ? $this->parseDate(trim($data['paid_date'])) : $start_date;
-        if($pending_amount<=0){
-            $is_paid=1;
-        }else{
-            $is_paid=0;
-        }
+        $status = $endDate > date('Y-m-d') ? 1 : 0;
+        $is_paid = $pending_amount <= 0 ? 1 : 0;
         
-        $exist_check=Learner::where('library_id',Auth::user()->id)->where('email',trim($data['email']))->exists();
-        if($exist_check){
-            $already_data=LearnerDetail::where('plan_start_date',$start_date)->exists();
-            $learnerData=Learner::where('library_id',Auth::user()->id)->where('email',trim($data['email']))->first();
-            if($already_data){
-                Learner::where('id',$learnerData->id)->update([
-                    'mobile' => trim($data['mobile']),
-                    'dob' => $dob,
-                    'hours' => trim($hours),
-                    'seat_no' => trim($data['seat_no']),
-                    'payment_mode' => $payment_mode,
-                    'address' => trim($data['address']),
-                    'status'=>$status,
-                ]);
-                LearnerDetail::where('learner_id',$learnerData->id)->where('plan_start_date',$start_date)->update([
-                    'plan_id' => $plan->id,
-                    'plan_type_id' => $planType->id,
-                    'plan_price_id' => trim($data['plan_price']),
-                    'plan_start_date' => $start_date,
-                    'plan_end_date' => $endDate,
-                    'join_date' => $joinDate,
-                    'hour' => $hours,
-                    'seat_id' => $seat->id,
-                    'is_paid' => $is_paid,
-                    'status'=>$status,
-                ]);
-                // LearnerTransaction::where('learner_id',$learnerData->id)->update([
-                //     'total_amount' => $planPrice->price,
-                //     'paid_amount' => trim($data['paid_amount']),
-                //     'pending_amount' => $pending_amount,
-                //     'paid_date' => $paid_date,
-                // ]);
-
-            }else{
-                
-                $learner_detail=LearnerDetail::create([
-                    'learner_id' => $learnerData->id,
-                    'plan_id' => $plan->id,
-                    'plan_type_id' => $planType->id,
-                    'plan_price_id' => trim($data['plan_price']),
-                    'plan_start_date' => $start_date,
-                    'plan_end_date' => $endDate,
-                    'join_date' => $joinDate,
-                    'hour' => $hours,
-                    'seat_id' => $seat->id,
-                    'library_id' => Auth::user()->id,
-                    'is_paid' => $is_paid,
-                    'status'=>$status,
-                ]);
-                LearnerTransaction::create([
-                    'learner_id' => $learnerData->id,
-                    'library_id' => Auth::user()->id,
-                    'learner_deatail_id' => $learner_detail->id,
-                    'total_amount' => $planPrice->price,
-                    'paid_amount' => trim($data['paid_amount']),
-                    'pending_amount' => $pending_amount,
-                    'paid_date' => $paid_date,
-                    'is_paid'=>1
-                ]);
-            }
-
-        }else{
-            $learner = Learner::create([
-                'library_id' => Auth::user()->id,
-                'name' => trim($data['name']),
-                'email' => trim($data['email']),
-                'password' => bcrypt(trim($data['mobile'])),
-                'mobile' => trim($data['mobile']),
-                'dob' => $dob,
-                'hours' => trim($hours),
-                'seat_no' => trim($data['seat_no']),
-                'payment_mode' => $payment_mode,
-                'address' => trim($data['address']),
-                'status'=>$status,
-            ]);
         
-            $learner_detail=LearnerDetail::create([
-                'learner_id' => $learner->id,
-                'plan_id' => $plan->id,
-                'plan_type_id' => $planType->id,
-                'plan_price_id' => trim($data['plan_price']),
-                'plan_start_date' => $start_date,
-                'plan_end_date' => $endDate,
-                'join_date' => $joinDate,
-                'hour' => $hours,
-                'seat_id' => $seat->id,
-                'library_id' => Auth::user()->id,
-                'is_paid' => $is_paid,
-                'status'=>$status,
-            ]);
-    
-            
-            LearnerTransaction::create([
-                'learner_id' => $learner->id,
-                'library_id' => Auth::user()->id,
-                'learner_deatail_id' => $learner_detail->id,
-                'total_amount' => $planPrice->price,
-                'paid_amount' => trim($data['paid_amount']),
-                'pending_amount' => $pending_amount,
-                'paid_date' => $paid_date,
-                'is_paid'=>1
-            ]);
-        }
-
        
+        if ($status == 1) {
+            // Check if the learner already exists with active status
+            $alreadyLearner = Learner::where('library_id', Auth::user()->id)
+                ->where('email', trim($data['email']))
+                ->where('status', 1)
+                ->exists();
+        
+            if ($alreadyLearner) {
+                $invalidRecords[] = array_merge($data, ['error' => 'This data already exists']);
+                return;
+            } else {
+                // Check if seat is already occupied
+                if (Learner::where('library_id', Auth::user()->id)
+                    ->where('seat_no', trim($data['seat_no']))
+                    ->where('status', 1)
+                    ->exists()) {
+                        
+                    $first_record = Hour::first();
+                    $total_hour = $first_record ? $first_record->hour : null;
+                    $hours = PlanType::where('id', $planType->id)->value('slot_hours');
+        
+                    // Check if total hours exceed allowed hours
+                    if ((Learner::where('seat_no', trim($data['seat_no']))
+                        ->where('learners.status', 1)
+                        ->sum('hours') + $hours) > $total_hour) {
+        
+                        $invalidRecords[] = array_merge($data, ['error' => 'Your plan type exceeds the library total hours']);
+                        return;
+                    } else {
+                        // Create new learner and associated records
+                        $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
+                    }
+                } else {
+                    // If seat is not occupied, directly create learner
+                    $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
+                }
+            }
+        } else {
+            // Handling non-active status (status != 1)
+            $exist_check = Learner::where('library_id', Auth::user()->id)
+                ->where('email', trim($data['email']))
+                ->exists();
+        
+            if (Learner::where('library_id', Auth::user()->id)
+                ->where('email', trim($data['email']))
+                ->where('status', 1)
+                ->exists()) {
+                
+                $invalidRecords[] = array_merge($data, ['error' => 'You are already active']);
+                return;
+            } elseif ($exist_check) {
+                // Check if learner exists and update data
+                $already_data = LearnerDetail::where('plan_start_date', $start_date)->exists();
+                $learnerData = Learner::where('library_id', Auth::user()->id)
+                    ->where('email', trim($data['email']))
+                    ->first();
+        
+                if ($already_data) {
+                    // Update existing learner and learner detail
+                    $this->updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid);
+                } else {
+                    // Create learner details for the existing learner
+                    $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
+                }
+            } else {
+                // Create a new learner if they don't exist
+                $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
+            }
+        }
 
         $successRecords[] = $data;
+    }
+
+    public function exportCsv()
+    {
+        $invalidRecords = session('invalidRecords', []);
+
+        if (empty($invalidRecords)) {
+            return redirect()->back()->with('error', 'No invalid records found for export.');
+        }
+
+        $headers = ['Content-Type' => 'text/csv', 'Content-Disposition' => 'attachment; filename="invalid_records.csv"'];
+
+        $callback = function () use ($invalidRecords) {
+            $file = fopen('php://output', 'w');
+
+            // Set the headers for the CSV
+            $headerRow = array_keys(reset($invalidRecords));
+            fputcsv($file, $headerRow);
+
+            // Write each record to the CSV
+            foreach ($invalidRecords as $record) {
+                fputcsv($file, $record);
+            }
+
+            fclose($file);
+        };
+
+        return new StreamedResponse($callback, 200, $headers);
     }
 
     protected function parseDate($date)
@@ -439,23 +433,80 @@ class Controller extends BaseController
         };
     }
 
-    private function exportCsv(array $invalidRecords)
-    {
-        $filename = 'invalid_records_' . now()->format('Y_m_d_H_i_s') . '.csv';
-        $header = array_keys($invalidRecords[0]);
+    
+    function createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date) {
+        $learner = Learner::create([
+            'library_id' => Auth::user()->id,
+            'name' => trim($data['name']),
+            'email' => trim($data['email']),
+            'password' => bcrypt(trim($data['mobile'])),
+            'mobile' => trim($data['mobile']),
+            'dob' => $dob,
+            'hours' => trim($hours),
+            'seat_no' => trim($data['seat_no']),
+            'payment_mode' => $payment_mode,
+            'address' => trim($data['address']),
+            'status' => $status,
+        ]);
+    
+        $this->createLearnerDetail($learner->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
+    
+        return $learner;
+    }
 
-        $output = fopen('php://output', 'w');
-
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment; filename="' . $filename . '"');
-
-        fputcsv($output, $header);
-        foreach ($invalidRecords as $record) {
-            fputcsv($output, $record);
-        }
-
-        fclose($output);
-        exit;
+    function createLearnerDetail($learner_id, $plan,  $status,$planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date) {
+        $learner_detail = LearnerDetail::create([
+            'learner_id' => $learner_id,
+            'plan_id' => $plan->id,
+            'plan_type_id' => $planType->id,
+            'plan_price_id' => trim($data['plan_price']),
+            'plan_start_date' => $start_date,
+            'plan_end_date' => $endDate,
+            'join_date' => $joinDate,
+            'hour' => $hours,
+            'seat_id' => $seat->id,
+            'library_id' => Auth::user()->id,
+            'is_paid' => $is_paid,
+            'status' => $status,
+        ]);
+    
+        LearnerTransaction::create([
+            'learner_id' => $learner_id,
+            'library_id' => Auth::user()->id,
+            'learner_deatail_id' => $learner_detail->id,
+            'total_amount' => $planPrice->price,
+            'paid_amount' => trim($data['paid_amount']),
+            'pending_amount' => $pending_amount,
+            'paid_date' => $paid_date,
+            'is_paid' => 1
+        ]);
+    }
+    
+    function updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid) {
+        Learner::where('id', $learnerData->id)->update([
+            'mobile' => trim($data['mobile']),
+            'dob' => $dob,
+            'hours' => trim($hours),
+            'seat_no' => trim($data['seat_no']),
+            'payment_mode' => $payment_mode,
+            'address' => trim($data['address']),
+            'status' => $status,
+        ]);
+    
+        LearnerDetail::where('learner_id', $learnerData->id)
+            ->where('plan_start_date', $start_date)
+            ->update([
+                'plan_id' => $plan->id,
+                'plan_type_id' => $planType->id,
+                'plan_price_id' => trim($data['plan_price']),
+                'plan_start_date' => $start_date,
+                'plan_end_date' => $endDate,
+                'join_date' => $joinDate,
+                'hour' => $hours,
+                'seat_id' => $seat->id,
+                'is_paid' => $is_paid,
+                'status' => $status,
+            ]);
     }
 
 

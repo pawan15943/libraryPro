@@ -6,9 +6,18 @@
         <div class="conatent flex">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$diffInDays}} Days</small>
-            @if($diffInDays<=5)
-                <a href="{{route('library.home')}}" type="button" class="btn btn-primary button">Renew Plan</a>
-                @endif
+            @if($diffInDays <= 5 && $diffInDays >= 0)
+            <script>
+               
+                window.onload = function() {
+                    setTimeout(function() {
+                        alert('Your library plan will expire in {{ $diffInDays }} days. Please consider renewing your plan!');
+                    }, 1000); // Show popup 1 second after page loads
+                };
+            </script>
+            
+            <a href="{{ route('library.home') }}" type="button" class="btn btn-primary button">Renew Plan</a>
+        @endif
         </div>
         <div class="profile">
             <div class="dropdown">

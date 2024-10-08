@@ -25,7 +25,7 @@
                     <div class="col-lg-12">
                         <label for="">Select File</label>
                         <input type="file" class="form-control" name="csv_file">
-                        <a href="{{ asset('sample/sample-file.csv') }}"><small>Download Sample CSV Fil</small></a>
+                        <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample CSV Fil</small></a>
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
@@ -45,14 +45,7 @@
     </div>
 @endif
 
-{{-- Error Display --}}
-@if($errors->any())
-    <div class="alert alert-danger">
-        @foreach ($errors->all() as $error)
-            <p>{{ $error }}</p>
-        @endforeach
-    </div>
-@endif
+
 
 {{-- Display Invalid Records --}}
 @if(session('invalidRecords') && count(session('invalidRecords')) > 0)

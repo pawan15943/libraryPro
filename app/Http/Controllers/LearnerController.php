@@ -400,7 +400,8 @@ class LearnerController extends Controller
     
     public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1, $filters = [])
     {
-        
+       
+      
         $query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
             ->leftJoin('seats', 'learner_detail.seat_id', '=', 'seats.id')
             ->leftJoin('plans', 'learner_detail.plan_id', '=', 'plans.id')
@@ -471,6 +472,8 @@ class LearnerController extends Controller
     
         // If fetching a specific customer
         if ($customerId) {
+     
+          
             $query->where('learners.id', $customerId);
     
             // Handle renew cases
@@ -487,17 +490,15 @@ class LearnerController extends Controller
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
             }
-    
+           
             return $customer;
         }
-    
         
+        
+       
         return $query->paginate(perPage: 10);
     }
     
-
-
-
 
     public function learnerList(Request $request){
         $filters = [
@@ -509,9 +510,24 @@ class LearnerController extends Controller
     
         $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
 
-        $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0);
+       
         $plans = $this->learnerService->getPlans();
-        return view('learner.learner', compact('learners','learnerHistory','plans'));
+        return view('learner.learner', compact('learners','plans'));
+        
+    }
+    public function learnerHistory(Request $request){
+        $filters = [
+            'plan_id' => $request->get('plan_id'),
+            'is_paid' => $request->get('is_paid'),
+            'status'  => $request->get('status'),
+            'search'  => $request->get('search'),
+        ];
+    
+       
+
+        $learnerHistory = $this->fetchCustomerData(null, null, $status=0, $detailStatus=0,$filters);
+        $plans = $this->learnerService->getPlans();
+        return view('learner.learnerHistory', compact('learnerHistory','plans'));
         
     }
     //learner Edit and Upgrade
@@ -763,16 +779,18 @@ class LearnerController extends Controller
        
         $customerId = $request->id ?? $id;
         $is_renew = $this->learnerService->getRenewalStatus($customerId);
-        
+       
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
         $available_seat = $this->learnerService->getAvailableSeats();
        
-        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=0, $detailStatus=0);
-       
+        $customer = $this->fetchCustomerData($customerId, false, $status=0, $detailStatus=0);
+      
         if ($request->expectsJson() || $request->has('id')) {
+           
             return response()->json($customer);
         } else {
+           
             return view('learner.learnerEdit', compact('customer', 'plans', 'planTypes','available_seat'));
         }
     }

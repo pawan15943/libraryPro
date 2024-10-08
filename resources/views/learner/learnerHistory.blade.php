@@ -85,7 +85,7 @@ $current_route = Route::currentRouteName();
         <div class="filter-box">
             <h4 class="mb-3">Filter Box</h4>
 
-            <form action="{{ route('learners') }}" method="GET">
+            <form action="{{ route('learnerHistory') }}" method="GET">
                 <div class="row">
                     <!-- Filter By Plan -->
                     <div class="col-lg-3">
@@ -158,19 +158,15 @@ $current_route = Route::currentRouteName();
                     </tr>
                 </thead>
 
+               
                 <tbody>
-                    @php
-                    $user = Auth::user();
-                    $permissions = $user->subscription ? $user->subscription->permissions : null;
-                    @endphp
-
-
-                    @foreach($learners as $key => $value)
+                    @foreach($learnerHistory as $key => $value)
                     @php
                     $today = Carbon::today();
                     $endDate = Carbon::parse($value->plan_end_date);
                     $diffInDays = $today->diffInDays($endDate, false);
                     @endphp
+
                     <tr>
                         <td>{{$value->seat_no}}<br>
                             <small>{{$value->plan_type_name}}</small>
@@ -198,62 +194,24 @@ $current_route = Route::currentRouteName();
                                 @endif
                         </td>
                         <td>
-                            @if($value->status==1)
                             <button class="active-status">Active</button>
-                            @else
-                            <button class="active-status">InActive</button>
-                            @endif
-
                         </td>
                         <td>
-
-                            <ul class="actionalbls">
-                                <!-- View Seat Info -->
-                                @can('has-permission', 'View Seat')
-                                <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-                                @endcan
-                                <!-- Edit Seat Info -->
-                                @can('has-permission', 'Edit Seat')
-                                <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
-                                @endcan
-                                <!-- Swap Seat-->
-                                @can('has-permission', 'Swap Seat')
-                                <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-                                @endcan
-                                <!-- upgrade Seat-->
-                                @can('has-permission', 'Upgrade Seat Plan')
-                                <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-                                @endcan
-                                <!-- Close Seat -->
-                                @can('has-permission', 'Close Seat')
-                                <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close"><i class="fas fa-times"></i></a></li>
-                                @endcan
-                                <!-- Deletr Seat -->
-                                @can('has-permission', 'Delete Seat')
-                                <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
-                                @endcan
-                                @if($value->status==0)
-                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li> 
-                                @endif
-                                <!-- Make payment -->
-                                <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
-                                <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
-                                <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
-
+                            <ul class="actionables">
+                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                             </ul>
                         </td>
+
                     </tr>
+
                     @endforeach
                 </tbody>
               
-               
             </table>
             <!-- Add pagination links -->
             <div class="d-flex justify-content-center">
                 <div class="pagination-container">
-                    {{ $learners->links('vendor.pagination.default') }}
+                    {{ $learnerHistory->links('vendor.pagination.default') }}
                 </div>
             </div>
 

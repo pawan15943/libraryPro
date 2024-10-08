@@ -85,7 +85,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::prefix('library/learners')->group(function () {
       Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
       Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
-      Route::get('/history/list', [LearnerController::class, 'learnerList'])->name('learnerHistory');
+      Route::get('/history/list', [LearnerController::class, 'learnerHistory'])->name('learnerHistory');
       Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
       Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
       Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
@@ -113,7 +113,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
    Route::get('getPricePlanwiseUpgrade', [LearnerController::class, 'getPricePlanwiseUpgrade'])->name('getPricePlanwiseUpgrade');
 });
 // Routes for superadmin and admin users
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web','no-cache'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
@@ -138,7 +138,7 @@ Route::middleware(['auth:web'])->group(function () {
     });
 });
 
-Route::middleware(['auth:learner'])->group(function () {
+Route::middleware(['auth:learner','no-cache'])->group(function () {
   Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');
 });
 

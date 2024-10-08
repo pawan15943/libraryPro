@@ -113,7 +113,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
    Route::get('getPricePlanwiseUpgrade', [LearnerController::class, 'getPricePlanwiseUpgrade'])->name('getPricePlanwiseUpgrade');
 });
 // Routes for superadmin and admin users
-Route::middleware(['auth:web','no-cache'])->group(function () {
+Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {

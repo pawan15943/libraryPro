@@ -76,7 +76,10 @@ class LoadMenus
                 $today = Carbon::today();
                 $endDate = Carbon::parse($value->end_date);
                 $librarydiffInDays = $today->diffInDays($endDate, false);
+            }else{
+                $librarydiffInDays=0;
             }
+            
         
             $this->updateLibraryStatus();
             

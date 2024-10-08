@@ -140,12 +140,10 @@ $current_route = Route::currentRouteName();
     </div>
 </div>
 
-
-
 <div class="row mb-4">
     <div class="col-lg-12">
         <div class="table-responsive mt-4">
-            <table class="table text-center datatable" id="datatable">
+            <table class="table text-center datatable" >
                 <thead>
                     <tr>
                         <th>Seat No.</th>
@@ -209,9 +207,9 @@ $current_route = Route::currentRouteName();
 
                             <ul class="actionalbls">
                                 <!-- View Seat Info -->
-                                {{-- @can('has-permission', 'View Seat') --}}
+                                @can('has-permission', 'View Seat')
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-                                {{-- @endcan --}}
+                                @endcan
                                 <!-- Edit Seat Info -->
                                 @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
@@ -264,113 +262,8 @@ $current_route = Route::currentRouteName();
 
 <!-- /.content -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    $(document).on('click', '.delete-customer', function() {
-        var id = $(this).data('id');
-        var url = '{{ route('learners.destroy', ': id ') }}';
-        url = url.replace(':id', id);
 
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: url,
-                    type: 'DELETE',
-                    data: {
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        Swal.fire(
-                            'Deleted!',
-                            'User has been deleted.',
-                            'success'
-                        ).then(() => {
-                            location.reload(); // Optionally, you can refresh the page
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while deleting the student.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        });
-    });
-</script>
-<script>
-    function confirmSwap(customerId) {
-        const form = document.getElementById(`swap-seat-form-${customerId}`);
-        const oldSeat = document.getElementById(`old-seat-${customerId}`).value;
-        const newSeatSelect = document.getElementById(`new-seat-${customerId}`);
-        const newSeat = newSeatSelect.options[newSeatSelect.selectedIndex].text;
 
-        // Confirm message with old seat and new seat details
-        const confirmation = confirm(`Are you sure you want to swap from seat ${oldSeat} to seat ${newSeat}?`);
-
-        if (confirmation) {
-            form.submit();
-        } else {
-            // Reset the dropdown to prevent accidental changes
-            newSeatSelect.value = '';
-        }
-    }
-</script>
-<script>
-    $(document).on('click', '.link-close-plan', function() {
-        const learner_id = this.getAttribute('data-id');
-        var url = '{{ route('learners.close') }}'; // Adjust the route as necessary
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, close it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: url,
-                    type: 'POST', // Use POST or PATCH for this type of operation
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        learner_id: learner_id
-                    },
-                    success: function(response) {
-                        Swal.fire(
-                            'Closed!',
-                            'The user plan has been closed.',
-                            'success'
-                        ).then(() => {
-                            location.reload(); // Optionally reload the page after closing the plan
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while closing the plan.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        });
-    });
-</script>
-<script>
-    let table = new DataTable('#datatable');
-</script>
 <script>
     $(document).ready(function() {
         // Get the current URL
@@ -383,4 +276,6 @@ $current_route = Route::currentRouteName();
         }
     });
 </script>
+
+@include('learner.script')
 @endsection

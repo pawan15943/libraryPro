@@ -134,11 +134,11 @@
         // Fetch Permissions for Selected Subscription
         $('#subscription-select').on('change', function() {
             let subscriptionId = $(this).val();
-
+            console.log(subscriptionId);
 
             if (subscriptionId) {
 
-                let url = '{{ route("subscriptions.permissions", ":id") }}';
+                let url = '{{ route("subscriptions.getPermissions", ":id") }}';
                 url = url.replace(':id', subscriptionId);
 
                 $.ajax({
@@ -146,12 +146,17 @@
                     type: 'GET',
                     success: function(data) {
                         console.log(data);
+                        
                         // Uncheck all checkboxes first
                         $('input[type="checkbox"]').prop('checked', false);
 
                         // Loop through the permissions and check the ones that are assigned
                         $('input[type="checkbox"]').each(function() {
-                            if (data.permissions.includes($(this).val())) {
+                            // Convert checkbox value to an integer for comparison
+                            var checkboxValue = parseInt($(this).val(), 10);
+
+                            // Compare the checkbox value with the permissions array
+                            if (data.permissions.includes(checkboxValue)) {
                                 $(this).prop('checked', true);
                             }
                         });
@@ -167,4 +172,5 @@
         });
     });
 </script>
+
 @endsection

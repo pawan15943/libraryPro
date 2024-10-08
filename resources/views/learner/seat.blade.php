@@ -168,7 +168,7 @@ $hourlyCount = 0;
                         <input type="hidden" name="seat_id" value="" id="seat_id">
                         <input type="hidden" class="form-control char-only" name="seat_no" value="" id="seat_no"
                             autocomplete="off">
-                        <h4 class="pb-4 m-0">Leraners Information</h4>
+                        
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <label for="">Full Name <span>*</span></label>
@@ -186,9 +186,7 @@ $hourlyCount = 0;
                                 <label for="">Email Id <span>*</span></label>
                                 <input type="text" class="form-control" name="email" id="email">
                             </div>
-                        </div>
-                        <h4 class="py-4 m-0">Plan Information</h4>
-                        <div class="row g-4">
+                        
                             <div class="col-lg-4">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select name="plan_id" id="plan_id" class="form-select" name="plan_id">
@@ -216,13 +214,13 @@ $hourlyCount = 0;
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Plan Ends On <span></span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_end_date" id="plan_start_date" readonly>
+                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_end_date" id="plan_end_date" disabled>
                             </div>
 
 
                             <div class="col-lg-4">
                                 <label for="">Payment Mode <span>*</span></label>
-                                <select name="payment_mode" id="payment_mode" class="form-control">
+                                <select name="payment_mode" id="payment_mode" class="form-select">
                                     <option value="">Select Payment Mode</option>
                                     <option value="1">Online</option>
                                     <option value="2">Offline</option>
@@ -230,20 +228,20 @@ $hourlyCount = 0;
                                 </select>
                             </div>
                         </div>
-                        <h4 class="py-4 m-0">Id Proof Upload
+                        <h4 class="py-4 m-0">Other Important Info 
                             <i id="toggleIcon" class="fa fa-plus" style="cursor: pointer;"></i>
                         </h4>
                         <div id="idProofFields" style="display: none;">
                             <div class="row g-4">
                                 <div class="col-lg-6">
                                     <label for="">Id Proof Received </label>
-                                    <select name="" id="id_proof_name" class="form-control" name="id_proof_name">
+                                    <select name="" id="id_proof_name" class="form-select" name="id_proof_name">
                                         <option value="">Select Id Proof</option>
                                         <option value="1">Aadhar</option>
                                         <option value="2">Driving License</option>
                                         <option value="3">Other</option>
                                     </select>
-                                    <span class="text-info">Uploading ID proof is optional; you can upload it later.</span>
+                                    <span class="text-danger">Uploading ID proof is optional do it later.</span>
                                 </div>
                                 <div class="col-lg-6">
                                     <label for="id_proof_file">Upload Scan Copy of Proof</label>
@@ -448,5 +446,22 @@ $hourlyCount = 0;
     }
 });
 
+</script>
+
+<script>
+    document.getElementById('plan_start_date').addEventListener('change', function () {
+        const startDate = new Date(this.value);
+        if (startDate) {
+            // Add 30 days to the start date
+            const endDate = new Date(startDate);
+            endDate.setDate(endDate.getDate() + 30);
+
+            // Format the date to yyyy-mm-dd for the input field
+            const formattedDate = endDate.toISOString().split('T')[0];
+
+            // Set the calculated end date in the input field
+            document.getElementById('plan_end_date').value = formattedDate;
+        }
+    });
 </script>
 @endsection

@@ -7,7 +7,13 @@ use Carbon\Carbon;
 $today = Carbon::today();
 $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
+
 @endphp
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 
 @if($current_route=='learners.edit')
     <form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">

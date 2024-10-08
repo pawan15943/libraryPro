@@ -75,7 +75,7 @@ class LoadMenus
             if ($value) {
                 $today = Carbon::today();
                 $endDate = Carbon::parse($value->end_date);
-                $diffInDays = $today->diffInDays($endDate, false);
+                $librarydiffInDays = $today->diffInDays($endDate, false);
             }
         
             $this->updateLibraryStatus();
@@ -85,7 +85,7 @@ class LoadMenus
             View::share('isProfile', $isProfile);
             View::share('isEmailVeri', $isEmailVeri);
             View::share('iscomp', $iscomp);
-            View::share('diffInDays', $diffInDays); 
+            View::share('librarydiffInDays', $librarydiffInDays); 
             
         }
         

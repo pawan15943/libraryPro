@@ -952,7 +952,8 @@ class LearnerController extends Controller
             $this->seat_availablity($request);
             DB::commit();
 
-            return redirect('learner/list')->with('success', 'Learner Update successfully.');
+            return redirect()->route('learnerHistory')->with('success', 'Learner updated successfully.');
+
         } catch (\Exception $e) {
             DB::rollBack(); 
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());

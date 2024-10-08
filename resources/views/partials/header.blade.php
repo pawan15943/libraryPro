@@ -7,8 +7,8 @@
             <i class="fa fa-bars mr-2" id="sidebar"></i>
             @if(Auth::guard('library')->check())
                 
-            <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$diffInDays}} Days</small>
-            @if($diffInDays <= 5 && $diffInDays >= 0)
+            <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$librarydiffInDays}} Days</small>
+            @if($librarydiffInDays <= 5 && $librarydiffInDays >= 0)
             <script>
                
                 window.onload = function() {

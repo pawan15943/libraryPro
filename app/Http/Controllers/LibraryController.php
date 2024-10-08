@@ -56,8 +56,8 @@ class LibraryController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('libraries.name', 'LIKE', "%{$search}%")
-                  ->orWhere('libraries.mobile', 'LIKE', "%{$search}%")
+                $q->where('libraries.library_name', 'LIKE', "%{$search}%")
+                  ->orWhere('libraries.library_mobile', 'LIKE', "%{$search}%")
                   ->orWhere('libraries.email', 'LIKE', "%{$search}%");
             });
         }

@@ -14,6 +14,11 @@ $diffInDays = $today->diffInDays($endDate, false);
         {{ session('error') }}
     </div>
 @endif
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
 @if($current_route=='learners.edit')
     <form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">

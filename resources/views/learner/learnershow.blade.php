@@ -9,7 +9,16 @@ $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
 @endphp
 
-
+@if (session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+@if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 <!-- View Customer Information -->
 <div class="row">
     <div class="col-lg-9">
@@ -145,7 +154,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="col-lg-4">
                         <span>Payment Status</span>
                         <h5>
-                            @if($transaction->is_paid==1)
+                            @if(isset($transaction->is_paid) && $transaction->is_paid==1)
                             <span class="text-success">Paid</span>
                             @else
                             <span class="text-danger">Pending</span>

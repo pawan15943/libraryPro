@@ -43,12 +43,20 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Operating Hours</h4>
-               
+                <h4>Add Operating Hours
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
+
                 @if($hours->isEmpty())
-                <i class="fa fa-plus-circle toggle-button"></i> 
+                <i class="fa fa-plus-circle toggle-button"></i>
                 @endif
-                
+
             </div>
             <div class="master-form mt-3">
                 <div class="form-fields">
@@ -93,7 +101,7 @@
                                         <i class="fa fa-check"></i>
                                         @endif</a></li>
                                 <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
-                                
+
                             </ul>
                         </div>
                     </li>
@@ -108,7 +116,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Library Seats</h4>
+                <h4>Add Library Seats
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 @if($total_seat==0)
                 <i class="fa fa-plus-circle toggle-button"></i>
                 @endif
@@ -121,7 +137,7 @@
                         <input type="hidden" name="id" value="">
                         <input type="hidden" name="library_id" value="{{Auth::user()->id}}">
                         <input type="hidden" name="databasemodel" value="Seat">
-                        
+
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="">Library Seats <span>*</span></label>
@@ -149,12 +165,12 @@
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
                                 <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}" data-table="Seat"><i class="fa fa-edit"></i></a></li>
 
-                                
+
                             </ul>
                         </div>
                     </li>
                     @endif
-                   
+
                 </ul>
             </div>
         </div>
@@ -164,7 +180,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Extend Days</h4>
+                <h4>Add Extend Days
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 @if($is_extendday==false)
                 <i class="fa fa-plus-circle toggle-button"></i>
                 @endif
@@ -201,7 +225,7 @@
                         <div class="d-flex">
                             <h4>{{$value->extend_days}} Days</h4>
                             <ul>
-                                <li><a href="#" >
+                                <li><a href="#">
                                         @if($value->deleted_at)
                                         <i class="fas fa-cross"></i>
                                         @else
@@ -224,7 +248,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Plan</h4>
+                <h4>Add plan
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 <i class="fa fa-plus-circle toggle-button"></i>
             </div>
             <div class="master-form mt-3">
@@ -292,7 +324,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Plan Type</h4>
+                <h4>Add Plan Type
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 <i class="fa fa-plus-circle toggle-button"></i>
             </div>
             <div class="master-form mt-3">
@@ -397,7 +437,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Plan price</h4>
+                <h4>Add Plan price
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 <i class="fa fa-plus-circle toggle-button"></i>
             </div>
             <div class="master-form mt-3">
@@ -489,7 +537,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Expense</h4>
+                <h4>Add Expense
+                    <div class="info-container">
+                        <i class="fa-solid fa-circle-info info-icon"></i>
+                        <div class="info-card">
+                            <h3 class="info-title">Upgrade Seat</h3>
+                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                        </div>
+                    </div>
+                </h4>
                 <i class="fa fa-plus-circle toggle-button"></i>
             </div>
             <div class="master-form mt-3">

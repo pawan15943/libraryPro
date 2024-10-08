@@ -15,8 +15,8 @@ $today = Carbon::today();
         @if($learners->isEmpty())
         <p class="not-found">No customer history found for this seat.</p>
         @else
-        <div class="table-responsive tableRemove_scroll mt-2">
-            <table class="table table-hover data-table" id="datatable" style="display:table !important;">
+        <div class="table-responsive mt-2">
+            <table class="table text-center data-table" id="datatable" style="display:table !important;">
                 <thead>
                     <tr>
                         <th>Name</th>

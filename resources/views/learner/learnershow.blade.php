@@ -165,7 +165,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-4">
                         <span>Transaction Id</span>
-                        @if($transaction->transaction_id)
+                        @if(isset($transaction->transaction_id) && $transaction->transaction_id)
                         <h5>{{$transaction->transaction_id}}</h5>
                         @else
                         <h5>NA</h5>
@@ -174,7 +174,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-4">
                         <span>Payment Date</span>
-                        @if($transaction->paid_date)
+                        @if(isset($transaction->paid_date) && $transaction->paid_date)
                         <h5>{{$transaction->paid_date}}</h5>
                         @else
                         <h5>NA</h5>
@@ -209,7 +209,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                         </td>
                                         <td>{{$value->plan_start_date}}</td>
                                         <td>{{$value->plan_end_date}}</td>
-                                        <td>{{$transactionRenew->total_amount}}</td>
+                                        <td>{{$transactionRenew->total_amount ?? 'NA'}}</td>
                                        
                                             @if($value->payment_mode == 1)
                                             <td>{{ 'Online' }}</td>
@@ -219,7 +219,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                             <td>{{ 'Pay Later' }}</td>
                                             
                                             @endif
-                                        <td>{{$transactionRenew->paid_date}}</td>
+                                        <td>{{$transactionRenew->paid_date ?? 'NA'}}</td>
                                        
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
@@ -233,7 +233,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         
                                                 <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                     @csrf
-                                                    <input type="hidden"  name="id" value="{{ $transactionRenew->id }}">
+                                                    <input type="hidden"  name="id" value="{{ $transactionRenew->id ?? 'NA'}}">
                                                     <input type="hidden"  name="type" value="learner">
                 
                                                     <button type="submit">

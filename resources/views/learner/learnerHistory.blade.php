@@ -197,8 +197,9 @@ $current_route = Route::currentRouteName();
                             <button class="active-status">Active</button>
                         </td>
                         <td>
-                            <ul class="actionables">
-                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
+                            <ul class="actionalbls">
+                            <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                            <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                             </ul>
                         </td>
 

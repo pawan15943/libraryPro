@@ -63,7 +63,15 @@
                             @enderror
                         </div>
 
-
+                        <!-- Remember Me checkbox -->
+                        <div class="col-lg-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-check-label" for="remember">
+                                    Remember Me
+                                </label>
+                            </div>
+                        </div>
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-primary button">Let’s get started! </button>
                         </div>

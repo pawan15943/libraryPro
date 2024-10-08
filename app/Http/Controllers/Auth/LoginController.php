@@ -48,10 +48,10 @@ class LoginController extends Controller
         ]);
     
         $credentials = $request->only('email', 'password');
-    
+        $remember = $request->has('remember');
         switch ($request->input('user_type')) {
             case 'superadmin':
-                if (Auth::guard('web')->attempt($credentials)) {
+                if (Auth::guard('web')->attempt($credentials, $remember)) {
                     return redirect()->intended(route('home'));
                 } else {
                     return redirect()->back()->withErrors(['error' => 'Invalid email or password for Superadmin.']);
@@ -59,7 +59,7 @@ class LoginController extends Controller
                 break;
     
             case 'admin':
-                if (Auth::guard('library')->attempt($credentials)) {
+                if (Auth::guard('library')->attempt($credentials, $remember)) {
                     $user = Auth::guard('library')->user();
                     if (is_null($user->email_verified_at)) {
                         Auth::guard('library')->logout();
@@ -76,7 +76,7 @@ class LoginController extends Controller
                 break;
     
             case 'learner':
-                if (Auth::guard('learner')->attempt($credentials)) {
+                if (Auth::guard('learner')->attempt($credentials, $remember)) {
                     $user = Auth::guard('learner')->user();
                     if (!$user->hasRole('learner')) {
                         $user->assignRole('learner');

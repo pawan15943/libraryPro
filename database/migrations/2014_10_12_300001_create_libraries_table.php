@@ -27,6 +27,7 @@ return new class extends Migration
             $table->boolean('is_paid')->default(0);
             $table->integer('library_no')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -145,7 +145,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="col-lg-4">
                         <span>Payment Status</span>
                         <h5>
-                            @if($transaction->is_paid==1)
+                            @if(isset($transaction->is_paid) && $transaction->is_paid==1)
                             <span class="text-success">Paid</span>
                             @else
                             <span class="text-danger">Pending</span>

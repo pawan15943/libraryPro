@@ -206,7 +206,6 @@ $hourlyCount = 0;
                             <div class="col-lg-4">
                                 <label for="">Plan Price <span>*</span></label>
                                 <input id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 800 Rs" @readonly(true)>
-
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Plan Starts On <span>*</span></label>

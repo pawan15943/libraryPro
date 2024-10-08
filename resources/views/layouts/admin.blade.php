@@ -328,6 +328,13 @@
         //         $("#loader").fadeOut("slow");
         //     });
         // });
+        window.history.pushState(null, null, window.location.href);
+        window.onpopstate = function () {
+            window.history.pushState(null, null, window.location.href);
+            // Optionally redirect to login or a specific page if needed
+            window.location.href = '/login'; // Redirect to the login page
+        };
+
     </script>
 </body>
 

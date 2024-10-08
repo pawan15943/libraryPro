@@ -467,13 +467,16 @@
                         },
                         dataType: 'json',
                         success: function(html) {
-                           
+                           console.log(html);
                             if (html && Object.keys(html).length > 0){
                                 $.each(html, function(key, value) {
                                     $("#plan_price_id").val(value);
+                                    
                                 });
+                                $("#error-message").hide();
                             }else{
                                 $("#plan_price_id").val("");
+                                $("#error-message").text("This Plan Type Price not found").show();
                             }
                                 
                         

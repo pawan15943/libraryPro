@@ -112,7 +112,7 @@ class LoadMenus
                             ->count();
         $planPrice = PlanPrice::count();
 
-        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice > 0) {
+        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice >= 3) {
             $id = Auth::user()->id;
             $library = Library::findOrFail($id);
 

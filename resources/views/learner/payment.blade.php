@@ -9,14 +9,14 @@ $diffInDays = $today->diffInDays($endDate, false);
 @endphp
 
 @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
 @endif
 @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
 @endif
 <input id="plan_type_id" type="hidden" name="plan_type_id" value="{{$customer->plan_type_id }}">
 
@@ -67,27 +67,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </span>
                         @enderror
                     </div>
-                    <div class="col-lg-6">
-                        <label for="">Plan  <span>*</span></label>
-                        <input type="text" class="form-control" value="{{ $customer->plan_name }}" readonly>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="">Plan Type <span>*</span></label>
-                        <input type="text" class="form-control" value="{{ $customer->plan_type_name }}" readonly>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="">Payment Mode</label>
-                        <input type="text" class="form-control" 
-                        value="{{ $customer->payment_mode == 1 ? 'Online' : ($customer->payment_mode == 2 ? 'Offline' : 'Pay Later') }}" 
-                        readonly>
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="">Payment Status</label>
-                        <input type="text" class="form-control"  
-                        value="{{ $customer->is_paid == 1 ? 'Paid' : 'Unpaid' }}" 
-                        readonly>
-                    </div>
-                  
+
                 </div>
             </div>
             <form action="{{route('learner.payment.store')}}" method="POST" enctype="multipart/form-data">
@@ -107,7 +87,28 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </h4>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
-                    <div class="row">
+                    <div class="row g-4">
+                        <div class="col-lg-6">
+                            <label for="">Plan <span>*</span></label>
+                            <input type="text" class="form-control" value="{{ $customer->plan_name }}" readonly>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Plan Type <span>*</span></label>
+                            <input type="text" class="form-control" value="{{ $customer->plan_type_name }}" readonly>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Payment Mode</label>
+                            <input type="text" class="form-control"
+                                value="{{ $customer->payment_mode == 1 ? 'Online' : ($customer->payment_mode == 2 ? 'Offline' : 'Pay Later') }}"
+                                readonly>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Payment Status</label>
+                            <input type="text" class="form-control"
+                                value="{{ $customer->is_paid == 1 ? 'Paid' : 'Unpaid' }}"
+                                readonly>
+                        </div>
+
                         <div class="col-lg-6">
                             <label for="">Plan Price <span>*</span></label>
                             <input type="text" class="form-control " name="paid_amount" id="paid_amount" value="{{ old('paid_amount', $customer->plan_price_id ) }}" readonly>
@@ -125,7 +126,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="row mt-3">
                         @if($customer->payment_mode==3)
-                            
+
                         <div class="col-lg-6">
                             <label for="">Transaction Number <span>*</span></label>
                             <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
@@ -135,9 +136,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-                            
+
                         @endif
-                        
+
                         <div class="col-lg-6">
                             <label for="">Upload Payment Proof <span>*</span></label>
                             <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">

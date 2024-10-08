@@ -67,6 +67,27 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </span>
                         @enderror
                     </div>
+                    <div class="col-lg-6">
+                        <label for="">Plan  <span>*</span></label>
+                        <input type="text" class="form-control" value="{{ $customer->plan_name }}" readonly>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Plan Type <span>*</span></label>
+                        <input type="text" class="form-control" value="{{ $customer->plan_type_name }}" readonly>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Payment Mode</label>
+                        <input type="text" class="form-control" 
+                        value="{{ $customer->payment_mode == 1 ? 'Online' : ($customer->payment_mode == 2 ? 'Offline' : 'Pay Later') }}" 
+                        readonly>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Payment Status</label>
+                        <input type="text" class="form-control"  
+                        value="{{ $customer->is_paid == 1 ? 'Paid' : 'Unpaid' }}" 
+                        readonly>
+                    </div>
+                  
                 </div>
             </div>
             <form action="{{route('learner.payment.store')}}" method="POST" enctype="multipart/form-data">
@@ -103,6 +124,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                     </div>
                     <div class="row mt-3">
+                        @if($customer->payment_mode==3)
+                            
                         <div class="col-lg-6">
                             <label for="">Transaction Number <span>*</span></label>
                             <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
@@ -112,6 +135,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
+                            
+                        @endif
+                        
                         <div class="col-lg-6">
                             <label for="">Upload Payment Proof <span>*</span></label>
                             <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">

@@ -258,6 +258,12 @@ class LearnerController extends Controller
 
         $start_date = Carbon::parse($request->input('plan_start_date'));
         $endDate = $start_date->copy()->addMonths($duration);
+        if($request->payment_mode==1 || $request->payment_mode==2){
+            $is_paid=1;
+        }else{
+            $is_paid=0; 
+        }
+        
      
         $customer = Learner::create([
             'seat_no' => $request->input('seat_no'),
@@ -273,7 +279,7 @@ class LearnerController extends Controller
             'password'=> bcrypt($request->mobile)
         ]);
 
-        LearnerDetail::create([
+        $learner_detail=LearnerDetail::create([
             'learner_id' => $customer->id, 
             'plan_id' => $plan_id,
             'plan_type_id' => $request->input('plan_type_id'),
@@ -284,7 +290,21 @@ class LearnerController extends Controller
             'hour' => $hours,
             'seat_id' => $request->seat_id,
             'library_id'=>Auth::user()->id,
+            'is_paid' => $is_paid,
         ]);
+
+        if($request->payment_mode==1 || $request->payment_mode==2){
+            LearnerTransaction::create([
+                'learner_id' =>$customer->id, 
+                'library_id' => Auth::user()->id,
+                'learner_deatail_id' => $learner_detail->id,
+                'total_amount' => $request->input('plan_price_id'),
+                'paid_amount' => $request->input('plan_price_id'),
+                'pending_amount' => 0,
+                'paid_date' => date('Y-m-d'),
+                'is_paid' => 1
+            ]);
+        }
 
         $this->seat_availablity($request);
         $this->dataUpdate();
@@ -445,8 +465,7 @@ class LearnerController extends Controller
                 } elseif ($filters['status'] === 'expired') {
                     // Only select expired learners or details
                     $query->where(function ($q) {
-                        $q->where('learners.status', 0)
-                          ->orWhere('learner_detail.status', 0);
+                        $q->where('learner_detail.status', 0);
                     });
                 }
             } else {

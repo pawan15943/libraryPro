@@ -209,9 +209,9 @@ $current_route = Route::currentRouteName();
 
                             <ul class="actionalbls">
                                 <!-- View Seat Info -->
-                                @can('has-permission', 'View Seat')
+                                {{-- @can('has-permission', 'View Seat') --}}
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-                                @endcan
+                                {{-- @endcan --}}
                                 <!-- Edit Seat Info -->
                                 @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>

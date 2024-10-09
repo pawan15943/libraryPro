@@ -621,6 +621,14 @@ class Controller extends BaseController
    
         }
     }
+
+    public function clearSession(Request $request)
+    {
+        $request->session()->forget('invalidRecords');
+        
+        return response()->json(['status' => 'success']);
+    }
+
     
 
 }

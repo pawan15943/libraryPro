@@ -49,9 +49,10 @@
 
 
 {{-- Display Invalid Records --}}
+<div id="invalid-records-section">
 @if(session('invalidRecords') && count(session('invalidRecords')) > 0)
 <p class="text-danger">Some records could not be imported:</p>
-<div class="table table-responsive">
+<div  class="table table-responsive">
     <table class="table text-center data-table">
         <thead>
             <tr>
@@ -74,8 +75,9 @@
             @endforeach
         </tbody>
     </table>
+    <button class="btn btn-danger btn-sm mt-2" id="clearInvalidRecordsButton">Clear Invalid Records</button>
 </div>
-
+</div>
 
 
 {{-- Trigger CSV Download Automatically --}}
@@ -90,6 +92,32 @@
 
 @endif
 @endif
+
+<script>
+    document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
+        // Hide the invalid records section
+        document.getElementById('invalid-records-section').style.display = 'none';
+
+        // Send AJAX request to clear session
+        fetch("{{ route('clear.session') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                console.log('Session cleared successfully.');
+            } else {
+                console.log('Failed to clear session.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+</script>
 
 
 @endsection

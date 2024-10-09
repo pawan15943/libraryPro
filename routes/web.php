@@ -53,6 +53,8 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
   Route::get('/csv/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
   Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
   Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('export.invalid.records');
+  Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
+
 
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 

@@ -49,43 +49,42 @@
 
 {{-- Display Invalid Records --}}
 @if(session('invalidRecords') && count(session('invalidRecords')) > 0)
-<p class="text-danger"> <i class="fa fa-warning"></i> <b>Import Data Error Alert :</b> There are some errors in your data that are causing problems during the upload. We've listed a few of the records with issues below. Please fix them and try uploading the data again.</p>
-<div class="table-responsive mb-4">
-    <table class="table text-center data-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Plan Type</th>
-                <th>Start Date</th>
-                <th>Error Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (session('invalidRecords') as $record)
-            <tr>
-                <td>{{ $record['name'] ?? 'N/A' }}</td>
-                <td>{{ $record['email'] ?? 'N/A' }}</td>
-                <td>{{ $record['plan_type'] ?? 'N/A' }}</td>
-                <td>{{ $record['start_date'] ?? 'N/A' }}</td>
-                <td><span class="text-danger">{{ $record['error'] ?? 'No error provided' }}</span></td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-
-
-{{-- Trigger CSV Download Automatically --}}
-@if(session('autoExportCsv'))
-<script type="text/javascript">
-    window.onload = function() {
-        setTimeout(function() {
-            window.location.href = "{{ route('export.invalid.records') }}"; // Trigger the export CSV route
-        }, 1000); // Delay to ensure the page fully loads before triggering
-    };
-</script>
-@endif
+    <div class="table table-responsive">
+        <p>Some records could not be imported:</p>
+        <table class="table text-center data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Plan Type</th>
+                    <th>Start Date</th>
+                    <th>Error Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (session('invalidRecords') as $record)
+                    <tr>
+                        <td>{{ $record['name'] ?? 'N/A' }}</td>
+                        <td>{{ $record['email'] ?? 'N/A' }}</td>
+                        <td>{{ $record['plan_type'] ?? 'N/A' }}</td>
+                        <td>{{ $record['start_date'] ?? 'N/A' }}</td>
+                        <td><span class="text-danger">{{ $record['error'] ?? 'No error provided' }}</span></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    
+    {{-- Trigger CSV Download Automatically --}}
+    @if(session('autoExportCsv'))
+        <script type="text/javascript">
+            window.onload = function() {
+                setTimeout(function() {
+                    window.location.href = "{{ route('export.invalid.records') }}"; // Trigger the export CSV route
+                }, 1000); // Delay to ensure the page fully loads before triggering
+            };
+        </script>
+    @endif
 @endif
 
 @endsection

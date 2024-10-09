@@ -204,23 +204,10 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                         <div class="col-lg-4">
                             <label for="">Plan Type <span>*</span></label>
-                            <select id="plan_type_id2" class="form-select" name="plan_type_id" readonly>
+                            <select class="form-select" name="plan_id" readonly>
                                 <option value="{{ $customer->plan_type_id }}" selected>{{ $customer->plan_type_name }}</option>
-                                {{-- <option value="">Select Plan Type</option>
-                                @foreach($planTypes as $planType)
-                                <option value="{{ $planType->id }}"
-                                    {{ old('plan_type_id', $customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
-                                    {{ $planType->name }}
-                                </option>
-                                @endforeach --}}
-    
-    
                             </select>
-                            @error('plan_type_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+
                         </div>
                         <div class="col-lg-4">
                             <label for="">Plan Price <span>*</span></label>

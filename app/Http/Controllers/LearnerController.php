@@ -804,7 +804,7 @@ class LearnerController extends Controller
         $available_seat = $this->learnerService->getAvailableSeats();
        
         $customer = $this->fetchCustomerData($customerId, false, $status=0, $detailStatus=0);
-      
+   
         if ($request->expectsJson() || $request->has('id')) {
            
             return response()->json($customer);
@@ -933,7 +933,7 @@ class LearnerController extends Controller
                 return redirect()->back()->with('error', 'Total available hours not set.');
             }
 
-            $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $seat_no)->sum('hours');
+            $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $seat_no)->where('status',1)->sum('hours');
 
             if ($hours > ($total_hour - $total_cust_hour)) {
                 return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
@@ -1053,12 +1053,12 @@ class LearnerController extends Controller
 
         $first_record = Hour::first();
         $total_hour = $first_record ? $first_record->hour : null;
-
+        
         $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $request->new_seat_id)->sum('hours');
         $new_seat_remaining = $total_hour - $total_cust_hour;
-
-        $hourCheck = Seat::where('seat_no', $request->new_seat_id)->select('total_hours')->first();
-
+     
+        $hourCheck = Seat::where('id', $request->new_seat_id)->select('total_hours')->first();
+       
         $bookings = $this->getLearnersByLibrary()
             ->join('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
             ->where('seat_no', $request->new_seat_id)

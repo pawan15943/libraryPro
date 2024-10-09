@@ -546,7 +546,7 @@
             var new_seat_id = $(this).val();
             var user_id = $('#user_id').val();
             var plan_type_id = $('#plan_type_id').val();
-            
+           
             // Clear previous status
             $('#swap_status').html('');
             

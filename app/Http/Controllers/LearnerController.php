@@ -122,7 +122,7 @@ class LearnerController extends Controller
     }
 
     protected function seat_availablity(Request $request){
-   
+        
         $plan_type_id=$request->plan_type_id;
         $seat_id=$request->seat_id;
       
@@ -1040,13 +1040,14 @@ class LearnerController extends Controller
     public function getSeatStatus(Request $request)
     {
         
+       $seat= Seat::where('id', $request->new_seat_id)->first();
         $count = $this->getLearnersByLibrary()
-            ->where('seat_no', $request->new_seat_id)
+            ->where('seat_no', $seat->seat_no)
             ->where('learners.status', 1)
             ->where('learner_detail.status', 1)
             ->where('learner_detail.plan_type_id', $request->plan_type_id)
             ->count();
-
+            
         $customer = Learner::where('id', $request->user_id)
             ->where('status', 1)
             ->first();
@@ -1054,14 +1055,14 @@ class LearnerController extends Controller
         $first_record = Hour::first();
         $total_hour = $first_record ? $first_record->hour : null;
         
-        $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $request->new_seat_id)->sum('hours');
+        $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $seat->seat_no)->sum('hours');
         $new_seat_remaining = $total_hour - $total_cust_hour;
-     
+      
         $hourCheck = Seat::where('id', $request->new_seat_id)->select('total_hours')->first();
        
         $bookings = $this->getLearnersByLibrary()
             ->join('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
-            ->where('seat_no', $request->new_seat_id)
+            ->where('seat_no', $seat->seat_no)
             ->where('learners.status', 1)
             ->where('learner_detail.status', 1)
             ->get(['learner_detail.plan_type_id', 'plan_types.start_time', 'plan_types.end_time', 'plan_types.slot_hours']);
@@ -1181,6 +1182,42 @@ class LearnerController extends Controller
             \Log::error('Payment Error: ' . $e->getMessage());
             return redirect()->route('learners')->withErrors(['error' => 'An error occurred while processing the payment.']);
         }
+    }
+
+    public function learnerExpire(Request $request, $id = null)
+    {
+       
+        $customerId = $request->id ?? $id;
+        $is_renew = $this->learnerService->getRenewalStatus($customerId);
+        
+        $plans = $this->learnerService->getPlans();
+        $planTypes = $this->learnerService->getPlanTypes();
+        $available_seat = $this->learnerService->getAvailableSeats();
+       
+        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
+        
+        return view('learner.expire',compact('customer', 'plans', 'planTypes','available_seat'));
+    }
+    public function editLearnerExpire(Request $request){
+        $user_id = $request->input('user_id');
+        
+        $customer = Learner::findOrFail($user_id);
+        $start_date = Carbon::parse($request->input('plan_start_date'));
+        if($request->input('plan_end_date')){
+            $newEndDate= Carbon::parse($request->input('plan_end_date'));
+        }
+        $LearnerDetail =LearnerDetail::where('learner_id', $customer->id)->first();
+        if($request->input('plan_start_date')){
+            $LearnerDetail->plan_start_date =$start_date;
+        }
+        $LearnerDetail->plan_end_date = $newEndDate->toDateString();
+        $LearnerDetail->save();
+        $LearnerDetail =LearnerDetail::where('learner_id', $customer->id)->first();
+        $LearnerDetail->save();
+        $this->seat_availablity($request);
+
+        $this->dataUpdate();
+        return redirect()->route('learners')->with('success', 'Learner updated successfully.');
     }
     
 }

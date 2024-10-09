@@ -47,6 +47,9 @@ Route::post('library/store', [LibraryController::class, 'store'])->name('library
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
+ 
+  Route::get('/learner/expire/{id?}', [LearnerController::class, 'learnerExpire'])->name('learner.expire');
+  Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');
   Route::get('/csv/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
   Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
   Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('export.invalid.records');

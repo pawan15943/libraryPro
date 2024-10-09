@@ -249,7 +249,7 @@ $current_route = Route::currentRouteName();
                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
                                 <!-- Sent Mail -->
                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
-
+                                <li><a href="{{route('learner.expire',$value->id)}}" title="Expire"><i class="fas fa-edit"></i></a></li>
                             </ul>
                         </td>
                     </tr>

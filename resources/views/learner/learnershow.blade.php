@@ -83,15 +83,15 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Expired In</span>
-                        <h5><span class="text-success">Plan Expires in {{$diffInDays}} Days</span></h5>
+                        <h5 class="text-success">Plan Expires in {{$diffInDays}} Days</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Current Plan Status</span>
                         <h5>
                             @if($customer->status==1)
-                            <span class="text-success">Active</span>
+                            <h5 class="text-success">Active</h5>
                             @else
-                            <span class="text-danger">InActive</span>
+                            <h5 class="text-danger">InActive</h5>
                             @endif
                         </h5>
                     </div>
@@ -155,9 +155,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <span>Payment Status</span>
                         <h5>
                             @if(isset($transaction->is_paid) && $transaction->is_paid==1)
-                            <span class="text-success">Paid</span>
+                            <h5 class="text-success">Paid</h5>
                             @else
-                            <span class="text-danger">Pending</span>
+                            <h5 class="text-danger">Pending</h5>
                             @endif
                              
                            
@@ -181,7 +181,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         @endif
                     </div>
                 </div>
-                <h4 class="mt-4"> Plan Re-New History :</h4>
+                <h4 class="mt-4">Current Seat Owner Plan Re-New History :</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
@@ -255,7 +255,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                 </div>
                
-                <h4 class="mt-4"> Seat Previous Booking History</h4>
+                <h4 class="mt-4"> Seat Previous History</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
@@ -273,6 +273,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 </thead>
                                 <tbody>
                                     @foreach($seat_history as $key => $value)
+
                                     <tr>
                                         <td>{{$value->name}}</td>
                                         <td>+91-{{$value->library_mobile}}</td>
@@ -297,9 +298,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                                             </ul>
                                         </td>
                                     </tr>
-                                    @endforeach
-                                   
 
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>

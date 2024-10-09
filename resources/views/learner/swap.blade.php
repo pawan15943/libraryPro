@@ -111,7 +111,7 @@
                     <div class="row mt-3">
                         <div class="col-lg-6">
                         <span>Current Seat Status</span>
-                        <span id="swap_status"></span>
+                        <h4 id="swap_status"></h4>
                         </div>
                     </div>
                     <div class="row mt-3">

@@ -13,7 +13,7 @@
                
                 window.onload = function() {
                     setTimeout(function() {
-                        alert('Your library plan will expire in {{ $diffInDays }} days. Please consider renewing your plan!');
+                        alert('Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!');
                     }, 1000); 
                 };
             </script>

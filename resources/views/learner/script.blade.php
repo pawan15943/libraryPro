@@ -541,6 +541,7 @@
             }
         }
         $('#new_seat_id').on('change', function(event) {
+          
             event.preventDefault();
             var new_seat_id = $(this).val();
             var user_id = $('#user_id').val();
@@ -564,7 +565,7 @@
                     },
                     dataType: 'json',
                     success: function(html) {
-                       
+                      console.log(html);
                         if(html == 1) {
                             $('#swap_status').append("Available");
                             $("#swapsubmit").prop('disabled', false); // Enable the submit button

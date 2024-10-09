@@ -74,7 +74,7 @@
             </tbody>
         </table>
     </div>
-
+    
     {{-- Trigger CSV Download Automatically --}}
     @if(session('autoExportCsv'))
         <script type="text/javascript">

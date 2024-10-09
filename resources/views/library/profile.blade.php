@@ -141,7 +141,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="">Library Logo <span>*</span></label>
-                        <input type="file" class="form-control" name="library_logo" id="fileInput">
+                        <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
                         @error('library_logo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

@@ -192,7 +192,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <div class="col-lg-4">
                             <label for=""> Plan <span>*</span></label>
     
-                            <select class="form-control" name="plan_id" readonly>
+                            <select class="form-select" name="plan_id" readonly>
                                 <option value="{{ $customer->plan_id }}" selected>{{ $customer->plan_name }}</option>
                             </select>
     
@@ -204,7 +204,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                         <div class="col-lg-4">
                             <label for="">Plan Type <span>*</span></label>
-                            <select id="plan_type_id2" class="form-control" name="plan_type_id" readonly>
+                            <select id="plan_type_id2" class="form-select" name="plan_type_id" readonly>
                                 <option value="{{ $customer->plan_type_id }}" selected>{{ $customer->plan_type_name }}</option>
                                 {{-- <option value="">Select Plan Type</option>
                                 @foreach($planTypes as $planType)
@@ -251,7 +251,7 @@ $diffInDays = $today->diffInDays($endDate, false);
     
                             <div class="col-lg-4">
                                 <label for=""> Plan <span>*</span></label>
-                                <select id="plan_id2" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id">
+                                <select id="plan_id2" class="form-select @error('plan_id') is-invalid @enderror" name="plan_id">
                                     <option value="">Select Plan</option>
                                     @foreach($plans as $key => $value)
                                         <option value="{{ $value->id }}" {{ old('plan_id') == $value->id ? 'selected' : '' }}>
@@ -269,7 +269,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Plan Type <span>*</span></label>
-                                <select id="plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id">
+                                <select id="plan_type_id" class="form-select @error('plan_type_id') is-invalid @enderror" name="plan_type_id">
                                     <option value="">Select Plan Type</option>
                                     @foreach($planTypes as $planType)
                                     <option value="{{ $planType->id }}"
@@ -306,7 +306,7 @@ $diffInDays = $today->diffInDays($endDate, false);
     
                             <div class="col-lg-4" >
                                 <label for="">Payment Mode <span>*</span></label>
-                                <select name="payment_mode" id="payment_mode" class="form-control @error('payment_mode') is-invalid @enderror">
+                                <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
                                     <option value="">Select Payment Mode</option>
                                     <option value="1" {{ old('payment_mode') == 1 ? 'selected' : '' }}>Online</option>
                                     <option value="2" {{ old('payment_mode') == 2 ? 'selected' : '' }}>Offline</option>
@@ -322,7 +322,7 @@ $diffInDays = $today->diffInDays($endDate, false);
     
                             <div class="col-lg-4">
                                 <label for="">Select Seat<span>*</span></label>
-                                <select name="seat_id" id="new_seat_id" class="form-control @error('seat_id') is-invalid @enderror">
+                                <select name="seat_id" id="new_seat_id" class="form-select @error('seat_id') is-invalid @enderror">
                                     <option>Select Seat</option>
                                     @foreach($available_seat as $id => $seat_no)
                                     <option value="{{ $id }}"> {{ $seat_no }}</option>

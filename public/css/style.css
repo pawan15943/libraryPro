@@ -607,13 +607,15 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a {
 
 /* Plan */
 .plan-box {
-    padding: 1.5rem;
-    border: 1px solid #e5e5e5;
+    padding-top: 1.5rem;
     border-radius: 1rem;
     background: #fff;
+    box-shadow: 1px 0 5px #00000045;
 }
 
-
+.plan-box h1, .plan-box h4 {
+    color: var(--c5) ! IMPORTANT;
+}
 
 .plan-box h1 {
     text-align: center;
@@ -630,7 +632,7 @@ ul.plan-features {
     list-style: none;
     padding: 0;
     margin-top: 1rem;
-    max-height: 350px;
+    max-height: 364px;
     overflow: hidden;
 }
 
@@ -640,7 +642,7 @@ span.showmore {
     text-align: center;
     font-weight: 700;
     margin-bottom: .8rem;
-    color: #5c5c5c;
+    color: #ffffff6b;
     cursor: pointer;
     margin-top: -1.5rem;
 }
@@ -652,6 +654,7 @@ span.showmore {
 ul.plan-features .d-flex {
     align-items: center;
     gap: .8rem;
+    color: #fff;
 }
 
 ul.plan-features li {
@@ -662,8 +665,20 @@ ul.plan-features li {
 ul.plan-features li+li {
     margin-top: 1rem;
     color: #151f38;
-    border-top: 1px dotted #dadada;
+    border-top: 1px dotted #ffffff4f;
     padding-top: 1rem;
+}
+
+.col-lg-3:nth-child(1) .plan-box, .basic-1 {
+    background: linear-gradient(2deg, #3F51B5, #081350);
+}
+
+.col-lg-3:nth-child(2) .plan-box, .standard-1 {
+    background: linear-gradient(3deg, #673AB7, #370099);
+}
+
+.col-lg-3:nth-child(3) .plan-box, .premeium-1 {
+    background: linear-gradient(0deg, #c3a81d, #ab8d15);
 }
 
 .col-lg-4.payment-mode label {

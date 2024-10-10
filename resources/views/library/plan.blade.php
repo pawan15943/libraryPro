@@ -20,9 +20,6 @@
                     <a href="{{ ($checkSub && $ispaid && $isProfile) ? route('library.master') : '#' }}">Configure Library</a>
                 </li>
             </ul>
-           
-            
-            
         </div>
     </div>
 </div>
@@ -52,7 +49,7 @@
         <div class="plan-box">
             <h1 id="subscription_fees_{{$subscription->id}}"></h1> 
             <h4>{{$subscription->name}}</h4>
-            <ul class="plan-features">
+            <ul class="plan-features contents">
                 @foreach($subscription->permissions as $permission)
                 <li>
                     <div class="d-flex">
@@ -69,7 +66,7 @@
                 <input type="hidden" name="subscription_id" id="subscription_id" value="{{$subscription->id}}">
                 <input type="hidden" name="plan_mode" id="plan_mode_{{$subscription->id}}">
                 <input type="hidden" name="price" id="price_{{$subscription->id}}">
-                <button type="submit" class="btn btn-primary button ">Buy Now</button>
+                <button type="submit" class="btn btn-primary button ">BUY</button>
             </form>
         </div>
     </div>
@@ -133,11 +130,18 @@
                     }
                 });
             }
-        }
-
-       
-       
-       
+        }   
     });
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".contents").mCustomScrollbar();
+        });
+    })(jQuery);
 </script>
 @endsection

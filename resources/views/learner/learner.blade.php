@@ -171,8 +171,6 @@ $current_route = Route::currentRouteName();
                     $user = Auth::user();
                     $permissions = $user->subscription ? $user->subscription->permissions : null;
                     @endphp
-
-
                     @foreach($learners as $key => $value)
                     @php
                     $today = Carbon::today();
@@ -254,6 +252,7 @@ $current_route = Route::currentRouteName();
                         </td>
                     </tr>
                     @endforeach
+                    
                 </tbody>
               
                

@@ -37,38 +37,38 @@
     <div class="col-lg-7">
         <div class="payment-detaile ">
 
-            @foreach($month as $key => $value)
+            
             <!-- .basic | .standard | .premium  use these classes conditionllly-->
             <div class="paymentinfo basic">
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <span>Subscription Name</span>
-                            <h4>{{$plan ? $plan->name : $value->plan}}</h4>
+                            <h4>{{$plan ? $plan->name : $month->plan}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Type</span>
-                            @if($value->month==1)
+                            @if($month->month==1)
                             <h4>{{ 'MONTHLY'}}</h4>
                             @else
-                            <h4>{{ $value->month}} Months</h4>
+                            <h4>{{ $month->month}} Months</h4>
                             @endif
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Price</span>
-                            <h4>{{ $value->amount}}</h4>
+                            <h4>{{ $month->amount}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Start Date</span>
-                            <h4>{{ $value->start_date}}</h4>
+                            <h4>{{ $month->start_date}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription End Date</span>
-                            <h4>{{ $value->start_date}}</h4>
+                            <h4>{{ $month->start_date}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Duration</span>
-                            <h4>{{ $value->start_date}}</h4>
+                            <h4>{{ $month->start_date}}</h4>
                         </div>
 
                     </div>
@@ -83,15 +83,15 @@
                 <!-- <div class="row g-4">
                     <div class="col-lg-6">
                         <span>Payment Method</span>
-                        <h4>{{ $value->payment_mode}}</h4>
+                        <h4>{{ $month->payment_mode}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <span>Amount Paid</span>
-                        <h4>{{ $value->amount}}</h4>
+                        <h4>{{ $month->amount}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <span>Payment Status</span>
-                        @if($value->is_paid ==1)
+                        @if($month->is_paid ==1)
                         <span class=" text-success d-inline">Success</span>
                         @else
                         <span class=" text-danger d-inline">Pending</span>
@@ -99,18 +99,18 @@
                     </div>
                     <div class="col-lg-6">
                         <span>Transaction Id</span>
-                        <h4>{{ $value->transaction_id}}</h4>
+                        <h4>{{ $month->transaction_id}}</h4>
                     </div>
                     <div class="col-lg-6">
                         <span>Payment Date</span>
-                        <h4>{{ $value->transaction_date}}</h4>
+                        <h4>{{ $month->transaction_date}}</h4>
                     </div>
 
                 </div>
             </div> -->
 
             </div>
-            @endforeach
+      
         </div>
 
     </div>

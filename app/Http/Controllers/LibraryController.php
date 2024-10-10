@@ -273,7 +273,10 @@ class LibraryController extends Controller
         }
 
         // Retrieve month and plan information
-        $month = LibraryTransaction::where('library_id', $library_id)->get();
+        $month = LibraryTransaction::where('library_id', $library_id)
+        ->orderBy('id', 'desc') 
+        ->first();
+    
         $plan = Subscription::where('id', $request->subscription_id)->first();
 
         return view('library.payment', [

@@ -24,8 +24,7 @@
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
         <div class="import-data">
-            <form action="{{ route('csv.upload') }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form action="{{ Auth::guard('library')->check() ? route('library.csv.upload') : route('web.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm">                @csrf
                 <input type="hidden" name="library_id" value=" {{$library_id ? $library_id : ''}}"> 
                 <div class="row g-4">
                     <div class="col-lg-12">
@@ -44,6 +43,10 @@
            
 
         </div>
+    </div>
+    <div id="progress-container" style="display:none;">
+        <progress id="progress-bar" value="0" max="100" style="width: 100%;"></progress>
+        <span id="progress-text">0%</span>
     </div>
 </div>
 
@@ -100,9 +103,9 @@
     document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
         // Hide the invalid records section
         document.getElementById('invalid-records-section').style.display = 'none';
-
+        let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
         // Send AJAX request to clear session
-        fetch("{{ route('clear.session') }}", {
+        fetch(clearSessionRoute, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -121,6 +124,7 @@
         .catch(error => console.error('Error:', error));
     });
 </script>
+
 
 
 @endsection

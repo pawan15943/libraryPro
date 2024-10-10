@@ -92,6 +92,14 @@ class Controller extends BaseController
     public function showUploadForm($id = null)
     {
         $library_id=$id;
+        // if (Auth::check('guard') == 'library') {
+        //     dd("1");
+        //     // Handle library specific logic
+        // } elseif (Auth::check('guard') == 'web') {
+        //     dd("2");
+        //     // Handle web specific logic
+        // }
+        // dd("3");
         return view('library.csv', compact('library_id'));
     }
 

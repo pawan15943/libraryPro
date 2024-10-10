@@ -45,17 +45,17 @@ Route::get('cityGetStateWise', [MasterController::class, 'stateWiseCity'])->name
 Route::get('library/create', [LibraryController::class, 'create'])->name('library.create');
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
-Route::middleware(['auth'])->group(function () {
-  Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
-  Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('export.invalid.records');
-  Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
-});
+
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
- 
+  Route::get('/csv/library/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
+  Route::post('/csv/library/upload', [Controller::class, 'uploadCsv'])->name('library.csv.upload');
+  Route::get('/export-invalid-records/library', [Controller::class, 'exportCsv'])->name('library.export.invalid.records');
+  Route::post('/clear-invalid-records/library', [Controller::class, 'clearSession'])->name('library.clear.session');
+
   Route::get('/learner/expire/{id?}', [LearnerController::class, 'learnerExpire'])->name('learner.expire');
   Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');
-  Route::get('/csv/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
+  
  
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 
@@ -120,14 +120,17 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
 });
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {
+
+    
+
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
-      Route::get('/csv/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
-      // Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload.master');
-      // Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('administrator.export.invalid.records');
-      Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
-      
+        Route::get('/csv/web/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
+        Route::post('/csv/web/upload', [Controller::class, 'uploadCsv'])->name('web.csv.upload');
+        Route::get('/export-invalid-records/web', [Controller::class, 'exportCsv'])->name('web.export.invalid.records');
+        Route::post('/clear-invalid-records/web', [Controller::class, 'clearSession'])->name('web.clear.session');
+   
         Route::get('library', [LibraryController::class, 'index'])->name('library');
 
         Route::post('subscriptions/store', [MasterController::class, 'storeSubscription'])->name('subscriptions.store');

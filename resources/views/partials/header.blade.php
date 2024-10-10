@@ -8,12 +8,12 @@
             @if(isset($librarydiffInDays) && Auth::guard('library')->check())
                 
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$librarydiffInDays}} Days</small>
-            @if($librarydiffInDays <= 5 && $librarydiffInDays >= 0)
+            @if($librarydiffInDays <= 5 && $librarydiffInDays >= 0 && $isProfile)
             <script>
-               
                 window.onload = function() {
                     setTimeout(function() {
-                        alert('Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!');
+                        var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
+                        modal.show();
                     }, 1000); 
                 };
             </script>
@@ -21,7 +21,21 @@
             <a href="{{ route('library.home') }}" type="button" class="btn btn-primary button">Renew Plan</a>
             @endif
             @endif
-            
+           
+        </div>
+        <!-- Modal Popup for Expiry Warning -->
+        <div class="modal fade" id="planExpiryModal" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="planExpiryLabel">Plan Expiry Warning</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4>Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</h4>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="profile">
             <div class="dropdown">

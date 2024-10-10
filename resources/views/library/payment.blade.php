@@ -185,49 +185,51 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <h4 class="py-4">Transaction Detials</h4>
-        <div class="col-lg-12">
-            <div class="table-responsive">
-                <table class="table text-center data-table">
-                    <thead>
-                        <tr>
-                            <th>S.No.</th>
-                            <th>Subscription Name</th>
-                            <th>Subscription Amt</th>
-                            <th>Discount</th>
-                            <th>Paid Amt</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Basic Plan</td>
-                            <td>1000</td>
-                            <td>70%</td>
-                            <td>300</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
+</div>
+<div class="row mb-4">
+    <h4 class="py-4">Transaction Detials</h4>
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table text-center data-table">
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Subscription Name</th>
+                        <th>Subscription Amt</th>
+                        <th>Discount</th>
+                        <th>Paid Amt</th>
+                        <th>Transaction Id</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Basic Plan</td>
+                        <td>1000</td>
+                        <td>70%</td>
+                        <td>300</td>
+                        <td>45615848612315</td>
+                        <td>
+                            <ul class="actionalbls">
+                                <li>
 
-                                        <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" id="custId" name="id" value="{{ $value->id }}">
-                                            <input type="hidden" name="type" value="library">
+                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" id="custId" name="id" value="{{ $value->id }}">
+                                        <input type="hidden" name="type" value="library">
 
-                                            <button type="submit">
-                                                <i class="fa fa-print"></i>
-                                            </button>
-                                        </form>
+                                        <button type="submit">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </form>
 
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

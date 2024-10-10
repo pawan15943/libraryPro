@@ -27,7 +27,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-12 mb-4">
         <h2 class="text-center">A few details to make it yours!</h2>
     </div>
 </div>
@@ -38,10 +38,11 @@
 
 <form action="{{ route('library.profile.update') }}" class="validateForm" method="POST" enctype="multipart/form-data">
     @csrf
-    <div class="card mb-4">
-        <h6>Library Info :</h6>
-        <div class="row">
-            <div class="col-lg-9">
+
+    <div class="row mb-4">
+        <div class="col-lg-9">
+            <div class="card">
+                <h4 class="mb-4">Library Profile Details</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Library Name <span>*</span></label>
@@ -136,8 +137,40 @@
                     </div>
 
                 </div>
+                <h4 class="py-4">Library Owner Info</h4>
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <label for="">Owner Name <span>*</span></label>
+                        <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner', $library->library_owner ?? '') }}">
+                        @error('library_owner')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Owner Email Id <span>*</span></label>
+                        <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email', $library->library_owner_email ?? '') }}">
+                        @error('library_owner_email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">Owner Contact Number (WhatsApp) <span>*</span></label>
+                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" maxlength="10" value="{{ old('library_owner_contact', $library->library_owner_contact ?? '') }}">
+                        @error('library_owner_contact')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-3">
+        </div>
+        <div class="col-lg-3">
+            <div class="card">
                 <div class="row">
                     <div class="col-lg-12">
                         <label for="">Library Logo <span>*</span></label>
@@ -151,53 +184,16 @@
 
                     <img id="imageDisplay" src="#" alt="Selected Image" style="display: none; max-width: 100%; height: auto;">
                 </div>
-
+            </div>
+            <div class="row mt-3">
+                <div class="col-lg-12">
+                    <button type="submit" value="Login" placeholder="Email Id" class="btn btn-primary button">Update and Next</button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="card mb-4 mt-4">
-        <h6>Library Owner Info :</h6>
-        <div class="row g-4">
-
-            <div class="col-lg-12">
-                <label for="">Owner Name <span>*</span></label>
-                <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner', $library->library_owner ?? '') }}">
-                @error('library_owner')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <div class="col-lg-6">
-                <label for="">Owner Email Id <span>*</span></label>
-                <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email', $library->library_owner_email ?? '') }}">
-                @error('library_owner_email')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-            <div class="col-lg-6">
-                <label for="">Owner Contact Number (WhatsApp) <span>*</span></label>
-                <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" maxlength="10" value="{{ old('library_owner_contact', $library->library_owner_contact ?? '') }}">
-                @error('library_owner_contact')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
 
 
-
-
-
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-3">
-                <button type="submit" value="Login" placeholder="Email Id" class="btn btn-primary button">Update Library Profile</button>
-            </div>
-        </div>
-    </div>
 </form>
 <script>
     $(document).ready(function() {

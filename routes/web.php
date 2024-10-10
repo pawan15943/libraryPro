@@ -45,17 +45,18 @@ Route::get('cityGetStateWise', [MasterController::class, 'stateWiseCity'])->name
 Route::get('library/create', [LibraryController::class, 'create'])->name('library.create');
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
+Route::middleware(['auth'])->group(function () {
+  Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
+  Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('export.invalid.records');
+  Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
+});
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
  
   Route::get('/learner/expire/{id?}', [LearnerController::class, 'learnerExpire'])->name('learner.expire');
   Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');
   Route::get('/csv/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
-  Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload');
-  Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('export.invalid.records');
-  Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
-
-
+ 
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 
     Route::get('/transaction', [LibraryController::class, 'transaction'])->name('library.transaction'); 
@@ -87,29 +88,29 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
    //**LEARNER**//
    Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
    
-    Route::prefix('library/learners')->group(function () {
-      Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
-      Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
-      Route::get('/history/list', [LearnerController::class, 'learnerHistory'])->name('learnerHistory');
-      Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
-      Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
-      Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
-      
-      Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
-      Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
-      Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
-      Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
-      Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
-      Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
-      Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
-      Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
-      Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
-    });
+  Route::prefix('library/learners')->group(function () {
+    Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
+    Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
+    Route::get('/history/list', [LearnerController::class, 'learnerHistory'])->name('learnerHistory');
+    Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
+    Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
+    Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
+    
+    Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
+    Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
+    Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
+    Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
+    Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
+    Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');
+    Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
+    Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
+    Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
+  });
    Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
    Route::get('seats/history/{id?}', [LearnerController::class, 'history'])->name('seats.history.show');
    
   
- //condition base route
+  //condition base route
    Route::post('learner/renew/', [LearnerController::class, 'learnerRenew'])->name('learners.renew');
    Route::get('getSeatStatus', [LearnerController::class, 'getSeatStatus'])->name('getSeatStatus');
    Route::get('getPlanType', [LearnerController::class, 'getPlanType'])->name('gettypePlanwise');
@@ -122,9 +123,13 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
+      Route::get('/csv/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
+      // Route::post('/csv/upload', [Controller::class, 'uploadCsv'])->name('csv.upload.master');
+      // Route::get('/export-invalid-records', [Controller::class, 'exportCsv'])->name('administrator.export.invalid.records');
+      Route::post('/clear-invalid-records', [Controller::class, 'clearSession'])->name('clear.session');
+      
         Route::get('library', [LibraryController::class, 'index'])->name('library');
 
-        
         Route::post('subscriptions/store', [MasterController::class, 'storeSubscription'])->name('subscriptions.store');
         Route::post('subscriptions/assign-permissions', [MasterController::class, 'assignPermissionsToSubscription'])->name('subscriptions.assignPermissions');
         Route::get('/subscriptions/{id}/permissions', [MasterController::class, 'getPermissions'])->name('subscriptions.getPermissions');

@@ -88,9 +88,11 @@ class Controller extends BaseController
         return $pdf->download(time() . '_receipt.pdf');
     }
 
-    public function showUploadForm()
+    
+    public function showUploadForm($id = null)
     {
-        return view('library.csv'); // View to show the CSV upload form
+        $library_id=$id;
+        return view('library.csv', compact('library_id'));
     }
 
     // protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
@@ -183,9 +185,9 @@ class Controller extends BaseController
 
     public function uploadCsv(Request $request)
     {
-        // Validate file input
+       
         $request->validate([
-            'csv_file' => 'required|file|mimes:csv',
+            'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
         ]);
 
         // Get the file and its real path
@@ -217,11 +219,26 @@ class Controller extends BaseController
         // Invalid and success records
         $invalidRecords = [];
         $successRecords = [];
+        if($request->library_id){
+            $library_id=$request->library_id;
+        }else{
+            $library_id=null; 
+        }
+    
+      
 
-        DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords) {
+        DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
-                    $this->validateAndInsert($record, $successRecords, $invalidRecords);
+                    if($library_id==null){
+                        // learner insert
+                        $this->validateAndInsert($record, $successRecords, $invalidRecords);
+                    }else{
+                        //library master insert
+                        $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
+                    }
+                   
+                    
                 } catch (Throwable $e) {
                     Log::error('Error inserting record: ' . $e->getMessage(), $record);
                     $record['error_message'] = $e->getMessage();
@@ -245,7 +262,7 @@ class Controller extends BaseController
 
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-        
+       
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -628,7 +645,197 @@ class Controller extends BaseController
         
         return response()->json(['status' => 'success']);
     }
+    protected function validateMasterInsert($data, &$successRecords, &$invalidRecords, $library_id)
+    {
+        // Validate input data
+        $validator = Validator::make($data, [
+            'Operating_hour' => 'required|integer',
+            'start_time' => ['required', function($attribute, $value, $fail) {
+                if (!preg_match('/^(?:[01]?\d|2[0-3]):[0-5]\d$/', $value)) {
+                    $fail($attribute.' must be a valid time (HH:MM format).');
+                }
+            }],
+            'end_time' => ['required', function($attribute, $value, $fail) {
+                if (!preg_match('/^(?:[01]?\d|2[0-3]):[0-5]\d$/', $value)) {
+                    $fail($attribute.' must be a valid time (HH:MM format).');
+                }
+            }],
+            'total_seat' => 'required|integer',
+            'fullday_price' => 'required|integer',
+            'halfday_price' => 'required|integer',
+            'hourly_price' => 'required|integer',
+            'total_seat' => 'required|integer',
+        ]);
+    
+        if ($validator->fails()) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
+            return;
+        }
+        if (!trim($data['total_seat']) || trim($data['total_seat']) <= 0) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Invalid Seats']);
+            return;
+        }
+        // Parse start and end time
+        $start_time = Carbon::createFromFormat('H:i', trim($data['start_time']));
+        $end_time = Carbon::createFromFormat('H:i', trim($data['end_time']));
+    
+        // Check for logical errors
+        if ($end_time->lessThan($start_time)) {
+            $invalidRecords[] = array_merge($data, ['error' => 'End time must be later than start time.']);
+            return; 
+        }
+    
+        // Calculate total hours
+        $totalHours = $end_time->diffInHours($start_time);
+        
+        if ($totalHours != trim($data['Operating_hour'])) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Operating hour does not match the difference between start and end times.']);
+            return;
+        }
+    
+        // Using database transaction for atomic operations
+        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours) {
+            // Update or create the operating hours
+            Hour::withoutGlobalScopes()->updateOrCreate(
+                ['library_id' => $library_id],
+                ['hour' => trim($data['Operating_hour']), 'extend_days' => trim($data['extend_day']) ?? null]
+            );
+    
+            // Define slot configurations
+            $slots = $this->defineSlots($start_time, $end_time, $totalHours);
+    
+            // Check user permissions and handle slot updates
+            $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data);
+    
+            // Define plans
+            $plans = [
+                ['name' => '1 MONTHS', 'plan_id' => 1],
+                ['name' => '3 MONTHS', 'plan_id' => 3],
+                ['name' => '6 MONTHS', 'plan_id' => 6],
+                ['name' => '12 MONTHS', 'plan_id' => 12],
+            ];
+    
+            // Handle plans updates
+            $this->handlePlanUpdates($plans, $library_id);
+    
+            // Handle price updates
+            $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']));
+            if( Seat::where('library_id', $library_id)->count() < trim($data['total_seat'])){
+                $this->handelSeats($library_id,trim($data['total_seat']));
+            }
+           
+            
+        });
+    }
+    
+    // Function to define slots
+    private function defineSlots($start_time, $end_time, $totalHours)
+    {
+        return [
+            ['type_id' => 1, 'name' => 'Fullday', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
+            ['type_id' => 2, 'name' => 'First HalfDay', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
+            ['type_id' => 3, 'name' => 'Second HalfDay', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
+            ['type_id' => 4, 'name' => 'Hourly Slot 1', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 4), 'slot_hours' => $totalHours / 4],
+            ['type_id' => 5, 'name' => 'Hourly Slot 2', 'start_time' => $start_time->copy()->addHours($totalHours / 4), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'slot_hours' => $totalHours / 4],
+            ['type_id' => 6, 'name' => 'Hourly Slot 3', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'slot_hours' => $totalHours / 4],
+            ['type_id' => 7, 'name' => 'Hourly Slot 4', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'end_time' => $end_time, 'slot_hours' => $totalHours / 4],
+        ];
+    }
+    
+    // Function to handle slot updates
+    private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
+    {
+        $user = Library::withoutGlobalScopes()->find($library_id);
+        foreach ($slots as $slot) {
+            if ((!$user->can('has-permission', 'FullDay') && $slot['type_id'] == 1) ||
+                (!$user->can('has-permission', 'FirstHalf') && $slot['type_id'] == 2) ||
+                (!$user->can('has-permission', 'SecondHalf') && $slot['type_id'] == 3) ||
+                (!$user->can('has-permission', 'Hourly1') && $slot['type_id'] == 4) ||
+                (!$user->can('has-permission', 'Hourly2') && $slot['type_id'] == 5) ||
+                (!$user->can('has-permission', 'Hourly3') && $slot['type_id'] == 6) ||
+                (!$user->can('has-permission', 'Hourly4') && $slot['type_id'] == 7)) {
+                $invalidRecords[] = array_merge($data, ['error' => $slot['name'].' Plan type has no permissions']);
+                return;
+            }
+    
+            // Update or create plan type
+            PlanType::withoutGlobalScopes()->updateOrCreate(
+                ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
+                [
+                    'name' => $slot['name'],
+                    'start_time' => $slot['start_time'],
+                    'end_time' => $slot['end_time'],
+                    'slot_hours' => $slot['slot_hours'],
+                ]
+            );
+        }
+    }
+    
+    // Function to handle plan updates
+    private function handlePlanUpdates($plans, $library_id)
+    {
+        foreach ($plans as $plan) {
+            Plan::withoutGlobalScopes()->updateOrCreate(
+                ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
+                ['name' => $plan['name']]
+            );
+        }
+    }
+    
+    // Function to handle price updates
+    private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price)
+    {
+        $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->get();
+        $plantype_prices = PlanType::withoutGlobalScopes()->where('library_id', $library_id)->get();
 
+        foreach ($plans_prices as $plans_price) {
+            foreach ($plantype_prices as $plantype_price) {
+                // Initialize price variable
+                $price = 0;
+
+                // Calculate prices based on the type of plan
+                if ($plantype_price->day_type_id == 1) {
+                    $price = $fullday_price * $plans_price->plan_id;
+                } elseif ($plantype_price->day_type_id == 2 || $plantype_price->day_type_id == 3) {
+                    $price = $halfday_price * $plans_price->plan_id;
+                } elseif (in_array($plantype_price->day_type_id, [4, 5, 6, 7])) {
+                    $price = $hourly_price * $plans_price->plan_id;
+                }
+
+                // Check if the plan_type_id exists before inserting
+                if (PlanType::withoutGlobalScopes()->where('id', $plantype_price->day_type_id)->exists()) {
+                    // Update or create plan type price
+                    PlanPrice::withoutGlobalScopes()->updateOrCreate(
+                        ['library_id' => $library_id, 'plan_id' => $plans_price->plan_id, 'plan_type_id' => $plantype_price->day_type_id],
+                        ['price' => $price]
+                    );
+                } else {
+                    Log::warning("Attempted to insert price for non-existing plan type id: " . $plantype_price->day_type_id);
+                }
+            }
+        }
+    }
+
+    private function handelSeats($library_id,$total_seats){
+        $lastSeatNo = Seat::where('library_id', $library_id)
+        ->orderBy('seat_no', 'desc')
+        ->value('seat_no');
+
+        $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1;
+        $seats = [];
+    
+        for ($i = 0; $i < $total_seats; $i++) {
+            $seats[] = [
+                'seat_no' =>  $startSeatNo,
+                'library_id' => $library_id,
+                'is_available' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+    
+        Seat::insert($seats);
+    }
     
 
 }

@@ -15,36 +15,39 @@
     </ul>
 </div>
 @endif
-
-<div class="row justify-content-center mb-4 mt-4">
-    <div class="col-lg-4">
-        <div class="import-data">
-            <form action="{{ route('csv.upload') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="row g-4">
-                    <div class="col-lg-12">
-                        <label for="">Select File</label>
-                        <input type="file" class="form-control" name="csv_file">
-                        <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample CSV Fil</small></a>
-                    </div>
-                    <div class="col-lg-12">
-                        <button type="submit" class="btn btn-primary button">Import Data</button>
-                        <a href="" class="d-block text-center mt-2" id="clearData">Clear Data</a>
-                    </div>
-                </div>
-
-            </form>
-
-        </div>
-    </div>
-</div>
-
 {{-- Success Message --}}
 @if(session('successCount'))
 <div class="alert alert-success">
     {{ session('successCount') }} records imported successfully.
 </div>
 @endif
+<div class="row justify-content-center mb-4 mt-4">
+    <div class="col-lg-4">
+        <div class="import-data">
+            <form action="{{ route('csv.upload') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="library_id" value=" {{$library_id ? $library_id : ''}}"> 
+                <div class="row g-4">
+                    <div class="col-lg-12">
+                        <label for="">Select File</label>
+                        <input type="file" class="form-control" name="csv_file">
+                        <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample learnar CSV File</small></a>
+                        <a href="{{ asset('public/sample/master.csv') }}"><small>Download Sample library master CSV File</small></a>
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary button">Import Data</button>
+                        
+                    </div>
+                </div>
+
+            </form>
+           
+
+        </div>
+    </div>
+</div>
+
+
 
 
 

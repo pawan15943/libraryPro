@@ -7,6 +7,17 @@
     box-sizing: border-box;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
 :root {}
 
 input[readonly] {
@@ -432,6 +443,7 @@ nav ol {
     padding: 1.5rem;
     border-radius: 1rem;
     box-shadow: 1px 0 5px #00000021;
+    border: none;
 }
 
 label.permission {
@@ -613,7 +625,8 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a {
     box-shadow: 1px 0 5px #00000045;
 }
 
-.plan-box h1, .plan-box h4 {
+.plan-box h1,
+.plan-box h4 {
     color: var(--c5) ! IMPORTANT;
 }
 
@@ -669,15 +682,18 @@ ul.plan-features li+li {
     padding-top: 1rem;
 }
 
-.col-lg-3:nth-child(1) .plan-box, .basic-1 {
+.col-lg-3:nth-child(1) .plan-box,
+.basic {
     background: linear-gradient(2deg, #3F51B5, #081350);
 }
 
-.col-lg-3:nth-child(2) .plan-box, .standard-1 {
+.col-lg-3:nth-child(2) .plan-box,
+.standard {
     background: linear-gradient(3deg, #673AB7, #370099);
 }
 
-.col-lg-3:nth-child(3) .plan-box, .premeium-1 {
+.col-lg-3:nth-child(3) .plan-box,
+.premium {
     background: linear-gradient(0deg, #c3a81d, #ab8d15);
 }
 
@@ -1200,7 +1216,7 @@ span.timestamp {
     padding: 2rem;
     border: 1px solid #e7e7e7 !important;
     border-radius: 1rem;
-    background: #151f38;
+    /* background: #151f38; */
 }
 
 .paymentinfo * {
@@ -1208,7 +1224,7 @@ span.timestamp {
 }
 
 .payment-information {
-    padding: 2rem;
+    padding: 1.5rem;
 }
 
 .payment-information a {

@@ -26,9 +26,9 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-lg-12 mb-4">
-        <h2 class="text-center">A few details to make it yours!</h2>
+<div class="row  mb-4">
+    <div class="col-lg-12">
+        <h2 class="text-center typing-text">A few details to make it yours!</h2>
     </div>
 </div>
 @endif

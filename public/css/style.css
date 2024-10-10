@@ -13,6 +13,17 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
+.typing-cursor {
+    display: inline-block;
+    font-weight: bold;
+    color: black; /* Set the color of the cursor */
+    animation: blink 0.7s step-end infinite; /* Blinking animation */
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
 /* For Firefox */
 input[type="number"] {
     -moz-appearance: textfield;

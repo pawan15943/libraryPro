@@ -23,16 +23,16 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row mb-4">
     <div class="col-lg-12">
-        <h2 class="text-center">Pick the plan that fits you best!</h2>
+        <h2 class="text-center typing-text">Pick the plan that fits you best!</h2>
     </div>
 </div>
 @endif
 
 
 
-<div class="row g-4 justify-content-center mt-1">
+<div class="row g-4 justify-content-center">
     <div class="col-lg-4 payment-mode">
         <label for="" class="m-auto d-block">Select Plan Mode <span>*</span></label>
         <select name="plan_mode" id="plan_mode" class="form-select">

@@ -27,9 +27,9 @@
 </div>
 
 
-<div class="row">
+<div class="row mb-4">
     <div class="col-lg-12">
-        <h2 class="text-center mb-4">Secure your plan in just one step!</h2>
+        <h2 class="text-center typing-text">Secure your plan in just one step!</h2>
     </div>
 </div>
 @endif

@@ -28,9 +28,9 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row mb-4">
     <div class="col-lg-12">
-        <h2 class="text-center">You’re all set! Let’s get things ready for you!</h2>
+        <h2 class="text-center typing-text">You’re all set! Let’s get things ready for you!</h2>
     </div>
 </div>
 @endif
@@ -610,7 +610,9 @@
         @endif
     </div>
 </div>
-
+<script>
+    
+</script>
 <!-- /.content -->
 @include('master.script')
 @endsection

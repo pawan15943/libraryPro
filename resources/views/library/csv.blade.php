@@ -89,9 +89,10 @@
 {{-- Trigger CSV Download Automatically --}}
 @if(session('autoExportCsv'))
 <script type="text/javascript">
+let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
     window.onload = function() {
         setTimeout(function() {
-            window.location.href = "{{ route('export.invalid.records') }}"; // Trigger the export CSV route
+            window.location.href = exportrecordurl; // Trigger the export CSV route
         }, 1000); // Delay to ensure the page fully loads before triggering
     };
 </script>

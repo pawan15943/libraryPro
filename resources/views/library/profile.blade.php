@@ -170,6 +170,13 @@
             </div>
         </div>
         <div class="col-lg-3">
+            <div class="boxes mb-4">
+                <img src="{{url('public/img/library.jpg')}}" alt="library" class="img-fluid rounded">
+                <div class="content---">
+                    <h4>LibraryPro</h4>
+                    <span>Best Place to Study</span>
+                </div>
+            </div>
             <div class="card">
                 <div class="row">
                     <div class="col-lg-12">

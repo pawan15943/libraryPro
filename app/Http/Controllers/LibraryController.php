@@ -238,55 +238,74 @@ class LibraryController extends Controller
             return redirect()->back()->with('error', 'Library ID not provided.');
         }
 
-        // Ensure $library_id is set correctly
+        
         if (!$library_id) {
             return redirect()->back()->with('error', 'Library ID is missing.');
         }
 
-        // Check if the transaction already exists to prevent multiple insertions
+        $today=date('Y-m-d');
         $existingTransaction = LibraryTransaction::where('library_id', $library_id)
             ->where('amount', $request->price)
             ->where('month', $month)
+            ->where('is_paid',0)
+            ->whereNull('end_date')
+            ->orWhere('end_date','>=',$today)
             ->exists();
 
-        if (!$existingTransaction) {
-            // Insert the transaction and get the last inserted ID
-            $transactionId = LibraryTransaction::insertGetId([
-                'library_id' => $library_id,
-                'amount'     => $request->price,
-                'paid_amount'=> $request->price,
-                'month'      => $month,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-
-            // Update the library's subscription type
+        if (isset($request->subscription_id) && !is_null($request->subscription_id)) {
             Library::where('id', $library_id)->update([
                 'library_type' => $request->subscription_id,
             ]);
-        } else {
-            // If the transaction already exists, retrieve the existing transaction ID
-            $transactionId = LibraryTransaction::where('library_id', $library_id)
+            if($existingTransaction){
+                $transactionId = LibraryTransaction::where('library_id', $library_id)
                 ->where('amount', $request->price)
                 ->where('month', $month)
+                ->where('is_paid',0)
+                ->whereNull('end_date')
+                ->orWhere('end_date','>=',$today)
                 ->value('id');
+            }else{
+                $transactionId = LibraryTransaction::insertGetId([
+                    'library_id'  => $library_id,
+                    'amount'      => $request->price,
+                    'paid_amount' => $request->price,
+                    'month'       => $month,
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
+                ]);
+            }
+           
+        } else {
+            
+            return redirect()->back()->with('error', 'No valid subscription selected.');
         }
 
-        // Retrieve month and plan information
+        // Retrieve the most recent transaction
         $month = LibraryTransaction::where('library_id', $library_id)
-        ->orderBy('id', 'desc') 
-        ->first();
-    
-        $plan = Subscription::where('id', $request->subscription_id)->first();
+            ->orderBy('id', 'desc')
+            ->first();
 
+        // Retrieve the current plan
+        $myPlan = Library::where('id', $library_id)->first();
+        $plan = Subscription::where('id', $myPlan->library_type)->first();
+        $data = Library::where('id', Auth::user()->id)
+        ->with('subscription.permissions')  
+        ->first();
+        $all_transaction=LibraryTransaction::where('library_id', $library_id)->where('is_paid',1)->with('subscription.permissions')->get();
+       
         return view('library.payment', [
             'transactionId' => $transactionId,
-            'month' => $month,
-            'plan' => $plan,
+            'month'         => $month,
+            'plan'          => $plan,
+            'data'          => $data,
+            'all_transaction' => $all_transaction,
         ]);
     }
 
 
+    public function paymentProcessView(){
+            return view('library.payment');
+    }
 
     public function paymentStore(Request $request)
     {

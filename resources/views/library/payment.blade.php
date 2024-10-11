@@ -58,19 +58,19 @@
                             <span>Subscription Price</span>
                             <h4>{{ $month->amount}}</h4>
                         </div>
+                        @if($month->start_date)  
                         <div class="col-lg-6">
                             <span>Subscription Start Date</span>
                             <h4>{{ $month->start_date}}</h4>
                         </div>
+                        @endif
+                        @if($month->end_date)  
                         <div class="col-lg-6">
                             <span>Subscription End Date</span>
-                            <h4>{{ $month->start_date}}</h4>
+                            <h4>{{ $month->end_date}}</h4>
                         </div>
-                        <div class="col-lg-6">
-                            <span>Subscription Duration</span>
-                            <h4>{{ $month->start_date}}</h4>
-                        </div>
-
+                        @endif
+                       
                     </div>
 
                 </div>
@@ -80,35 +80,18 @@
 
             <div class="payment-information">
                 <h4 class="mb-3">Plan Features</h4>
-                <!-- <div class="row g-4">
-                    <div class="col-lg-6">
-                        <span>Payment Method</span>
-                        <h4>{{ $month->payment_mode}}</h4>
-                    </div>
-                    <div class="col-lg-6">
-                        <span>Amount Paid</span>
-                        <h4>{{ $month->amount}}</h4>
-                    </div>
-                    <div class="col-lg-6">
-                        <span>Payment Status</span>
-                        @if($month->is_paid ==1)
-                        <span class=" text-success d-inline">Success</span>
-                        @else
-                        <span class=" text-danger d-inline">Pending</span>
-                        @endif
-                    </div>
-                    <div class="col-lg-6">
-                        <span>Transaction Id</span>
-                        <h4>{{ $month->transaction_id}}</h4>
-                    </div>
-                    <div class="col-lg-6">
-                        <span>Payment Date</span>
-                        <h4>{{ $month->transaction_date}}</h4>
-                    </div>
-
-                </div>
-            </div> -->
-
+                <ul class="plan-features">
+                    @if($data->subscription->permissions->isNotEmpty())
+                   
+                    @foreach($data->subscription->permissions as $permission)
+                    
+                    <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
+                    @endforeach
+                    @else
+                    <li>No permissions available</li>
+                    @endif
+                </ul>
+              
             </div>
       
         </div>
@@ -123,7 +106,7 @@
                         Amount Paid
                     </div>
                     <div class="col-lg-4 text-end">
-                        <i class="fa fa-inr"></i> 1000
+                        <i class="fa fa-inr"></i> {{ $month->amount}}
                     </div>
 
                     <div class="col-lg-8">
@@ -144,7 +127,7 @@
                         <b>Total Amount to Pay</b>
                     </div>
                     <div class="col-lg-4 text-end">
-                        <b><i class="fa fa-inr"></i> 1000</b>
+                        <b><i class="fa fa-inr"></i> {{ $month->amount}}</b>
                     </div>
 
                 </div>
@@ -186,6 +169,7 @@
         </div>
     </div>
 </div>
+@if($ispaid)
 <div class="row mb-4">
     <h4 class="py-4">Transaction Detials</h4>
     <div class="col-lg-12">
@@ -203,36 +187,45 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Basic Plan</td>
-                        <td>1000</td>
-                        <td>70%</td>
-                        <td>300</td>
-                        <td>45615848612315</td>
-                        <td>
-                            <ul class="actionalbls">
-                                <li>
-
-                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" id="custId" name="id" value="{{ $value->id }}">
-                                        <input type="hidden" name="type" value="library">
-
-                                        <button type="submit">
-                                            <i class="fa fa-print"></i>
-                                        </button>
-                                    </form>
-
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
+                    @if($all_transaction->count() > 0)
+                        @foreach($all_transaction as $index => $transaction)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $transaction->subscription->name ?? 'N/A' }}</td>
+                                <td>{{ $transaction->amount }}</td>
+                                <td>{{ $transaction->subscription->discount_percentage ?? 'N/A' }}%</td> <!-- Assuming there's a discount field -->
+                                <td>{{ $transaction->paid_amount }}</td>
+                                <td>{{ $transaction->transaction_id ?? $transaction->id }}</td> <!-- Assuming transaction_id is stored -->
+                                <td>
+                                    <ul class="actionalbls">
+                                        <li>
+                                            <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" id="custId" name="id" value="{{ $transaction->id }}">
+                                                <input type="hidden" name="type" value="library">
+            
+                                                <button type="submit">
+                                                    <i class="fa fa-print"></i>
+                                                </button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="7">No transactions found.</td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
+            
         </div>
     </div>
 </div>
+@endif
+
 
 
 @endsection

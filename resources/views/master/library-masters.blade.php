@@ -37,7 +37,13 @@
 
 <div id="success-message" class="alert alert-success" style="display:none;"></div>
 <div id="error-message" class="alert alert-danger" style="display:none;"></div>
+@if(session('successCount'))
+<div class="alert alert-success">
+    {{ session('successCount') }} records imported successfully.
+</div>
+@endif
 <!-- Masters -->
+@if($iscomp)
 <div class="row g-4 mb-4">
     <!-- Add Operating Hours -->
     <div class="col-lg-4">
@@ -600,7 +606,11 @@
         </div>
     </div>
 
-</div>
+</div> 
+@else
+@include('library.csv')
+@endif
+
 
 <!-- Button -->
 <div class="row justify-content-center mb-4">

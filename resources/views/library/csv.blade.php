@@ -25,7 +25,8 @@
     <div class="col-lg-4">
         <div class="import-data">
             <form action="{{ Auth::guard('library')->check() ? route('library.csv.upload') : route('web.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm">                @csrf
-                <input type="hidden" name="library_id" value=" {{$library_id ? $library_id : ''}}"> 
+                <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}"> 
+                <input type="hidden" name="library_import" value="library_master"> 
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Select File</label>

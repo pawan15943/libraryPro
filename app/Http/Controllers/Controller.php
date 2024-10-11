@@ -229,6 +229,8 @@ class Controller extends BaseController
         $successRecords = [];
         if($request->library_id){
             $library_id=$request->library_id;
+        }elseif($request->library_import=='library_master'){
+            $library_id=Auth::user()->id;
         }else{
             $library_id=null; 
         }
@@ -256,15 +258,21 @@ class Controller extends BaseController
         });
 
         if (!empty($invalidRecords)) {
-            session(['invalidRecords' => $invalidRecords]); // Persist invalid records in the session
+            session(['invalidRecords' => $invalidRecords]); 
+
             return redirect()->back()->with([
                 'successCount' => count($successRecords),
                 'autoExportCsv' => true, // This triggers the CSV download
             ]);
         }
-    
-        // Handle success case
-        return redirect()->back()->with('successCount', count($successRecords));
+        if($request->library_import=='library_master'){
+           
+            return redirect()->route('library.master')->with('successCount', count($successRecords));
+        }else{
+             // Handle success case
+            return redirect()->back()->with('successCount', count($successRecords));
+        }
+       
     }
     
 

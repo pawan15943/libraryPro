@@ -9,7 +9,7 @@
     <div class="col-lg-6">
         <div class="payment-detaile">
             @foreach($month as $key => $value)
-            <div class="paymentinfo">
+            <div class="paymentinfo basic <?php if ($plan->name == 'Basic')?>">
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">

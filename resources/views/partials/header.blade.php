@@ -5,7 +5,7 @@
     <div class="d-flex">
         <div class="conatent flex">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
-            @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew)
+            @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew && $isProfile)
                 
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan Expired in {{$librarydiffInDays}} Days</small>
             @if($librarydiffInDays <= 5 && $librarydiffInDays >= 0 && $isProfile)

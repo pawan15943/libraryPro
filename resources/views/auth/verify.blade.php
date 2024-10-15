@@ -29,7 +29,7 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <label for="">Enter OTP <span>*</span></label>
-                            <input type="hidden" name="email" value="{{ session('library_email') }}">
+                            <input type="hidden" name="email" value="{{ session('library_email') ?? session('email') }}">
                             <input type="hidden" name="user_type" value="admin">
                             <input type="text" class="form-control digit-only @error('email_otp') is-invalid @enderror" name="email_otp" maxlength="10"
                                 value="{{ old('email_otp') }}" placeholder="Enter OTP">

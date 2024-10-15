@@ -67,11 +67,26 @@ class LoadMenus
             $isProfile = Library::where('id', Auth::user()->id)->where('is_profile', 1)->exists();
         
             $diffInDays = 0; // Initialize the variable to a default value
+            $today = date('Y-m-d');
+           
+        $value = LibraryTransaction::where('library_id',  Auth::user()->id)
         
-            $value = LibraryTransaction::where('library_id', Auth::user()->id)
-                ->where('status', 1)
+                ->where(function($query) use ($today) {
+                    $query->where('status', 1)
+                        ->where(function($subQuery) use ($today) {
+                            $subQuery->whereNull('end_date')
+                                    ->orWhere('end_date', '>=', $today);
+                        });
+                })
                 ->first();
-        
+        $is_renew=LibraryTransaction::where('library_id',Auth::user()->id) 
+                ->where('is_paid',1)
+                ->where(function($query) use ($today) {
+                    $query->where('status', 0)
+                        ->where(function($subQuery) use ($today) {
+                            $subQuery->where('end_date', '>', $today);
+                        });
+                })->exists();
             if ($value) {
                 $today = Carbon::today();
                 $endDate = Carbon::parse($value->end_date);
@@ -81,6 +96,7 @@ class LoadMenus
             }
             
         
+            $this->statusInactive();
             $this->updateLibraryStatus();
             
             View::share('checkSub', $checkSub);
@@ -89,6 +105,7 @@ class LoadMenus
             View::share('isEmailVeri', $isEmailVeri);
             View::share('iscomp', $iscomp);
             View::share('librarydiffInDays', $librarydiffInDays); 
+            View::share('is_renew', $is_renew); 
             
         }
         
@@ -97,8 +114,9 @@ class LoadMenus
          return $next($request);
      }
 
-     protected function updateLibraryStatus()
+     public function updateLibraryStatus()
     {
+        $today = Carbon::today();
         $hourexist = Hour::count();
         $extendexist = Hour::whereNotNull('extend_days')->count();
         $seatExist = Seat::count();
@@ -111,8 +129,8 @@ class LoadMenus
                             })
                             ->count();
         $planPrice = PlanPrice::count();
-
-        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice >= 3) {
+        $is_active=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1) ->where('end_date', '>', $today->format('Y-m-d'))->exists();
+        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice >= 3 && $is_active) {
             $id = Auth::user()->id;
             $library = Library::findOrFail($id);
 
@@ -121,6 +139,32 @@ class LoadMenus
                 $library->save();
             }
         }
+    
+
     }
+
+    public function statusInactive(){
+        $userId = Auth::user()->id;
+        $today = Carbon::today();
+        $yesterday = $today->subDay();
+        $statuscheck=LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid',1)->where('end_date', '<=', $yesterday->format('Y-m-d'))->exists();
+        $is_renew=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1) ->where('end_date', '>', $today->format('Y-m-d'))->exists();
+        if($statuscheck && ($is_renew==false)){
+            Library::where('id', $userId)
+           ->where('status', 1)
+           ->update(['status' => 0,'is_paid'=>0]);
+
+            // Mark the expired transaction status as inactive
+            LibraryTransaction::where('library_id', $userId)
+                            ->where('is_paid', 1)
+                            ->where('status', 1)
+                            ->whereDate('end_date', '=', $yesterday->format('Y-m-d'))
+                            ->orWhere('end_date','<',$today->format('Y-m-d'))
+                            ->update(['status' => 0]);
+
+        }
+    }
+
+
      
 }

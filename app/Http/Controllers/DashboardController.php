@@ -17,7 +17,7 @@ use Illuminate\Support\Carbon;
 use App\Services\LibraryService;
 use App\Services\LearnerService;
 use App\Traits\LearnerQueryTrait;
-
+use App\Http\Middleware\LoadMenus;
 
 class DashboardController extends Controller
 {
@@ -54,16 +54,18 @@ class DashboardController extends Controller
 
     public function libraryDashboard()
     {
-      
         $user=Auth::user();
- 
+       
         if ($user->hasRole('admin')) {
+            //load menus status function call for status update
+            $middleware = app(LoadMenus::class);
+            $middleware->statusInactive();
             $value = LibraryTransaction::where('library_id', Auth::user()->id)
             ->where('status', 1)
             ->first();
-
+            $today = Carbon::today();
             if ($value) {
-                $today = Carbon::today();
+               
                 $endDate = Carbon::parse($value->end_date);
                 $diffInDays = $today->diffInDays($endDate, false);
                     if ($diffInDays <= 0){
@@ -94,9 +96,14 @@ class DashboardController extends Controller
             $total_seats=Seat::count();
             $library_revenue=  LearnerDetail::whereMonth('join_date', date('m'))
             ->whereYear('join_date', date('Y'))->where('is_paid',1)
-            ->sum('plan_price_id');  
+            ->sum('plan_price_id');
+            // redirect check library  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
+            $is_expire=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1) ->where('end_date', '<=', $today->format('Y-m-d'))->exists();
+
+
+
             $available_seats=$this->learnerService->getAvailableSeats();
            
             $today = Carbon::today();
@@ -107,8 +114,10 @@ class DashboardController extends Controller
             ->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)  // plan_end_date is today - 5 days
             ->orWhereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
             ->get();
-            if($iscomp){
-                return view('dashboard.admin',compact('diffInDays','availble_seats','booked_seats','total_seats','library_revenue','available_seats','renewSeats'));
+            if($is_expire){
+                return redirect()->route('library.myplan');
+            }elseif($iscomp){
+                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','library_revenue','available_seats','renewSeats'));
             }else{
                 return redirect($redirectUrl);
             }

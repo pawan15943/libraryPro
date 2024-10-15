@@ -13,7 +13,7 @@
                     <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Pick Your Perfect Plan</a>
                 </li>
                 <li class="active">
-                    <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
+                    <a href="{{ ($ispaid) ? route('subscriptions.payment')  : '#' }}">Make Payment</a>
                 </li>
                 <li>
                     <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>
@@ -108,26 +108,27 @@
                     <div class="col-lg-4 text-end">
                         <i class="fa fa-inr"></i> {{ $month->amount}}
                     </div>
-
+                    <!--GST and Discount insert in table from API call for created according -->
                     <div class="col-lg-8">
-                        12% GST
+                        {{ $month->discount ?? 0}}% Discount (<a href="">Offer & Discounts</a>)
                     </div>
                     <div class="col-lg-4 text-end">
-                        <i class="fa fa-inr"></i> 0
+                        <i class="fa fa-inr"></i> {{$discount_amount}}
                     </div>
-
                     <div class="col-lg-8">
-                        % Discount (<a href="">Offer & Discounts</a>)
+                        {{ $month->gst ?? 0}}% GST
                     </div>
                     <div class="col-lg-4 text-end">
-                        <i class="fa fa-inr"></i> 0
+                        <i class="fa fa-inr"></i> {{$gst_amount}}
                     </div>
+
+                    
 
                     <div class="col-lg-8">
                         <b>Total Amount to Pay</b>
                     </div>
                     <div class="col-lg-4 text-end">
-                        <b><i class="fa fa-inr"></i> {{ $month->amount}}</b>
+                        <b><i class="fa fa-inr"></i> {{ $month->paid_amount}}</b>
                     </div>
 
                 </div>
@@ -137,36 +138,51 @@
         <div class="dicount-cupon mt-4">
             Discount Cupon Code
         </div>
+    <form action="{{route('library.payment.store')}}" method="POST" enctype="multipart/form-data">
+            @csrf
         <div class="card mt-4">
             <h4 class="mb-3 text-center">Transaction Summery</h4>
             <div class="row g-4">
                 <div class="col-lg-6">
                     <span>Transaction Date</span>
-                    <input type="date" class="form-control">
+                    <input type="date" name="transaction_date" class="form-control" value="{{ old('transaction_date', date('Y-m-d')) }}">
+                    @if($errors->has('transaction_date'))
+                        <span class="text-danger">{{ $errors->first('transaction_date') }}</span>
+                    @endif
+                    
                 </div>
+            
                 <div class="col-lg-6">
                     <span>Transaction Id</span>
-                    <input type="number" class="form-control" value="genrate rsndome string">
+                    <input type="text" name="transaction_id" class="form-control" value="{{ old('transaction_id', Str::random(8)) }}">
+                    @if($errors->has('transaction_id'))
+                        <span class="text-danger">{{ $errors->first('transaction_id') }}</span>
+                    @endif
                 </div>
+            
                 <div class="col-lg-12">
                     <span>Payment Method</span>
-                    <select name="" id="" class="form-select">
+                    <select name="payment_method" class="form-select">
                         <option value="">Select Mode</option>
-                        <option value="">Online</option>
-                        <option value="">Offline</option>
+                        <option value="1" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Online</option>
+                        <option value="2" {{ old('payment_method') == 'Offline' ? 'selected' : '' }}>Offline</option>
                     </select>
+                    @if($errors->has('payment_method'))
+                        <span class="text-danger">{{ $errors->first('payment_method') }}</span>
+                    @endif
                 </div>
             </div>
+            
         </div>
         <div class="row justify-content-center mt-3">
             <div class="col-lg-12">
-                <form action="{{route('library.payment.store')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <input type="hidden" name="transaction_id" value="{{$transactionId}}">
+                
+                    <input type="hidden" name="library_transaction_id" value="{{$transactionId}}">
                     <button type="submit" class="btn btn-primary btn-block button"> Make Payment </button>
-                </form>
+                
             </div>
         </div>
+    </form>
     </div>
 </div>
 @if($ispaid)
@@ -187,13 +203,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                   
+
                     @if($all_transaction->count() > 0)
                         @foreach($all_transaction as $index => $transaction)
+                      
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $transaction->subscription->name ?? 'N/A' }}</td>
                                 <td>{{ $transaction->amount }}</td>
-                                <td>{{ $transaction->subscription->discount_percentage ?? 'N/A' }}%</td> <!-- Assuming there's a discount field -->
+                                <td>{{ $transaction->discount ?? 'N/A' }}%</td> <!-- Assuming there's a discount field -->
                                 <td>{{ $transaction->paid_amount }}</td>
                                 <td>{{ $transaction->transaction_id ?? $transaction->id }}</td> <!-- Assuming transaction_id is stored -->
                                 <td>

@@ -4,6 +4,7 @@
 
 @section('content')
 @if($iscomp==false)
+
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">
@@ -11,8 +12,9 @@
                 <li>
                     <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Pick Your Perfect Plan</a>
                 </li>
+    
                 <li>
-                    <a href="{{ ($ispaid) ? '#'  : route('subscriptions.payment') }}">Make Payment</a>
+                    <a href="{{ ($ispaid) ? route('subscriptions.payment')  : '#' }}">Make Payment</a>
                 </li>
                 <li class="active">
                     <a href="{{ ($ispaid ) ? route('profile') : '#' }}">Update Profile</a>

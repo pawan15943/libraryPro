@@ -4,7 +4,13 @@
 
 
 <!-- Breadcrumb -->
-
+@if(isset($librarydiffInDays) && $librarydiffInDays <= 5)
+<div class="row justify-content-center mb-4 mt-4">
+    <div class="col-lg-3">
+        <a href="{{route('subscriptions.choosePlan')}}" type="button" class="btn btn-primary button main">Renew Plan Now</a>
+    </div>
+</div>
+@endif
 <div class="row justify-content-center mb-4">
     <div class="col-lg-6">
         <div class="payment-detaile">
@@ -13,11 +19,11 @@
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">
-                            <span>Plan Name</span>
+                            <span>Subscription Name</span>
                             <h4>{{$plan ? $plan->name : $value->plan}}</h4>
                         </div>
                         <div class="col-lg-6">
-                            <span>Plan Type</span>
+                            <span>Subscription Type</span>
                             @if($value->month==1)
                             <h4>{{ 'MONTHLY'}}</h4>
                             @else
@@ -26,13 +32,19 @@
 
                         </div>
                         <div class="col-lg-6">
-                            <span>Plan Price</span>
+                            <span>Subscription Price</span>
                             <h4>{{ $value->amount }}</h4>
                         </div>
                         <div class="col-lg-6">
-                            <span>Start Date</span>
+                            <span>Subscription Start Date</span>
                             <h4>{{ $value->start_date}}</h4>
                         </div>
+                        @if($value->end_date)  
+                        <div class="col-lg-6">
+                            <span>Subscription End Date</span>
+                            <h4>{{ $value->end_date}}</h4>
+                        </div>
+                        @endif
                         <div class="col-lg-6">
                             <span> Status :</span>
                             @if($value->status ==1)
@@ -66,11 +78,6 @@
     </div>
 </div>
 
-<div class="row justify-content-center mb-4 mt-4">
-    <div class="col-lg-3">
-        <a href="" type="button" class="btn btn-primary button main">Renew Plan Now</a>
-    </div>
-</div>
 
 
 @endsection

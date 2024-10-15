@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use App\Services\LibraryService;
 use Auth;
 use DB;
+use Carbon\Carbon;
 
 class LibraryController extends Controller
 {
@@ -79,7 +80,7 @@ class LibraryController extends Controller
     {
         $rules = [
             'library_name'   => 'required|string|max:255',
-            'email'  => 'required|email|max:255',
+            'email'  => 'required|email|max:255|unique:libraries,email',
             'library_mobile' => 'required|digits:10',
             'state_id'       => 'nullable|exists:states,id',
             'city_id'        => 'nullable|exists:cities,id',
@@ -91,12 +92,14 @@ class LibraryController extends Controller
             'password'       => 'required|string|min:8',
             'terms'          => 'accepted',
         ];
+        
 
         return Validator::make($request->all(), $rules);
     }
 
     public function store(Request $request)
     {
+       
         // Validate the request
         $validatedData = $this->libraryValidation($request);
         
@@ -115,7 +118,7 @@ class LibraryController extends Controller
         }
 
         $validated['password'] = bcrypt($validated['password']);
-        
+      
         try {
             $library = Library::create($validated);
 
@@ -154,7 +157,7 @@ class LibraryController extends Controller
 
     public function verifyOtp(Request $request)
     {
-       
+       dd($request);
         // Validate the input
         $request->validate([
             'email' => 'required|email',
@@ -163,11 +166,12 @@ class LibraryController extends Controller
 
         // Find the library by email
         $library = Library::where('email', $request->email)->first();
+     
 
         if (!$library) {
             return redirect()->back()->withErrors(['email' => 'Library not found']);
         }
-
+        
         // Check if the OTP matches
         if ($library->email_otp == $request->email_otp) {
             // Mark email as verified
@@ -229,10 +233,9 @@ class LibraryController extends Controller
     {
         $month = ($request->plan_mode == 2) ? 12 : 1;
 
-        // Set the library_id based on request or authenticated user
         if ($request->library_id) {
             $library_id = $request->library_id;
-        } elseif (Auth::check()) { // Check if user is authenticated
+        } elseif (Auth::check()) { 
             $library_id = Auth::user()->id;
         } else {
             return redirect()->back()->with('error', 'Library ID not provided.');
@@ -243,97 +246,181 @@ class LibraryController extends Controller
             return redirect()->back()->with('error', 'Library ID is missing.');
         }
 
-        $today=date('Y-m-d');
+        $today = date('Y-m-d');
         $existingTransaction = LibraryTransaction::where('library_id', $library_id)
-            ->where('amount', $request->price)
-            ->where('month', $month)
-            ->where('is_paid',0)
-            ->whereNull('end_date')
-            ->orWhere('end_date','>=',$today)
+            ->where(function($query) use ($today) {
+                $query->where('is_paid', 0)
+                    ->where(function($subQuery) use ($today) {
+                        $subQuery->whereNull('end_date')
+                                ->orWhere('end_date', '>=', $today);
+                    });
+            })
             ->exists();
+        $gst_discount = DB::table('gst_discount')->first(); 
 
+        if ($gst_discount) {
+            $gst = $gst_discount->gst ?? 0;       
+            $discount = $gst_discount->discount ?? 0; 
+        } else {
+            $gst = 0;
+            $discount = 0;
+        }
+        $amount=$request->price;
+        //First Apply Discount, Then GST
+        $discount_amount=$amount*($discount/100);
+        $price_after_discount=$amount-$discount_amount;
+        $gst_amount=$price_after_discount*($gst/100);
+        $final_price=$price_after_discount+$gst_amount;
+       
+           
         if (isset($request->subscription_id) && !is_null($request->subscription_id)) {
+           
             Library::where('id', $library_id)->update([
                 'library_type' => $request->subscription_id,
             ]);
-            if($existingTransaction){
+        
+            $transactionId = null;
+        
+            if ($existingTransaction) {
+                
+                LibraryTransaction::where('library_id', $library_id)
+                    ->where(function($query) use ($today) {
+                        $query->where('is_paid', 0)
+                              ->where(function($subQuery) use ($today) {
+                                  $subQuery->whereNull('end_date')
+                                           ->orWhere('end_date', '>=', $today);
+                              });
+                    })
+                    ->update([
+                        'amount'       => $amount,
+                        'paid_amount'  => $final_price,
+                        'month'        => $month,
+                        'subscription' => $request->subscription_id,
+                        'gst'          => $gst,
+                        'discount'     => $discount,
+                    ]);
+                
+                // Get the last updated ID
                 $transactionId = LibraryTransaction::where('library_id', $library_id)
-                ->where('amount', $request->price)
-                ->where('month', $month)
-                ->where('is_paid',0)
-                ->whereNull('end_date')
-                ->orWhere('end_date','>=',$today)
-                ->value('id');
-            }else{
-                $transactionId = LibraryTransaction::insertGetId([
-                    'library_id'  => $library_id,
-                    'amount'      => $request->price,
-                    'paid_amount' => $request->price,
-                    'month'       => $month,
-                    'created_at'  => now(),
-                    'updated_at'  => now(),
+                    ->where('is_paid', 0)
+                    ->where(function($query) use ($today) {
+                        $query->whereNull('end_date')->orWhere('end_date', '>=', $today);
+                    })
+                    ->latest('id')
+                    ->value('id');
+            } else {
+               
+                $transaction = LibraryTransaction::create([
+                    'library_id'   => $library_id,
+                    'amount'       => $amount,
+                    'paid_amount'  => $final_price,
+                    'month'        => $month,
+                    'subscription' => $request->subscription_id,
+                    'gst'          => $gst,
+                    'discount'     => $discount,
                 ]);
+                $transactionId = $transaction->id;
             }
-           
-        } else {
+        
             
+        } else {
             return redirect()->back()->with('error', 'No valid subscription selected.');
         }
+        
+     
 
         // Retrieve the most recent transaction
-        $month = LibraryTransaction::where('library_id', $library_id)
-            ->orderBy('id', 'desc')
-            ->first();
-
-        // Retrieve the current plan
-        $myPlan = Library::where('id', $library_id)->first();
-        $plan = Subscription::where('id', $myPlan->library_type)->first();
-        $data = Library::where('id', Auth::user()->id)
+        $data = Library::where('id', $library_id)
         ->with('subscription.permissions')  
         ->first();
-        $all_transaction=LibraryTransaction::where('library_id', $library_id)->where('is_paid',1)->with('subscription.permissions')->get();
+        $plan = Subscription::where('id', $data->library_type)->first();
        
+        $month = LibraryTransaction::where('id', $transactionId)
+            ->orderBy('id', 'desc')
+            ->first();
+      $all_transaction = LibraryTransaction::where('library_id', $library_id)
+            ->where('is_paid', 1)
+            ->with(['subscription', 'subscription.permissions'])
+            ->get();
+          
         return view('library.payment', [
             'transactionId' => $transactionId,
             'month'         => $month,
             'plan'          => $plan,
             'data'          => $data,
             'all_transaction' => $all_transaction,
+            'discount_amount'  =>$discount_amount,
+            'gst_amount'  =>$gst_amount,
         ]);
     }
 
 
-    public function paymentProcessView(){
-            return view('library.payment');
-    }
-
     public function paymentStore(Request $request)
     {
-        
-        $transaction = LibraryTransaction::where('id', $request->transaction_id)->first();
+       
+        $this->validate($request, [
+            'payment_method' => 'required',
+           
+        ]);
+        $library_transaction_id = LibraryTransaction::where('id', $request->library_transaction_id)->first();
 
-        if ($transaction) {
-        
-            $duration = $transaction->month ?? 0; 
+        if($request->payment_method=='2'){
+           
+            LibraryTransaction::where('id', $request->library_transaction_id)->update([
+               
+                'transaction_id' => $request->transaction_id ??  Str::random(8),
+               
+            ]);
+        }
+        // elseif($request->payment_method=='1'){
 
-            $start_date = now(); 
-            $endDate = $start_date->copy()->addMonths($duration);
+        // }
+        
+
+        if ($library_transaction_id) {
+            
+            $duration = $library_transaction_id->month ?? 0;
+
+            if (LibraryTransaction::where('library_id', $library_transaction_id->library_id)->where('status', 1)->exists()) {
+                $library_tra = LibraryTransaction::where('library_id', $library_transaction_id->library_id)
+                                                 ->where('status', 1)
+                                                 ->orderBy('id', 'desc')
+                                                 ->first();
+            
+                $start_date = Carbon::parse($library_tra->end_date)->addDay(1);
+                $endDate = $start_date->copy()->addMonths($duration);
+                $status = 0;
+            } else {
+                $start_date = now(); 
+                $endDate = $start_date->copy()->addMonths($duration);
+                $status = 1;
+            }
+            
+           
             // Update the transaction details
-            LibraryTransaction::where('id', $request->transaction_id)->update([
-                'start_date' => now()->format('Y-m-d'),
+            LibraryTransaction::where('id', $request->library_transaction_id)->update([
+                'start_date' => $start_date->format('Y-m-d'),
                 'end_date' => $endDate->format('Y-m-d'),
                 'transaction_date' => now()->format('Y-m-d'),
+                'payment_mode'=>$request->payment_method,
                 'is_paid' => 1,
-                'status' => 1,
+                'status' => $status,
             ]);
 
             // Update the corresponding library's `is_paid` status
-            Library::where('id', $transaction->library_id)->update([
+            Library::where('id', $library_transaction_id->library_id)->update([
                 'is_paid' => 1,
                
             ]);
-
-            return redirect()->route('profile')->with('success', 'Payment successfully processed.');
+            $isProfile = Library::where('id', $library_transaction_id->library_id)->where('is_profile', 1)->exists();
+            if($isProfile){
+                
+                return redirect()->route('library.home')->with('success', 'Payment successfully processed.');
+            }else{
+                return redirect()->route('profile')->with('success', 'Payment successfully processed.');
+            }
+           
+           
         }
         return redirect()->back()->with('error', 'Transaction not found.');
     }
@@ -402,6 +489,7 @@ class LibraryController extends Controller
         ->with('subscription.permissions')  // Fetch associated subscription and permissions
         ->first();
         $month=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1)->get();
+       
         $plan=Subscription::where('id',$data->library_type)->first();
        
         return view('library.my-plan',compact('data','month','plan'));

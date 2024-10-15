@@ -25,6 +25,7 @@ use Auth;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use App\Http\Middleware\LoadMenus;
 
 class Controller extends BaseController
 {
@@ -267,9 +268,11 @@ class Controller extends BaseController
         }
         if($request->library_import=='library_master'){
            
-            return redirect()->route('library.master')->with('successCount', count($successRecords));
+            $middleware = app(LoadMenus::class);
+            $middleware->updateLibraryStatus();
+            return redirect()->back()->with('success', count($successRecords));
         }else{
-             // Handle success case
+           
             return redirect()->back()->with('successCount', count($successRecords));
         }
        
@@ -691,26 +694,27 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Invalid Seats']);
             return;
         }
-        // Parse start and end time
+       
+
         $start_time = Carbon::createFromFormat('H:i', trim($data['start_time']));
         $end_time = Carbon::createFromFormat('H:i', trim($data['end_time']));
-    
-        // Check for logical errors
+        
         if ($end_time->lessThan($start_time)) {
             $invalidRecords[] = array_merge($data, ['error' => 'End time must be later than start time.']);
             return; 
         }
-    
-        // Calculate total hours
-        $totalHours = $end_time->diffInHours($start_time);
+        
+        $totalHours = $start_time->diffInHours($end_time);
         
         if ($totalHours != trim($data['Operating_hour'])) {
             $invalidRecords[] = array_merge($data, ['error' => 'Operating hour does not match the difference between start and end times.']);
             return;
         }
+       
+     
     
         // Using database transaction for atomic operations
-        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours) {
+        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords) {
             // Update or create the operating hours
             Hour::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id],
@@ -747,6 +751,7 @@ class Controller extends BaseController
     // Function to define slots
     private function defineSlots($start_time, $end_time, $totalHours)
     {
+      
         return [
             ['type_id' => 1, 'name' => 'Fullday', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
             ['type_id' => 2, 'name' => 'First HalfDay', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
@@ -759,37 +764,66 @@ class Controller extends BaseController
     }
     
     // Function to handle slot updates
+ 
+
     private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
     {
+        Log::info('Starting handleSlotUpdates', ['library_id' => $library_id, 'slots' => $slots]);
+
         $user = Library::withoutGlobalScopes()->find($library_id);
+        Log::info('User fetched', ['user' => $user]);
+
         foreach ($slots as $slot) {
-            if ((!$user->can('has-permission', 'FullDay') && $slot['type_id'] == 1) ||
-                (!$user->can('has-permission', 'FirstHalf') && $slot['type_id'] == 2) ||
-                (!$user->can('has-permission', 'SecondHalf') && $slot['type_id'] == 3) ||
-                (!$user->can('has-permission', 'Hourly1') && $slot['type_id'] == 4) ||
-                (!$user->can('has-permission', 'Hourly2') && $slot['type_id'] == 5) ||
-                (!$user->can('has-permission', 'Hourly3') && $slot['type_id'] == 6) ||
-                (!$user->can('has-permission', 'Hourly4') && $slot['type_id'] == 7)) {
-                $invalidRecords[] = array_merge($data, ['error' => $slot['name'].' Plan type has no permissions']);
-                return;
+            Log::info('Processing slot', ['slot' => $slot]);
+
+            $hasPermission = true; 
+
+            if ($slot['type_id'] == 1 && !$user->can('has-permission', 'FullDay')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'SecondHalf')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly1')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly2')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly3')) {
+                $hasPermission = false;
+            } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly4')) {
+                $hasPermission = false;
             }
-    
+            if (!$hasPermission) {
+               
+                continue; // Skip to the next slot
+            }
+
+            $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
+            $end_time_new = Carbon::parse($slot['end_time'])->format('H:i');
+            Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
+
             // Update or create plan type
             PlanType::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
                 [
                     'name' => $slot['name'],
-                    'start_time' => $slot['start_time'],
-                    'end_time' => $slot['end_time'],
+                    'start_time' => $start_time_new,
+                    'end_time' => $end_time_new,
                     'slot_hours' => $slot['slot_hours'],
                 ]
             );
+
+            Log::info('Plan type updated or created', ['slot' => $slot]);
         }
+
+        Log::info('handleSlotUpdates finished successfully.');
     }
+
     
     // Function to handle plan updates
     private function handlePlanUpdates($plans, $library_id)
     {
+       
         foreach ($plans as $plan) {
             Plan::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
@@ -801,9 +835,10 @@ class Controller extends BaseController
     // Function to handle price updates
     private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price)
     {
+       
         $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->get();
         $plantype_prices = PlanType::withoutGlobalScopes()->where('library_id', $library_id)->get();
-
+        
         foreach ($plans_prices as $plans_price) {
             foreach ($plantype_prices as $plantype_price) {
                 // Initialize price variable
@@ -819,39 +854,68 @@ class Controller extends BaseController
                 }
 
                 // Check if the plan_type_id exists before inserting
-                if (PlanType::withoutGlobalScopes()->where('id', $plantype_price->day_type_id)->exists()) {
+                if (PlanType::withoutGlobalScopes()->where('id', $plantype_price->id)->exists()) {
                     // Update or create plan type price
                     PlanPrice::withoutGlobalScopes()->updateOrCreate(
-                        ['library_id' => $library_id, 'plan_id' => $plans_price->plan_id, 'plan_type_id' => $plantype_price->day_type_id],
+                        ['library_id' => $library_id, 'plan_id' => $plans_price->id, 'plan_type_id' => $plantype_price->id],
                         ['price' => $price]
                     );
                 } else {
-                    Log::warning("Attempted to insert price for non-existing plan type id: " . $plantype_price->day_type_id);
+                    Log::warning("Attempted to insert price for non-existing plan type id: " . $plantype_price->id);
                 }
             }
         }
     }
 
-    private function handelSeats($library_id,$total_seats){
-        $lastSeatNo = Seat::where('library_id', $library_id)
-        ->orderBy('seat_no', 'desc')
-        ->value('seat_no');
-
-        $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1;
-        $seats = [];
+    private function handelSeats($library_id, $total_seats)
+    {
+        // Get the current seat count and the highest seat number for the library
+        $lastSeatNo = Seat::withoutGlobalScopes()->where('library_id', $library_id)
+            ->orderBy('seat_no', 'desc')
+            ->value('seat_no');
     
-        for ($i = 0; $i < $total_seats; $i++) {
-            $seats[] = [
-                'seat_no' =>  $startSeatNo,
-                'library_id' => $library_id,
-                'is_available' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+        $current_seat_count = Seat::withoutGlobalScopes()->where('library_id', $library_id)->count();
+    
+        // If current seats are less than total seats, add missing seats
+        if ($current_seat_count < $total_seats) {
+            $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1; 
+            $seatsToAdd = [];
+          
+            // Calculate how many seats need to be added
+            $seatsToAddCount = $total_seats - $current_seat_count;
+    
+            for ($i = 0; $i < $seatsToAddCount; $i++) {
+                $seatsToAdd[] = [
+                    'seat_no' => $startSeatNo + $i,
+                    'library_id' => $library_id,
+                    'is_available' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+    
+            // Insert new seats into the database
+            Seat::withoutGlobalScopes()->insert($seatsToAdd);
+        }else{
+            return;
         }
     
-        Seat::insert($seats);
+        // // If current seats are more than total seats, delete the excess seats
+        // if ($current_seat_count > $total_seats) {
+           
+        //     // Get the excess seat count to be removed
+        //     $seatsToRemoveCount = $current_seat_count - $total_seats;
+    
+        //     // Find the seat numbers to delete, ordering by seat_no in descending order
+        //     Seat::withoutGlobalScopes()->where('library_id', $library_id)->where('library_id', $library_id)
+        //         ->orderBy('seat_no', 'desc')
+        //         ->take($seatsToRemoveCount)
+        //         ->delete();
+        // }
     }
+    
+    
+    
     
 
 }

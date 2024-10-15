@@ -51,10 +51,6 @@
     </div>
 </div>
 
-
-
-
-
 {{-- Display Invalid Records --}}
 <div id="invalid-records-section">
 @if(session('invalidRecords') && count(session('invalidRecords')) > 0)

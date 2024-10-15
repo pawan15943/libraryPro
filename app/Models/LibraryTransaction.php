@@ -17,5 +17,11 @@ class LibraryTransaction extends Model
         static::addGlobalScope(new LibraryScope());
     }
    
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class, 'subscription', 'id');
+    }
+
+    
     
 }

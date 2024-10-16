@@ -68,7 +68,7 @@ class DashboardController extends Controller
                
                 $endDate = Carbon::parse($value->end_date);
                 $diffInDays = $today->diffInDays($endDate, false);
-                    if ($diffInDays <= 0){
+                    if ($diffInDays < 0){
                         $library = Library::where('id', Auth::user()->id)->first();
                         if ($library) {
                             $library->is_paid = 0;
@@ -100,8 +100,17 @@ class DashboardController extends Controller
             // redirect check library  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
-            $is_expire=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1) ->where('end_date', '<=', $today->format('Y-m-d'))->exists();
-
+            $check = LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid',1)->orderBy('id','desc')->first();
+            $is_expire=false;
+            if ($check) {
+                $today = Carbon::today();
+                $endDate = Carbon::parse($check->end_date);
+                $librarydiffInDays = $today->diffInDays($endDate, false);
+                if($librarydiffInDays <= 5){
+                    $is_expire=true;
+                }
+                
+            }
 
 
             $available_seats=$this->learnerService->getAvailableSeats();

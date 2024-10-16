@@ -4,7 +4,7 @@
 <!-- Main content -->
 
 <!-- Breadcrumb -->
-@if($iscomp==false)
+@if($iscomp==false && !$is_expire)
 <div class="row">
     <div class="col-lg-12">
         <div class="steps">

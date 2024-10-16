@@ -52,6 +52,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
   Route::post('/csv/library/upload', [Controller::class, 'uploadCsv'])->name('library.csv.upload');
   Route::get('/export-invalid-records/library', [Controller::class, 'exportCsv'])->name('library.export.invalid.records');
   Route::post('/clear-invalid-records/library', [Controller::class, 'clearSession'])->name('library.clear.session');
+  Route::get('/renew/configration/library', [Controller::class, 'renewConfigration'])->name('renew.configration');
 
   Route::get('/learner/expire/{id?}', [LearnerController::class, 'learnerExpire'])->name('learner.expire');
   Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');

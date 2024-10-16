@@ -748,7 +748,7 @@ class Controller extends BaseController
         });
     }
     
-    // Function to define slots
+    // Function to define plantype
     private function defineSlots($start_time, $end_time, $totalHours)
     {
       
@@ -763,9 +763,7 @@ class Controller extends BaseController
         ];
     }
     
-    // Function to handle slot updates
- 
-
+    // Function to handle plantype updates
     private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
     {
         Log::info('Starting handleSlotUpdates', ['library_id' => $library_id, 'slots' => $slots]);
@@ -912,6 +910,73 @@ class Controller extends BaseController
         //         ->take($seatsToRemoveCount)
         //         ->delete();
         // }
+    }
+
+    public function renewConfigration(){
+       
+        $library_id=Auth::user()->id;
+        $user = Auth::user();
+        $planType=PlanType::where('library_id',$library_id)->where('day_type_id',1)->first();
+        
+        if($planType){
+            $start_time = Carbon::parse($planType->start_time);
+            $end_time = Carbon::parse($planType->end_time);
+            $totalHours = $planType->slot_hours;
+
+            $slots = $this->defineSlots($start_time, $end_time, $totalHours);
+           
+            foreach ($slots as $slot) {
+               
+                $hasPermission = true; 
+              
+                if ($slot['type_id'] == 1 && !$user->can('has-permission', 'FullDay')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'SecondHalf')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly1')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly2')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly3')) {
+                    $hasPermission = false;
+                } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly4')) {
+                    $hasPermission = false;
+                }
+                $existPlantype=PlanType::where('library_id',$library_id)->where('day_type_id',$slot['type_id'])->first();
+                $id = $existPlantype ? $existPlantype->id : null;
+                
+                $data = PlanType::withTrashed()->find($id);
+                if (!$hasPermission) {
+                    if ($data) {
+                        $data->delete();
+                    }
+                } elseif ($data && $data->trashed()){
+                    $data->restore();
+                }
+
+                $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
+                $end_time_new = Carbon::parse($slot['end_time'])->format('H:i');
+                Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
+
+                // Update or create plan type
+                PlanType::withoutGlobalScopes()->updateOrCreate(
+                    ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
+                    [
+                        'name' => $slot['name'],
+                        'start_time' => $start_time_new,
+                        'end_time' => $end_time_new,
+                        'slot_hours' => $slot['slot_hours'],
+                    ]
+                );
+
+                Log::info('Plan type updated or created', ['slot' => $slot]);
+            }
+            return response()->json(['message' => 'Plan successfully renewed!'], 200);
+        }
+        return response()->json(['error' => 'Plan not found!'], 404);
+
     }
     
     

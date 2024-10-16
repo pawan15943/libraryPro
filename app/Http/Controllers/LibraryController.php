@@ -488,8 +488,9 @@ class LibraryController extends Controller
         $data = Library::where('id', Auth::user()->id)
         ->with('subscription.permissions')  // Fetch associated subscription and permissions
         ->first();
-        $month=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1)->get();
-       
+        $month=LibraryTransaction::where('library_id',Auth::user()->id)->where('is_paid',1) ->orderBy('id', 'desc')
+        ->first();
+        
         $plan=Subscription::where('id',$data->library_type)->first();
        
         return view('library.my-plan',compact('data','month','plan'));

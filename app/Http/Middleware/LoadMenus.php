@@ -69,28 +69,24 @@ class LoadMenus
             $diffInDays = 0; // Initialize the variable to a default value
             $today = date('Y-m-d');
            
-        $value = LibraryTransaction::where('library_id',  Auth::user()->id)
+        $value = LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid',1)->orderBy('id','desc')->first();
         
-                ->where(function($query) use ($today) {
-                    $query->where('status', 1)
-                        ->where(function($subQuery) use ($today) {
-                            $subQuery->whereNull('end_date')
-                                    ->orWhere('end_date', '>=', $today);
-                        });
-                })
-                ->first();
         $is_renew=LibraryTransaction::where('library_id',Auth::user()->id) 
                 ->where('is_paid',1)
                 ->where(function($query) use ($today) {
-                    $query->where('status', 0)
-                        ->where(function($subQuery) use ($today) {
-                            $subQuery->where('end_date', '>', $today);
-                        });
-                })->exists();
+                    $query->whereNull('end_date')
+                          ->orWhere('end_date', '>', $today);
+                })
+                ->exists();
+            $is_expire=false;
             if ($value) {
                 $today = Carbon::today();
                 $endDate = Carbon::parse($value->end_date);
                 $librarydiffInDays = $today->diffInDays($endDate, false);
+                if($librarydiffInDays <= 5){
+                    $is_expire=true;
+                }
+                
             }else{
                 $librarydiffInDays=0;
             }
@@ -98,6 +94,13 @@ class LoadMenus
         
             $this->statusInactive();
             $this->updateLibraryStatus();
+            $today_renew = LibraryTransaction::where('library_id', Auth::user()->id)
+            ->where('is_paid', 1)
+            ->where('status', 0)
+            ->where('start_date', '>=', $today)
+            ->exists();
+
+
             
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
@@ -106,6 +109,8 @@ class LoadMenus
             View::share('iscomp', $iscomp);
             View::share('librarydiffInDays', $librarydiffInDays); 
             View::share('is_renew', $is_renew); 
+            View::share('is_expire', $is_expire); 
+            View::share('today_renew', $today_renew); 
             
         }
         

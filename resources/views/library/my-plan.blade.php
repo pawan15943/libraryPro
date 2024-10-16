@@ -14,40 +14,40 @@
 <div class="row justify-content-center mb-4">
     <div class="col-lg-6">
         <div class="payment-detaile">
-            @foreach($month as $key => $value)
+           
             <div class="paymentinfo basic <?php if ($plan->name == 'Basic')?>">
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <span>Subscription Name</span>
-                            <h4>{{$plan ? $plan->name : $value->plan}}</h4>
+                            <h4>{{$plan ? $plan->name : $month->plan}}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Type</span>
-                            @if($value->month==1)
+                            @if($month->month==1)
                             <h4>{{ 'MONTHLY'}}</h4>
                             @else
-                            <h4>{{ $value->month}} Months</h4>
+                            <h4>{{ $month->month}} Months</h4>
                             @endif
 
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Price</span>
-                            <h4>{{ $value->amount }}</h4>
+                            <h4>{{ $month->amount }}</h4>
                         </div>
                         <div class="col-lg-6">
                             <span>Subscription Start Date</span>
-                            <h4>{{ $value->start_date}}</h4>
+                            <h4>{{ $month->start_date}}</h4>
                         </div>
-                        @if($value->end_date)  
+                        @if($month->end_date)  
                         <div class="col-lg-6">
                             <span>Subscription End Date</span>
-                            <h4>{{ $value->end_date}}</h4>
+                            <h4>{{ $month->end_date}}</h4>
                         </div>
                         @endif
                         <div class="col-lg-6">
                             <span> Status :</span>
-                            @if($value->status ==1)
+                            @if($month->status ==1)
                             <h4 class="text-success">Active</h4>
                             @else
                             <h4 class="text-danger">Inactive</h4>
@@ -73,7 +73,7 @@
                     @endif
                 </ul>
             </div>
-            @endforeach
+           
         </div>
     </div>
 </div>

@@ -5,6 +5,16 @@
     <div class="d-flex">
         <div class="conatent flex">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
+         
+            @if(isset($upcomingdiffInDays) && Auth::guard('library')->check() && $is_renew && $isProfile)
+            <small class="text-danger ml-2"> <i class="fa fa-clock"></i>
+                @if($upcomingdiffInDays > 0)
+                Upcoming Plan after {{$upcomingdiffInDays}} days
+                @endif
+                
+                
+            </small>
+           @endif
             @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew && $isProfile)
                 
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i>
@@ -67,7 +77,7 @@
                     </div>
                     <div class="modal-body">
                         <h4>Your library Renew today. Please consider renewing your plan!</h4>
-                        <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Renew Plan</button>
+                        <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
                     
                     </div>
                 </div>

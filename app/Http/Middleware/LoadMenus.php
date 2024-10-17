@@ -72,24 +72,40 @@ class LoadMenus
         $value = LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid',1)->orderBy('id','desc')->first();
         
         $is_renew=LibraryTransaction::where('library_id',Auth::user()->id) 
-                ->where('is_paid',1)
-                ->where(function($query) use ($today) {
-                    $query->whereNull('end_date')
-                          ->orWhere('end_date', '>', $today);
-                })
+                ->where('is_paid', 1)
+                ->where('status', 0)
+                ->where('start_date','>=', date('Y-m-d'))
                 ->exists();
-            $is_expire=false;
-            if ($value) {
-                $today = Carbon::today();
-                $endDate = Carbon::parse($value->end_date);
-                $librarydiffInDays = $today->diffInDays($endDate, false);
-                if($librarydiffInDays <= 5){
-                    $is_expire=true;
-                }
-                
-            }else{
-                $librarydiffInDays=0;
+        $is_expire=false;
+        if ($value) {
+            $today = Carbon::today();
+            $endDate = Carbon::parse($value->end_date);
+            $librarydiffInDays = $today->diffInDays($endDate, false);
+            if($librarydiffInDays <= 5){
+                $is_expire=true;
             }
+            
+        }else{
+            $librarydiffInDays=0;
+        }
+
+        if($is_renew){
+            $is_renew_val=LibraryTransaction::where('library_id',Auth::user()->id) 
+                ->where('is_paid', 1)
+                ->where('status', 0)
+                ->where('start_date','>', date('Y-m-d'))->first();
+            $today = Carbon::today();
+            if($is_renew_val){
+                $start_date = Carbon::parse($is_renew_val->start_date);
+                $upcomingdiffInDays = $today->diffInDays($start_date);
+            }else{
+                $upcomingdiffInDays = null; 
+            }
+           
+        }else {
+           
+            $upcomingdiffInDays = null; 
+        }
             
         
             $this->statusInactive();
@@ -97,7 +113,8 @@ class LoadMenus
             $today_renew = LibraryTransaction::where('library_id', Auth::user()->id)
             ->where('is_paid', 1)
             ->where('status', 0)
-            ->where('start_date', '>=', $today)
+            ->where('start_date', '<=', $today)
+            ->where('end_date','>', date('Y-m-d'))
             ->exists();
 
 
@@ -111,6 +128,7 @@ class LoadMenus
             View::share('is_renew', $is_renew); 
             View::share('is_expire', $is_expire); 
             View::share('today_renew', $today_renew); 
+            View::share('upcomingdiffInDays', $upcomingdiffInDays); 
             
         }
         

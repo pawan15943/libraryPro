@@ -106,12 +106,11 @@ class DashboardController extends Controller
                 $today = Carbon::today();
                 $endDate = Carbon::parse($check->end_date);
                 $librarydiffInDays = $today->diffInDays($endDate, false);
-                if($librarydiffInDays <= 5){
+                if($librarydiffInDays <= 0){
                     $is_expire=true;
                 }
                 
             }
-
 
             $available_seats=$this->learnerService->getAvailableSeats();
            

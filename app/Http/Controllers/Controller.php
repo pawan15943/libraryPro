@@ -913,10 +913,22 @@ class Controller extends BaseController
     }
 
     public function renewConfigration(){
-       
         $library_id=Auth::user()->id;
+        $today = date('Y-m-d');
+        $today_renew = LibraryTransaction::where('library_id', Auth::user()->id)
+            ->where('is_paid', 1)
+            ->where('status', 0)
+            ->where('start_date', '<=', $today)->first();
+        if($today_renew){
+            Library::where('id',$library_id)->update([
+                'library_type'=>$today_renew->subscription
+    
+            ]);
+        }
+       
+    
         $user = Auth::user();
-        $planType=PlanType::where('library_id',$library_id)->where('day_type_id',1)->first();
+        $planType=PlanType::withoutGlobalScopes()->where('library_id', $library_id)->first();
         
         if($planType){
             $start_time = Carbon::parse($planType->start_time);
@@ -944,41 +956,136 @@ class Controller extends BaseController
                 } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly4')) {
                     $hasPermission = false;
                 }
-                $existPlantype=PlanType::where('library_id',$library_id)->where('day_type_id',$slot['type_id'])->first();
+                $existPlantype=PlanType::withoutGlobalScopes()->where('library_id',$library_id)->where('day_type_id',$slot['type_id'])->first();
                 $id = $existPlantype ? $existPlantype->id : null;
-                
                 $data = PlanType::withTrashed()->find($id);
-                if (!$hasPermission) {
-                    if ($data) {
-                        $data->delete();
+                if ($existPlantype) {
+                    // If the plan type exists but is soft-deleted, restore it
+                    if ($existPlantype->trashed()) {
+                        $data->restore();
                     }
-                } elseif ($data && $data->trashed()){
-                    $data->restore();
+                }
+              
+                if (!$hasPermission) {
+                    if ($existPlantype) {
+                        $existPlantype->delete(); // Soft-delete if no permission
+                    }
+                } else{
+                    $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
+                    $end_time_new = Carbon::parse($slot['end_time'])->format('H:i');
+                    Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
+
+                    // Update or create plan type
+                    PlanType::withoutGlobalScopes()->updateOrCreate(
+                        ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
+                        [
+                            'name' => $slot['name'],
+                            'start_time' => $start_time_new,
+                            'end_time' => $end_time_new,
+                            'slot_hours' => $slot['slot_hours'],
+                        ]
+                    );
+
+                    Log::info('Plan type updated or created', ['slot' => $slot]);
+
                 }
 
-                $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
-                $end_time_new = Carbon::parse($slot['end_time'])->format('H:i');
-                Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
-
-                // Update or create plan type
-                PlanType::withoutGlobalScopes()->updateOrCreate(
-                    ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
-                    [
-                        'name' => $slot['name'],
-                        'start_time' => $start_time_new,
-                        'end_time' => $end_time_new,
-                        'slot_hours' => $slot['slot_hours'],
-                    ]
-                );
-
-                Log::info('Plan type updated or created', ['slot' => $slot]);
+               
             }
-            return response()->json(['message' => 'Plan successfully renewed!'], 200);
+            
+            $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->withTrashed()->get();
+            $plantype_prices = PlanType::withoutGlobalScopes()->where('library_id', $library_id)->withTrashed()->get();
+            $onemonthplan = Plan::withoutGlobalScopes()->where('library_id', $library_id)->where('plan_id', 1)->first();
+    
+            foreach ($plans_prices as $plans_price) {
+                foreach ($plantype_prices as $plantype_price) {
+    
+                    // Fetch the full-day price for the current plan and plan type
+                    $fullday_price = PlanPrice::withoutGlobalScopes()->where('library_id', $library_id)->where('plan_type_id', $planType->id)
+                                            ->where('plan_id', $onemonthplan->id)
+                                            ->withTrashed()
+                                            ->first();
+                    
+                    $price = 0;
+    
+                    // Calculate prices based on the type of plan
+                    if ($plantype_price->day_type_id == 1) {
+                        $price = $fullday_price->price * $plans_price->plan_id;
+                    } elseif ($plantype_price->day_type_id == 2 || $plantype_price->day_type_id == 3) {
+                        $price = ($fullday_price->price * $plans_price->plan_id) / 2;
+                    } elseif (in_array($plantype_price->day_type_id, [4, 5, 6, 7])) {
+                        $price = ($fullday_price->price * $plans_price->plan_id) / 4;
+                    }
+                    
+                    
+                    $existing_price = PlanPrice::withoutGlobalScopes()->where('library_id', $library_id)->where('plan_type_id', $plantype_price->id)
+                                            ->where('plan_id', $plans_price->id)
+                                            ->withTrashed()
+                                            ->first();
+                    
+                    if ($existing_price) {
+                        // If price exists and plan type is not deleted
+                        if (!$plantype_price->trashed()) {
+                            // If the existing price is deleted, restore it
+                            if ($existing_price->trashed()) {
+                                $existing_price->restore();
+                            }
+                            // Update the price
+                            $existing_price->price = $price;
+                            $existing_price->save();
+                        } else {
+                            // If plan type is deleted, ensure price is deleted
+                            $existing_price->delete();
+                        }
+                    } else {
+                        // If the plan type is not deleted and price doesn't exist, insert new price
+                        if (!$plantype_price->trashed()) {
+                            PlanPrice::create([
+                                'library_id' =>$library_id,
+                                'plan_type_id' => $plantype_price->id,
+                                'plan_id'      => $plans_price->id,
+                                'price'        => $price,
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            $this->statusUpdate();
+            return response()->json(['message' => 'Plan Configration successfully renewed!'], 200);
         }
+
+        
         return response()->json(['error' => 'Plan not found!'], 404);
 
     }
+
+    protected function statusUpdate(){
+        $today = date('Y-m-d');
+        Library::where('id',Auth::user()->id)->update([
+            'is_paid'=>1,
+            'status'=>1
+
+        ]);
+        LibraryTransaction::where('library_id', Auth::user()->id)
+            ->where('is_paid', 1)
+            ->where('status', 0)
+            ->where('start_date', '>=', $today)->update([
+              
+                'status'=>1,
+                'is_paid'=>1
     
+            ]);
+        LibraryTransaction::where('library_id', Auth::user()->id)
+        ->where('is_paid', 1)
+        ->where('end_date', '<', $today)
+        ->where('start_date', '<', $today)->update([
+            
+            'status'=>0
+
+        ]);
+    }
+   
     
     
     

@@ -26,6 +26,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
+use Illuminate\Validation\Rule;
+
 
 class Controller extends BaseController
 {
@@ -242,11 +244,11 @@ class Controller extends BaseController
             foreach ($csvData as $record) {
                 try {
                     if($library_id==null){
-                        
+                      
                         // learner insert
                         $this->validateAndInsert($record, $successRecords, $invalidRecords);
                     }else{
-                        
+                       
                         //library master insert
                         $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
                     }
@@ -283,16 +285,27 @@ class Controller extends BaseController
 
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-       
-        $validator = Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
+       $libraryId=Auth::user()->id;
+       $validator = Validator::make($data, [
+        'name' => 'required|string|max:255',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('learners')->where(function ($query) use ($libraryId) {
+                    return $query->where('library_id', $libraryId);
+                })
+            ],
         ]);
-
-        if ($validator->fails()) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
-            return;
-        }
+       
+    
+    if ($validator->fails()) {
+        // Collect all validation error messages
+        $errors = $validator->errors()->all();
+        
+        // Add the validation errors to the invalid records array
+        $invalidRecords[] = array_merge($data, ['error' => implode(', ', $errors)]);
+        return;
+    }
         $user = Auth::user();
 
         $dob = $this->parseDate(trim($data['dob']));
@@ -346,7 +359,7 @@ class Controller extends BaseController
         $is_paid = $pending_amount <= 0 ? 1 : 0;
         
         
-       
+      
         if ($status == 1) {
             // Check if the learner already exists with active status
             $alreadyLearner = Learner::where('library_id', Auth::user()->id)
@@ -355,15 +368,17 @@ class Controller extends BaseController
                 ->exists();
         
             if ($alreadyLearner) {
+              
                 $invalidRecords[] = array_merge($data, ['error' => 'This data already exists']);
                 return;
             } else {
+               
                 // Check if seat is already occupied
                 if (Learner::where('library_id', Auth::user()->id)
                     ->where('seat_no', trim($data['seat_no']))
                     ->where('status', 1)
                     ->exists()) {
-                        
+                   
                     $first_record = Hour::first();
                     $total_hour = $first_record ? $first_record->hour : null;
                     $hours = PlanType::where('id', $planType->id)->value('slot_hours');
@@ -380,6 +395,7 @@ class Controller extends BaseController
                         $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
                     }
                 } else {
+                   
                     // If seat is not occupied, directly create learner
                     $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
                 }
@@ -474,6 +490,7 @@ class Controller extends BaseController
 
     
     function createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date) {
+      
         $learner = Learner::create([
             'library_id' => Auth::user()->id,
             'name' => trim($data['name']),
@@ -487,6 +504,7 @@ class Controller extends BaseController
             'address' => trim($data['address']),
             'status' => $status,
         ]);
+      
     
         $this->createLearnerDetail($learner->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
         $this->seat_availablity_update_now($seat->id,$planType->id);
@@ -758,7 +776,7 @@ class Controller extends BaseController
         return [
             ['type_id' => 1, 'name' => 'Full Day', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
             ['type_id' => 2, 'name' => 'First Half', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
-            ['type_id' => 3, 'name' => 'Second HalfDay', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
+            ['type_id' => 3, 'name' => 'Second Half', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
             ['type_id' => 4, 'name' => 'Hourly Slot 1', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 4), 'slot_hours' => $totalHours / 4],
             ['type_id' => 5, 'name' => 'Hourly Slot 2', 'start_time' => $start_time->copy()->addHours($totalHours / 4), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'slot_hours' => $totalHours / 4],
             ['type_id' => 6, 'name' => 'Hourly Slot 3', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'slot_hours' => $totalHours / 4],

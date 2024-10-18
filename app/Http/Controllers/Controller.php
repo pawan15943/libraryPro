@@ -236,15 +236,17 @@ class Controller extends BaseController
             $library_id=null; 
         }
     
-      
+     
 
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
                     if($library_id==null){
+                        
                         // learner insert
                         $this->validateAndInsert($record, $successRecords, $invalidRecords);
                     }else{
+                        
                         //library master insert
                         $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
                     }
@@ -403,6 +405,7 @@ class Controller extends BaseController
                     ->first();
         
                 if ($already_data) {
+                   
                     // Update existing learner and learner detail
                     $this->updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid);
                 } else {

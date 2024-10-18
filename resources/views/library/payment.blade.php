@@ -154,7 +154,7 @@
             
                 <div class="col-lg-6">
                     <span>Transaction Id</span>
-                    <input type="text" name="transaction_id" class="form-control" value="{{ old('transaction_id', Str::random(8)) }}">
+                    <input type="text" name="transaction_id" class="form-control" value="{{ old('transaction_id', mt_rand(10000000, 99999999)) }}" >
                     @if($errors->has('transaction_id'))
                         <span class="text-danger">{{ $errors->first('transaction_id') }}</span>
                     @endif

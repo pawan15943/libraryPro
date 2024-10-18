@@ -268,7 +268,7 @@ class Controller extends BaseController
                 'autoExportCsv' => true, // This triggers the CSV download
             ]);
         }
-        if($request->library_import=='library_master'){
+        if($request->library_import=='library_master' || $request->library_id){
            
             $middleware = app(LoadMenus::class);
             $middleware->updateLibraryStatus();
@@ -311,7 +311,7 @@ class Controller extends BaseController
         $plan = Plan::where('plan_id', trim($data['plan']))->first();
         $planType = PlanType::where('name', 'LIKE', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
-        if ((!$user->can('has-permission', 'FullDay') && $planType->day_type_id==1) || (!$user->can('has-permission', 'FirstHalf') && $planType->day_type_id==2) || (!$user->can('has-permission', 'SecondHalf') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly4') && $planType->day_type_id==7)){
+        if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'FirstHalf') && $planType->day_type_id==2) || (!$user->can('has-permission', 'SecondHalf') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
             return;
         }
@@ -756,8 +756,8 @@ class Controller extends BaseController
     {
       
         return [
-            ['type_id' => 1, 'name' => 'Fullday', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
-            ['type_id' => 2, 'name' => 'First HalfDay', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
+            ['type_id' => 1, 'name' => 'Full Day', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
+            ['type_id' => 2, 'name' => 'First Half', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
             ['type_id' => 3, 'name' => 'Second HalfDay', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
             ['type_id' => 4, 'name' => 'Hourly Slot 1', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 4), 'slot_hours' => $totalHours / 4],
             ['type_id' => 5, 'name' => 'Hourly Slot 2', 'start_time' => $start_time->copy()->addHours($totalHours / 4), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'slot_hours' => $totalHours / 4],
@@ -779,7 +779,7 @@ class Controller extends BaseController
 
             $hasPermission = true; 
 
-            if ($slot['type_id'] == 1 && !$user->can('has-permission', 'FullDay')) {
+            if ($slot['type_id'] == 1 && !$user->can('has-permission', 'Full Day')) {
                 $hasPermission = false;
             } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
                 $hasPermission = false;
@@ -802,7 +802,7 @@ class Controller extends BaseController
             $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
             $end_time_new = Carbon::parse($slot['end_time'])->format('H:i');
             Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
-
+           
             // Update or create plan type
             PlanType::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
@@ -811,6 +811,7 @@ class Controller extends BaseController
                     'start_time' => $start_time_new,
                     'end_time' => $end_time_new,
                     'slot_hours' => $slot['slot_hours'],
+                    'image'=>'public/img/booked.png',
                 ]
             );
 
@@ -944,7 +945,7 @@ class Controller extends BaseController
                
                 $hasPermission = true; 
               
-                if ($slot['type_id'] == 1 && !$user->can('has-permission', 'FullDay')) {
+                if ($slot['type_id'] == 1 && !$user->can('has-permission', 'Full Day')) {
                     $hasPermission = false;
                 } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
                     $hasPermission = false;
@@ -986,6 +987,7 @@ class Controller extends BaseController
                             'start_time' => $start_time_new,
                             'end_time' => $end_time_new,
                             'slot_hours' => $slot['slot_hours'],
+                            'image'=>'public/img/booked.png',
                         ]
                     );
 

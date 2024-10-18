@@ -364,14 +364,12 @@ class LibraryController extends Controller
         ]);
         $library_transaction_id = LibraryTransaction::where('id', $request->library_transaction_id)->first();
 
-        if($request->payment_method=='2'){
-           
+        if ($request->payment_method == '2') {
             LibraryTransaction::where('id', $request->library_transaction_id)->update([
-               
-                'transaction_id' => $request->transaction_id ??  Str::random(8),
-               
+                'transaction_id' => $request->transaction_id ?? mt_rand(10000000, 99999999),
             ]);
         }
+        
         // elseif($request->payment_method=='1'){
 
         // }

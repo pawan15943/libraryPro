@@ -284,7 +284,6 @@ class Controller extends BaseController
     }
     
     public function uploadmastercsv(Request $request){
-        
         $request->validate([
             'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
         ]);
@@ -298,12 +297,15 @@ class Controller extends BaseController
 
         // Open the file and parse the CSV
         if (($handle = fopen($path, 'r')) !== false) {
+            
             while (($row = fgetcsv($handle, 1000, ',')) !== false) {
                 $row = array_map('trim', $row);
-
+              
                 if (!$header) {
+                  
                     $header = $row; // Set first row as header
                 } else {
+                   
                     if (count($header) == count($row)) {
                         $csvData[] = array_combine($header, $row);
                     } else {
@@ -326,8 +328,6 @@ class Controller extends BaseController
             $library_id=null; 
         }
         
-        
-
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
@@ -767,6 +767,7 @@ class Controller extends BaseController
         
         return response()->json(['status' => 'success']);
     }
+    // master create
     protected function validateMasterInsert($data, &$successRecords, &$invalidRecords, $library_id)
     {
        
@@ -791,7 +792,12 @@ class Controller extends BaseController
         ]);
     
         if ($validator->fails()) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
+          
+            $errors = $validator->errors()->all();
+        
+            $errorMessages = implode(', ', $errors);
+        
+            $invalidRecords[] = array_merge($data, ['error' => $errorMessages]);
             return;
         }
         if (!trim($data['total_seat']) || trim($data['total_seat']) <= 0) {

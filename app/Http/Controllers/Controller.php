@@ -284,6 +284,7 @@ class Controller extends BaseController
     }
     
     public function uploadmastercsv(Request $request){
+        
         $request->validate([
             'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
         ]);
@@ -330,6 +331,7 @@ class Controller extends BaseController
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
+                    
                     $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
                    
                     
@@ -354,11 +356,11 @@ class Controller extends BaseController
         
         $middleware = app(LoadMenus::class);
         $middleware->updateLibraryStatus();
-        return redirect()->back()->with('success', count($successRecords));
+        return redirect()->back()->with('successCount', count($successRecords));
     }
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-      
+     
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -767,6 +769,7 @@ class Controller extends BaseController
     }
     protected function validateMasterInsert($data, &$successRecords, &$invalidRecords, $library_id)
     {
+       
         // Validate input data
         $validator = Validator::make($data, [
             'Operating_hour' => 'required|integer',
@@ -799,7 +802,7 @@ class Controller extends BaseController
 
         $start_time = Carbon::createFromFormat('H:i', trim($data['start_time']));
         $end_time = Carbon::createFromFormat('H:i', trim($data['end_time']));
-        
+       
         if ($end_time->lessThan($start_time)) {
             $invalidRecords[] = array_merge($data, ['error' => 'End time must be later than start time.']);
             return; 
@@ -808,12 +811,11 @@ class Controller extends BaseController
         $totalHours = $start_time->diffInHours($end_time);
         
         if ($totalHours != trim($data['Operating_hour'])) {
+           
             $invalidRecords[] = array_merge($data, ['error' => 'Operating hour does not match the difference between start and end times.']);
             return;
         }
        
-     
-    
         // Using database transaction for atomic operations
         DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords) {
             // Update or create the operating hours
@@ -847,6 +849,7 @@ class Controller extends BaseController
            
             
         });
+        
     }
     
     // Function to define plantype
@@ -867,6 +870,8 @@ class Controller extends BaseController
     // Function to handle plantype updates
     private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
     {
+
+       
         Log::info('Starting handleSlotUpdates', ['library_id' => $library_id, 'slots' => $slots]);
 
         $user = Library::withoutGlobalScopes()->find($library_id);

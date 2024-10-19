@@ -26,8 +26,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
-use Illuminate\Validation\Rule;
-
 
 class Controller extends BaseController
 {
@@ -237,7 +235,7 @@ class Controller extends BaseController
         }else{
             $library_id=null; 
         }
-    
+        
      
 
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
@@ -263,14 +261,17 @@ class Controller extends BaseController
         });
 
         if (!empty($invalidRecords)) {
+        
             session(['invalidRecords' => $invalidRecords]); 
 
-            return redirect()->back()->with([
+            return redirect()->route('library.upload.form')->with([
                 'successCount' => count($successRecords),
                 'autoExportCsv' => true, // This triggers the CSV download
             ]);
         }
-        if($request->library_import=='library_master' || $request->library_id){
+        
+        
+        if(($request->library_import=='library_master') || $request->library_id){
            
             $middleware = app(LoadMenus::class);
             $middleware->updateLibraryStatus();
@@ -282,30 +283,91 @@ class Controller extends BaseController
        
     }
     
+    public function uploadmastercsv(Request $request){
+        $request->validate([
+            'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
+        ]);
 
+        // Get the file and its real path
+        $file = $request->file('csv_file');
+        $path = $file->getRealPath();
+
+        $csvData = [];
+        $header = null;
+
+        // Open the file and parse the CSV
+        if (($handle = fopen($path, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+                $row = array_map('trim', $row);
+
+                if (!$header) {
+                    $header = $row; // Set first row as header
+                } else {
+                    if (count($header) == count($row)) {
+                        $csvData[] = array_combine($header, $row);
+                    } else {
+                        Log::error('CSV row does not match header format: ', $row);
+                        return redirect()->back()->withErrors('CSV data does not match header format.');
+                    }
+                }
+            }
+            fclose($handle);
+        }
+
+        // Invalid and success records
+        $invalidRecords = [];
+        $successRecords = [];
+        if($request->library_id){
+            $library_id=$request->library_id;
+        }elseif($request->library_import=='library_master'){
+            $library_id=Auth::user()->id;
+        }else{
+            $library_id=null; 
+        }
+        
+        
+
+        DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
+            foreach ($csvData as $record) {
+                try {
+                    $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
+                   
+                    
+                } catch (Throwable $e) {
+                    Log::error('Error inserting record: ' . $e->getMessage(), $record);
+                    $record['error_message'] = $e->getMessage();
+                    $invalidRecords[] = $record;
+                }
+            }
+        });
+
+        if (!empty($invalidRecords)) {
+        
+            session(['invalidRecords' => $invalidRecords]); 
+
+            return redirect()->back()->with([
+                'successCount' => count($successRecords),
+                'autoExportCsv' => true, // This triggers the CSV download
+            ]);
+        }
+        
+        
+        $middleware = app(LoadMenus::class);
+        $middleware->updateLibraryStatus();
+        return redirect()->back()->with('success', count($successRecords));
+    }
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-       $libraryId=Auth::user()->id;
-       $validator = Validator::make($data, [
-        'name' => 'required|string|max:255',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('learners')->where(function ($query) use ($libraryId) {
-                    return $query->where('library_id', $libraryId);
-                })
-            ],
+      
+        $validator = Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
         ]);
-       
-    
-    if ($validator->fails()) {
-        // Collect all validation error messages
-        $errors = $validator->errors()->all();
-        
-        // Add the validation errors to the invalid records array
-        $invalidRecords[] = array_merge($data, ['error' => implode(', ', $errors)]);
-        return;
-    }
+
+        if ($validator->fails()) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
+            return;
+        }
         $user = Auth::user();
 
         $dob = $this->parseDate(trim($data['dob']));
@@ -385,6 +447,7 @@ class Controller extends BaseController
         
                     // Check if total hours exceed allowed hours
                     if ((Learner::where('seat_no', trim($data['seat_no']))
+                         ->where('library_id', Auth::user()->id)
                         ->where('learners.status', 1)
                         ->sum('hours') + $hours) > $total_hour) {
         
@@ -433,62 +496,57 @@ class Controller extends BaseController
                 $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
             }
         }
+   
       
         $successRecords[] = $data;
     }
 
     public function exportCsv()
     {
-        $invalidRecords = session('invalidRecords', []);
+        try {
+            // Retrieve invalid records from session
+            $invalidRecords = session('invalidRecords', []);
 
-        if (empty($invalidRecords)) {
-            return redirect()->back()->with('error', 'No invalid records found for export.');
-        }
-
-        $headers = ['Content-Type' => 'text/csv', 'Content-Disposition' => 'attachment; filename="invalid_records.csv"'];
-
-        $callback = function () use ($invalidRecords) {
-            $file = fopen('php://output', 'w');
-
-            // Set the headers for the CSV
-            $headerRow = array_keys(reset($invalidRecords));
-            fputcsv($file, $headerRow);
-
-            // Write each record to the CSV
-            foreach ($invalidRecords as $record) {
-                fputcsv($file, $record);
+            // Check if there are invalid records
+            if (empty($invalidRecords)) {
+                return redirect()->back()->with('error', 'No invalid records found for export.');
             }
 
-            fclose($file);
-        };
+            // Set headers for CSV
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="invalid_records.csv"',
+            ];
 
-        return new StreamedResponse($callback, 200, $headers);
-    }
+            // Callback for streaming the CSV
+            $callback = function () use ($invalidRecords) {
+                $file = fopen('php://output', 'w');
 
-    protected function parseDate($date)
-    {
-        $formats = ['d/m/Y', 'm/d/Y', 'Y-m-d', 'd-m-Y'];
-        foreach ($formats as $format) {
-            try {
-                return Carbon::createFromFormat($format, $date)->format('Y-m-d');
-            } catch (\Exception $e) {
-                continue;
-            }
+                // Check if file opens successfully
+                if ($file === false) {
+                    throw new \Exception('Unable to open the file for writing.');
+                }
+
+                // Set CSV headers
+                $headerRow = array_keys(reset($invalidRecords));
+                fputcsv($file, $headerRow);
+
+                // Write each invalid record to the CSV
+                foreach ($invalidRecords as $record) {
+                    fputcsv($file, $record);
+                }
+
+                fclose($file);
+            };
+
+            return new StreamedResponse($callback, 200, $headers);
+
+        } catch (\Exception $e) {
+            // Catch and handle export-related errors
+            return redirect()->back()->with('error', 'Failed to export CSV: ' . $e->getMessage());
         }
-        return false;
     }
 
-    private function getPaymentMode($paymentMode)
-    {
-        return match ($paymentMode) {
-            'Online' => 1,
-            'Offline' => 2,
-            'Paylater' => 3,
-            default => 2,
-        };
-    }
-
-    
     function createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date) {
       
         $learner = Learner::create([
@@ -611,7 +669,8 @@ class Controller extends BaseController
         $update=Seat::where('id',$seat_id)->update(['is_available' => $available]);
         
     }
-     function dataUpdateNow($learner_id){
+
+    function dataUpdateNow($learner_id){
        
         $seats = Seat::get();
  
@@ -678,7 +737,28 @@ class Controller extends BaseController
    
         }
     }
+    protected function parseDate($date)
+    {
+        $formats = ['d/m/Y', 'm/d/Y', 'Y-m-d', 'd-m-Y'];
+        foreach ($formats as $format) {
+            try {
+                return Carbon::createFromFormat($format, $date)->format('Y-m-d');
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+        return false;
+    }
 
+    private function getPaymentMode($paymentMode)
+    {
+        return match ($paymentMode) {
+            'Online' => 1,
+            'Offline' => 2,
+            'Paylater' => 3,
+            default => 2,
+        };
+    }
     public function clearSession(Request $request)
     {
         $request->session()->forget('invalidRecords');

@@ -49,7 +49,7 @@ Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->na
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
   Route::get('/csv/library/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
-  Route::post('/csv/library/upload', [Controller::class, 'uploadCsv'])->name('library.csv.upload');
+  Route::post('/csv/library/upload', [Controller::class, 'uploadmastercsv'])->name('library.csv.upload');
   Route::get('/export-invalid-records/library', [Controller::class, 'exportCsv'])->name('library.export.invalid.records');
   Route::post('/clear-invalid-records/library', [Controller::class, 'clearSession'])->name('library.clear.session');
   Route::get('/renew/configration/library', [Controller::class, 'renewConfigration'])->name('renew.configration');

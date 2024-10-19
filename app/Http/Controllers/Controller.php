@@ -791,13 +791,11 @@ class Controller extends BaseController
         ]);
     
         if ($validator->fails()) {
-            // Retrieve all validation error messages
+          
             $errors = $validator->errors()->all();
         
-            // Join all error messages into a single string
             $errorMessages = implode(', ', $errors);
         
-            // Add the error message to the invalid records array
             $invalidRecords[] = array_merge($data, ['error' => $errorMessages]);
             return;
         }

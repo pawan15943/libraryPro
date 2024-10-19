@@ -26,15 +26,14 @@
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
         <div class="import-data">
-            <form action="{{ Auth::guard('library')->check() ? route('library.csv.upload') : route('web.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm"> @csrf
-                <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}">
-                <input type="hidden" name="library_import" >
+            <form action="{{  route('library.csv.upload')}}" method="POST" enctype="multipart/form-data" id="importForm"> @csrf
+               
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Select File</label>
                         <input type="file" class="form-control" name="csv_file">
                         <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample learnar CSV File</small></a>
-                        <a href="{{ asset('public/sample/master.csv') }}"><small>Download Sample library master CSV File</small></a>
+                       
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>

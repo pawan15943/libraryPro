@@ -441,7 +441,8 @@ class LearnerController extends Controller
                 'learner_detail.plan_id',
                 'learner_detail.plan_price_id',
                 'learner_detail.status as learner_detail_status',
-                'plan_types.image'
+                'plan_types.image',
+                'learner_detail.is_paid'
             );
     
         // Apply dynamic filters if provided
@@ -1132,6 +1133,7 @@ class LearnerController extends Controller
     public function makePayment(Request $request){
         $customerId = $request->id;
         $customer = $this->fetchCustomerData($customerId, $isRenew = false, $status=1, $detailStatus=1);
+        
         return view('learner.payment',compact('customer'));
     }
 

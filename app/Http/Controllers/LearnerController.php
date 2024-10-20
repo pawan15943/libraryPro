@@ -736,11 +736,22 @@ class LearnerController extends Controller
         ->orderBy('id', 'DESC') 
         ->first();
         $all_transactions=LearnerTransaction::where('learner_id',$customerId)->where('is_paid',1)->get();
-    
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions'));
+            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
            
         }
     }
@@ -779,8 +790,9 @@ class LearnerController extends Controller
     }
     public function history($id)
     {
+        
         $learners =  $this->getAllLearnersByLibrary()
-        ->where('learners.seat_no',$id)
+        ->where('learner_detail.seat_id',$id)
         ->where('learners.status',0)
             ->select(
                 'plan_types.name as plan_type_name',
@@ -791,6 +803,7 @@ class LearnerController extends Controller
                 'plan_types.end_time',
             )
         ->get();
+       
         $seat=Seat::where('id',$id)->first('seat_no');
         return view('learner.seatHistoryView', compact('learners','seat'));
     }

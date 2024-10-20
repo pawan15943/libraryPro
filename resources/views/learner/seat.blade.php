@@ -345,11 +345,14 @@ $hourlyCount = 0;
                                         <span>Seat Timings</span>
                                         <h5 id="planTiming">NA</h5>
                                     </div>
+                                    <div>
+                                        <h5 id="extendday" class="text-center"></h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-4">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-6">
                                 <input type="hidden" value="" id="user_id">
                                 <a id="upgrade" class="btn btn-primary btn-block mt-2 button" style="height : auto;">Renew Library Membership</a>
                             </div>

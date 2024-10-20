@@ -7,17 +7,22 @@ use Carbon\Carbon;
 $today = Carbon::today();
 $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
+$inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+$diffExtendDay= $today->diffInDays($inextendDate, false);
+
+
+
 @endphp
 
 @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
 @endif
 @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
 @endif
 <!-- View Customer Information -->
 <div class="row">
@@ -27,9 +32,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                 <div class="d-flex">
                     <h4 class="mb-3">Leraners Info</h4>
                     <a href="javascript:void(0);" class="go-back"
-                    onclick="window.history.back();">Go
-                    Back <i class="fa-solid fa-backward pl-2"></i></a>
-                    </div>
+                        onclick="window.history.back();">Go
+                        Back <i class="fa-solid fa-backward pl-2"></i></a>
+                </div>
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <span>Seat Owner Name</span>
@@ -74,7 +79,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Ends On</span>
-                        
+
                         <h5>{{ $customer->plan_end_date }}</h5>
                     </div>
                     <div class="col-lg-4">
@@ -83,7 +88,16 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Expired In</span>
-                        <h5 class="text-success">Plan Expires in {{$diffInDays}} Days</h5>
+                        @if ($diffInDays > 0)
+                        <h5 class="text-success">Plan Expires in {{ $diffInDays }} days</h5>
+                        @elseif ($diffInDays < 0 && $diffExtendDay>0)
+                            <h5 class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</h5>
+                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
+                                @else
+                                <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</h5>
+                                @endif
+
                     </div>
                     <div class="col-lg-4">
                         <span>Current Plan Status</span>
@@ -95,12 +109,12 @@ $diffInDays = $today->diffInDays($endDate, false);
                             @endif
                         </h5>
                     </div>
-                    
-                   
+
+
                 </div>
                 <h4 class="mt-4"> Seat Other Info :</h4>
                 <div class="row g-4">
-                   
+
                     <div class="col-lg-4">
                         <span>Id Proof</span>
                         <h5>
@@ -148,7 +162,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <h5>{{ 'Offline' }}</h5>
                         @else
                         <h5>{{ 'Pay Later' }}</h5>
-                        
+
                         @endif
                     </div>
                     <div class="col-lg-4">
@@ -159,8 +173,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                             @else
                             <h5 class="text-danger">Pending</h5>
                             @endif
-                             
-                           
+
+
                         </h5>
                     </div>
                     <div class="col-lg-4">
@@ -170,7 +184,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         @else
                         <h5>NA</h5>
                         @endif
-                        
+
                     </div>
                     <div class="col-lg-4">
                         <span>Payment Date</span>
@@ -200,61 +214,61 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 <tbody>
                                     @foreach($renew_detail as $key => $value)
                                     @php
-                                        $transactionRenew=App\Models\LearnerTransaction::where('learner_deatail_id',$value->id)->where('is_paid',1)->first();
+                                    $transactionRenew=App\Models\LearnerTransaction::where('learner_deatail_id',$value->id)->where('is_paid',1)->first();
                                     @endphp
                                     <tr>
                                         <td>
-                                            {{$value->plan->name}} <br> 
+                                            {{$value->plan->name}} <br>
                                             <small class="text-success">{{$value->planType->name}}</small>
                                         </td>
                                         <td>{{$value->plan_start_date}}</td>
                                         <td>{{$value->plan_end_date}}</td>
                                         <td>{{$transactionRenew->total_amount ?? 'NA'}}</td>
-                                       
-                                            @if($value->payment_mode == 1)
-                                            <td>{{ 'Online' }}</td>
-                                            @elseif($value->payment_mode == 2)
-                                            <td>{{ 'Offline' }}</td>
-                                            @else
-                                            <td>{{ 'Pay Later' }}</td>
-                                            
-                                            @endif
+
+                                        @if($value->payment_mode == 1)
+                                        <td>{{ 'Online' }}</td>
+                                        @elseif($value->payment_mode == 2)
+                                        <td>{{ 'Offline' }}</td>
+                                        @else
+                                        <td>{{ 'Pay Later' }}</td>
+
+                                        @endif
                                         <td>{{$transactionRenew->paid_date ?? 'NA'}}</td>
-                                       
+
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
                                                 <li><a href="javascript:;" data-toggle="modal"
                                                         data-target="#bookingDetailsModal"
                                                         title="View Transaction Details"><i
                                                             class="fa-solid fa-eye"></i></a></li>
-                                                            
-                                            @can('has-permission', 'Receipt Generation')
+
+                                                @can('has-permission', 'Receipt Generation')
                                                 <li>
-                        
-                                                <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <input type="hidden"  name="id" value="{{ $transactionRenew->id ?? 'NA'}}">
-                                                    <input type="hidden"  name="type" value="learner">
-                
-                                                    <button type="submit">
-                                                        <i class="fa fa-print"></i> 
-                                                    </button>
-                                                </form>
-                                                
+
+                                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="hidden" name="id" value="{{ $transactionRenew->id ?? 'NA'}}">
+                                                        <input type="hidden" name="type" value="learner">
+
+                                                        <button type="submit">
+                                                            <i class="fa fa-print"></i>
+                                                        </button>
+                                                    </form>
+
                                                 </li>
-                                            @endcan  
+                                                @endcan
                                             </ul>
                                         </td>
                                     </tr>
                                     @endforeach
-                                    
+
 
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-               
+
                 <h4 class="mt-4"> Seat Previous History</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
@@ -281,7 +295,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                                         <td>{{ $value->plan->name ?? 'NA' }} <br>
 
                                             <small class="text-success">
-                                                {{$value->planType->name}}</small></td>
+                                                {{$value->planType->name}}</small>
+                                        </td>
                                         <td>{{$value->plan_start_date}}</td>
                                         <td>{{$value->plan_end_date}}</td>
                                         <td>
@@ -313,8 +328,18 @@ $diffInDays = $today->diffInDays($endDate, false);
             <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
             <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
             <p>{{ $customer->plan_name}}</p>
-            <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+            <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+            <!-- Expire days Info -->
+            @if ($diffInDays > 0)
+                <span class="text-success">Plan Expires in {{ $diffInDays }} days</sp>
+            @elseif ($diffInDays < 0 && $diffExtendDay>0)
+                <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
+            @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                <span class="text-warning fs-10 d-block">Plan Expires today</span>
+            @else
+                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
+            @endif
+            <!-- End -->
         </div>
         <div class="request-logs mt-4">
             <h5>Learners Request</h5>
@@ -357,6 +382,6 @@ $diffInDays = $today->diffInDays($endDate, false);
 </div>
 
 
-       
+
 @include('learner.script')
 @endsection

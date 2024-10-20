@@ -441,7 +441,8 @@ class LearnerController extends Controller
                 'learner_detail.plan_id',
                 'learner_detail.plan_price_id',
                 'learner_detail.status as learner_detail_status',
-                'plan_types.image'
+                'plan_types.image',
+                'learner_detail.is_paid'
             );
     
         // Apply dynamic filters if provided
@@ -740,11 +741,22 @@ class LearnerController extends Controller
         ->orderBy('id', 'DESC') 
         ->first();
         $all_transactions=LearnerTransaction::where('learner_id',$customerId)->where('is_paid',1)->get();
-    
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions'));
+            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
            
         }
     }
@@ -1139,6 +1151,7 @@ class LearnerController extends Controller
     public function makePayment(Request $request){
         $customerId = $request->id;
         $customer = $this->fetchCustomerData($customerId, $isRenew = false, $status=1, $detailStatus=1);
+        
         return view('learner.payment',compact('customer'));
     }
 

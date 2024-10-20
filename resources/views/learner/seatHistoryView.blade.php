@@ -10,7 +10,7 @@ $today = Carbon::today();
 
 <div class="row">
     <div class="col-lg-12">
-        <!-- <h4>Customer History for Seat {{ $seat->seat_no }}</h4> -->
+        <!-- <h4>Seat Booking History of Seat No. {{ $seat->seat_no }}</h4> -->
 
         @if($learners->isEmpty())
         <p class="not-found">No customer history found for this seat.</p>
@@ -19,6 +19,7 @@ $today = Carbon::today();
             <table class="table text-center data-table" id="datatable" style="display:table !important;">
                 <thead>
                     <tr>
+                        <th>Seat No.</th>
                         <th>Name</th>
                         <th>Mobile</th>
                         <th>Email</th>
@@ -36,8 +37,9 @@ $today = Carbon::today();
                     $diffInDays = $today->diffInDays($endDate, false);
                     @endphp
                     <tr>
-                        <td><span class="uppercase truncate">{{$value->name}}</span></td>
-                        <td> {{$value->mobile}}</td>
+                        <td>{{ $seat->seat_no }}</td>
+                        <td><span class="uppercase truncate m-auto text-center d-block">{{$value->name}}</span></td>
+                        <td> +91-{{$value->mobile}}</td>
                         <td> {{$value->email }}</td>
                         <td> {{$value->plan_name}}</td>
                         <td> {{$value->plan_type_name}}</td>

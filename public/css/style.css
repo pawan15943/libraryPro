@@ -1586,3 +1586,12 @@ img#imageDisplay {
     color: #fff !important;
     z-index: 1;
 }
+
+button#clearInvalidRecordsButton {
+    display: block;
+    margin: 1px auto ! IMPORTANT;
+    padding: .3rem 1rem ! IMPORTANT;
+    margin: 0;
+    height: auto;
+    height: 35px !important;
+}

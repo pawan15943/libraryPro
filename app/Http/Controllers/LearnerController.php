@@ -695,9 +695,12 @@ class LearnerController extends Controller
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
         $available_seat = $this->learnerService->getAvailableSeats();
-       
-        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
-        
+        $customer_status=learner::where('id',$customerId)->first();
+        $status=$customer_status->status;
+        $detailStatus=$customer_status->status;
+        $customer = $this->fetchCustomerData($customerId, $is_renew, $status, $detailStatus);
+     
+     
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
@@ -714,8 +717,10 @@ class LearnerController extends Controller
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
         $available_seat = $this->learnerService->getAvailableSeats();
-       
-        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
+        $customer_status=learner::where('id',$customerId)->first();
+        $status=$customer_status->status;
+        $detailStatus=$customer_status->status;
+        $customer = $this->fetchCustomerData($customerId, $is_renew, $status, $detailStatus);
        
         //renew History
         $renew_detail = LearnerDetail::where('learner_detail.learner_id', $customerId) 
@@ -778,8 +783,9 @@ class LearnerController extends Controller
     }
     public function history($id)
     {
+        
         $learners =  $this->getAllLearnersByLibrary()
-        ->where('learners.seat_no',$id)
+        ->where('learner_detail.seat_id',$id)
         ->where('learners.status',0)
             ->select(
                 'plan_types.name as plan_type_name',
@@ -790,6 +796,7 @@ class LearnerController extends Controller
                 'plan_types.end_time',
             )
         ->get();
+       
         $seat=Seat::where('id',$id)->first('seat_no');
         return view('learner.seatHistoryView', compact('learners','seat'));
     }

@@ -823,18 +823,24 @@ class Controller extends BaseController
      
     
         // Using database transaction for atomic operations
-        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords) {
+        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords,&$successRecords) {
             // Update or create the operating hours
-            Hour::withoutGlobalScopes()->updateOrCreate(
+           $hourData= Hour::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id],
                 ['hour' => trim($data['Operating_hour']), 'extend_days' => trim($data['extend_day']) ?? null]
             );
+            if ($hourData) {
+                
+                $successRecords[] = array_merge($data, ['success' => 'Operating Hour added successfully']);
+            } else {
+                $invalidRecords[] = array_merge($data, ['error' => 'Failed to add/update Operating Hour']);
+            }
     
             // Define slot configurations
             $slots = $this->defineSlots($start_time, $end_time, $totalHours);
     
             // Check user permissions and handle slot updates
-            $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data);
+            $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data,$successRecords);
     
             // Define plans
             $plans = [
@@ -845,7 +851,7 @@ class Controller extends BaseController
             ];
     
             // Handle plans updates
-            $this->handlePlanUpdates($plans, $library_id);
+            $this->handlePlanUpdates($plans, $library_id,$invalidRecords,$successRecords);
     
             // Handle price updates
             $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']));
@@ -873,7 +879,7 @@ class Controller extends BaseController
     }
     
     // Function to handle plantype updates
-    private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
+    private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data,&$successRecords)
     {
         Log::info('Starting handleSlotUpdates', ['library_id' => $library_id, 'slots' => $slots]);
 
@@ -901,8 +907,8 @@ class Controller extends BaseController
                 $hasPermission = false;
             }
             if (!$hasPermission) {
-               
-                continue; // Skip to the next slot
+                $invalidRecords[] = array_merge($data, ['error' => 'No permission for slot ' . $slot['type_id']]);
+                continue; 
             }
 
             $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
@@ -910,7 +916,7 @@ class Controller extends BaseController
             Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
            
             // Update or create plan type
-            PlanType::withoutGlobalScopes()->updateOrCreate(
+            $planType=PlanType::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
                 [
                     'name' => $slot['name'],
@@ -920,25 +926,63 @@ class Controller extends BaseController
                     'image'=>'public/img/booked.png',
                 ]
             );
-
+            if ($planType) {
+                $successRecords[] = array_merge($data, ['success' => 'Plan type updated or created']);
+            } else {
+                $invalidRecords[] = array_merge($data, ['error' => 'Failed to update or create plan type']);
+            }
+    
             Log::info('Plan type updated or created', ['slot' => $slot]);
+            
         }
-
+       
         Log::info('handleSlotUpdates finished successfully.');
     }
 
     
     // Function to handle plan updates
-    private function handlePlanUpdates($plans, $library_id)
+    private function handlePlanUpdates($plans, $library_id, &$invalidRecords, &$successRecords)
     {
-       
         foreach ($plans as $plan) {
-            Plan::withoutGlobalScopes()->updateOrCreate(
-                ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
-                ['name' => $plan['name']]
-            );
+            try {
+                // Update or create a plan based on library_id and plan_id
+                $updatedPlan = Plan::withoutGlobalScopes()->updateOrCreate(
+                    ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
+                    ['name' => $plan['name']]
+                );
+    
+                // If plan is successfully created or updated, add to success records
+                if ($updatedPlan) {
+                    $successRecords[] = [
+                        'library_id' => $library_id,
+                        'plan_id' => $plan['plan_id'],
+                        'status' => 'success',
+                        'message' => 'Plan updated or created successfully'
+                    ];
+                } else {
+                    // If something went wrong, track it as a failure
+                    $invalidRecords[] = [
+                        'library_id' => $library_id,
+                        'plan_id' => $plan['plan_id'],
+                        'status' => 'error',
+                        'message' => 'Failed to update or create plan'
+                    ];
+                }
+            } catch (\Exception $e) {
+                // Handle any exceptions and log the error
+                Log::error('Error updating or creating plan', ['plan' => $plan, 'error' => $e->getMessage()]);
+                
+                // Add to invalid records for later use
+                $invalidRecords[] = [
+                    'library_id' => $library_id,
+                    'plan_id' => $plan['plan_id'],
+                    'status' => 'error',
+                    'message' => 'Exception: ' . $e->getMessage()
+                ];
+            }
         }
     }
+    
     
     // Function to handle price updates
     private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price)

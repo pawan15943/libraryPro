@@ -34,9 +34,11 @@
                 </div>
             </div>
 
+
             <!-- Footer  -->
             @include('partials.footer')
         </div>
+
 
     </div>
 
@@ -334,7 +336,6 @@
         //     // Optionally redirect to login or a specific page if needed
         //     window.location.href = '/login'; // Redirect to the login page
         // };
-
     </script>
 </body>
 

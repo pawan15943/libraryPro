@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-   
+
     public function boot()
     {
         View::composer('*', function ($view) {
@@ -26,8 +26,10 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function getBreadcrumb($routeName)
+    private function getBreadcrumb($routeName, $parameters = [])
     {
+        // Ensure $parameters is always an array
+        $parameters = is_array($parameters) ? $parameters : [];
 
         $breadcrumbs = [
             // Administrator Links
@@ -62,26 +64,36 @@ class AppServiceProvider extends ServiceProvider
             'learners.show' => [
                 'Dashboard' => route('library.home'),
                 'Learners List' => route('learners'),
-                'Booking Info' => route('learners.show')
+                'Booking Info' => route('learners.show', $parameters)
             ],
             'learners.edit' => [
                 'Dashboard' => route('library.home'),
                 'Learners List' => route('learners'),
-                'Edit Seat Booking Info' => route('learners.edit')
+                'Edit Seat Booking Info' => route('learners.edit', $parameters)
             ],
             'learners.swap' => [
                 'Dashboard' => route('library.home'),
                 'Learners List' => route('learners'),
-                'Swap Seat' => route('learners.swap')
+                'Swap Seat' => route('learners.swap', $parameters)
             ],
             'learners.upgrade' => [
                 'Dashboard' => route('library.home'),
                 'Learners List' => route('learners'),
-                'Upgrade Seat' => route('learners.upgrade')
+                'Upgrade Seat' => route('learners.upgrade', $parameters)
             ],
             'seats.history' => [
                 'Dashboard' => route('library.home'),
                 'Seat Booking History' => route('seats.history')
+            ],
+            'seats.history.show' => [
+                'Dashboard' => route('library.home'),
+                'Seat Booking History' => route('seats.history'),
+                'Detailed History' => route('seats.history.show', $parameters)
+            ],
+            'learners.reactive' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Reactive Learner' => route('learners.reactive', $parameters)
             ],
             'library.myplan' => [
                 'Dashboard' => route('library.home'),
@@ -95,18 +107,26 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Monthly Revenue Report' => route('report.monthly')
             ],
-            // 'report.expense' => [
-            //     'Dashboard' => route('library.home'),
-            //     'Monthly Revenue Report' => route('report.monthly'),
-            //     'Manage Monthly Exapanse' => route('report.expense')
-            // ],
+            'learnerHistory' => [
+                'Dashboard' => route('library.home'),
+                'Learner History' => route('learnerHistory'),
+            ],
+            'learner.payment' => [
+            'Dashboard' => route('library.home'),
+            'Learners List' => route('learners'),
+            'Make Payment' => route('learner.payment', $parameters),
+        ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
     }
 
-    private function getPageTitle($routeName)
+
+    private function getPageTitle($routeName, $parameters = [])
     {
+        // Ensure $parameters is always an array (not used here but for consistency)
+        $parameters = is_array($parameters) ? $parameters : [];
+
         // Simple logic to convert route name to page title
         $titles = [
             // Administrator Portal
@@ -124,10 +144,14 @@ class AppServiceProvider extends ServiceProvider
             'learners.swap' => 'Swap Seat',
             'learners.upgrade' => 'Upgrade Seat',
             'seats.history' => 'Seat Booking History',
+            'seats.history.show' => 'Detailed Seat History',
             'library.myplan' => 'My Plan',
             'library.transaction' => 'My Payment Transactions',
             'report.monthly' => 'Monthly Revenue Report',
-            'c' => 'Configure Library',
+            'library.master' => 'Configure Library',
+            'learners.reactive' => 'Reactive Learner',
+            'learnerHistory' => 'Learner History',
+            'learner.payment' => 'Make Payment',
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

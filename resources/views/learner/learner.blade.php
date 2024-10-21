@@ -81,14 +81,14 @@ $current_route = Route::currentRouteName();
     }
 </style>
 @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
 @endif
 @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
 @endif
 <div class="row">
     <div class="col-lg-12">
@@ -150,10 +150,17 @@ $current_route = Route::currentRouteName();
     </div>
 </div>
 
-<div class="row mb-4">
+<div class="row mb-4 mt-4">
+    <div class="col-lg-12 mb-4">
+        <div class="records">
+            <p class="mb-2">Total Seats : 50 | Available : 25 | Booked : 25</p> 
+           
+            <span class="text-success">Available to Book (12)</span>  <span class="text-success">Active (12)</span>  <span class="text-danger">Expired (2)</span>  <span class="text-danger">Full day (2)</span>  <span class="text-danger">First Half (2)</span>  <span class="text-danger">Second Half (2)</span>  <span class="text-danger">Hourly 1 (2)</span>  <span class="text-danger">Hourly 2 (2)</span>  <span class="text-danger">Hourly 3 (2)</span>  <span class="text-danger">Hourly 4 (2)</span> 
+        </div>
+    </div>
     <div class="col-lg-12">
-        <div class="table-responsive mt-4">
-            <table class="table text-center datatable" >
+        <div class="table-responsive ">
+            <table class="table text-center datatable">
                 <thead>
                     <tr>
                         <th>Seat No.</th>
@@ -239,7 +246,7 @@ $current_route = Route::currentRouteName();
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
                                 @endcan
                                 @if($value->status==0)
-                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li> 
+                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                                 @endif
                                 <!-- Make payment -->
                                 <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
@@ -252,10 +259,10 @@ $current_route = Route::currentRouteName();
                         </td>
                     </tr>
                     @endforeach
-                    
+
                 </tbody>
-              
-               
+
+
             </table>
             <!-- Add pagination links -->
             <div class="d-flex justify-content-center">

@@ -18,6 +18,13 @@ $hourlyCount = 0;
 </style>
 
 <div class="row mb-4">
+    <div class="col-lg-12 mb-4">
+        <div class="records">
+            <p class="mb-2">Total Seats : 50 | Available : 25 | Booked : 25</p>
+
+            <span class="text-success">Available to Book (12)</span> <span class="text-success">Active (12)</span> <span class="text-danger">Expired (2)</span> <span class="text-danger">Full day (2)</span> <span class="text-danger">First Half (2)</span> <span class="text-danger">Second Half (2)</span> <span class="text-danger">Hourly 1 (2)</span> <span class="text-danger">Hourly 2 (2)</span> <span class="text-danger">Hourly 3 (2)</span> <span class="text-danger">Hourly 4 (2)</span>
+        </div>
+    </div>
     <div class="col-lg-12">
         <div class="seat-booking">
 
@@ -168,7 +175,7 @@ $hourlyCount = 0;
                         <input type="hidden" name="seat_id" value="" id="seat_id">
                         <input type="hidden" class="form-control char-only" name="seat_no" value="" id="seat_no"
                             autocomplete="off">
-                        
+
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <label for="">Full Name <span>*</span></label>
@@ -186,7 +193,7 @@ $hourlyCount = 0;
                                 <label for="">Email Id <span>*</span></label>
                                 <input type="text" class="form-control" name="email" id="email">
                             </div>
-                        
+
                             <div class="col-lg-4">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select name="plan_id" id="plan_id" class="form-select" name="plan_id">
@@ -227,7 +234,7 @@ $hourlyCount = 0;
                                 </select>
                             </div>
                         </div>
-                        <h4 class="py-4 m-0">Other Important Info 
+                        <h4 class="py-4 m-0">Other Important Info
                             <i id="toggleIcon" class="fa fa-plus" style="cursor: pointer;"></i>
                         </h4>
                         <div id="idProofFields" style="display: none;">
@@ -420,38 +427,37 @@ $hourlyCount = 0;
 
 @include('learner.script')
 <script>
-   $(document).ready(function() {
-    // Check if the animation has already been run in the current session
-    if (!sessionStorage.getItem('seatsAnimated')) {
-        // Animate each seat one by one
-        $('.seat').each(function(index) {
-            $(this).delay(index * 200).queue(function(next) {
-                $(this).css({
-                    'opacity': '1',
-                    'transform': 'translateY(0)'
+    $(document).ready(function() {
+        // Check if the animation has already been run in the current session
+        if (!sessionStorage.getItem('seatsAnimated')) {
+            // Animate each seat one by one
+            $('.seat').each(function(index) {
+                $(this).delay(index * 200).queue(function(next) {
+                    $(this).css({
+                        'opacity': '1',
+                        'transform': 'translateY(0)'
+                    });
+                    next(); // Move to the next item in the queue
                 });
-                next(); // Move to the next item in the queue
             });
-        });
 
-        // After all animations complete, set the sessionStorage flag
-        setTimeout(function() {
-            sessionStorage.setItem('seatsAnimated', 'true');
-        }, $('.seat').length * 200 + 500); // Wait for all seats to animate
-    } else {
-        // If the animation has already run, make all seats visible immediately
-        $('.seat').css({
-            'opacity': '1',
-            'transform': 'translateY(0)',
-            'transition': 'none' // Disable the transition so they don't animate again
-        });
-    }
-});
-
+            // After all animations complete, set the sessionStorage flag
+            setTimeout(function() {
+                sessionStorage.setItem('seatsAnimated', 'true');
+            }, $('.seat').length * 200 + 500); // Wait for all seats to animate
+        } else {
+            // If the animation has already run, make all seats visible immediately
+            $('.seat').css({
+                'opacity': '1',
+                'transform': 'translateY(0)',
+                'transition': 'none' // Disable the transition so they don't animate again
+            });
+        }
+    });
 </script>
 
 <script>
-    document.getElementById('plan_start_date').addEventListener('change', function () {
+    document.getElementById('plan_start_date').addEventListener('change', function() {
         const startDate = new Date(this.value);
         if (startDate) {
             // Add 30 days to the start date

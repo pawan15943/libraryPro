@@ -63,7 +63,7 @@
 
             </div>
             <div>
-                <ul class="plan-features">
+                <ul class="plan-features contents">
                     @if($data->subscription->permissions->isNotEmpty())
                     @foreach($data->subscription->permissions as $permission)
                     <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
@@ -78,6 +78,16 @@
     </div>
 </div>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".contents").mCustomScrollbar();
+        });
+    })(jQuery);
+</script>
 
 @endsection

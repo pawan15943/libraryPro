@@ -87,7 +87,8 @@
 
         <div class="profile">
             <div class="dropdown">
-                <a class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Welcome 
+                <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->name}}{{Auth::user()->library_name}}
                 </a>
                 <ul class="dropdown-menu">

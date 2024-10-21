@@ -319,7 +319,7 @@
                     </form>
 
                 </div>
-                <ul id="plan-list">
+                <ul id="plan-list" class="contents">
                     @foreach($plans as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -435,7 +435,7 @@
                         </div>
                     </form>
                 </div>
-                <ul id="plantype-list">
+                <ul id="plantype-list" class="contents">
                     @foreach($plantype as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -536,13 +536,14 @@
                         </div>
                     </form>
                 </div>
-                <ul id="planPrice-list">
+                <ul id="planPrice-list" class="contents">
                     @foreach($planprice as $key => $value)
                     <li>
                         <div class="d-flex">
+                            <h4 style="flex:2;">{{ $value->plan->name ?? 'N/A' }}</h4>
+                            <h4 style="flex:2;">{{ $value->planType->name ?? 'N/A' }}</h4>
                             <h4>{{$value->price}}</h4>
-                            <h4>{{ $value->plan->name ?? 'N/A' }}</h4>
-                            <h4>{{ $value->planType->name ?? 'N/A' }}</h4>
+
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="PlanPrice" title="Active/Deactive">
                                         @if($value->deleted_at)
@@ -607,7 +608,7 @@
                         </div>
                     </form>
                 </div>
-                <ul>
+                <ul class="contents">
                     @foreach($expenses as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -760,7 +761,17 @@
     </div>
 </div>
 @endif
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".contents").mCustomScrollbar();
+        });
+    })(jQuery);
+</script>
 
 <!-- /.content -->
 @include('master.script')

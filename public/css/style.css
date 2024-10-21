@@ -1685,3 +1685,17 @@ span.d-block.mt-2 {
 }
 
 
+.master-box ul.contents li:not(.master-box ul.contents li li) {
+    background: #fff;
+    padding: .5rem.5rem;
+    border-radius: .5rem;
+}
+
+.master-box ul.contents li+li:not(.master-box ul.contents li li) {
+    margin-top: .5rem !important;
+}
+
+.master-box ul.contents {
+    height: 150px;
+    overflow: auto;
+}

@@ -1651,10 +1651,12 @@ span.d-block.mt-2 {
 
 .records {
     font-size: 1.1rem;
-    background-color: #fff; /* Light background for contrast */
+    background-color: #fff;
+    /* Light background for contrast */
     padding: 1.5rem;
     border-radius: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
 }
 
 .records b {
@@ -1664,23 +1666,30 @@ span.d-block.mt-2 {
 }
 
 .records span {
-    font-weight: 600; /* Make the text slightly bolder */
+    font-weight: 600;
+    /* Make the text slightly bolder */
     padding: 4px 8px;
-    border-radius: 12px; /* Rounded corners for the pill effect */
+    border-radius: 12px;
+    /* Rounded corners for the pill effect */
 }
 
 .records .text-success {
-    background-color: #e6f4ea; /* Light green background for success statuses */
-    color: #28a745; /* Dark green text for better readability */
+    background-color: #e6f4ea;
+    /* Light green background for success statuses */
+    color: #28a745;
+    /* Dark green text for better readability */
 }
 
 .records .text-danger {
-    background-color: #fdecea; /* Light red background for danger statuses */
-    color: #dc3545; /* Dark red text for better readability */
+    background-color: #fdecea;
+    /* Light red background for danger statuses */
+    color: #dc3545;
+    /* Dark red text for better readability */
 }
 
 .records span:hover {
-    background-color: #d1e7dd; /* Slight color change on hover for interaction */
+    background-color: #d1e7dd;
+    /* Slight color change on hover for interaction */
     cursor: pointer;
 }
 
@@ -1698,4 +1707,166 @@ span.d-block.mt-2 {
 .master-box ul.contents {
     height: 150px;
     overflow: auto;
+}
+
+
+/* Dashboard Design */
+.dashboard h1,
+h1 * {
+    font-size: 2.4rem;
+    color: #00BCD4;
+}
+
+.dashboard h1 {
+    color: #1c32aa !important;
+
+}
+
+.active-plan-box {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 1px 0 5px #00000021;
+}
+
+.active-plan-box .top-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.active-plan-box .d-flex .plann-info {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0;
+}
+
+.active-plan-box .d-flex .plann-info a {
+    display: block;
+    text-decoration: none;
+    color: #00BCD4;
+}
+
+ul.plann-info li {
+    font-weight: 700;
+    font-size: .8rem;
+}
+
+.dashboard h4 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #3F51B5 !important;
+
+}
+
+.dashboard h4 span a {
+    color: red;
+}
+
+
+.main-count {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.5rem;
+    position: relative;
+    gap: 1rem;
+}
+
+.cardbg-1 {
+    background: linear-gradient(159deg, #151F38, #1B377D);
+}
+
+.cardbg-2 {
+    background: #1DAD87;
+}
+
+.cardbg-3 {
+    background: linear-gradient(159deg, #151F38, #1B377D);
+}
+
+.main-count span,
+.main-count h2,
+.main-count small {
+    color: #fff !important;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.main-count h2 {
+    font-size: 2.5rem !important;
+    font-weight: 800;
+}
+
+.main-count small {
+    color: #ffffff90 !important;
+}
+
+.main-count img {
+    position: absolute;
+    right: 6%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+}
+
+ul.revenue-box {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.revenue-box li {
+    background: #fff;
+    width: 400px;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 1px 0 5px #00000021;
+}
+
+ul.revenue-box li .d-flex {
+    width: 352px !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mt-10 {
+    margin-top: 5rem;
+}
+
+.booking-count {
+    background: #0f1c64;
+    padding: 1rem;
+    border-radius: 1rem;
+    position: relative;
+}
+
+.booking-count img {
+    width: 40px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%)
+}
+
+.dashboard .booking-count h6 {
+    margin: 0px;
+    font-size: .9rem !important;
+    color: #ffffffd1 !important;
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+
+.booking-count .d-flex {
+    justify-content: space-between;
+}
+
+.booking-count .d-flex h4 {
+    color: #14a9bc !important;
 }

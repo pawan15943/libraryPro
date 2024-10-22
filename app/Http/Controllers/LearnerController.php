@@ -829,23 +829,25 @@ class LearnerController extends Controller
     }
     public function history($id)
     {
-        
-        $learners =  $this->getAllLearnersByLibrary()
-        ->where('learner_detail.seat_id',$id)
-        ->where('learners.status',0)
-            ->select(
-                'plan_types.name as plan_type_name',
-                'plans.name as plan_name',
-                'learners.*',
-                'learner_detail.learner_id','learner_detail.plan_start_date','learner_detail.plan_end_date','learner_detail.plan_type_id','learner_detail.plan_id','learner_detail.plan_price_id','learner_detail.status',
-                'plan_types.start_time',
-                'plan_types.end_time',
-            )
-        ->get();
-       
-        $seat=Seat::where('id',$id)->first('seat_no');
-        return view('learner.seatHistoryView', compact('learners','seat'));
+        // Get the learners with their details, plans, and seat information
+        $learners = Learner::where('library_id', auth()->user()->id)
+            ->with([
+                'learnerDetails' => function($query) {
+                    $query->with(['seat', 'plan', 'planType']);
+                }
+            ])
+            ->whereHas('learnerDetails', function($query) use ($id) {
+                $query->where('seat_id', $id);
+            })
+            ->where('status', 0)
+            ->get();
+
+        // Fetch the seat number
+        $seat = Seat::find($id, ['seat_no']);
+
+        return view('learner.seatHistoryView', compact('learners', 'seat'));
     }
+
     
     public function reactiveUser(Request $request, $id = null){
        

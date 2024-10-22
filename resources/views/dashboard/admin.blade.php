@@ -10,15 +10,9 @@
 <!-- New Design Dahsbard Library -->
 
 <div class="dashboard">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="dashboard-Header">
-                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-    </div>
 
-    <div class="row align-items-center mt-4">
+
+    <div class="row align-items-center ">
         <div class="col-lg-6">
             <h1>Welcome to <span>LibraryPro</span>
                 Where <span class="typing-text">Great Minds Gather!</span></h1>
@@ -39,7 +33,13 @@
             </div>
         </div>
     </div>
-
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="dashboard-Header">
+                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
     <!-- Library Main Counts -->
     <div class="row my-4">
         <div class="col-lg-4">

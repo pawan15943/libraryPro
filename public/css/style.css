@@ -446,7 +446,24 @@ nav ol {
 .library-dashbaord .sidebar {
     background: var(--c1);
     width: 270px;
+    position: relative;
+    z-index: 1;
 }
+
+.sidebar::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    left: 50%;
+    bottom: -129px;
+    background: #ffffff20;
+    z-index: -1;
+    transform: translateX(-50%);
+}
+
+
 
 .library-dashbaord .content-area {
     flex: 1;
@@ -1860,18 +1877,22 @@ ul.revenue-box li .d-flex {
 }
 
 .booking-count {
-    perspective: 1000px; /* Enables a 3D perspective */
-    transition: transform 0.5s; /* Smooth transition */
+    perspective: 1000px;
+    /* Enables a 3D perspective */
+    transition: transform 0.5s;
+    /* Smooth transition */
 }
 
 .booking-count:hover {
-    transform: rotateY(10deg) rotateX(10deg); /* 3D rotation on hover */
+    transform: rotateY(10deg) rotateX(10deg);
+    /* 3D rotation on hover */
     box-shadow: 1px 0 5px #00000021;
 }
 
 .booking-count h6,
 .booking-count h4 {
-    margin: 0; /* Remove default margins for better layout */
+    margin: 0;
+    /* Remove default margins for better layout */
 }
 
 
@@ -3723,6 +3744,7 @@ ul.revenue-box li {
     border-radius: 1.5rem;
     padding: 1.5rem;
     box-shadow: 1px 0 5px #00000021;
+    margin: .2rem;
 }
 
 ul.revenue-box li .d-flex {
@@ -3879,7 +3901,8 @@ ul.revenue-box li .d-flex {
     position: relative;
     border-radius: 1.5rem;
     overflow: hidden;
-    perspective: 1000px; /* Adds depth for a 3D effect */
+    perspective: 1000px;
+    /* Adds depth for a 3D effect */
 }
 
 .dashboard-Header img {
@@ -3891,19 +3914,28 @@ ul.revenue-box li .d-flex {
 
 @keyframes zoomAndSlide {
     0% {
-        transform: scale(1) translateX(0); /* Starting point */
+        transform: scale(1) translateX(0);
+        /* Starting point */
     }
+
     25% {
-        transform: scale(1.05) translateX(10px); /* Slight zoom and right movement */
+        transform: scale(1.05) translateX(10px);
+        /* Slight zoom and right movement */
     }
+
     50% {
-        transform: scale(1.1) translateX(20px); /* Maximum zoom and right movement */
+        transform: scale(1.1) translateX(20px);
+        /* Maximum zoom and right movement */
     }
+
     75% {
-        transform: scale(1.05) translateX(-10px); /* Slight zoom and left movement */
+        transform: scale(1.05) translateX(-10px);
+        /* Slight zoom and left movement */
     }
+
     100% {
-        transform: scale(1) translateX(0); /* Back to the original state */
+        transform: scale(1) translateX(0);
+        /* Back to the original state */
     }
 }
 
@@ -3923,6 +3955,7 @@ ul.revenue-box li .d-flex {
     transform: translateY(20px);
     transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
+
 .box.visible {
     opacity: 1;
     transform: translateY(0);

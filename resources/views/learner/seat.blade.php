@@ -20,9 +20,9 @@ $hourlyCount = 0;
 <div class="row mb-4">
     <div class="col-lg-12 mb-4">
         <div class="records">
-            <p class="mb-2">Total Seats : 50 | Available : 25 | Booked : 25</p>
+            <p class="mb-2">Total Seats : {{$total_seats}} | Available : 25 | Booked : 25</p>
 
-            <span class="text-success">Available to Book (12)</span> <span class="text-success">Active (12)</span> <span class="text-danger">Expired (2)</span> <span class="text-danger">Full day (2)</span> <span class="text-danger">First Half (2)</span> <span class="text-danger">Second Half (2)</span> <span class="text-danger">Hourly 1 (2)</span> <span class="text-danger">Hourly 2 (2)</span> <span class="text-danger">Hourly 3 (2)</span> <span class="text-danger">Hourly 4 (2)</span>
+            <span class="text-success">Available to Book (12)</span> <span class="text-success">Active ({{$active_seat_count}})</span> <span class="text-danger">Expired ({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">First Half (2)</span> <span class="text-danger">Second Half (2)</span> <span class="text-danger">Hourly 1 (2)</span> <span class="text-danger">Hourly 2 (2)</span> <span class="text-danger">Hourly 3 (2)</span> <span class="text-danger">Hourly 4 (2)</span>
         </div>
     </div>
     <div class="col-lg-12">

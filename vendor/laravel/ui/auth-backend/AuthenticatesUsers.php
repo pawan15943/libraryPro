@@ -183,6 +183,8 @@ trait AuthenticatesUsers
      
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        session()->flash('message', 'You have been logged out.');
     
         // Redirect after logout to prevent hitting authentication middleware
         return redirect($redirectTo);

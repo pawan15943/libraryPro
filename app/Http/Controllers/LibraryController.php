@@ -4,8 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLibraryRequest;
 use App\Models\City;
+use App\Models\Hour;
+use App\Models\Learner;
+use App\Models\LearnerDetail;
+use App\Models\LearnerTransaction;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
+use App\Models\Plan;
+use App\Models\PlanPrice;
+use App\Models\PlanType;
+use App\Models\Seat;
 use App\Models\State;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
@@ -18,6 +26,8 @@ use App\Services\LibraryService;
 use Auth;
 use DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+
 
 class LibraryController extends Controller
 {
@@ -504,7 +514,136 @@ class LibraryController extends Controller
         return view('library.view',compact('library','plan','library_transaction','library_all_transaction'));
     }
 
-   
+    public function destroyLearners($id){
+        $libraryId=$id;
+        try {
+            DB::transaction(function () use ($libraryId) {
+                // Step 1: Delete transactions associated with the learners in the library
+                $learnerTransactionsDeleted = LearnerTransaction::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->delete();
+                
+                if ($learnerTransactionsDeleted === 0) {
+                    throw new \Exception('No learner transactions were deleted.');
+                }
+    
+                // Step 2: Delete learner details associated with the learners in the library
+                $learnerDetailsDeleted = LearnerDetail::withoutGlobalScopes()
+                    ->whereIn('learner_id', function($query) use ($libraryId) {
+                        $query->select('id')->from('learners')->where('library_id', $libraryId);
+                    })->delete();
+    
+                if ($learnerDetailsDeleted === 0) {
+                    throw new \Exception('No learner details were deleted.');
+                }
+    
+                // Step 3: Force delete the learners themselves
+                $learnersDeleted = Learner::where('library_id', $libraryId)
+                    ->withTrashed()
+                    ->forceDelete();
+    
+                if ($learnersDeleted === 0) {
+                    throw new \Exception('No learners were deleted.');
+                }
+    
+                // Step 4: Update the seat availability
+                Seat::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->update([
+                        'is_available' => 1,
+                        'total_hours' => 0,
+                    ]);
+            });
+    
+            return response()->json(['message' => 'All learners and related data have been successfully deleted.']);
+
+    
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error occurred: ' . $e->getMessage()], 500);
+            
+        }
+        
+    
+    }
+
+    public function destroyAllMasters($id)
+    {
+        $libraryId = $id;
+
+        // Check if there are any learners associated with this library
+        $learnerCount = Learner::where('library_id', $libraryId)->count();
+        $learnerDetailCount = LearnerDetail::withoutGlobalScopes()->where('library_id', $libraryId)->count();
+        $learnerTransCount = LearnerTransaction::withoutGlobalScopes()->where('library_id', $libraryId)->count();
+
+        if ($learnerCount == 0 && $learnerDetailCount == 0 && $learnerTransCount == 0) {
+            DB::beginTransaction();
+            try {
+                // Step 1: Delete records from PlanPrice
+                $deletedPricesCount = PlanPrice::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->withTrashed()
+                    ->forceDelete();
+
+                // Log the count of deleted prices
+                if ($deletedPricesCount > 0) {
+                    Log::info("$deletedPricesCount plan prices deleted.");
+                } else {
+                    Log::info("No plan prices to delete.");
+                }
+
+                // Step 2: Delete records from PlanType
+                $deletedTypesCount = PlanType::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->withTrashed()
+                    ->forceDelete();
+
+                // Log the count of deleted types
+                if ($deletedTypesCount > 0) {
+                    Log::info("$deletedTypesCount plan types deleted.");
+                } else {
+                    Log::info("No plan types deleted.");
+                }
+
+                // Step 3: Delete records from Plan
+                $deletedPlansCount = Plan::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->withTrashed()
+                    ->forceDelete();
+
+                // Log the count of deleted plans
+                if ($deletedPlansCount > 0) {
+                    Log::info("$deletedPlansCount plans deleted.");
+                } else {
+                    Log::info("No plans deleted.");
+                }
+
+                // Step 4: Delete records from Seat
+                Seat::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->forceDelete();
+
+                // Step 5: Delete records from Hour
+                Hour::withoutGlobalScopes()
+                    ->where('library_id', $libraryId)
+                    ->withTrashed()
+                    ->forceDelete();
+
+                DB::commit();
+
+                return response()->json(['message' => 'All master records have been successfully deleted.']);
+            } catch (\Exception $e) {
+                // Rollback the transaction in case of any error
+                DB::rollBack();
+                return response()->json(['message' => 'Error occurred: ' . $e->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['message' => 'Cannot delete masters because learners are associated with this library.'], 400);
+        }
+    }
+
+
+
+    
     
 
 

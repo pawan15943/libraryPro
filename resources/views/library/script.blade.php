@@ -1,4 +1,5 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
      // Handle state and city dropdowns
      $('#stateid').on('change', function(event){
@@ -34,5 +35,64 @@
                 $("#cityid").empty();
                 $("#cityid").append('<option value="">Select City</option>');
             }
+    });
+
+    $(document).on('click', '.delete-learners, .delete-masters', function() {
+        var id = $(this).data('id');
+        var url;
+
+        // Determine which button was clicked and set the URL accordingly
+        if ($(this).hasClass('delete-learners')) {
+            url = '{{ route('library.learners.destroy', ':id') }}';
+        } else if ($(this).hasClass('delete-masters')) {
+            url = '{{ route('library.masters.destroy', ':id') }}';
+        }
+      
+    
+        url = url.replace(':id', id);  
+       
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        Swal.fire(
+                            'Deleted!',
+                            response.message, // Show the message from the server response
+                            'success'
+                        ).then(() => {
+                            location.reload(); // Optionally, you can refresh the page
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        let errorMessage = 'An error occurred while deleting the learners.';
+
+                        // Optionally, you can parse the response for a more specific error message
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message;
+                        }
+
+                        Swal.fire(
+                            'Error!',
+                            errorMessage,
+                            'error'
+                        );
+                    }
+                });
+            }
+
         });
+    });
 </script>

@@ -15,5 +15,10 @@ class LearnerTransaction extends Model
         
         static::addGlobalScope(new LibraryScope());
     }
+
+    public function learner()
+    {
+        return $this->belongsTo(Learner::class, 'learner_id');
+    }
    
 }

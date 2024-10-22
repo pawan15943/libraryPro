@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\LibraryScope;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Learner extends Authenticatable
 {
     use HasRoles;
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $guarded = [];
     
     public function planType()

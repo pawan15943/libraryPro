@@ -148,7 +148,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('permissions/{permissionId}', [MasterController::class, 'deletePermission'])->name('permissions.delete');
         Route::delete('subscriptionPermissions/{permissionId}', [MasterController::class, 'deleteSubscriptionPermission'])->name('subscriptionPermissions.delete');
         Route::get('library/show/{id?}', [LibraryController::class, 'showLibrary'])->name('library.show');
-        
+        Route::delete('library/learners/delete/{id?}', [LibraryController::class, 'destroyLearners'])->name('library.learners.destroy');
+        Route::delete('library/masters/delete/{id?}', [LibraryController::class, 'destroyAllMasters'])->name('library.masters.destroy');
             
     });
 });

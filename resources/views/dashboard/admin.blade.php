@@ -7,8 +7,549 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<!-- New Design Dahsbard Library -->
 
-<div class="row g-4">
+<div class="dashboard">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="dashboard-Header">
+                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-4">
+        <div class="col-lg-6">
+            <h1>Welcome to <span>LibraryPro</span>
+                Where <span class="typing-text">Great Minds Gather!</span></h1>
+        </div>
+        <div class="col-lg-6">
+            <div class="active-plan-box">
+                <div class="top-content">
+                    <h4>BASIC PLAN <span><a href="">Upgrade Plan</a></span></h4>
+                    <label for="">Active</label>
+                </div>
+                <div class="d-flex">
+                    <ul class="plann-info">
+                        <li>Total Seat : <a href="">50</a> </li>
+                        <li>Plan Features : <a href="">50</a> </li>
+                        <li>Plan Price : <a href="">50</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Library Main Counts -->
+    <div class="row my-4">
+        <div class="col-lg-4">
+            <div class="main-count cardbg-1">
+                <span>Total Seats</span>
+                <h2>50</h2>
+                <small>Added on 25-10-2024</small>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="main-count cardbg-2">
+                <span>Booked Seats</span>
+                <h2>50</h2>
+                <small>Added on 25-10-2024</small>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="main-count cardbg-2">
+                <span>Avaialble Seats</span>
+                <h2>50</h2>
+                <small>Added on 25-10-2024</small>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <h4 class="my-4">Monthly Revenues</h4>
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="revenue-box scroll-x">
+                <li>
+                    <div class="d-flex">
+                        <h4>April 2024 Revenue</h4>
+                        <span class="toggleButton" data-box="1"><i class="fa fa-eye-slash"></i></span>
+                    </div>
+                    <div class="d-flex mt-10">
+                        <div class="value">
+                            <small>Total Revenue</small>
+                            <h4 class="totalRevenue" data-box="1">12020</h4>
+                        </div>
+                        <div class="value">
+                            <small>Total Expense</small>
+                            <h4 class="totalExpense" data-box="1">12020</h4>
+                        </div>
+                        <div class="value">
+                            <small>Net Profit</small>
+                            <h4 class="netProfit" data-box="1">12020</h4>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex">
+                        <h4>May 2024 Revenue</h4>
+                        <span class="toggleButton" data-box="2"><i class="fa fa-eye-slash"></i></span>
+                    </div>
+                    <div class="d-flex mt-10">
+                        <div class="value">
+                            <small>Total Revenue</small>
+                            <h4 class="totalRevenue" data-box="2">15000</h4>
+                        </div>
+                        <div class="value">
+                            <small>Total Expense</small>
+                            <h4 class="totalExpense" data-box="2">9000</h4>
+                        </div>
+                        <div class="value">
+                            <small>Net Profit</small>
+                            <h4 class="netProfit" data-box="2">6000</h4>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Library Other Counts -->
+    <h4 class="my-4">Library Other Highlights</h4>
+    <div class="row g-4">
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Total Bookings</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Online Paid</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Online Paid</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Offline Paid</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-1">
+                <h6>Expired in 5 Days</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-2">
+                <h6>Expired Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Extended Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Swap Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Upgrade Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Reactive Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>WhatsApp Sended</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Email Sended</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <h4 class="my-4">Plan Wise Count</h4>
+    <div class="row g-4">
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Full Day</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>First Half</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Second Half</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 1</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 2</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 3</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 4</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Total Booked Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Available Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Available Seats -->
+    <div class="row mt-5">
+        <div class="col-lg-4">
+
+            <!-- Show 10 availble Seats -->
+            <div class="seat-statistics ">
+                <h4 class="mb-4 text-center">Avaialble Seats</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Seat About to Expire</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Extend Seats</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts -->
+    <h4 class="my-4">Monthly Analytics (Rvenue, Expanse & Profit)</h4>
+    <div class="row">
+        <div class="col-lg-8">
+
+        </div>
+    </div>
+</div>
+<!-- End -->
+
+<div class="row g-4 d-none">
     <div class="col-lg-6">
         <div class="row g-4">
             <div class="col-lg-6">
@@ -111,7 +652,7 @@
         </div>
     </div>
 </div>
-<div class="row g-4 mt-2">
+<div class="row g-4 mt-2 d-none">
     <div class="col-lg-3">
         <div class="dashibox">
             <span>Today Bookings</span>
@@ -148,9 +689,9 @@
             <h4>{{$total_seats}}</h4>
         </div>
     </div>
-    
+
 </div>
-<div class="row">
+<div class="row d-none">
     <div class="col-lg-12">
         <h4 class="py-4">Plan Statistics (Show Plan wise) Graph</h4>
     </div>
@@ -166,5 +707,55 @@
             $(".contents").mCustomScrollbar();
         });
     })(jQuery);
+
+    // (function($) {
+    //     $(window).on("load", function() {
+    //         $(".scroll-x").mCustomScrollbar({
+    //             axis: "x", // Enable horizontal scrolling
+    //             theme: "dark", // Optional theme for the scrollbar
+    //             advanced: {
+    //                 autoExpandHorizontalScroll: true // Automatically expand scrollbar for large content
+    //             },
+    //             scrollInertia: 200 // Optional: Set scroll speed
+    //         });
+    //     });
+    // })(jQuery);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initially hide the values (show as ****)
+        document.querySelectorAll('.totalRevenue, .totalExpense, .netProfit').forEach(function(item) {
+            item.dataset.originalValue = item.innerText; // Store the original value in a data attribute
+            item.innerText = '****'; // Hide the value initially
+        });
+
+        // Toggle button logic
+        document.querySelectorAll('.toggleButton').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const boxId = this.getAttribute('data-box');
+                const revenue = document.querySelector(`.totalRevenue[data-box="${boxId}"]`);
+                const expense = document.querySelector(`.totalExpense[data-box="${boxId}"]`);
+                const profit = document.querySelector(`.netProfit[data-box="${boxId}"]`);
+                const icon = this.querySelector('i');
+
+                // Check current state and toggle visibility
+                if (revenue.innerText === '****') {
+                    // Show original values
+                    revenue.innerText = revenue.dataset.originalValue;
+                    expense.innerText = expense.dataset.originalValue;
+                    profit.innerText = profit.dataset.originalValue;
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    // Hide values
+                    revenue.innerText = '****';
+                    expense.innerText = '****';
+                    profit.innerText = '****';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        });
+    });
 </script>
 @endsection

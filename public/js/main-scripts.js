@@ -125,3 +125,4 @@ $(document).ready(function() {
       typeText(); // Call the function to start typing for each element
   });
 });
+

@@ -308,173 +308,210 @@
 
 
     <!-- Available Seats -->
-    <div class="row">
+    <div class="row mt-5">
         <div class="col-lg-4">
-            <h4 class="my-4">Avaialble Seats</h4>
+
             <!-- Show 10 availble Seats -->
-            <ul>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+            <div class="seat-statistics ">
+                <h4 class="mb-4 text-center">Avaialble Seats</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>Available</small>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
                         </div>
-                        <a href="">Book</a>
-                    </div>
-                </li>
-            </ul>
-            <a href="">View All Availble Seats</a>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>Available</small>
+                            </div>
+                            <a href="" class="book">Book</a>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
         </div>
 
         <div class="col-lg-4">
-            <h4>Seats About to Expire</h4>
-            <ul>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>First Half</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in 2 Days</p>
-                            <small><a href="">Renew Plan</a></small>
-                        </div>
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Seat About to Expire</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
 
-                        <ul>
-                            <li><a href=""><i class="fa fa-whatsapp"></i></a></li>
-                            <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>First Half</small>
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
                         </div>
-                        <div class="seat-status">
-                            <p>Expired in 2 Days</p>
-                            <small><a href="">Renew Plan</a></small>
-                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
 
-                        <ul>
-                            <li><a href=""><i class="fa fa-whatsapp"></i></a></li>
-                            <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-            <a href="">View All Availble Seats</a>
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
         </div>
         <div class="col-lg-4">
-            <h4>Extended Seats </h4>
-            <ul>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>First Half</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in 2 Days</p>
-                            <small><a href="">Renew Plan</a></small>
-                        </div>
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Extend Seats</h4>
+                <ul class="contents">
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
 
-                        <ul>
-                            <li><a href=""><i class="fa fa-whatsapp"></i></a></li>
-                            <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <img src="" alt="">
-                        <div class="seat-content">
-                            <h6>Seat No. 10</h6>
-                            <small>First Half</small>
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
                         </div>
-                        <div class="seat-status">
-                            <p>Expired in 2 Days</p>
-                            <small><a href="">Renew Plan</a></small>
-                        </div>
+                    </li>
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. 10</h6>
+                                <small>First Half</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in 2 Days</p>
+                                <small><a href="">Renew Plan</a></small>
+                            </div>
 
-                        <ul>
-                            <li><a href=""><i class="fa fa-whatsapp"></i></a></li>
-                            <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-            <a href="">View All Availble Seats</a>
+                            <ul class="d-flex inner">
+                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
         </div>
     </div>
 
     <!-- Charts -->
-    <h4>Monthly Analytics (Rvenue, Expanse & Profit)</h4>
+    <h4 class="my-4">Monthly Analytics (Rvenue, Expanse & Profit)</h4>
     <div class="row">
         <div class="col-lg-8">
 

@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Subscription;
 
 class Controller extends BaseController
 {
@@ -34,6 +35,7 @@ class Controller extends BaseController
     public function generateReceipt(Request $request)
     {
         if($request->type=='library'){
+         
             $data = LibraryTransaction::where('id', $request->id)->first();
             $user = Library::where('id', $data->library_id)->where('status', 1)->first();
             $transactionDate=$data->transaction_date;
@@ -42,34 +44,45 @@ class Controller extends BaseController
             $month=$data->month;
             $start_date=$data->start_date;
             $end_date=$data->end_date;
+            $name=$user->library_owner;
+            $subscription=Subscription::where('id',$user->library_type)->value('name');
         }
         if($request->type=='learner'){
-            $data = LearnerTransaction::where('id', $request->id)->first();
+            $learnerDeatail = LearnerDetail::where('id', $request->id)
+            ->with(['plan', 'planType'])
+            ->first();
+           
+            $data = LearnerTransaction::where('learner_deatail_id', $learnerDeatail->id)->where('is_paid',1)->first();
+        
+            $user = Learner::where('id', $data->learner_id)->first();
           
-            $user = Learner::where('id', $data->learner_id)->where('status', 1)->first();
             $transactionDate=$data->paid_date;
             $paymentMode='Offline';
             $total_amount=$data->total_amount;
-            $learnerDeatail = LearnerDetail::where('id', $data->learner_deatail_id)
-            ->with(['plan', 'planType'])
-            ->first();
+           
         
             if ($learnerDeatail) {
                 $month = $learnerDeatail->plan ? $learnerDeatail->plan->plan_id : null; // Check if 
                 $start_date = $learnerDeatail->plan_start_date;
                 $end_date = $learnerDeatail->plan_end_date;
+                $subscription=$learnerDeatail->plantype ? $learnerDeatail->plantype->name : null;
             } else {
             
                 $month = null;
                 $start_date = null;
                 $end_date = null;
+                $subscription=null;
             }
-        
+            $name=$user->name;
+           
+           
         }
        
         
         $send_data = [
-            'data' => $user,
+            'subscription' =>$subscription ?? 'NA',
+            'name' => $name ?? 'NA',
+            'email' => $user->email ?? 'NA',
             'transactiondate' => $transactionDate ?? 'NA',
             'paid_amount' => $data->paid_amount ?? 'NA',
             'payment_mode' => $paymentMode ?? 'NA',

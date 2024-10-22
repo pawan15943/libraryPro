@@ -113,6 +113,7 @@
         $('#upgrade').on('click', function() {
             
             $("#update_plan_id").trigger('change');
+           
             var user_id = $('#user_id').val();
            
             var seat_no_id = $('#seat_name').text().trim();
@@ -201,10 +202,11 @@
       
 
         $('#update_plan_id').on('change', function(event) {
+           
             event.preventDefault();
             var update_plan_type_id = $('#updated_plan_type_id').val();
             var update_plan_id =$(this).val();
-
+           
             if (update_plan_id && update_plan_type_id) {
                 $.ajax({
                     url: '{{ route('getPricePlanwiseUpgrade') }}',
@@ -219,6 +221,7 @@
                     },
                     dataType: 'json',
                     success: function(html) {
+                       
                         $.each(html, function(key, value) {
                             $("#updated_plan_price_id").val(value);
                         });

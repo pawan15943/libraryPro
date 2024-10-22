@@ -176,6 +176,8 @@ $current_route = Route::currentRouteName();
                     $today = Carbon::today();
                     $endDate = Carbon::parse($value->plan_end_date);
                     $diffInDays = $today->diffInDays($endDate, false);
+                    $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+                    $diffExtendDay= $today->diffInDays($inextendDate, false);
                     @endphp
                     <tr>
                         <td>{{$value->seat_no}}<br>
@@ -196,12 +198,14 @@ $current_route = Route::currentRouteName();
                         </td>
                         <td>{{$value->plan_end_date}}<br>
                             @if ($diffInDays > 0)
-                            <small class="text-success fs-10 d-block">Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays < 0)
-                                <small class="text-danger fs-10 d-block">Expired {{ abs($diffInDays) }} days ago</small>
+                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                            @elseif ($diffInDays < 0 && $diffExtendDay>0)
+                                <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
+                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
                                 @else
-                                <small class="text-warning fs-10 d-block">Expires today</small>
-                                @endif
+                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                            @endif
                         </td>
                         <td>
                             @if($value->status==1)
@@ -219,21 +223,29 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
                                 @endcan
                                 <!-- Edit Seat Info -->
+                                @if($diffExtendDay>0)
                                 @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
                                 @endcan
                                 <!-- Swap Seat-->
+                                
                                 @can('has-permission', 'Swap Seat')
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-                                @endcan
+                                @endcan 
+                               
+                               
                                 <!-- upgrade Seat-->
+                               
                                 @can('has-permission', 'Upgrade Seat Plan')
                                 <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                                 @endcan
+                              
                                 <!-- Close Seat -->
+                               
                                 @can('has-permission', 'Close Seat')
                                 <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close"><i class="fas fa-times"></i></a></li>
                                 @endcan
+                                @endif
                                 <!-- Deletr Seat -->
                                 @can('has-permission', 'Delete Seat')
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
@@ -241,6 +253,7 @@ $current_route = Route::currentRouteName();
                                 @if($value->status==0)
                                 <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li> 
                                 @endif
+                                @if($diffExtendDay>0)
                                 <!-- Make payment -->
                                 <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                                 <!-- Sent Mail -->
@@ -248,6 +261,7 @@ $current_route = Route::currentRouteName();
                                 <!-- Sent Mail -->
                                 <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
                                 <li><a href="{{route('learner.expire',$value->id)}}" title="Expire"><i class="fas fa-edit"></i></a></li>
+                                @endif
                             </ul>
                         </td>
                     </tr>

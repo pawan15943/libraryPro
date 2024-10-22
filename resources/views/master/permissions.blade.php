@@ -7,11 +7,35 @@
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+        <h3>Create or Update Permission Category</h3>
+        <form action="{{ route('permission-categories.storeOrUpdate', $category->id ?? null) }}" method="POST">
+            @csrf
+            @method('put')
 
+            <div class="form-group">
+                <label for="category_name">Category Name</label>
+                <input type="text" name="name" id="category_name" class="form-control" value="{{ $category->name ?? old('name') }}" required>
+            </div>
+            <div class="col-lg-3 mt-4">
+            <button type="submit" class="btn btn-primary button">{{ isset($category) ? 'Update Category' : 'Add Category' }}</button>
+            </div>
+        </form>
         <form action="{{ route('permissions.storeOrUpdate', $permission->id ?? null) }}" method="POST">
             @csrf
             @method('put')
             <div class="row">
+                <div class="col-lg-4">
+                    <label for="category">Select Permission Category</label>
+                    <select name="permission_category_id" id="category" class="form-control" required>
+                        <option value="">Select Category</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" 
+                                {{ (isset($permission) && $permission->permission_category_id == $category->id) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="col-lg-4">
                     <label for="name">Permission Name</label>
                     <input type="text" name="name" class="form-control" value="{{ $permission->name ?? old('name') }}" required>
@@ -43,12 +67,17 @@
             <table class="table text-center datatable">
                 <tr>
                     <th>Permission Name</th>
+                    <th>Permission Category</th>
                     <th>Action</th>
                 </tr>
                 @foreach($permissions as $key => $value)
                 <tr>
                     <td>
                         {{$value->name}}
+                       
+                    </td>
+                    <td>
+                        {{ $value->permission_category_id ? \App\Models\PermissionCategory::find($value->permission_category_id)->name : 'No Category' }}
                     </td>
                     <td>
                         <ul class="actionalbls">

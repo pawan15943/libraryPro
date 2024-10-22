@@ -143,6 +143,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('permissions/{permissionId?}', [MasterController::class, 'managePermissions'])->name('permissions');
 
         Route::put('permissions/{permissionId?}', [MasterController::class, 'storeOrUpdatePermission'])->name('permissions.storeOrUpdate');
+        Route::put('permission-categories/storeOrUpdate/{categoryId?}', [MasterController::class, 'storeOrUpdateCategory'])->name('permission-categories.storeOrUpdate');
 
         Route::delete('permissions/{permissionId}', [MasterController::class, 'deletePermission'])->name('permissions.delete');
         Route::delete('subscriptionPermissions/{permissionId}', [MasterController::class, 'deleteSubscriptionPermission'])->name('subscriptionPermissions.delete');

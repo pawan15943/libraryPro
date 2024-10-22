@@ -36,7 +36,13 @@ class LearnerController extends Controller
     {
         $baseRules = [
             'seat_no' => 'required|integer',
-            'email' => 'required|email',
+           'email' => [
+                'required',
+                'email',
+                Rule::unique('learners')->where(function ($query) use ($request) {
+                    return $query->where('library_id', Auth::user()->id);
+                }),
+            ],
             'name' => 'required',
             'id_proof_file' => 'nullable|file|mimes:jpg,png,jpeg,webp|max:200',
             'mobile' => 'required|digits:10',
@@ -418,7 +424,7 @@ class LearnerController extends Controller
     }
 
     
-    public function fetchCustomerData($customerId = null, $isRenew = false, $status = 1, $detailStatus = 1, $filters = [])
+    public function fetchCustomerData($customerId = null, $isRenew = false, $status , $detailStatus , $filters = [])
     {
        
       
@@ -466,7 +472,7 @@ class LearnerController extends Controller
                 } elseif ($filters['status'] === 'expired') {
                     // Only select expired learners or details
                     $query->where(function ($q) {
-                        $q->where('learner_detail.status', 0);
+                        $q->where('learner_detail.status', 0)->where('learners.status',0);
                     });
                 }
             } else {
@@ -489,7 +495,7 @@ class LearnerController extends Controller
             $query->where('learners.status', $status)
                   ->where('learner_detail.status', $detailStatus);
         }
-    
+      
         // If fetching a specific customer
         if ($customerId) {
      
@@ -529,10 +535,15 @@ class LearnerController extends Controller
         ];
     
         $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
-
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
        
         $plans = $this->learnerService->getPlans();
-        return view('learner.learner', compact('learners','plans'));
+        return view('learner.learner', compact('learners','plans','extendDay'));
         
     }
     public function learnerHistory(Request $request){
@@ -591,7 +602,7 @@ class LearnerController extends Controller
             if ($bookingPlanType) {
                 $bookingStartTime = $bookingPlanType->start_time;
                 $bookingEndTime = $bookingPlanType->end_time;
-
+ 
                 
                 if (
                     ($startTime < $bookingEndTime && $endTime > $bookingStartTime) ||
@@ -696,11 +707,22 @@ class LearnerController extends Controller
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
         $available_seat = $this->learnerService->getAvailableSeats();
-        $customer_status=learner::where('id',$customerId)->first();
-        $status=$customer_status->status;
-        $detailStatus=$customer_status->status;
-        $customer = $this->fetchCustomerData($customerId, $is_renew, $status, $detailStatus);
-     
+        // $customer_status=learner::where('id',$customerId)->first();
+        // $status=$customer_status->status;
+        // $detailStatus=$customer_status->status;
+        $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
      
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
@@ -732,11 +754,10 @@ class LearnerController extends Controller
 
         //seat history
         $seat_history = $this->getAllLearnersByLibrary()
-        ->where('learners.seat_no', $customer->seat_no)
-        ->where('learners.id', '!=', $customerId) 
-        ->with(['plan', 'planType'])
+        ->where('seat_no', $customer->seat_no)
+        ->where('id', '!=', $customerId)
         ->get();
-
+      
         $transaction = LearnerTransaction::where('learner_id', $customerId)
         ->orderBy('id', 'DESC') 
         ->first();
@@ -999,18 +1020,21 @@ class LearnerController extends Controller
     }
    
     public function learnerRenew(Request $request){
+  
         $rules = [
-            'seat_no' => 'required|integer',
+           
             'plan_id' => 'required',
             'plan_type_id' => 'required',
             'plan_price_id' => 'required',
             'user_id' => 'required',
+            'payment_mode' => 'required',
          
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        $currentDate = date('Y-m-d'); 
         // Find the customer by user_id
         $customer = Learner::findOrFail($request->user_id);
         if (!$customer) {
@@ -1034,8 +1058,18 @@ class LearnerController extends Controller
        $start_date = Carbon::parse($learner_detail->plan_end_date)->addDay();
    
        $endDate = $start_date->copy()->addMonths($duration);
-       
-      LearnerDetail::create([
+       if($request->payment_mode==1 || $request->payment_mode==2){
+            $is_paid=1;
+        }else{
+            $is_paid=0; 
+        }
+        if($customer->plan_end_date < $currentDate && $endDate->format('Y-m-d') >$currentDate  && $is_paid==1){
+            $status=1;
+        }else{
+            $status=0;
+        }
+        
+        $learner_detail=LearnerDetail::create([
             'library_id'=>$customer->library_id,
            'learner_id' => $customer->id, 
            'plan_id' => $request->input('plan_id'),
@@ -1046,14 +1080,50 @@ class LearnerController extends Controller
            'join_date' => date('Y-m-d'),
            'hour' =>$learner_detail->hour,
            'seat_id' =>$learner_detail->seat_id,
-           'status'=>0
+           'status'=>$status,
+           'is_paid' => $is_paid,
        ]);
+       if($request->payment_mode==1 || $request->payment_mode==2){
+            LearnerTransaction::create([
+                'learner_id' =>$customer->id, 
+                'library_id' => Auth::user()->id,
+                'learner_deatail_id' => $learner_detail->id,
+                'total_amount' => $request->input('plan_price_id'),
+                'paid_amount' => $request->input('plan_price_id'),
+                'pending_amount' => 0,
+                'paid_date' => date('Y-m-d'),
+                'is_paid' => 1
+            ]);
+        }
+        $learnerStatus = LearnerDetail::where('learner_id', $customer->id)
+            ->where('is_paid', 1)
+            ->get();
+        
       
 
-       return response()->json([
-           'success' => true,
-           'message' => 'Learner updated successfully!',
-       ], 200);
+        foreach ($learnerStatus as $data) {
+            if ($data->plan_end_date < $currentDate) {
+                $data->status = 0;  // Expired
+            } elseif ($data->plan_end_date > $currentDate) {
+                $data->status = 1;  // Active
+            }
+            
+            $data->save();
+        }
+
+
+
+       if ($request->expectsJson()) {
+        // Return JSON response for AJAX request
+            return response()->json([
+                'success' => true,
+                'message' => 'Learner updated successfully!',
+            ], 200);
+        } else {
+            // Redirect back for non-AJAX request
+            return redirect()->back()->with('success', 'Learner updated successfully!');
+        }
+    
      
     }
     public function getSeatStatus(Request $request)
@@ -1151,8 +1221,20 @@ class LearnerController extends Controller
     public function makePayment(Request $request){
         $customerId = $request->id;
         $customer = $this->fetchCustomerData($customerId, $isRenew = false, $status=1, $detailStatus=1);
-        
-        return view('learner.payment',compact('customer'));
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $plans = $this->learnerService->getPlans();
+        $planTypes = $this->learnerService->getPlanTypes();
+        return view('learner.payment',compact('customer','diffExtendDay','plans','planTypes'));
     }
 
     public function paymentStore(Request $request)

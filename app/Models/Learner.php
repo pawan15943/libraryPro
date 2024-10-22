@@ -26,5 +26,10 @@ class Learner extends Authenticatable
                     ->where('library_id', auth()->user()->id); 
     }
 
+    public function learnerDetails()
+    {
+        return $this->hasMany(LearnerDetail::class);
+    }
+
     
 }

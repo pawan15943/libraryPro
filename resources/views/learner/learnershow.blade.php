@@ -91,7 +91,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         @if ($diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $diffInDays }} days</h5>
                         @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                            <h5 class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</h5>
+                            <h5 class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($diffExtendDay) }} days.</h5>
                             @elseif ($diffInDays < 0 && $diffExtendDay==0)
                                 <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
                                 @else
@@ -247,7 +247,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
 
                                                     <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                         @csrf
-                                                        <input type="hidden" name="id" value="{{ $transactionRenew->id ?? 'NA'}}">
+                                                        <input type="hidden" name="id" value="{{ $value->id ?? 'NA'}}">
                                                         <input type="hidden" name="type" value="learner">
 
                                                         <button type="submit">
@@ -286,35 +286,69 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($seat_history as $key => $value)
-
+                                  
+                                    @foreach ($seat_history as $learner)
                                     <tr>
-                                        <td>{{$value->name}}</td>
-                                        <td>+91-{{$value->library_mobile}}</td>
-                                        <td>{{$value->email}}</td>
-                                        <td>{{ $value->plan->name ?? 'NA' }} <br>
-
-                                            <small class="text-success">
-                                                {{$value->planType->name}}</small>
-                                        </td>
-                                        <td>{{$value->plan_start_date}}</td>
-                                        <td>{{$value->plan_end_date}}</td>
-                                        <td>
-                                            <ul class="actionalbls" style="width: 90px;">
-                                                <li><a href="javascript:;" data-toggle="modal"
-                                                        data-target="#bookingDetailsModal"
-                                                        title="View Transaction Details"><i
-                                                            class="fa-solid fa-eye"></i></a></li>
-                                                <li><a href="" title="Print Receipt"><i
-                                                            class="fa-solid fa-print"></i></a></li>
-                                                <li><a href="" title="Download Receipt"><i
-                                                            class="fa-solid fa-download"></i></a>
-                                                </li>
-                                            </ul>
-                                        </td>
+                                        <td>{{ $learner->name }}</td> <!-- Owner Name -->
+                                        <td>{{ $learner->mobile }}</td> <!-- Mobile -->
+                                        <td>{{ $learner->email }}</td> <!-- Email -->
+                                
+                                        <!-- Loop through learner details and display Plan, Start Date, End Date -->
+                                        @if ($learner->learnerDetails->isNotEmpty())
+                                            @php
+                                                $firstDetail = $learner->learnerDetails->first();
+                                            @endphp
+                                            <!-- Display the first learner detail in the same row -->
+                                            <td>{{ $firstDetail->plan->name ?? 'N/A' }}</td> <!-- Plan Name -->
+                                            <td>{{ $firstDetail->start_date ?? 'N/A' }}</td> <!-- Start Date -->
+                                            <td>{{ $firstDetail->end_date ?? 'N/A' }}</td> <!-- End Date -->
+                                            <td>
+                                                <!-- Action buttons for the first learner detail -->
+                                                <ul class="actionalbls" style="width: 90px;">
+                                                    <li><a href="javascript:;" data-toggle="modal" data-target="#bookingDetailsModal" title="View Transaction Details"><i class="fa-solid fa-eye"></i></a></li>
+                                                    <li>
+                                                        <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                            @csrf
+                                                            <input type="hidden" id="custId" name="id" value="{{ $firstDetail->id }}">
+                                                            <input type="hidden" name="type" value="learner">
+                                                            <button type="submit"><i class="fa fa-print"></i></button>
+                                                        </form>
+                                                    </li>
+                                                    {{-- <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li> --}}
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                
+                                        <!-- Display additional learner details in new rows (if any) -->
+                                        @foreach ($learner->learnerDetails->skip(1) as $detail)
+                                            <tr>
+                                                <td colspan="3"></td> <!-- Empty columns for owner name, mobile, and email -->
+                                                <td>{{ $detail->plan->name ?? 'N/A' }}</td> <!-- Plan Name -->
+                                                <td>{{ $detail->start_date ?? 'N/A' }}</td> <!-- Start Date -->
+                                                <td>{{ $detail->end_date ?? 'N/A' }}</td> <!-- End Date -->
+                                                <td>
+                                                    <ul class="actionalbls" style="width: 90px;">
+                                                        <li><a href="javascript:;" data-toggle="modal" data-target="#bookingDetailsModal" title="View Transaction Details"><i class="fa-solid fa-eye"></i></a></li>
+                                                        <li>
+                                                            <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                                @csrf
+                                                                <input type="hidden" id="custId" name="id" value="{{ $detail->id }}">
+                                                                <input type="hidden" name="type" value="learner">
+                                                                <button type="submit"><i class="fa fa-print"></i></button>
+                                                            </form>
+                                                        </li>
+                                                        <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <!-- If no learner details are available, show 'N/A' -->
+                                        <td colspan="4">No details available</td>
                                     </tr>
-
-                                    @endforeach
+                                    @endif
+                                @endforeach
+                                
                                 </tbody>
                             </table>
                         </div>

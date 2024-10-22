@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Subscription;
 
 class Controller extends BaseController
 {
@@ -34,6 +35,7 @@ class Controller extends BaseController
     public function generateReceipt(Request $request)
     {
         if($request->type=='library'){
+         
             $data = LibraryTransaction::where('id', $request->id)->first();
             $user = Library::where('id', $data->library_id)->where('status', 1)->first();
             $transactionDate=$data->transaction_date;
@@ -42,34 +44,45 @@ class Controller extends BaseController
             $month=$data->month;
             $start_date=$data->start_date;
             $end_date=$data->end_date;
+            $name=$user->library_owner;
+            $subscription=Subscription::where('id',$user->library_type)->value('name');
         }
         if($request->type=='learner'){
-            $data = LearnerTransaction::where('id', $request->id)->first();
+            $learnerDeatail = LearnerDetail::where('id', $request->id)
+            ->with(['plan', 'planType'])
+            ->first();
+           
+            $data = LearnerTransaction::where('learner_deatail_id', $learnerDeatail->id)->where('is_paid',1)->first();
+        
+            $user = Learner::where('id', $data->learner_id)->first();
           
-            $user = Learner::where('id', $data->learner_id)->where('status', 1)->first();
             $transactionDate=$data->paid_date;
             $paymentMode='Offline';
             $total_amount=$data->total_amount;
-            $learnerDeatail = LearnerDetail::where('id', $data->learner_deatail_id)
-            ->with(['plan', 'planType'])
-            ->first();
+           
         
             if ($learnerDeatail) {
                 $month = $learnerDeatail->plan ? $learnerDeatail->plan->plan_id : null; // Check if 
                 $start_date = $learnerDeatail->plan_start_date;
                 $end_date = $learnerDeatail->plan_end_date;
+                $subscription=$learnerDeatail->plantype ? $learnerDeatail->plantype->name : null;
             } else {
             
                 $month = null;
                 $start_date = null;
                 $end_date = null;
+                $subscription=null;
             }
-        
+            $name=$user->name;
+           
+           
         }
        
         
         $send_data = [
-            'data' => $user,
+            'subscription' =>$subscription ?? 'NA',
+            'name' => $name ?? 'NA',
+            'email' => $user->email ?? 'NA',
             'transactiondate' => $transactionDate ?? 'NA',
             'paid_amount' => $data->paid_amount ?? 'NA',
             'payment_mode' => $paymentMode ?? 'NA',
@@ -823,18 +836,24 @@ class Controller extends BaseController
         }
        
         // Using database transaction for atomic operations
-        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords) {
+        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords,&$successRecords) {
             // Update or create the operating hours
-            Hour::withoutGlobalScopes()->updateOrCreate(
+           $hourData= Hour::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id],
                 ['hour' => trim($data['Operating_hour']), 'extend_days' => trim($data['extend_day']) ?? null]
             );
+            if ($hourData) {
+                
+                $successRecords[] = array_merge($data, ['success' => 'Operating Hour added successfully']);
+            } else {
+                $invalidRecords[] = array_merge($data, ['error' => 'Failed to add/update Operating Hour']);
+            }
     
             // Define slot configurations
             $slots = $this->defineSlots($start_time, $end_time, $totalHours);
     
             // Check user permissions and handle slot updates
-            $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data);
+            $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data,$successRecords);
     
             // Define plans
             $plans = [
@@ -845,7 +864,7 @@ class Controller extends BaseController
             ];
     
             // Handle plans updates
-            $this->handlePlanUpdates($plans, $library_id);
+            $this->handlePlanUpdates($plans, $library_id,$invalidRecords,$successRecords);
     
             // Handle price updates
             $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']));
@@ -874,7 +893,7 @@ class Controller extends BaseController
     }
     
     // Function to handle plantype updates
-    private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data)
+    private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data,&$successRecords)
     {
 
        
@@ -904,8 +923,8 @@ class Controller extends BaseController
                 $hasPermission = false;
             }
             if (!$hasPermission) {
-               
-                continue; // Skip to the next slot
+                $invalidRecords[] = array_merge($data, ['error' => 'No permission for slot ' . $slot['type_id']]);
+                continue; 
             }
 
             $start_time_new = Carbon::parse($slot['start_time'])->format('H:i');
@@ -913,7 +932,7 @@ class Controller extends BaseController
             Log::info('Parsed time', ['start_time_new' => $start_time_new, 'end_time_new' => $end_time_new]);
            
             // Update or create plan type
-            PlanType::withoutGlobalScopes()->updateOrCreate(
+            $planType=PlanType::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id, 'day_type_id' => $slot['type_id']],
                 [
                     'name' => $slot['name'],
@@ -923,25 +942,63 @@ class Controller extends BaseController
                     'image'=>'public/img/booked.png',
                 ]
             );
-
+            if ($planType) {
+                $successRecords[] = array_merge($data, ['success' => 'Plan type updated or created']);
+            } else {
+                $invalidRecords[] = array_merge($data, ['error' => 'Failed to update or create plan type']);
+            }
+    
             Log::info('Plan type updated or created', ['slot' => $slot]);
+            
         }
-
+       
         Log::info('handleSlotUpdates finished successfully.');
     }
 
     
     // Function to handle plan updates
-    private function handlePlanUpdates($plans, $library_id)
+    private function handlePlanUpdates($plans, $library_id, &$invalidRecords, &$successRecords)
     {
-       
         foreach ($plans as $plan) {
-            Plan::withoutGlobalScopes()->updateOrCreate(
-                ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
-                ['name' => $plan['name']]
-            );
+            try {
+                // Update or create a plan based on library_id and plan_id
+                $updatedPlan = Plan::withoutGlobalScopes()->updateOrCreate(
+                    ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
+                    ['name' => $plan['name']]
+                );
+    
+                // If plan is successfully created or updated, add to success records
+                if ($updatedPlan) {
+                    $successRecords[] = [
+                        'library_id' => $library_id,
+                        'plan_id' => $plan['plan_id'],
+                        'status' => 'success',
+                        'message' => 'Plan updated or created successfully'
+                    ];
+                } else {
+                    // If something went wrong, track it as a failure
+                    $invalidRecords[] = [
+                        'library_id' => $library_id,
+                        'plan_id' => $plan['plan_id'],
+                        'status' => 'error',
+                        'message' => 'Failed to update or create plan'
+                    ];
+                }
+            } catch (\Exception $e) {
+                // Handle any exceptions and log the error
+                Log::error('Error updating or creating plan', ['plan' => $plan, 'error' => $e->getMessage()]);
+                
+                // Add to invalid records for later use
+                $invalidRecords[] = [
+                    'library_id' => $library_id,
+                    'plan_id' => $plan['plan_id'],
+                    'status' => 'error',
+                    'message' => 'Exception: ' . $e->getMessage()
+                ];
+            }
         }
     }
+    
     
     // Function to handle price updates
     private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price)

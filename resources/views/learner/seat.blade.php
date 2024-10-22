@@ -408,6 +408,15 @@ $hourlyCount = 0;
                                 <label for="">Plan Ends On <span>*</span></label>
                                 <input type="date" class="form-control" placeholder="Plan Ends On" id="update_plan_end_date" value="" readonly>
                             </div>
+                            <div class="col-lg-6">
+                                <label for="">Payment Mode <span>*</span></label>
+                                <select name="payment_mode" id="payment_mode" class="form-select">
+                                    <option value="">Select Payment Mode</option>
+                                    <option value="1">Online</option>
+                                    <option value="2">Offline</option>
+                                    <option value="3">Pay Later</option>
+                                </select>
+                            </div>
                             <div class="col-lg-12">
                                 <span class="text-info">Your upcoming plan starts after your current plan expires.</span>
                             </div>

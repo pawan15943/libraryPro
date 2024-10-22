@@ -117,7 +117,7 @@ class LoadMenus
             ->where('end_date','>', date('Y-m-d'))
             ->exists();
 
-
+            $learnerExtendText='Extend Days are Active Now & Remaining Days are';
             
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
@@ -129,6 +129,7 @@ class LoadMenus
             View::share('is_expire', $is_expire); 
             View::share('today_renew', $today_renew); 
             View::share('upcomingdiffInDays', $upcomingdiffInDays); 
+            View::share('learnerExtendText', $learnerExtendText); 
             
         }
         
@@ -187,6 +188,8 @@ class LoadMenus
 
         }
     }
+
+    
 
 
      

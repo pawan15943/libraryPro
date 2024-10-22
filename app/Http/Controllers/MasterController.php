@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Expense;
 use App\Models\Hour;
 use App\Models\Library;
+use App\Models\PermissionCategory;
 use App\Models\Plan;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
@@ -40,34 +41,46 @@ class MasterController extends Controller
         return view('master.subscriptionPermission', compact('subscriptions', 'permissions', 'users'));
     }
     
-    public function managePermissions($permissionId = null)
+    public function managePermissions($permissionId = null,$categoryId = null)
     {
         
         $subscriptions = Subscription::with('permissions')->get();
         $permissions =  Permission::get(); 
         $permission = $permissionId ? Permission::find($permissionId) : null;
-        return view('master.permissions', compact('subscriptions', 'permission','permissions'));
+        $category = $categoryId ? PermissionCategory::find($categoryId) : null;
+        $categories = PermissionCategory::all();
+        return view('master.permissions', compact('subscriptions', 'permission','permissions','categories','category'));
+    }
+    public function storeOrUpdateCategory(Request $request, $categoryId = null)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            
+        ]);
+
+        PermissionCategory::updateOrCreate(['id' => $categoryId], $data);
+
+        return redirect()->route('permissions')->with('success', 'Permission Category saved successfully.');
     }
 
-    
     public function storeOrUpdatePermission(Request $request, $permissionId = null)
     {
        
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-           
+           'permission_category_id' => 'required|exists:permission_categories,id',
         ]);
 
         
         if ($permissionId) {
           
             $permission = Permission::findOrFail($permissionId);
-            $permission->update($request->only('name', 'description', 'guard_name'));
+            $permission->update($request->only('name', 'description', 'guard_name', 'permission_category_id'));
             $message = 'Permission updated successfully.';
         } else {
            
-            $permission = Permission::create($request->only('name', 'description', 'guard_name'));
+            $permission = Permission::create($request->only('name', 'description', 'guard_name', 'permission_category_id'));
           
             $message = 'Permission added successfully.';
         }

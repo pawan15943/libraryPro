@@ -52,30 +52,7 @@ class LoadMenus
                       ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
 
-            $total_seats=Seat::count();
-            $availble_seats=Seat::where('total_hours','==',0)->count(); 
-          
-            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
-            $active_seat_count =  Learner::where('library_id',Auth::user()->id)->where('status', 1) 
-            ->distinct() 
-            ->count('seat_no');
-            $expired_seat=Learner::where('library_id',Auth::user()->id)->where('status',0)->count();
-            $fulldayPlantype = PlanType::where('day_type_id', 1)
-            ->withoutTrashed() 
-            ->first();          
-        
-            if (!$fulldayPlantype) {
-                $fulldayPlantype = PlanType::where('day_type_id', 1)
-                    ->withTrashed()  
-                    ->first();       
-            }
-        
-      
-             $fulldayPlantypeId =  $fulldayPlantype->id ;
-        
-            $fullday_count= LearnerDetail::where('status', 1) 
-            ->where('plan_type_id',$fulldayPlantypeId)
-            ->count();
+           
             
         } elseif (Auth::guard('learner')->check()) {
             $user = Auth::guard('learner')->user();
@@ -147,7 +124,30 @@ class LoadMenus
 
             $learnerExtendText='Extend Days are Active Now & Remaining Days are';
 
-
+            $total_seats=Seat::count();
+            $availble_seats=Seat::where('total_hours','==',0)->count(); 
+          
+            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
+            $active_seat_count =  Learner::where('library_id',Auth::user()->id)->where('status', 1) 
+            ->distinct() 
+            ->count('seat_no');
+            $expired_seat=Learner::where('library_id',Auth::user()->id)->where('status',0)->count();
+            $fulldayPlantype = PlanType::where('day_type_id', 1)
+            ->withoutTrashed() 
+            ->first();          
+        
+            if (!$fulldayPlantype) {
+                $fulldayPlantype = PlanType::where('day_type_id', 1)
+                    ->withTrashed()  
+                    ->first();       
+            }
+        
+      
+             $fulldayPlantypeId =  $fulldayPlantype->id ?? 0;
+        
+            $fullday_count= LearnerDetail::where('status', 1) 
+            ->where('plan_type_id',$fulldayPlantypeId)
+            ->count();
             
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);

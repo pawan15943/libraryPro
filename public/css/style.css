@@ -3792,6 +3792,7 @@ ul.revenue-box li .d-flex {
     color: #fff;
     border-radius: 1rem;
 }
+
 .seat-status p {
     margin: 0;
     font-size: .8rem;
@@ -3805,10 +3806,19 @@ ul.revenue-box li .d-flex {
     text-align: right;
     display: block;
 }
-.d-flex.inner{
+
+.d-flex.inner {
     gap: .8rem !important;
 }
-.d-flex.inner li+li{
+
+.d-flex.inner li+li {
     margin-top: 0;
     padding-top: 0px;
+}
+
+.seat-statistics h4 {
+    text-align: center;
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 600;
 }

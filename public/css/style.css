@@ -7,6 +7,19 @@
     box-sizing: border-box;
 }
 
+*.unselectable {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+
+    /*
+      Introduced in Internet Explorer 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -155,6 +168,8 @@ body {
     --bg3: #a2ed22;
     --bg4: #a2ed22;
     --bg5: #a2ed22;
+
+
 
     --bs-1: 1px 0px 5px #00000035;
     --bs-2: 1px 0px 5px #00000025;
@@ -1843,6 +1858,22 @@ ul.revenue-box li .d-flex {
     border-radius: 1rem;
     position: relative;
 }
+
+.booking-count {
+    perspective: 1000px; /* Enables a 3D perspective */
+    transition: transform 0.5s; /* Smooth transition */
+}
+
+.booking-count:hover {
+    transform: rotateY(10deg) rotateX(10deg); /* 3D rotation on hover */
+    box-shadow: 1px 0 5px #00000021;
+}
+
+.booking-count h6,
+.booking-count h4 {
+    margin: 0; /* Remove default margins for better layout */
+}
+
 
 .booking-count img {
     width: 40px;
@@ -3680,6 +3711,10 @@ ul.revenue-box {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
 }
 
 ul.revenue-box li {
@@ -3695,6 +3730,7 @@ ul.revenue-box li .d-flex {
     justify-content: space-between;
     align-items: center;
 }
+
 
 .mt-10 {
     margin-top: 5rem;
@@ -3729,7 +3765,7 @@ ul.revenue-box li .d-flex {
 }
 
 .booking-count .d-flex h4 {
-    color: #14a9bc !important;
+    color: #fff !important;
 }
 
 .seat-statistics {
@@ -3821,4 +3857,73 @@ ul.revenue-box li .d-flex {
     display: block;
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.bg-1 {
+    background: #D14343 !important;
+}
+
+.bg-2 {
+    background: #BD0909 !important;
+}
+
+.bg-3 {
+    background: #151F38 !important;
+}
+
+.bg-4 {
+    background: #1D7BAD !important;
+}
+
+.dashboard-Header {
+    position: relative;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    perspective: 1000px; /* Adds depth for a 3D effect */
+}
+
+.dashboard-Header img {
+    display: block;
+    width: 100%;
+    height: auto;
+    animation: zoomAndSlide 20s ease-in-out infinite;
+}
+
+@keyframes zoomAndSlide {
+    0% {
+        transform: scale(1) translateX(0); /* Starting point */
+    }
+    25% {
+        transform: scale(1.05) translateX(10px); /* Slight zoom and right movement */
+    }
+    50% {
+        transform: scale(1.1) translateX(20px); /* Maximum zoom and right movement */
+    }
+    75% {
+        transform: scale(1.05) translateX(-10px); /* Slight zoom and left movement */
+    }
+    100% {
+        transform: scale(1) translateX(0); /* Back to the original state */
+    }
+}
+
+
+.dashboard-Header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, #151f38, transparent);
+}
+
+.box {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.box.visible {
+    opacity: 1;
+    transform: translateY(0);
 }

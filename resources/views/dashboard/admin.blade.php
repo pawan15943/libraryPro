@@ -8,11 +8,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- New Design Dahsbard Library -->
+
 <div class="dashboard">
-    <div class="row align-items-center">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="dashboard-Header">
+                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+
+    <div class="row align-items-center mt-4">
         <div class="col-lg-6">
             <h1>Welcome to <span>LibraryPro</span>
-                Where <span>Great Minds Gather!</span></h1>
+                Where <span class="typing-text">Great Minds Gather!</span></h1>
         </div>
         <div class="col-lg-6">
             <div class="active-plan-box">
@@ -62,24 +71,44 @@
     <h4 class="my-4">Monthly Revenues</h4>
     <div class="row">
         <div class="col-lg-12">
-            <ul class="revenue-box">
+            <ul class="revenue-box scroll-x">
                 <li>
                     <div class="d-flex">
-                        <h4>April Month Revenue</h4>
-                        <span><i class="fa fa-eye"></i></span>
+                        <h4>April 2024 Revenue</h4>
+                        <span class="toggleButton" data-box="1"><i class="fa fa-eye-slash"></i></span>
                     </div>
                     <div class="d-flex mt-10">
                         <div class="value">
                             <small>Total Revenue</small>
-                            <h4>12020</h4>
+                            <h4 class="totalRevenue" data-box="1">12020</h4>
                         </div>
                         <div class="value">
-                            <small>Total Expanse</small>
-                            <h4>12020</h4>
+                            <small>Total Expense</small>
+                            <h4 class="totalExpense" data-box="1">12020</h4>
                         </div>
                         <div class="value">
                             <small>Net Profit</small>
-                            <h4>12020</h4>
+                            <h4 class="netProfit" data-box="1">12020</h4>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="d-flex">
+                        <h4>May 2024 Revenue</h4>
+                        <span class="toggleButton" data-box="2"><i class="fa fa-eye-slash"></i></span>
+                    </div>
+                    <div class="d-flex mt-10">
+                        <div class="value">
+                            <small>Total Revenue</small>
+                            <h4 class="totalRevenue" data-box="2">15000</h4>
+                        </div>
+                        <div class="value">
+                            <small>Total Expense</small>
+                            <h4 class="totalExpense" data-box="2">9000</h4>
+                        </div>
+                        <div class="value">
+                            <small>Net Profit</small>
+                            <h4 class="netProfit" data-box="2">6000</h4>
                         </div>
                     </div>
                 </li>
@@ -91,41 +120,41 @@
     <h4 class="my-4">Library Other Highlights</h4>
     <div class="row g-4">
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Total Bookings</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Offline Paid</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -135,77 +164,77 @@
                 <h6>Expired in 5 Days</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-2">
                 <h6>Expired Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Extended Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Swap Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Upgrade Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Reactive Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>WhatsApp Sended</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Email Sended</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -215,91 +244,91 @@
     <h4 class="my-4">Plan Wise Count</h4>
     <div class="row g-4">
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Full Day</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>First Half</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Second Half</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Hourly Slot 1</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Hourly Slot 2</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Hourly Slot 3</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-4">
                 <h6>Hourly Slot 4</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Total Booked Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
-            <div class="booking-count bg-1">
+            <div class="booking-count bg-3">
                 <h6>Available Seats</h6>
                 <div class="d-flex">
                     <h4>80</h4>
-                    <span><i class="fa fa-circle-check"></i></span>
+
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -520,7 +549,7 @@
 </div>
 <!-- End -->
 
-<div class="row g-4">
+<div class="row g-4 d-none">
     <div class="col-lg-6">
         <div class="row g-4">
             <div class="col-lg-6">
@@ -623,7 +652,7 @@
         </div>
     </div>
 </div>
-<div class="row g-4 mt-2">
+<div class="row g-4 mt-2 d-none">
     <div class="col-lg-3">
         <div class="dashibox">
             <span>Today Bookings</span>
@@ -662,7 +691,7 @@
     </div>
 
 </div>
-<div class="row">
+<div class="row d-none">
     <div class="col-lg-12">
         <h4 class="py-4">Plan Statistics (Show Plan wise) Graph</h4>
     </div>
@@ -678,5 +707,55 @@
             $(".contents").mCustomScrollbar();
         });
     })(jQuery);
+
+    // (function($) {
+    //     $(window).on("load", function() {
+    //         $(".scroll-x").mCustomScrollbar({
+    //             axis: "x", // Enable horizontal scrolling
+    //             theme: "dark", // Optional theme for the scrollbar
+    //             advanced: {
+    //                 autoExpandHorizontalScroll: true // Automatically expand scrollbar for large content
+    //             },
+    //             scrollInertia: 200 // Optional: Set scroll speed
+    //         });
+    //     });
+    // })(jQuery);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initially hide the values (show as ****)
+        document.querySelectorAll('.totalRevenue, .totalExpense, .netProfit').forEach(function(item) {
+            item.dataset.originalValue = item.innerText; // Store the original value in a data attribute
+            item.innerText = '****'; // Hide the value initially
+        });
+
+        // Toggle button logic
+        document.querySelectorAll('.toggleButton').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const boxId = this.getAttribute('data-box');
+                const revenue = document.querySelector(`.totalRevenue[data-box="${boxId}"]`);
+                const expense = document.querySelector(`.totalExpense[data-box="${boxId}"]`);
+                const profit = document.querySelector(`.netProfit[data-box="${boxId}"]`);
+                const icon = this.querySelector('i');
+
+                // Check current state and toggle visibility
+                if (revenue.innerText === '****') {
+                    // Show original values
+                    revenue.innerText = revenue.dataset.originalValue;
+                    expense.innerText = expense.dataset.originalValue;
+                    profit.innerText = profit.dataset.originalValue;
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                } else {
+                    // Hide values
+                    revenue.innerText = '****';
+                    expense.innerText = '****';
+                    profit.innerText = '****';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                }
+            });
+        });
+    });
 </script>
 @endsection

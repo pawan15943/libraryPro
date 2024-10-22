@@ -46,6 +46,11 @@
 
 @if($iscomp)
 <div class="row g-4 mb-4">
+    <div class="col-lg-12">
+        <span class="d-block text-denager text-danger">This is the master console of your library. Everything in your library will function based on the information you enter here, so make sure to add it carefully and accurately.</span>
+        <span class="d-block mt-2 text-danger">यह आपकी लाइब्रेरी का मास्टर कंसोल है। आपकी लाइब्रेरी में सब कुछ इस जानकारी के आधार पर काम करेगा, इसलिए इसे ध्यान से और सही तरीके से जोड़ें।</span>
+    </div>
+
     <!-- Add Operating Hours -->
     <div class="col-lg-4">
         <div class="master-box">
@@ -54,8 +59,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Library Operating Hours</h3>
+                            <p class="info-details">
+                                <span class="d-block">This option allows you to set your library's working hours. Once you've set the library hours, you won’t be able to change them, so make sure they are correct before saving.</span>
+                                <span class="d-block mt-2">इस विकल्प का उपयोग करके आप अपनी लाइब्रेरी के कामकाजी घंटे सेट कर सकते हैं। एक बार आपने लाइब्रेरी के घंटे सेट कर दिए, तो आप उन्हें बदल नहीं पाएंगे, इसलिए इसे सही से सेव करने से पहले ध्यान दें।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -127,8 +135,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Library Seats</h3>
+                            <p class="info-details">
+                                <span class="d-block">This option lets you add seats to your library. You can add seats for the first time using this feature, so ensure you allocate the correct number of seats.</span>
+                                <span class="d-block mt-2">इस विकल्प का उपयोग करके आप अपनी लाइब्रेरी में सीटें जोड़ सकते हैं। पहली बार आप इस विकल्प से सीटें जोड़ सकते हैं, इसलिए सही संख्या में सीटें जोड़ने का ध्यान रखें।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -187,12 +198,15 @@
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
-                <h4>Add Extend Days
+                <h4>Extend Days for Expired Seats
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title"> Extend Days for Expired Seats</h3>
+                            <p class="info-details">
+                                <span class="d-block">Extend days are extra days that become active after a seat expires. If a seat expires, these days will be automatically added to your plan as a grace period.</span>
+                                <span class="d-block mt-2">एक्सटेंड डेज वे अतिरिक्त दिन होते हैं जो सीट एक्सपायर होने के बाद एक्टिव हो जाते हैं। यदि सीट की अवधि समाप्त हो जाती है, तो ये दिन आपके प्लान में स्वचालित रूप से जोड़े जाते हैं।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -259,8 +273,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Adding Plans to Your Library</h3>
+                            <p class="info-details">
+                                <span class="d-block">This option allows you to add different plans to your library, like Monthly, Quarterly, Half-Yearly, Nine-Month, and Yearly plans.</span>
+                                <span class="d-block mt-2">इस विकल्प का उपयोग करके आप अपनी लाइब्रेरी में विभिन्न प्लान्स जोड़ सकते हैं, जैसे कि मंथली, 3-मंथली, 6-मंथली, 9-मंथली और ईयरली प्लान।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -302,7 +319,7 @@
                     </form>
 
                 </div>
-                <ul id="plan-list">
+                <ul id="plan-list" class="contents">
                     @foreach($plans as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -335,8 +352,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Plan Type</h3>
+                            <p class="info-details">
+                                <span class="d-block">This feature lets you add different plan types, such as Full Day, First Half, Second Half, or specific hourly slots (Slot 1, Slot 2, Slot 3, Slot 4).</span>
+                                <span class="d-block mt-2">इस फीचर का उपयोग करके आप अपने प्लान में विभिन्न प्रकार जोड़ सकते हैं, जैसे कि फुल डे, फर्स्ट हाफ, सेकंड हाफ, या विशिष्ट घंटों के स्लॉट (स्लॉट 1, स्लॉट 2, स्लॉट 3, स्लॉट 4)।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -415,7 +435,7 @@
                         </div>
                     </form>
                 </div>
-                <ul id="plantype-list">
+                <ul id="plantype-list" class="contents">
                     @foreach($plantype as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -448,8 +468,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Plan price</h3>
+                            <p class="info-details">
+                                <span class="d-block">This option allows you to set the price for each plan type. Ensure that the pricing is competitive and matches the services offered.</span>
+                                <span class="d-block mt-2">इस विकल्प का उपयोग करके आप हर प्लान टाइप के लिए कीमत सेट कर सकते हैं। सुनिश्चित करें कि कीमत प्रतिस्पर्धी हो और प्रदान की जाने वाली सेवाओं के अनुरूप हो।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -513,13 +536,14 @@
                         </div>
                     </form>
                 </div>
-                <ul id="planPrice-list">
+                <ul id="planPrice-list" class="contents">
                     @foreach($planprice as $key => $value)
                     <li>
                         <div class="d-flex">
+                            <h4 style="flex:2;">{{ $value->plan->name ?? 'N/A' }}</h4>
+                            <h4 style="flex:2;">{{ $value->planType->name ?? 'N/A' }}</h4>
                             <h4>{{$value->price}}</h4>
-                            <h4>{{ $value->plan->name ?? 'N/A' }}</h4>
-                            <h4>{{ $value->planType->name ?? 'N/A' }}</h4>
+
                             <ul>
                                 <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="PlanPrice" title="Active/Deactive">
                                         @if($value->deleted_at)
@@ -548,8 +572,11 @@
                     <div class="info-container">
                         <i class="fa-solid fa-circle-info info-icon"></i>
                         <div class="info-card">
-                            <h3 class="info-title">Upgrade Seat</h3>
-                            <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                            <h3 class="info-title">Add Expense</h3>
+                            <p class="info-details">
+                                <span class="d-block">This option enables you to add different expense types when creating a report, making it easier to track and manage your library’s finances.</span>
+                                <span class="d-block mt-2">इस विकल्प का उपयोग करके आप रिपोर्ट बनाते समय विभिन्न खर्च प्रकार जोड़ सकते हैं, जिससे आपकी लाइब्रेरी के वित्त को ट्रैक और प्रबंधित करना आसान हो जाएगा।</span>
+                            </p>
                         </div>
                     </div>
                 </h4>
@@ -581,7 +608,7 @@
                         </div>
                     </form>
                 </div>
-                <ul>
+                <ul class="contents">
                     @foreach($expenses as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -607,16 +634,16 @@
         </div>
     </div>
 
-</div> 
+</div>
 @else
 
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
         <div class="import-data">
-            <form action="{{ route('library.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm">               
-                 @csrf
-                <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}"> 
-                <input type="hidden" name="library_import" value="library_master"> 
+            <form action="{{ route('library.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm">
+                @csrf
+                <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}">
+                <input type="hidden" name="library_import" value="library_master">
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Select File</label>
@@ -626,17 +653,17 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
-                      
+
                         <a href="{{ asset('public/sample/master.csv') }}"><small>Download Sample library master CSV File</small></a>
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
-                        
+
                     </div>
                 </div>
 
             </form>
-           
+
 
         </div>
     </div>
@@ -650,49 +677,49 @@
 {{-- Display Invalid Records --}}
 <div id="invalid-records-section">
     @if(session('invalidRecords') && count(session('invalidRecords')) > 0)
-        <p class="text-danger">Some records could not be imported:</p>
-        <div  class="table table-responsive">
-            <table class="table text-center data-table">
-                <thead>
-                    <tr>
-                        <th>Operating Hour</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Seat</th>
-                        <th>Full day price</th>
-                        <th>Error Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (session('invalidRecords') as $record)
-                    <tr>
-                        <td>{{ $record['Operating_hour'] ?? 'N/A' }}</td>
-                        <td>{{ $record['start_time'] ?? 'N/A' }}</td>
-                        <td>{{ $record['end_time'] ?? 'N/A' }}</td>
-                        <td>{{ $record['total_seat'] ?? 'N/A' }}</td>
-                        <td>{{ $record['fullday_price'] ?? 'N/A' }}</td>
-                        <td class="text-danger">{{ $record['error'] ?? 'No error provided' }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <button class="btn btn-danger btn-sm mt-2" id="clearInvalidRecordsButton">Clear Invalid Records</button>
-        </div>
-    
+    <p class="text-danger">Some records could not be imported:</p>
+    <div class="table table-responsive">
+        <table class="table text-center data-table">
+            <thead>
+                <tr>
+                    <th>Operating Hour</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Seat</th>
+                    <th>Full day price</th>
+                    <th>Error Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (session('invalidRecords') as $record)
+                <tr>
+                    <td>{{ $record['Operating_hour'] ?? 'N/A' }}</td>
+                    <td>{{ $record['start_time'] ?? 'N/A' }}</td>
+                    <td>{{ $record['end_time'] ?? 'N/A' }}</td>
+                    <td>{{ $record['total_seat'] ?? 'N/A' }}</td>
+                    <td>{{ $record['fullday_price'] ?? 'N/A' }}</td>
+                    <td class="text-danger">{{ $record['error'] ?? 'No error provided' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <button class="btn btn-danger btn-sm mt-2" id="clearInvalidRecordsButton">Clear Invalid Records</button>
+    </div>
 
 
-        {{-- Trigger CSV Download Automatically --}}
-        @if(session('autoExportCsv'))
-            <script type="text/javascript">
-                let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
-                    window.onload = function() {
-                        setTimeout(function() {
-                            window.location.href = exportrecordurl; // Trigger the export CSV route
-                        }, 1000); // Delay to ensure the page fully loads before triggering
-                    };
-            </script>
 
-        @endif
+    {{-- Trigger CSV Download Automatically --}}
+    @if(session('autoExportCsv'))
+    <script type="text/javascript">
+        let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = exportrecordurl; // Trigger the export CSV route
+            }, 1000); // Delay to ensure the page fully loads before triggering
+        };
+    </script>
+
+    @endif
     @endif
 
     <script>
@@ -702,22 +729,22 @@
             let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
             // Send AJAX request to clear session
             fetch(clearSessionRoute, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    console.log('Session cleared successfully.');
-                } else {
-                    console.log('Failed to clear session.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        console.log('Session cleared successfully.');
+                    } else {
+                        console.log('Failed to clear session.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
 </div>
@@ -734,7 +761,17 @@
     </div>
 </div>
 @endif
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".contents").mCustomScrollbar();
+        });
+    })(jQuery);
+</script>
 
 <!-- /.content -->
 @include('master.script')

@@ -16,12 +16,16 @@ input[type="number"]::-webkit-inner-spin-button {
 .typing-cursor {
     display: inline-block;
     font-weight: bold;
-    color: black; /* Set the color of the cursor */
-    animation: blink 0.7s step-end infinite; /* Blinking animation */
+    color: black;
+    /* Set the color of the cursor */
+    animation: blink 0.7s step-end infinite;
+    /* Blinking animation */
 }
 
 @keyframes blink {
-    50% { opacity: 0; }
+    50% {
+        opacity: 0;
+    }
 }
 
 /* For Firefox */
@@ -657,7 +661,17 @@ ul.plan-features {
     padding: 0;
     margin-top: 1rem;
     max-height: 364px;
-    overflow: hidden;
+    overflow: auto;
+}
+
+.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+    background-color: #3498db;
+    /* Change this color to your desired scrollbar color */
+}
+
+.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
+    background-color: #2980b9;
+    /* Change this color to your desired hover color */
 }
 
 span.showmore {
@@ -1594,4 +1608,94 @@ button#clearInvalidRecordsButton {
     margin: 0;
     height: auto;
     height: 35px !important;
+}
+
+img.extedned,
+.extedned {
+    animation: blink 1s infinite;
+    /* Blinking effect */
+    filter: drop-shadow(0 0 10px red);
+    /* Red drop shadow */
+    color: red !important;
+}
+
+
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+
+.master-form h4 {
+    font-size: .8rem;
+    flex: 1;
+    font-weight: 500;
+}
+
+span.d-block.mt-2 {
+    font-weight: 600;
+    font-size: 0.7rem ! IMPORTANT;
+    line-height: 20px;
+    color: #000;
+}
+
+.records {
+    font-size: 1.1rem;
+    background-color: #fff; /* Light background for contrast */
+    padding: 1.5rem;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.records b {
+    font-size: 1.2rem;
+    color: #333;
+    margin-right: 10px;
+}
+
+.records span {
+    font-weight: 600; /* Make the text slightly bolder */
+    padding: 4px 8px;
+    border-radius: 12px; /* Rounded corners for the pill effect */
+}
+
+.records .text-success {
+    background-color: #e6f4ea; /* Light green background for success statuses */
+    color: #28a745; /* Dark green text for better readability */
+}
+
+.records .text-danger {
+    background-color: #fdecea; /* Light red background for danger statuses */
+    color: #dc3545; /* Dark red text for better readability */
+}
+
+.records span:hover {
+    background-color: #d1e7dd; /* Slight color change on hover for interaction */
+    cursor: pointer;
+}
+
+
+.master-box ul.contents li:not(.master-box ul.contents li li) {
+    background: #fff;
+    padding: .5rem.5rem;
+    border-radius: .5rem;
+}
+
+.master-box ul.contents li+li:not(.master-box ul.contents li li) {
+    margin-top: .5rem !important;
+}
+
+.master-box ul.contents {
+    height: 150px;
+    overflow: auto;
 }

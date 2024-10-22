@@ -10,7 +10,7 @@ $today = Carbon::today();
 
 <!-- Content Header (Page header) -->
 <!-- Main row -->
-<div class="row">
+<div class="row mb-4">
     <!-- Main Info -->
     <div class="col-lg-12">
         <div class="table-responsive">

@@ -23,10 +23,10 @@
             <div class="top">
                 <img src="" alt="">
             </div>
-            
-        
-            
-        
+
+
+
+
             <div class="middle">
                 <h5>Welcome Back, </h5>
                 <h2>Library Admin!</h2>
@@ -36,9 +36,9 @@
                     {{ session('success') }}
                 </div>
                 @elseif($errors->has('error'))
-                    <div class="alert alert-danger mb-0 mt-1">
-                        {{ $errors->first('error') }}
-                    </div>
+                <div class="alert alert-danger mb-0 mt-1">
+                    {{ $errors->first('error') }}
+                </div>
                 @endif
                 <form method="POST" action="{{ route('login.store') }}" class="validateForm">
                     @csrf
@@ -64,13 +64,14 @@
                         </div>
 
                         <!-- Remember Me checkbox -->
-                        <div class="col-lg-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="remember">
-                                    Remember Me
-                                </label>
-                            </div>
+                        <div class="col-lg-12 ">
+                            <div class="form-group">
+                                
+                                <input class="form-check-input no-validate" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                <label class="form-label">Remember Me</label>
+                                <div class="error-msg"></div>
+                            </div> 
+                            
                         </div>
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-primary button">Let’s get started! </button>

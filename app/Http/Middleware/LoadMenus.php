@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Models\Hour;
+use App\Models\Learner;
+use App\Models\LearnerDetail;
 use App\Models\Library;
 use App\Models\LibraryTransaction;
 use App\Models\Menu;
@@ -12,7 +14,7 @@ use App\Models\PlanType;
 use App\Models\Seat;
 use Closure;
 use Illuminate\Support\Facades\View;
-
+use DB;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
@@ -49,6 +51,32 @@ class LoadMenus
                 $query->where('guard', 'library')
                       ->orWhereNull('guard'); 
             })->with('children')->orderBy('order')->get();
+
+            $total_seats=Seat::count();
+            $availble_seats=Seat::where('total_hours','==',0)->count(); 
+          
+            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
+            $active_seat_count =  Learner::where('library_id',Auth::user()->id)->where('status', 1) 
+            ->distinct() 
+            ->count('seat_no');
+            $expired_seat=Learner::where('library_id',Auth::user()->id)->where('status',0)->count();
+            $fulldayPlantype = PlanType::where('day_type_id', 1)
+            ->withoutTrashed() 
+            ->first();          
+        
+            if (!$fulldayPlantype) {
+                $fulldayPlantype = PlanType::where('day_type_id', 1)
+                    ->withTrashed()  
+                    ->first();       
+            }
+        
+      
+             $fulldayPlantypeId =  $fulldayPlantype->id ;
+        
+            $fullday_count= LearnerDetail::where('status', 1) 
+            ->where('plan_type_id',$fulldayPlantypeId)
+            ->count();
+            
         } elseif (Auth::guard('learner')->check()) {
             $user = Auth::guard('learner')->user();
             $menus = Menu::where('status',1)->where(function ($query) {
@@ -118,6 +146,8 @@ class LoadMenus
             ->exists();
 
             $learnerExtendText='Extend Days are Active Now & Remaining Days are';
+
+
             
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
@@ -130,6 +160,10 @@ class LoadMenus
             View::share('today_renew', $today_renew); 
             View::share('upcomingdiffInDays', $upcomingdiffInDays); 
             View::share('learnerExtendText', $learnerExtendText); 
+            View::share('total_seats', $total_seats); 
+            View::share('active_seat_count', $active_seat_count); 
+            View::share('fullday_count', $fullday_count); 
+            View::share('expired_seat', $expired_seat); 
             
         }
         

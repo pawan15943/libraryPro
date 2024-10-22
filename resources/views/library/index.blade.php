@@ -146,9 +146,10 @@
                                 <!-- Close Seat -->
                                 <li><a href="#;" class="link-close-plan" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Close Seat"><i class="fas fa-times"></i></a></li>
 
-                                <!-- Deletr Seat -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-trash"></i></a></li>
-
+                                <!-- Deletr learners -->
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Lerners" class="delete-learners" data-original-title="Delete Lerners"><i class="fas fa-trash"></i></a></li>
+                                <!-- Delete masters -->
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete masters" class="delete-masters" data-original-title="Delete masters"><i class="fas fa-trash"></i></a></li>
                                 <!-- Make Payment -->
                                 <li><a href="{{ route('library.payment', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Make Payment"> <i class="fas fa-credit-card"></i> </a></li>
 
@@ -166,6 +167,6 @@
         </div>
     </div>
 </div>
-
+@include('library.script')
 
 @endsection

@@ -564,8 +564,21 @@ class LearnerController extends Controller
     //learner Edit and Upgrade
     public function userUpdate(Request $request, $id = null)
     {
-        
+        $learner = Learner::find($id);
+
+        // Call validateCustomer method to apply default validation
         $validator = $this->validateCustomer($request);
+    
+        // Update the validation rule for the 'email' field
+        $validator = Validator::make($request->all(), array_merge($validator->getRules(), [
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('learners')->where(function ($query) use ($request) {
+                    return $query->where('library_id', Auth::user()->id);
+                })->ignore($learner->id), // Ignore current learner's email
+            ],
+        ]));
 
         if ($validator->fails()) {
             if ($request->expectsJson()) {

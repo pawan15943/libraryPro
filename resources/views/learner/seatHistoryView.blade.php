@@ -30,33 +30,36 @@ $today = Carbon::today();
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($learners as $key => $value)
-                    @php
-                    $today = Carbon::today();
-                    $endDate = Carbon::parse($value->plan_end_date);
-                    $diffInDays = $today->diffInDays($endDate, false);
-                    @endphp
-                    <tr>
-                        <td>{{ $seat->seat_no }}</td>
-                        <td><span class="uppercase truncate m-auto text-center d-block">{{$value->name}}</span></td>
-                        <td> +91-{{$value->mobile}}</td>
-                        <td> {{$value->email }}</td>
-                        <td> {{$value->plan_name}}</td>
-                        <td> {{$value->plan_type_name}}</td>
-                        <td> {{$value->plan_start_date}}</td>
-                        <td> {{$value->plan_end_date}}<br>
-                            @if ($diffInDays > 0)
-                            <small class="text-success fs-10">Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays < 0)
-                                <small class="text-danger fs-10">Expired {{ abs($diffInDays) }} days ago</small>
-                                @else
-                                <small class="text-warning fs-10">Expires today</small>
-                                @endif
-                        </td>
-                    </tr>
+                    @foreach($learners as $learner)
+                        @foreach($learner->learnerDetails as $detail)
+                            @php
+                                $today = Carbon::today();
+                                $endDate = Carbon::parse($detail->plan_end_date);
+                                $diffInDays = $today->diffInDays($endDate, false);
+                            @endphp
+                            <tr>
+                                <td>{{ $seat->seat_no }}</td>
+                                <td><span class="uppercase truncate m-auto text-center d-block">{{ $learner->name }}</span></td>
+                                <td> +91-{{ $learner->mobile }}</td>
+                                <td> {{ $learner->email }}</td>
+                                <td> {{ $detail->plan->name ?? 'N/A' }}</td>
+                                <td> {{ $detail->planType->name ?? 'N/A' }}</td>
+                                <td> {{ $detail->plan_start_date }}</td>
+                                <td> {{ $detail->plan_end_date }}<br>
+                                    @if ($diffInDays > 0)
+                                        <small class="text-success fs-10">Expires in {{ $diffInDays }} days</small>
+                                    @elseif ($diffInDays < 0)
+                                        <small class="text-danger fs-10">Expired {{ abs($diffInDays) }} days ago</small>
+                                    @else
+                                        <small class="text-warning fs-10">Expires today</small>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
+            
             
         </div>
         @endif

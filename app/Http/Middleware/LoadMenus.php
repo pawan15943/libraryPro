@@ -132,22 +132,46 @@ class LoadMenus
             ->distinct() 
             ->count('seat_no');
             $expired_seat=Learner::where('library_id',Auth::user()->id)->where('status',0)->count();
-            $fulldayPlantype = PlanType::where('day_type_id', 1)
-            ->withoutTrashed() 
-            ->first();          
-        
-            if (!$fulldayPlantype) {
-                $fulldayPlantype = PlanType::where('day_type_id', 1)
-                    ->withTrashed()  
-                    ->first();       
-            }
-        
-      
-             $fulldayPlantypeId =  $fulldayPlantype->id ?? 0;
-        
-            $fullday_count= LearnerDetail::where('status', 1) 
-            ->where('plan_type_id',$fulldayPlantypeId)
-            ->count();
+            // Initialize an array to hold the counts for each plan type
+                $counts = [];
+
+                // Define the mapping of day_type_id to their respective count variable names
+                $dayTypeIds = [
+                    1 => 'fullDayCount',
+                    2 => 'firstHalfCount',
+                    3 => 'secondHalfCount',
+                    4 => 'hourly1Count',
+                    5 => 'hourly2Count',
+                    6 => 'hourly3Count',
+                    7 => 'hourly4Count',
+                ];
+
+                foreach ($dayTypeIds as $dayTypeId => $countName) {
+                    // Fetch PlanType, first checking for non-trashed, then trashed if not found
+                    $planType = PlanType::where('day_type_id', $dayTypeId)
+                        ->withoutTrashed()
+                        ->first();
+
+                    if (!$planType) {
+                        $planType = PlanType::where('day_type_id', $dayTypeId)
+                            ->withTrashed()
+                            ->first();
+                    }
+                    $planTypeId = $planType->id ?? 0;
+                    $counts[$countName] = LearnerDetail::where('status', 1)
+                        ->where('plan_type_id', $planTypeId)
+                        ->count();
+                }
+
+                // Now you can access the counts for each type
+                $fullday_count = $counts['fullDayCount'];
+                $firstHalfCount = $counts['firstHalfCount'];
+                $secondHalfCount = $counts['secondHalfCount'];
+                $hourly1Count = $counts['hourly1Count'];
+                $hourly2Count = $counts['hourly2Count'];
+                $hourly3Count = $counts['hourly3Count'];
+                $hourly4Count = $counts['hourly4Count'];
+
             
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
@@ -162,8 +186,17 @@ class LoadMenus
             View::share('learnerExtendText', $learnerExtendText); 
             View::share('total_seats', $total_seats); 
             View::share('active_seat_count', $active_seat_count); 
-            View::share('fullday_count', $fullday_count); 
             View::share('expired_seat', $expired_seat); 
+            View::share('availble_seats', $availble_seats); 
+            View::share('booked_seats', $booked_seats); 
+            View::share('fullday_count', $fullday_count); 
+            View::share('firstHalfCount', $firstHalfCount); 
+            View::share('secondHalfCount', $secondHalfCount); 
+            View::share('hourly1Count', $hourly1Count); 
+            View::share('hourly2Count', $hourly2Count); 
+            View::share('hourly3Count', $hourly3Count); 
+            View::share('hourly4Count', $hourly4Count); 
+          
             
         }
         

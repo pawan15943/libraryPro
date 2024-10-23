@@ -822,8 +822,40 @@ class LearnerController extends Controller
     }
    
     public function seatHistory(){
+       
+        $learners_seats=  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)->get();
+        $today = Carbon::today();
         $seats = Seat::get();
-        $learners_seats= $this->getLearnersByLibrary()->get();
+        foreach ($seats as $seat) {
+            // Fetch learners for each seat
+            $learners = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                ->where('learners.library_id', auth()->user()->id)
+                ->where('seat_no', $seat->seat_no)
+                ->select('learners.*', 'learner_detail.*')
+                ->get();
+        
+            // Separate active and expired learners
+            $activeLearners = $learners->where('status', 1);
+            $expiredLearners = $learners->where('status', 0);
+        
+            if ($activeLearners->isNotEmpty()) {
+                // Seat is booked by active learners
+                $seat->status = 'booked';
+                $seat->active_learners = $activeLearners;
+            }
+        
+            if ($expiredLearners->isNotEmpty()) {
+                // Seat has expired learners
+                $seat->status = 'expired';
+                $seat->expired_learners = $expiredLearners;
+            }
+        
+            if ($activeLearners->isEmpty() && $expiredLearners->isEmpty()) {
+                // Seat is available if no active or expired learners are found
+                $seat->status = 'available';
+            }
+        }
     
         return view('learner.seatHistory' ,compact('learners_seats','seats'));
     }

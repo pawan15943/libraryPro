@@ -94,9 +94,7 @@ class DashboardController extends Controller
           
             $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
             $total_seats=Seat::count();
-            $library_revenue=  LearnerDetail::whereMonth('join_date', date('m'))
-            ->whereYear('join_date', date('Y'))->where('is_paid',1)
-            ->sum('plan_price_id');
+          
             // redirect check library  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $redirectUrl = $this->libraryService->checkLibraryStatus();
@@ -114,7 +112,7 @@ class DashboardController extends Controller
 
             $available_seats=$this->learnerService->getAvailableSeats();
            
-            $today = Carbon::today();
+           
             $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
             $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
             $fiveDaysBefore = $today->copy()->subDays(5);
@@ -122,10 +120,34 @@ class DashboardController extends Controller
             ->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)  // plan_end_date is today - 5 days
             ->orWhereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
             ->get();
+            $threeMonthsAgo = $today->copy()->subMonths(2)->startOfMonth(); // Start of 3 months ago
+            $endOfLastMonth = $today->copy()->subMonth()->endOfMonth(); // End of last month
+           
+
+// Fetch revenue for the last three months
+$revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
+    ->where('is_paid', 1)
+    ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
+    ->groupBy('year', 'month')
+    ->orderBy('year', 'asc')
+    ->orderBy('month', 'asc')
+    ->get();
+
+// Fetch expenses for the last three months
+$expenses = DB::table('monthly_expense')
+    ->where('library_id', Auth::user()->id)
+    ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$threeMonthsAgo, $endOfLastMonth])
+    ->selectRaw('year, month, SUM(amount) as total_expense')
+    ->groupBy('year', 'month')
+    ->orderBy('year', 'asc')
+    ->orderBy('month', 'asc')
+    ->get();
+
+
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','library_revenue','available_seats','renewSeats'));
+                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses'));
             }else{
                 return redirect($redirectUrl);
             }

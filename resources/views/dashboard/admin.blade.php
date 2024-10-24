@@ -82,49 +82,38 @@
     <div class="row">
         <div class="col-lg-12">
             <ul class="revenue-box scroll-x">
+                @foreach($revenues  as $revenue)
+                @php
+                  $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
+                    $expense = $expenses->firstWhere('year', $revenue->year) && $expenses->firstWhere('month', $revenue->month);
+                    $total_expense = $expense ? $expense->total_expense : 0;
+                    $net_profit = $revenue->total_revenue - $total_expense;
+                @endphp
                 <li>
                     <div class="d-flex">
-                        <h4>April 2024 Revenue</h4>
-                        <span class="toggleButton" data-box="1"><i class="fa fa-eye-slash"></i></span>
+                        <h4>{{ $monthName }} {{ $revenue->year }} Revenue</h4>
+                        <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
                     </div>
                     <div class="d-flex mt-10">
                         <div class="value">
                             <small>Total Revenue</small>
-                            <h4 class="totalRevenue" data-box="1">12020</h4>
+                            <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
                         </div>
                         <div class="value">
                             <small>Total Expense</small>
-                            <h4 class="totalExpense" data-box="1">12020</h4>
+                            <h4 class="totalExpense" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
                         </div>
                         <div class="value">
                             <small>Net Profit</small>
-                            <h4 class="netProfit" data-box="1">12020</h4>
+                            <h4 class="netProfit" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="d-flex">
-                        <h4>May 2024 Revenue</h4>
-                        <span class="toggleButton" data-box="2"><i class="fa fa-eye-slash"></i></span>
-                    </div>
-                    <div class="d-flex mt-10">
-                        <div class="value">
-                            <small>Total Revenue</small>
-                            <h4 class="totalRevenue" data-box="2">15000</h4>
-                        </div>
-                        <div class="value">
-                            <small>Total Expense</small>
-                            <h4 class="totalExpense" data-box="2">9000</h4>
-                        </div>
-                        <div class="value">
-                            <small>Net Profit</small>
-                            <h4 class="netProfit" data-box="2">6000</h4>
-                        </div>
-                    </div>
-                </li>
+                @endforeach
             </ul>
         </div>
     </div>
+
 
     <!-- Library Other Counts -->
     <h4 class="my-4">Library Other Highlights</h4>
@@ -354,108 +343,22 @@
             <div class="seat-statistics ">
                 <h4 class="mb-4 text-center">Avaialble Seats</h4>
                 <ul class="contents">
+                    
+                    @foreach($available_seats as $key => $value)
                     <li>
                         <div class="d-flex">
                             <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
                             <div class="seat-content">
-                                <h6>Seat No. 10</h6>
+                                <h6>Seat No. {{$value}}</h6>
                                 <small>Available</small>
                             </div>
                             <a href="" class="book">Book</a>
                         </div>
                     </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>Available</small>
-                            </div>
-                            <a href="" class="book">Book</a>
-                        </div>
-                    </li>
+                    @endforeach
+                   
                 </ul>
-                <a href="" class="view-full-info">View All Availble Seats</a>
+                <a href="" class="view-full-info">View All Available Seats</a>
             </div>
         </div>
 
@@ -463,12 +366,13 @@
             <div class="seat-statistics">
                 <h4 class="mb-3 text-center">Seat About to Expire</h4>
                 <ul class="contents">
+                    @foreach($renewSeats as $key => $value)
                     <li>
                         <div class="d-flex">
                             <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
                             <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>First Half</small>
+                                <h6>Seat No. {{$value->seat_no}}</h6>
+                                <small>{{$value->plan_type->name}}</small>
                             </div>
                             <div class="seat-status">
                                 <p>Expired in 2 Days</p>
@@ -481,24 +385,8 @@
                             </ul>
                         </div>
                     </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>First Half</small>
-                            </div>
-                            <div class="seat-status">
-                                <p>Expired in 2 Days</p>
-                                <small><a href="">Renew Plan</a></small>
-                            </div>
-
-                            <ul class="d-flex inner">
-                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                            </ul>
-                        </div>
-                    </li>
+                    @endforeach
+                  
                 </ul>
                 <a href="" class="view-full-info">View All Availble Seats</a>
             </div>
@@ -583,7 +471,7 @@
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Revenue</span>
-                    <h4>{{$library_revenue}}</h4>
+                   
                 </div>
             </div>
         </div>

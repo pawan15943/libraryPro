@@ -30,14 +30,14 @@
         <div class="col-lg-6">
             <div class="active-plan-box">
                 <div class="top-content">
-                    <h4>BASIC PLAN <span><a href="">Upgrade Plan</a></span></h4>
+                    <h4>{{$plan->name}}<span><a href="">Upgrade Plan</a></span></h4>
                     <label for="">Active</label>
                 </div>
                 <div class="d-flex">
                     <ul class="plann-info">
-                        <li>Total Seat : <a href="">50</a> </li>
-                        <li>Plan Features : <a href="">50</a> </li>
-                        <li>Plan Price : <a href="">50</a> </li>
+                        <li>Total Seat : <a href="">{{$total_seats}}</a> </li>
+                        <li>Plan Features : <a href="">{{$features_count}}</a> </li>
+                        <li>Plan Price : <a href="">{{$check->amount}}</a> </li>
                     </ul>
                 </div>
             </div>
@@ -376,12 +376,12 @@
                             </div>
                             <div class="seat-status">
                                 <p>Expired in 2 Days</p>
-                                <small><a href="">Renew Plan</a></small>
+                                <small><a href="{{ route('learner.payment', [$seat->id]) }}">Renew Plan</a></small>
                             </div>
 
                             <ul class="d-flex inner">
-                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                                <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
                             </ul>
                         </div>
                     </li>
@@ -395,43 +395,28 @@
             <div class="seat-statistics">
                 <h4 class="mb-3 text-center">Extend Seats</h4>
                 <ul class="contents">
+                    @foreach($extend_sets as $seat)
                     <li>
                         <div class="d-flex">
                             <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
                             <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>First Half</small>
+                                <h6>Seat No. {{ $seat->seat_no }}</h6>
+                                <small>{{ $seat->plan_type->name}}</small>
                             </div>
                             <div class="seat-status">
-                                <p>Expired in 2 Days</p>
-                                <small><a href="">Renew Plan</a></small>
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
+                                <small><a href="{{ route('learner.payment', [$seat->id]) }}">Renew Plan</a></small>
                             </div>
 
                             <ul class="d-flex inner">
-                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
+                                <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
                             </ul>
                         </div>
                     </li>
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
-                            <div class="seat-content">
-                                <h6>Seat No. 10</h6>
-                                <small>First Half</small>
-                            </div>
-                            <div class="seat-status">
-                                <p>Expired in 2 Days</p>
-                                <small><a href="">Renew Plan</a></small>
-                            </div>
-
-                            <ul class="d-flex inner">
-                                <li><a href=""><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href=""><i class="fa fa-envelope"></i></a></li>
-                            </ul>
-                        </div>
-                    </li>
+                    @endforeach
                 </ul>
+
                 <a href="" class="view-full-info">View All Availble Seats</a>
             </div>
         </div>

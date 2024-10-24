@@ -18,6 +18,7 @@ use App\Services\LibraryService;
 use App\Services\LearnerService;
 use App\Traits\LearnerQueryTrait;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Subscription;
 
 class DashboardController extends Controller
 {
@@ -124,30 +125,39 @@ class DashboardController extends Controller
             $endOfLastMonth = $today->copy()->subMonth()->endOfMonth(); // End of last month
            
 
-// Fetch revenue for the last three months
-$revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
-    ->where('is_paid', 1)
-    ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
-    ->groupBy('year', 'month')
-    ->orderBy('year', 'asc')
-    ->orderBy('month', 'asc')
-    ->get();
+            // Fetch revenue for the last three months
+            $revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
+                ->where('is_paid', 1)
+                ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
 
-// Fetch expenses for the last three months
-$expenses = DB::table('monthly_expense')
-    ->where('library_id', Auth::user()->id)
-    ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$threeMonthsAgo, $endOfLastMonth])
-    ->selectRaw('year, month, SUM(amount) as total_expense')
-    ->groupBy('year', 'month')
-    ->orderBy('year', 'asc')
-    ->orderBy('month', 'asc')
-    ->get();
+            // Fetch expenses for the last three months
+            $expenses = DB::table('monthly_expense')
+                ->where('library_id', Auth::user()->id)
+                ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$threeMonthsAgo, $endOfLastMonth])
+                ->selectRaw('year, month, SUM(amount) as total_expense')
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
 
+            $data = Library::where('id', Auth::user()->id)
+            ->with('subscription.permissions')  // Fetch associated subscription and permissions
+            ->first();
+
+            $plan=Subscription::where('id',$data->library_type)->first();
+            $features_count=DB::table('subscription_permission')->where('subscription_id',$plan->id)->count();
+            $extend_sets=$this->getLearnersByLibrary()
+            ->whereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
+            ->get();
 
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses'));
+                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets'));
             }else{
                 return redirect($redirectUrl);
             }

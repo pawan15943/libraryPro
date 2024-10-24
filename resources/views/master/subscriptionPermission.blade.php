@@ -80,44 +80,41 @@
 </div>
 
 <div>
-    @foreach($subscriptions as $subscription)
+@foreach($subscriptions as $subscription)
     <h4 class="py-4">Permissions for Subscription: {{ $subscription->name }}</h4>
-    @if($subscription->permissions->isEmpty())
-    <p>No permissions available.</p>
+
+    @php
+        // Group permissions by category
+        $groupedPermissions = $subscription->permissions->groupBy('permission_category_id');
+    @endphp
+
+    @if($groupedPermissions->isEmpty())
+        <p>No permissions available.</p>
     @else
-    <div class="table-responsive">
-        <table class="table text-center datatable">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($subscription->permissions as $permission)
-                <tr>
-                    <td>{{ $permission->name }}</td>
-                    <td>{{ $permission->description }}</td>
-                    <td>
-                        <ul class="actionalbls">
-                            <li>
-                                <form action="{{ route('subscriptionPermissions.delete', $permission->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="hidden" value="{{$subscription->id}}" name="subscription_id">
-                                    <button type="submit" ><i class="fa fa-trash"></i></button>
-                                </form>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+        <div class="table-responsive">
+            @foreach($groupedPermissions as $categoryId => $permissions)
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h6 class='role-category-heading'>
+                                {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
+                            </h6>
+                        </div>
+                    </div>
+
+                    <div class="row contain_permissions_check">
+                        @foreach($permissions as $permission)
+                            <div class="col-sm-3">
+                                <p><i class="fa-solid fa-check text-success me-2"></i>{{ $permission->name }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+        </div>
     @endif
-    @endforeach
+@endforeach
+
 </div>
 
 <script>

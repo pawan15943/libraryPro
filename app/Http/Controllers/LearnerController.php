@@ -244,11 +244,12 @@ class LearnerController extends Controller
         $first_record = Hour::first();
        
         $total_hour = $first_record ? $first_record->hour : null;
-
+       
         if(PlanType::where('id',$request->plan_type_id)->count()>0){
             
             $hours=PlanType::where('id',$request->plan_type_id)->value('slot_hours');
         }
+       
         if(($this->getLearnersByLibrary()->where('seat_no',$request->seat_no)->where('learners.status',1)->sum('hours') + $hours)>$total_hour){
            
             return response()->json([
@@ -258,6 +259,7 @@ class LearnerController extends Controller
             die;
         }
         
+       
         $plan_id = $request->input('plan_id');
         $months=Plan::where('id',$plan_id)->value('plan_id');
         $duration = $months ?? 0;
@@ -270,7 +272,6 @@ class LearnerController extends Controller
             $is_paid=0; 
         }
         
-     
         $customer = Learner::create([
             'seat_no' => $request->input('seat_no'),
             'name' => $request->input('name'),
@@ -790,7 +791,7 @@ class LearnerController extends Controller
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
+            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
            
         }
     }

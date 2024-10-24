@@ -70,50 +70,73 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
+        @php
+    // Group permissions by their category
+    $groupedPermissions = $permissions->groupBy('permission_category_id');
+    $x = 1; // Initialize serial number
+    @endphp
+
+    @if($groupedPermissions->isEmpty())
+        <p>No permissions available.</p>
+    @else
         <div class="table-responsive">
             <table class="table text-center datatable dataTable" id="datatable">
-                <tr>
-                    <th>S.No.</th>
+                <thead>
+                    <tr>
+                        <th>S.No.</th>
+                        <th>Permission Name</th>
+                        <th>Permission Category</th>
+                        <th>About Permission</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($groupedPermissions as $categoryId => $permissions)
+                        <tr>
+                            <td colspan="5" class="text-start">
+                                <h6 class='role-category-heading'>
+                                    {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
+                                </h6>
+                            </td>
+                        </tr>
 
-                    <th>Permission Name</th>
-                    <th>Permission Category</th>
-                    <th>About Permision</th>
-                    <th>Action</th>
-                </tr>
-                @php
-                $x=1;
-                @endphp
-                @foreach($permissions as $key => $value)
-                <tr>
-                    <td>{{$x++}}</td>
+                        @foreach($permissions as $permission)
+                            <tr>
+                                <td>{{ $x++ }}</td>
 
+                                <td>
+                                    {{ $permission->name }}
+                                    <small>{{ $permission->slug }}</small>
+                                </td>
 
-                    <td>
-                        {{$value->name}}
-                        <small>{{$value->slug}}</small>
-                    </td>
-                    <td>
-                        {{ $value->permission_category_id ? \App\Models\PermissionCategory::find($value->permission_category_id)->name : 'No Category' }}
-                    </td>
-                    <td class="w-25">
-                        <code>{{$value->description}}</code>
-                    </td>
-                    <td>
-                        <ul class="actionalbls">
-                            <li><a href="{{ route('permissions.storeOrUpdate', $value->id) }}"><i class="fa fa-edit"></i></a></li>
-                            <li>
-                                <form action="{{ route('permissions.delete', $value->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <i class="fa fa-trash"></i>
-                                </form>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
-                @endforeach
+                                <td>
+                                    {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
+                                </td>
+
+                                <td class="w-25">
+                                    <code>{{ $permission->description }}</code>
+                                </td>
+
+                                <td>
+                                    <ul class="actionalbls">
+                                        <li><a href="{{ route('permissions.storeOrUpdate', $permission->id) }}"><i class="fa fa-edit"></i></a></li>
+                                        <li>
+                                            <form action="{{ route('permissions.delete', $permission->id) }}" method="POST" style="display:inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" style="background:none;border:none;color:red;"><i class="fa fa-trash"></i></button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
+                </tbody>
             </table>
         </div>
+    @endif
+
     </div>
 </div>
 

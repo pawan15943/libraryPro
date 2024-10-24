@@ -67,9 +67,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="{{ url('public/js/main-scripts.js') }}"></script>
     <script src="{{ url('public/js/main-validation.js') }}"></script>
+    
+
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
 

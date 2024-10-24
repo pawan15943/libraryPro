@@ -55,24 +55,24 @@
         <div class="col-lg-4">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
-                <h2>50</h2>
-                <small>Added on 25-10-2024</small>
+                <h2>{{$total_seats}}</h2>
+                <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-4">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
-                <h2>50</h2>
-                <small>Added on 25-10-2024</small>
+                <h2>{{$booked_seats}}</h2>
+               <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-4">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
-                <h2>50</h2>
-                <small>Added on 25-10-2024</small>
+                <h2>{{$availble_seats}}</h2>
+               <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>

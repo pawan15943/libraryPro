@@ -48,6 +48,7 @@ Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->na
 
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
+  Route::get('export-learners-csv', [Controller::class, 'exportLearnerCSV'])->name('learners.export-csv');
   Route::get('/csv/library/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
   Route::post('/csv/library/upload', [Controller::class, 'uploadmastercsv'])->name('library.csv.upload');
   Route::get('/export-invalid-records/library', [Controller::class, 'exportCsv'])->name('library.export.invalid.records');
@@ -56,7 +57,8 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
 
   Route::get('/learner/expire/{id?}', [LearnerController::class, 'learnerExpire'])->name('learner.expire');
   Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');
-  
+    //**LEARNER**//
+  Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
  
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 
@@ -86,8 +88,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
   });
   
-   //**LEARNER**//
-   Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
+ 
    
   Route::prefix('library/learners')->group(function () {
     Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');

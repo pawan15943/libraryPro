@@ -1256,6 +1256,70 @@ class Controller extends BaseController
 
         ]);
     }
+
+    public function exportLearnerCSV()
+    {
+        $fileName = 'learners.csv';  // The name of the CSV file
+
+        // Create the streamed response
+        $response = new StreamedResponse(function () {
+            // Open output stream to write to the CSV
+            $handle = fopen('php://output', 'w');
+
+            // Set the CSV headers
+            fputcsv($handle, ['Name', 'Email', 'Mobile', 'Seat No', 'DOB', 'Address', 'Plan', 'Plan Type', 'Plan Price', 'Join Date', 'Start Date', 'End Date', 'Paid Amount', 'Paid Date', 'Payment Mode']);
+
+            // Fetch learners with their details and transactions
+            $learners = Learner::where('library_id',Auth::user()->id)->with(['learnerDetails', 'learnerTransactions'])->get();
+
+            // Loop through each learner and their associated details and transactions
+            foreach ($learners as $learner) {
+                // Check if there are details and transactions
+                if ($learner->learnerDetails->isEmpty() && $learner->learnerTransactions->isEmpty()) {
+                    fputcsv($handle, [
+                        $learner->name,
+                        $learner->email,
+                        $learner->mobile,
+                        $learner->seat_no,
+                        $learner->dob,
+                        $learner->address,
+                        '', '', '', '', '', '', '', '', ''
+                    ]);
+                } else {
+                    // Nested loops to combine learner details and transactions
+                    foreach ($learner->learnerDetails as $detail) {
+                        foreach ($learner->learnerTransactions as $transaction) {
+                            fputcsv($handle, [
+                                $learner->name,
+                                $learner->email,
+                                $learner->mobile,
+                                $learner->seat_no,
+                                $learner->dob,
+                                $learner->address,
+                                $detail->plan,
+                                $detail->plan_type,
+                                $detail->plan_price,
+                                $detail->join_date,
+                                $detail->plan_start_date,
+                                $detail->plan_end_date,
+                                $transaction->paid_amount,
+                                $transaction->paid_date,
+                                $transaction->payment_mode,
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            fclose($handle); // Close the output stream
+        });
+
+        // Set headers to force download of the CSV file
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+
+        return $response;
+    }
    
     
     

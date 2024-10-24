@@ -31,5 +31,10 @@ class Learner extends Authenticatable
         return $this->hasMany(LearnerDetail::class);
     }
 
+    public function learnerTransactions()
+    {
+        return $this->hasMany(LearnerTransaction::class);
+    }
+
     
 }

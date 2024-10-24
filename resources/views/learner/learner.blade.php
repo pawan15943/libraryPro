@@ -90,6 +90,8 @@ $current_route = Route::currentRouteName();
     {{ session('success') }}
 </div>
 @endif
+<a href="{{ route('learners.export-csv') }}" class="btn btn-primary">Export Learners to CSV</a>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="filter-box">

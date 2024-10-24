@@ -791,7 +791,7 @@ class LearnerController extends Controller
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnerShow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
+            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
            
         }
     }

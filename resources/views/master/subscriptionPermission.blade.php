@@ -60,16 +60,29 @@
                 </div>
             </div>
 
-            @foreach ($permissions as $permission)
-            <div class="col-lg-3">
-                <label class="permission">
-                    <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                        {{ isset($selectedSubscription) && $selectedSubscription->permissions->contains($permission->id) ? 'checked' : '' }}>
-                    {{ $permission->name }}
-                </label>
-
+            @php
+            // Group permissions by their category
+            $groupedPermissions = $permissions->groupBy('permission_category_id');
+        @endphp
+        
+        @foreach($groupedPermissions as $categoryId => $permissionsInCategory)
+            <div class="col-12">
+                <h5 class='role-category-heading'>
+                    {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
+                </h5>
             </div>
+        
+            @foreach ($permissionsInCategory as $permission)
+                <div class="col-lg-3">
+                    <label class="permission">
+                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                            {{ isset($selectedSubscription) && $selectedSubscription->permissions->contains($permission->id) ? 'checked' : '' }}>
+                        {{ $permission->name }}
+                    </label>
+                </div>
             @endforeach
+        @endforeach
+        
         </div>
         <div class="row mt-3">
             <div class="col-lg-3">

@@ -13,7 +13,7 @@
         <i class="fa-solid fa-phone-volume"></i>
     </div>
     <div class="support-card" id="supportCard">
-        
+
         <p><strong><i class="fa-solid fa-phone-volume"></i> Contact Us:</strong></p>
         <p>Phone: 123-456-7890</p>
         <p>Email: support@library.com</p>
@@ -553,7 +553,7 @@
     <h4 class="my-4">Monthly Analytics (Rvenue, Expanse & Profit)</h4>
     <div class="row">
         <div class="col-lg-8">
-
+            <canvas id="barChart"></canvas>
         </div>
     </div>
 </div>

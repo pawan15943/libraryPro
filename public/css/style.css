@@ -3960,3 +3960,56 @@ ul.revenue-box li .d-flex {
     opacity: 1;
     transform: translateY(0);
 }
+
+
+.support-container {
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.support-icon {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    animation: bounce 2s infinite;
+}
+
+.support-icon img {
+    width: 24px;
+    height: 24px;
+}
+
+.support-card {
+    width: 250px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    display: none;
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.support-card .support-img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}

@@ -8,7 +8,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- New Design Dahsbard Library -->
-
+<div class="support-container">
+    <div class="support-icon" onclick="toggleSupportCard()">
+        <i class="fa-solid fa-phone-volume"></i>
+    </div>
+    <div class="support-card" id="supportCard">
+        
+        <p><strong><i class="fa-solid fa-phone-volume"></i> Contact Us:</strong></p>
+        <p>Phone: 123-456-7890</p>
+        <p>Email: support@library.com</p>
+    </div>
+</div>
 <div class="dashboard">
 
 
@@ -757,5 +767,10 @@
             });
         });
     });
+
+    function toggleSupportCard() {
+        var card = document.getElementById('supportCard');
+        card.style.display = card.style.display === 'block' ? 'none' : 'block';
+    }
 </script>
 @endsection

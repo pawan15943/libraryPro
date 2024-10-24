@@ -595,7 +595,7 @@ ul.list-unstyled.ps-0 {
 ul.list-unstyled.ps-0>li {
     background: #ffffff0f;
     padding: 0 1rem;
-    border-radius: .3rem;
+    border-radius: 1.6rem;
     position: relative;
 }
 
@@ -628,7 +628,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
 
 ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
     padding: .8rem 1rem;
-    border-radius: .3rem;
+    border-radius: 1.6rem;
     /* margin-left: 1.5rem; */
     background: #ffffff1a;
 }
@@ -2508,10 +2508,13 @@ ul.list-unstyled.ps-0>li {
 ul.list-unstyled.ps-0>li {
     background: #ffffff0f;
     padding: .3rem 1rem;
-    border-radius: .4rem;
+    border-radius: 1.6rem;
     position: relative;
 }
 
+.seat-content h6 {
+    padding: 0 !important;
+}
 
 ul.list-unstyled.ps-0>li+li {
     margin-top: .5rem;
@@ -2534,7 +2537,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
 
 ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li {
     padding: .8rem 1rem;
-    border-radius: .3rem;
+    border-radius: 1.6rem;
     /* margin-left: 1.5rem; */
     background: #ffffff1a;
 }
@@ -3792,6 +3795,7 @@ ul.revenue-box li .d-flex {
     color: #ffffffd1 !important;
     font-weight: 400;
     margin-bottom: 1rem;
+    padding: 0 !important;
 }
 
 

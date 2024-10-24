@@ -502,8 +502,8 @@ label.permission {
 
 
 label.permission input[type="checkbox"] {
-    height: 18px;
-    width: 18px;
+    height: 15px;
+    width: 15px;
 }
 
 .buttons button {
@@ -2403,12 +2403,13 @@ label.permission {
     gap: .8rem;
     align-items: center;
     text-transform: uppercase;
+    font-size: .7rem;
 }
 
 
 label.permission input[type="checkbox"] {
-    height: 18px;
-    width: 18px;
+    height: 15px;
+    width: 15px;
 }
 
 .buttons button {
@@ -2566,7 +2567,9 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a {
     margin-bottom: 1.2rem;
     color: #4b4b4b ! IMPORTANT;
     font-weight: 500;
-    font-size: 1.5rem;
+    font-size: 1rem;
+    margin: 0;
+    padding: 0 1rem;
 }
 
 /* Plan */
@@ -2795,6 +2798,16 @@ table.table.text-center tr:nth-child(1) th {
     padding: 1rem 0;
     font-weight: 700 !important;
     color: #fff;
+    text-align: center;
+}
+
+td.text-start,
+td.text-start * {
+    background: #ebf1ff;
+    color: #000 ! IMPORTANT;
+    text-transform: uppercase;
+    font-size: .8rem ! IMPORTANT;
+    font-weight: 600 !IMPORTANT;
 }
 
 table.table.text-center td {
@@ -4006,10 +4019,19 @@ ul.revenue-box li .d-flex {
 }
 
 @keyframes bounce {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
+}
+
+
+h5.role-category-heading {
+    font-size: 1rem;
+    font-weight: 600;
 }

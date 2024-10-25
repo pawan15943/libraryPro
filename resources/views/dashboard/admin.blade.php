@@ -64,7 +64,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-               <small>Added on {{date('d-m-Y')}}</small>
+                <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -72,7 +72,7 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2>{{$availble_seats}}</h2>
-               <small>Added on {{date('d-m-Y')}}</small>
+                <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -82,16 +82,18 @@
     <div class="row">
         <div class="col-lg-12">
             <ul class="revenue-box scroll-x">
-                @foreach($revenues  as $revenue)
+                @foreach($revenues as $revenue)
                 @php
-                  $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
-                    $expense = $expenses->firstWhere('year', $revenue->year) && $expenses->firstWhere('month', $revenue->month);
-                    $total_expense = $expense ? $expense->total_expense : 0;
-                    $net_profit = $revenue->total_revenue - $total_expense;
+                $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
+                $expense = $expenses->first(function($item) use ($revenue) {
+                return $item->year == $revenue['year'] && $item->month == $revenue['month'];
+                });
+                $total_expense = $expense ? $expense->total_expense : 0;
+                $net_profit = $revenue->total_revenue - $total_expense;
                 @endphp
                 <li>
                     <div class="d-flex">
-                        <h4>{{ $monthName }} {{ $revenue->year }} Revenue</h4>
+                        <h4>{{ $monthName }} {{ $revenue->year }}</h4>
                         <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
                     </div>
                     <div class="d-flex mt-10">
@@ -343,7 +345,7 @@
             <div class="seat-statistics ">
                 <h4 class="mb-4 text-center">Avaialble Seats</h4>
                 <ul class="contents">
-                    
+
                     @foreach($available_seats as $key => $value)
                     <li>
                         <div class="d-flex">
@@ -356,7 +358,7 @@
                         </div>
                     </li>
                     @endforeach
-                   
+
                 </ul>
                 <a href="" class="view-full-info">View All Available Seats</a>
             </div>
@@ -386,7 +388,7 @@
                         </div>
                     </li>
                     @endforeach
-                  
+
                 </ul>
                 <a href="" class="view-full-info">View All Availble Seats</a>
             </div>
@@ -456,7 +458,7 @@
             <div class="col-lg-6">
                 <div class="dashibox">
                     <span>Revenue</span>
-                   
+
                 </div>
             </div>
         </div>

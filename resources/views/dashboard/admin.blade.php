@@ -131,8 +131,7 @@
             <div class="booking-count bg-3">
                 <h6>Total Bookings</h6>
                 <div class="d-flex">
-                    <h4>{{$total_booking}}</h4>
-
+                    <h4 id="totalBookings">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -141,8 +140,7 @@
             <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
-                    <h4>{{$online_paid}}</h4>
-
+                    <h4 id="onlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -151,18 +149,16 @@
             <div class="booking-count bg-3">
                 <h6>Offline Paid</h6>
                 <div class="d-flex">
-                    <h4>{{$offline_paid}}</h4>
-
+                    <h4 id="offlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-2">
             <div class="booking-count bg-3">
-                <h6>Offline Paid</h6>
+                <h6>Other Paid</h6>
                 <div class="d-flex">
-                    <h4>{{$other_paid}}</h4>
-
+                    <h4 id="otherPaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -171,8 +167,7 @@
             <div class="booking-count bg-1">
                 <h6>Expired in 5 Days</h6>
                 <div class="d-flex">
-                    <h4>{{$expired_in_five}}</h4>
-
+                    <h4 id="expiredInFive">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -181,8 +176,7 @@
             <div class="booking-count bg-2">
                 <h6>Expired Seats</h6>
                 <div class="d-flex">
-                    <h4>{{$expired_seats}}</h4>
-
+                    <h4 id="expiredSeats">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -250,7 +244,7 @@
     </div>
 
     <h4 class="my-4">Plan Wise Count</h4>
-    <div class="row g-4">
+    <div class="row g-4 planwisecount">
         <div class="col-lg-2">
             <div class="booking-count bg-4">
                 <h6>Full Day</h6>
@@ -340,6 +334,16 @@
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <canvas id="barChart"></canvas>
+        </div>
+        <div class="col-lg-4">
+            <canvas id="pieChart"></canvas>
         </div>
     </div>
 
@@ -433,14 +437,7 @@
 
     <!-- Charts -->
    
-    <div class="row">
-        <div class="col-lg-8">
-            <canvas id="barChart"></canvas>
-        </div>
-        <div class="col-lg-4">
-            <canvas id="pieChart"></canvas>
-        </div>
-    </div>
+    
 </div>
 <!-- End -->
 
@@ -593,40 +590,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    $(document).ready(function () {
-        function fetchLibraryData(filter) {
-        $.ajax({
-            url: '{{ route("library.home") }}', // Your route for fetching data
-            method: 'GET',
-            data: { filter: filter },
-            success: function (response) {
-                // Update the HTML inside the #library-data div with the response
-                $('#library-data').html(response);
-            }
-        });
-    }
-
-    // Fetch data when the page loads with the default filter value (pre-selected in the dropdown)
-    var initialFilter = $('#dataFilter').val();
-    console.log(initialFilter);
-    fetchLibraryData(initialFilter);
-
-    // Fetch data when the filter is changed
-    $('#dataFilter').on('change', function () {
-        var selectedFilter = $(this).val();
-        console.log(selectedFilter);
-        fetchLibraryData(selectedFilter);
-    });
-    });
-</script>
-<script>
     (function($) {
         $(window).on("load", function() {
             $(".contents").mCustomScrollbar();
         });
     })(jQuery);
-
-    // (function($) {
+  // (function($) {
     //     $(window).on("load", function() {
     //         $(".scroll-x").mCustomScrollbar({
     //             axis: "x", // Enable horizontal scrolling
@@ -638,6 +607,7 @@
     //         });
     //     });
     // })(jQuery);
+   
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -681,66 +651,68 @@
         card.style.display = card.style.display === 'block' ? 'none' : 'block';
     }
 </script>
-
 <script>
-    const ctx = document.getElementById('pieChart').getContext('2d');
+    $(document).ready(function () {
+        var initialFilter = $('#dataFilter').val();  
+        fetchLibraryData(initialFilter);  
 
-    const pieChart = new Chart(ctx, {
-        type: 'pie',  // Change the chart type to 'pie'
-        data: {
-            labels: ['Revenue', 'Expense', 'Profit'],
-            datasets: [{
-                label: 'Amount in Rs',
-                backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
-                data: [{{ $revenueAmount }}, {{ $expenseAmount }}, {{ $profitAmount }}]  // Use your PHP variables here
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top', // Optional: Change position of the legend
+        // Fetch data when the filter is changed
+        $('#dataFilter').on('change', function () {
+            var selectedFilter = $(this).val(); 
+            fetchLibraryData(selectedFilter);  
+        });
+
+        function fetchLibraryData(filter) {
+            $.ajax({
+                url: '{{ route("dashboard.data.get") }}',
+                method: 'POST',
+                data: {
+                    filter: filter,  // Use the filter parameter passed to the function
+                    _token: '{{ csrf_token() }}'  // CSRF token for security
                 },
-                tooltip: {
-                    enabled: true  // Enable tooltips for each segment
+                success: function(response) {
+                   
+                    
+                    updateHighlights(response.highlights); 
+                   
+                    var planWiseBookings = response.plan_wise_booking;
+                    $('.row.g-4.planwisecount').empty(); // Clear existing data
+
+                    planWiseBookings.forEach(function(booking) {
+                        var html = `
+                            <div class="col-lg-2">
+                                <div class="booking-count bg-4">
+                                    <h6>${booking.plan_type_name}</h6>
+                                    <div class="d-flex">
+                                        <h4>${booking.booking}</h4>
+                                    </div>
+                                    <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                                </div>
+                            </div>`;
+                        $('.row.g-4.planwisecount').append(html);
+                    });
+                },
+                error: function(xhr) {
+                    console.error(xhr);
                 }
-            }
+            });
         }
+
+        function updateHighlights(highlights) {
+       
+        $('#totalBookings').text(highlights.total_booking);
+        $('#onlinePaid').text(highlights.online_paid);
+        $('#offlinePaid').text(highlights.offline_paid);
+        $('#otherPaid').text(highlights.other_paid);
+        $('#expiredInFive').text(highlights.expired_in_five);
+        $('#expiredSeats').text(highlights.expired_seats);
+        }
+
     });
 </script>
-<script>
-    const ctx1 = document.getElementById('barChart').getContext('2d');
 
-    // Use the PHP arrays passed from the controller as JavaScript arrays
-    const labels = @json($bookinglabels);
-    const data = @json($bookingcount);
 
-    const barChart = new Chart(ctx1, {
-        type: 'bar',  // Set the chart type to 'bar'
-        data: {
-            labels: labels,  // Set labels as the plan type IDs
-            datasets: [{
-                label: 'Bookings per Plan Type',
-                backgroundColor: '#4CAF50',  // Customize color
-                borderColor: '#388E3C',
-                borderWidth: 1,
-                data: data  // Set data as the booking counts
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Bookings'
-                    }
-                },
-                
-            }
-        }
-    });
-</script>
+
+
 
 @endsection

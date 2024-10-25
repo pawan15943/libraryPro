@@ -48,6 +48,8 @@ Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->na
 
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
+
+Route::post('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data.get');
   Route::get('export-learners-csv', [Controller::class, 'exportLearnerCSV'])->name('learners.export-csv');
   Route::get('/csv/library/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
   Route::post('/csv/library/upload', [Controller::class, 'uploadmastercsv'])->name('library.csv.upload');

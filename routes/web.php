@@ -59,6 +59,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
   Route::put('/learner/expire/update/{id?}', [LearnerController::class, 'editLearnerExpire'])->name('learner.expire.update');
     //**LEARNER**//
   Route::get('library/learners', [LearnerController::class, 'index'])->name('seats');
+  Route::post('library/learners/log', [LearnerController::class, 'learnerLog'])->name('learner.log');
  
   Route::prefix('library')->group(function () {
     Route::get('/home', [DashboardController::class, 'libraryDashboard'])->name('library.home'); 

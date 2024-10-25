@@ -116,13 +116,22 @@
 
 
     <!-- Library Other Counts -->
+    <div class="row g-4 mb-3">
+        <div class="col-lg-3">
+            <select id="dataFilter" class="form-select">
+                <option value="monthly">Monthly</option>
+                <option value="weekly">Weekly</option>
+                <option value="today">Today</option>
+            </select>
+        </div>
+    </div>
     <h4 class="my-4">Library Other Highlights</h4>
     <div class="row g-4">
         <div class="col-lg-2">
             <div class="booking-count bg-3">
                 <h6>Total Bookings</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>{{$total_booking}}</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -132,17 +141,7 @@
             <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-3">
-                <h6>Online Paid</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>{{$online_paid}}</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -152,7 +151,17 @@
             <div class="booking-count bg-3">
                 <h6>Offline Paid</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>{{$offline_paid}}</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <div class="booking-count bg-3">
+                <h6>Offline Paid</h6>
+                <div class="d-flex">
+                    <h4>{{$other_paid}}</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -162,7 +171,7 @@
             <div class="booking-count bg-1">
                 <h6>Expired in 5 Days</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>{{$expired_in_five}}</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -172,7 +181,7 @@
             <div class="booking-count bg-2">
                 <h6>Expired Seats</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>{{$expired_seats}}</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -423,10 +432,13 @@
     </div>
 
     <!-- Charts -->
-    <h4 class="my-4">Monthly Analytics (Rvenue, Expanse & Profit)</h4>
+   
     <div class="row">
         <div class="col-lg-8">
             <canvas id="barChart"></canvas>
+        </div>
+        <div class="col-lg-4">
+            <canvas id="pieChart"></canvas>
         </div>
     </div>
 </div>
@@ -574,16 +586,39 @@
     </div>
 
 </div>
-<div class="row d-none">
-    <div class="col-lg-12">
-        <h4 class="py-4">Plan Statistics (Show Plan wise) Graph</h4>
-    </div>
-</div>
+
+
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function fetchLibraryData(filter) {
+        $.ajax({
+            url: '{{ route("library.home") }}', // Your route for fetching data
+            method: 'GET',
+            data: { filter: filter },
+            success: function (response) {
+                // Update the HTML inside the #library-data div with the response
+                $('#library-data').html(response);
+            }
+        });
+    }
 
+    // Fetch data when the page loads with the default filter value (pre-selected in the dropdown)
+    var initialFilter = $('#dataFilter').val();
+    console.log(initialFilter);
+    fetchLibraryData(initialFilter);
+
+    // Fetch data when the filter is changed
+    $('#dataFilter').on('change', function () {
+        var selectedFilter = $(this).val();
+        console.log(selectedFilter);
+        fetchLibraryData(selectedFilter);
+    });
+    });
+</script>
 <script>
     (function($) {
         $(window).on("load", function() {
@@ -646,4 +681,66 @@
         card.style.display = card.style.display === 'block' ? 'none' : 'block';
     }
 </script>
+
+<script>
+    const ctx = document.getElementById('pieChart').getContext('2d');
+
+    const pieChart = new Chart(ctx, {
+        type: 'pie',  // Change the chart type to 'pie'
+        data: {
+            labels: ['Revenue', 'Expense', 'Profit'],
+            datasets: [{
+                label: 'Amount in Rs',
+                backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
+                data: [{{ $revenueAmount }}, {{ $expenseAmount }}, {{ $profitAmount }}]  // Use your PHP variables here
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top', // Optional: Change position of the legend
+                },
+                tooltip: {
+                    enabled: true  // Enable tooltips for each segment
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const ctx1 = document.getElementById('barChart').getContext('2d');
+
+    // Use the PHP arrays passed from the controller as JavaScript arrays
+    const labels = @json($bookinglabels);
+    const data = @json($bookingcount);
+
+    const barChart = new Chart(ctx1, {
+        type: 'bar',  // Set the chart type to 'bar'
+        data: {
+            labels: labels,  // Set labels as the plan type IDs
+            datasets: [{
+                label: 'Bookings per Plan Type',
+                backgroundColor: '#4CAF50',  // Customize color
+                borderColor: '#388E3C',
+                borderWidth: 1,
+                data: data  // Set data as the booking counts
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Bookings'
+                    }
+                },
+                
+            }
+        }
+    });
+</script>
+
 @endsection

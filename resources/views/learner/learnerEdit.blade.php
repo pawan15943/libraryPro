@@ -227,7 +227,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
 
                     </div>
-                    <form action="{{ route('learner.reactive.store', $customer->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('learner.reactive.store', $customer->id) }}" method="POST" enctype="multipart/form-data" id="reactive">
                         @csrf
                         @method('PUT')
                         <h4 class="mt-4">Activate New Plan</h4>
@@ -454,6 +454,15 @@ $diffInDays = $today->diffInDays($endDate, false);
 </div>
 
 @endif
-       
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+       form.addEventListener('submit', function(event) {
+           event.preventDefault();
+           handleFormChanges('reactive', {{ $customer->id }});
+       });
+      
+      
+  });
+</script>
 @include('learner.script')
 @endsection

@@ -15,7 +15,7 @@
     <div class="col-lg-6">
         <div class="payment-detaile">
            
-            <div class="paymentinfo basic <?php if ($plan->name == 'Basic')?>">
+            <div class="paymentinfo basic <?php if ( $plan ? $plan->name == 'Basic' : '')?>">
                 <div class="plan-info">
                     <div class="row g-4">
                         <div class="col-lg-6">
@@ -63,15 +63,17 @@
 
             </div>
             <div>
+               
                 <ul class="plan-features contents">
-                    @if($data->subscription->permissions->isNotEmpty())
-                    @foreach($data->subscription->permissions as $permission)
-                    <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
-                    @endforeach
+                    @if(isset($data->subscription) && $data->subscription->permissions->isNotEmpty())
+                        @foreach($data->subscription->permissions as $permission)
+                            <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
+                        @endforeach
                     @else
-                    <li>No permissions available</li>
+                        <li>No permissions available</li>
                     @endif
                 </ul>
+                
             </div>
            
         </div>

@@ -1371,5 +1371,51 @@ class LearnerController extends Controller
         $this->dataUpdate();
         return redirect()->route('learners')->with('success', 'Learner updated successfully.');
     }
+
+    public function learnerLog(Request $request) {
+        // Log the incoming request data
+        Log::info('Incoming Request Data:', $request->all());
+    
+        // Validate the request and catch any validation errors
+        try {
+            $validatedData = $request->validate([
+                'learner_id' => 'required|integer',
+                'field_updated' => 'required|string',
+                'old_value' => 'nullable|string',
+                'new_value' => 'nullable|string',
+                'updated_by' => 'required|integer',
+               
+                'operation' => 'required',
+            ]);
+    
+            Log::info('Validation Successful:', $validatedData);
+    
+            $updated_user = $validatedData['updated_by'] ?? Auth::user()->id;
+            $old_value = $validatedData['operation'] ? $validatedData['operation'] : '';
+    
+            // Insert data into the database and log success or errors
+            DB::table('learner_operations_log')->insert([
+                'learner_id' => $validatedData['learner_id'],
+                'library_id' => Auth::user()->id,
+                'field_updated' => $validatedData['field_updated'],
+                'old_value' => $old_value,
+                'new_value' => $validatedData['new_value'],
+                'updated_by' => $updated_user,
+                'operation' => $validatedData['operation'],
+                'created_at' => now(),
+            ]);
+    
+            Log::info('Data inserted successfully');
+            return response()->json(['success' => true, 'message' => 'Change logged successfully']);
+            
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation Error:', $e->errors());
+            return response()->json(['success' => false, 'message' => 'Validation error', 'errors' => $e->errors()]);
+        } catch (\Exception $e) {
+            Log::error('Insertion Error:', ['message' => $e->getMessage()]);
+            return response()->json(['success' => false, 'message' => 'Database insertion error']);
+        }
+    }
+    
     
 }

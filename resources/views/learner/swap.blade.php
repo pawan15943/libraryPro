@@ -69,7 +69,7 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ route('learners.swap-seat', $customer->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('learners.swap-seat', $customer->id) }}" method="POST" enctype="multipart/form-data" id="swapseat">
                 @csrf
                 @method('PUT')
                 <div class="action-box">
@@ -138,6 +138,7 @@
   
 <script>
     document.getElementById("swapsubmit").disabled = true;
+   
 </script>
 @include('learner.script')
 

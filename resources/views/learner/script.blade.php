@@ -1,6 +1,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+   
     // jQuery script
     $(document).ready(function() {
         $('#datatable').DataTable();
@@ -198,8 +199,6 @@
                 $("#plan_price_id").val('');
             }
         });
-
-      
 
         $('#update_plan_id').on('change', function(event) {
            
@@ -716,4 +715,61 @@
             paidDateInput.value = today;
         }
     });
+</script>
+<script>
+    // Generic function to handle form changes
+    function handleFormChanges(formId, learnerId) {
+       
+        console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId); // Debugging log
+        const form = document.getElementById(formId);
+        if (!form) {
+            console.error('Form not found:', formId);  // Log error if form is not found
+            return;
+        }
+        const inputs = form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            console.log('Input :', input); 
+            input.addEventListener('change', function() {
+                const fieldName = this.name;
+                const oldValue = this.defaultValue;
+                const newValue = this.value;
+                console.log('fieldName', fieldName ,'oldValue',oldValue,'newValue',newValue);
+                // Log the change if value has changed
+                if (oldValue !== newValue) {
+                    console.log('Input changed:', fieldName);  // Log input field change
+                    logFieldChange(learnerId,formId,fieldName, oldValue, newValue);
+                }
+            });
+        });
+
+     
+    }
+
+
+    // Function to log the field changes
+    function logFieldChange(learnerId, formId, fieldName, oldValue, newValue) {
+        console.log('Logging change for student:', learnerId,formId ,fieldName, oldValue, newValue); // Debugging log
+        fetch("{{ route('learner.log') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': "{{ csrf_token() }}",
+            },
+            body: JSON.stringify({
+                learner_id: learnerId,                // ID of the student whose task is being edited
+                field_updated: fieldName,             // Field name (input field name)
+                old_value: oldValue,                  // Old value of the field
+                new_value: newValue,                  // New value of the field
+                operation: formId,                  // New value of the field
+                updated_by: {{ Auth::user()->id }},   // ID of the user who made the changes
+                created_at: new Date().toISOString(), // Current date and time
+            }),
+        })
+        .then(response => response.json())
+        .then(data => console.log('Change logged successfully', data))
+        .catch(error => console.error('Error logging change:', error));
+    }
+
+    
 </script>

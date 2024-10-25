@@ -31,7 +31,7 @@ $readonlyStyle = '';
 @endif
 
 
-<form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data" id="learnerUpgrade">
     @csrf
     @method('PUT')
 
@@ -182,7 +182,16 @@ $readonlyStyle = '';
 
 </form>
 
-
+<script>
+     document.addEventListener('DOMContentLoaded', function() {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            handleFormChanges('learnerUpgrade', {{ $customer->id }});
+        });
+       
+       
+   });
+</script>
 
 @include('learner.script')
 @endsection

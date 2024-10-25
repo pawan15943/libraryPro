@@ -20,59 +20,54 @@
     </div>
 </div>
 <div class="dashboard">
-
-
-    <div class="row align-items-center ">
-        <div class="col-lg-6">
-            <h1>Welcome to <span>LibraryPro</span>
-                Where <span class="typing-text">Great Minds Gather!</span></h1>
+    <div class="row g-4 mb-4">
+        <div class="col-lg-9">
+            <div class="dashboard-Header">
+                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
+                <h1>Welcome to <span>LibraryPro</span><br>
+                    Where <span class="typing-text">Great Minds Gather!</span></h1>
+            </div>
         </div>
-        <div class="col-lg-6">
-            <div class="active-plan-box">
+        <div class="col-lg-3">
+            <div class="active-plan-box basic">
                 <div class="top-content">
-                    <h4>{{$plan->name}}<span><a href="">Upgrade Plan</a></span></h4>
-                    <label for="">Active</label>
+                    <h4>{{$plan->name}}<span><a href="">Re-New Plan</a></span></h4>
+                    <label for="" class="text-success">Active</label>
                 </div>
                 <div class="d-flex">
                     <ul class="plann-info">
-                        <li>Total Seat : <a href="">{{$total_seats}}</a> </li>
+                        <li>Total Seat : <a href="javascript:;">{{$total_seats}}</a> </li>
                         <li>Plan Features : <a href="">{{$features_count}}</a> </li>
-                        <li>Plan Price : <a href="">{{$check->amount}}</a> </li>
+                        <li>Plan Price : <a href="javascript:;">{{$check->amount}}</a> </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <div class="dashboard-Header">
-                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-    </div>
+
     <!-- Library Main Counts -->
-    <div class="row my-4">
-        <div class="col-lg-4">
+    <div class="row g-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
-                <h2>{{$total_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <h2 class="counter" data-count="{{$total_seats}}">0</h2>
+                <small>Updated on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
-                <h2>{{$booked_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <h2 class="counter" data-count="{{$booked_seats}}">0</h2>
+                <small class="d-flex"><a href="" class="text-white text-decoration-none"> View All Seats <i class="fa fa-long-arrow-right ms-1"></i> </a></small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
-                <h2>{{$availble_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <h2 class="counter" data-count="{{$availble_seats}}">0</h2>
+                <small><a href="" class="text-white text-decoration-none"> View All Seats <i class="fa fa-long-arrow-right ms-1"></i> </a></small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -434,7 +429,7 @@
     </div>
 
     <!-- Charts -->
-   
+
     <div class="row">
         <div class="col-lg-8">
             <canvas id="barChart"></canvas>
@@ -595,30 +590,32 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         function fetchLibraryData(filter) {
-        $.ajax({
-            url: '{{ route("library.home") }}', // Your route for fetching data
-            method: 'GET',
-            data: { filter: filter },
-            success: function (response) {
-                // Update the HTML inside the #library-data div with the response
-                $('#library-data').html(response);
-            }
+            $.ajax({
+                url: '{{ route("library.home") }}', // Your route for fetching data
+                method: 'GET',
+                data: {
+                    filter: filter
+                },
+                success: function(response) {
+                    // Update the HTML inside the #library-data div with the response
+                    $('#library-data').html(response);
+                }
+            });
+        }
+
+        // Fetch data when the page loads with the default filter value (pre-selected in the dropdown)
+        var initialFilter = $('#dataFilter').val();
+        console.log(initialFilter);
+        fetchLibraryData(initialFilter);
+
+        // Fetch data when the filter is changed
+        $('#dataFilter').on('change', function() {
+            var selectedFilter = $(this).val();
+            console.log(selectedFilter);
+            fetchLibraryData(selectedFilter);
         });
-    }
-
-    // Fetch data when the page loads with the default filter value (pre-selected in the dropdown)
-    var initialFilter = $('#dataFilter').val();
-    console.log(initialFilter);
-    fetchLibraryData(initialFilter);
-
-    // Fetch data when the filter is changed
-    $('#dataFilter').on('change', function () {
-        var selectedFilter = $(this).val();
-        console.log(selectedFilter);
-        fetchLibraryData(selectedFilter);
-    });
     });
 </script>
 <script>
@@ -688,13 +685,25 @@
     const ctx = document.getElementById('pieChart').getContext('2d');
 
     const pieChart = new Chart(ctx, {
-        type: 'pie',  // Change the chart type to 'pie'
+        type: 'pie', // Change the chart type to 'pie'
         data: {
             labels: ['Revenue', 'Expense', 'Profit'],
             datasets: [{
                 label: 'Amount in Rs',
                 backgroundColor: ['#4CAF50', '#F44336', '#FFC107'],
-                data: [{{ $revenueAmount }}, {{ $expenseAmount }}, {{ $profitAmount }}]  // Use your PHP variables here
+                data: [{
+                    {
+                        $revenueAmount
+                    }
+                }, {
+                    {
+                        $expenseAmount
+                    }
+                }, {
+                    {
+                        $profitAmount
+                    }
+                }] // Use your PHP variables here
             }]
         },
         options: {
@@ -704,7 +713,7 @@
                     position: 'top', // Optional: Change position of the legend
                 },
                 tooltip: {
-                    enabled: true  // Enable tooltips for each segment
+                    enabled: true // Enable tooltips for each segment
                 }
             }
         }
@@ -718,15 +727,15 @@
     const data = @json($bookingcount);
 
     const barChart = new Chart(ctx1, {
-        type: 'bar',  // Set the chart type to 'bar'
+        type: 'bar', // Set the chart type to 'bar'
         data: {
-            labels: labels,  // Set labels as the plan type IDs
+            labels: labels, // Set labels as the plan type IDs
             datasets: [{
                 label: 'Bookings per Plan Type',
-                backgroundColor: '#4CAF50',  // Customize color
+                backgroundColor: '#4CAF50', // Customize color
                 borderColor: '#388E3C',
                 borderWidth: 1,
-                data: data  // Set data as the booking counts
+                data: data // Set data as the booking counts
             }]
         },
         options: {
@@ -739,9 +748,35 @@
                         text: 'Number of Bookings'
                     }
                 },
-                
+
             }
         }
+    });
+</script>
+<!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('.counter').each(function() {
+            var $this = $(this),
+                countTo = $this.attr('data-count');
+
+            $({
+                countNum: $this.text()
+            }).animate({
+                countNum: countTo
+            }, {
+                duration: 2000, // Duration in milliseconds
+                easing: 'swing',
+                step: function() {
+                    $this.text(Math.floor(this.countNum));
+                },
+                complete: function() {
+                    $this.text(this.countNum);
+                }
+            });
+        });
     });
 </script>
 

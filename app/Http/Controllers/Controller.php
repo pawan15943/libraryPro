@@ -27,11 +27,12 @@ use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
 use App\Models\Subscription;
+use App\Traits\LearnerQueryTrait;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
-
+    use LearnerQueryTrait;
     public function generateReceipt(Request $request)
     {
         if($request->type=='library'){
@@ -254,15 +255,7 @@ class Controller extends BaseController
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
-                    if($library_id==null){
-                      
-                        // learner insert
-                        $this->validateAndInsert($record, $successRecords, $invalidRecords);
-                    }else{
-                       
-                        //library master insert
-                        $this->validateMasterInsert($record, $successRecords, $invalidRecords,$library_id);
-                    }
+                    $this->validateAndInsert($record, $successRecords, $invalidRecords);
                    
                     
                 } catch (Throwable $e) {
@@ -283,16 +276,7 @@ class Controller extends BaseController
             ]);
         }
         
-        
-        if(($request->library_import=='library_master') || $request->library_id){
-           
-            $middleware = app(LoadMenus::class);
-            $middleware->updateLibraryStatus();
-            return redirect()->back()->with('success', count($successRecords));
-        }else{
-           
-            return redirect()->back()->with('successCount', count($successRecords));
-        }
+        return redirect()->back()->with('successCount', count($successRecords));
        
     }
     
@@ -371,9 +355,10 @@ class Controller extends BaseController
         $middleware->updateLibraryStatus();
         return redirect()->back()->with('successCount', count($successRecords));
     }
+
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
-     
+    
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
@@ -401,7 +386,7 @@ class Controller extends BaseController
         $plan = Plan::where('plan_id', trim($data['plan']))->first();
         $planType = PlanType::where('name', 'LIKE', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
-        if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'FirstHalf') && $planType->day_type_id==2) || (!$user->can('has-permission', 'SecondHalf') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly4') && $planType->day_type_id==7)){
+        if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
             return;
         }
@@ -419,6 +404,11 @@ class Controller extends BaseController
         }
 
         $seat = Seat::where('seat_no', trim($data['seat_no']))->first();
+        if(!$seat){
+            $invalidRecords[] = array_merge($data, ['error' => 'This Seat No. not exists']);
+            return;
+        }
+       
         $payment_mode = $this->getPaymentMode(trim($data['payment_mode']));
         $hours = $planType->slot_hours;
         $duration = trim($data['plan']) ?? 0;
@@ -470,6 +460,10 @@ class Controller extends BaseController
                         return;
                     } else {
                         // Create new learner and associated records
+                        if (empty($data['name']) || empty($data['email']) || empty($data['mobile']) || empty($hours) || empty($seat) || empty($start_date) || empty($planPrice->price)) {
+                            $invalidRecords[] = array_merge($data, ['error' => 'Missing essential data for creating learner']);
+                            return;
+                        }
                         $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
                     }
                 } else {
@@ -507,6 +501,10 @@ class Controller extends BaseController
                     $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
                 }
             } else {
+                if (empty($data['name']) || empty($data['email']) || empty($data['mobile']) || empty($hours) || empty($seat) || empty($start_date) || empty($planPrice->price)) {
+                    $invalidRecords[] = array_merge($data, ['error' => 'Missing essential data for creating learner']);
+                    return;
+                }
                 // Create a new learner if they don't exist
                 $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
             }
@@ -563,59 +561,125 @@ class Controller extends BaseController
     }
 
     function createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date) {
-      
-        $learner = Learner::create([
-            'library_id' => Auth::user()->id,
-            'name' => trim($data['name']),
-            'email' => trim($data['email']),
-            'password' => bcrypt(trim($data['mobile'])),
-            'mobile' => trim($data['mobile']),
-            'dob' => $dob,
-            'hours' => trim($hours),
-            'seat_no' => trim($data['seat_no']),
-            'payment_mode' => $payment_mode,
-            'address' => trim($data['address']),
-            'status' => $status,
-        ]);
-      
+   
+        DB::beginTransaction();
     
-        $this->createLearnerDetail($learner->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
-        $this->seat_availablity_update_now($seat->id,$planType->id);
-        $this->dataUpdateNow($learner->id);
-        return $learner;
+        try {
+            // Create learner entry
+            $learner = Learner::create([
+                'library_id' => Auth::user()->id,
+                'name' => trim($data['name']),
+                'email' => trim($data['email']),
+                'password' => bcrypt(trim($data['mobile'])),
+                'mobile' => trim($data['mobile']),
+                'dob' => $dob,
+                'hours' => trim($hours),
+                'seat_no' => trim($data['seat_no']),
+                'payment_mode' => $payment_mode,
+                'address' => trim($data['address']),
+                'status' => $status,
+            ]);
+    
+            // Create learner detail entry
+            $learner_detail = LearnerDetail::create([
+                'learner_id' => $learner->id,
+                'plan_id' => $plan->id,
+                'plan_type_id' => $planType->id,
+                'plan_price_id' => trim($data['plan_price']),
+                'plan_start_date' => $start_date,
+                'plan_end_date' => $endDate,
+                'join_date' => $joinDate,
+                'hour' => $hours,
+                'seat_id' => $seat->id,
+                'library_id' => Auth::user()->id,
+                'is_paid' => $is_paid,
+                'status' => $status,
+            ]);
+    
+            // Create learner transaction entry
+            LearnerTransaction::create([
+                'learner_id' => $learner->id,
+                'library_id' => Auth::user()->id,
+                'learner_detail_id' => $learner_detail->id,  // Corrected column name
+                'total_amount' => $planPrice->price,
+                'paid_amount' => trim($data['paid_amount']),
+                'pending_amount' => $pending_amount,
+                'paid_date' => $paid_date,
+                'is_paid' => 1,
+            ]);
+    
+            // Commit the transaction if all inserts succeed
+            DB::commit();
+    
+            // Update seat availability and learner data
+            $this->seat_availablity_update_now($seat->id, $planType->id);
+            $this->dataUpdateNow($learner->id);
+    
+        } catch (\Exception $e) {
+            // Rollback transaction on failure
+            DB::rollBack();
+    
+            // Log the error
+            \Log::error('Error in createLearnerDetail: ' . $e->getMessage());
+    
+            // Re-throw the exception to handle it further up
+            throw $e;
+        }
     }
-
-    function createLearnerDetail($learner_id, $plan,  $status,$planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date) {
-        $learner_detail = LearnerDetail::create([
-            'learner_id' => $learner_id,
-            'plan_id' => $plan->id,
-            'plan_type_id' => $planType->id,
-            'plan_price_id' => trim($data['plan_price']),
-            'plan_start_date' => $start_date,
-            'plan_end_date' => $endDate,
-            'join_date' => $joinDate,
-            'hour' => $hours,
-            'seat_id' => $seat->id,
-            'library_id' => Auth::user()->id,
-            'is_paid' => $is_paid,
-            'status' => $status,
-        ]);
     
-        LearnerTransaction::create([
-            'learner_id' => $learner_id,
-            'library_id' => Auth::user()->id,
-            'learner_deatail_id' => $learner_detail->id,
-            'total_amount' => $planPrice->price,
-            'paid_amount' => trim($data['paid_amount']),
-            'pending_amount' => $pending_amount,
-            'paid_date' => $paid_date,
-            'is_paid' => 1
-        ]);
-        $this->seat_availablity_update_now($seat->id,$planType->id);
-        $this->dataUpdateNow($learner_id);
+
+    function createLearnerDetail($learner_id, $plan, $status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date)
+    {
+        
+        DB::beginTransaction();
+
+        try {
+            // Create learner detail entry
+            $learner_detail = LearnerDetail::create([
+                'learner_id' => $learner_id,
+                'plan_id' => $plan->id,
+                'plan_type_id' => $planType->id,
+                'plan_price_id' => trim($data['plan_price']),
+                'plan_start_date' => $start_date,
+                'plan_end_date' => $endDate,
+                'join_date' => $joinDate,
+                'hour' => $hours,
+                'seat_id' => $seat->id,
+                'library_id' => Auth::user()->id,
+                'is_paid' => $is_paid,
+                'status' => $status,
+            ]);
+
+            // Create learner transaction entry
+            LearnerTransaction::create([
+                'learner_id' => $learner_id,
+                'library_id' => Auth::user()->id,
+                'learner_detail_id' => $learner_detail->id,
+                'total_amount' => $planPrice->price,
+                'paid_amount' => trim($data['paid_amount']),
+                'pending_amount' => $pending_amount,
+                'paid_date' => $paid_date,
+                'is_paid' => 1,
+            ]);
+
+        
+            DB::commit();
+
+            $this->seat_availablity_update_now($seat->id, $planType->id);
+            $this->dataUpdateNow($learner_id);
+
+        } catch (\Exception $e) {
+         
+            DB::rollBack();
+
+            \Log::error('Error in createLearnerDetail: ' . $e->getMessage());
+
+            throw $e;
+        }
     }
     
     function updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid) {
+       
         Learner::where('id', $learnerData->id)->update([
             'mobile' => trim($data['mobile']),
             'dob' => $dob,
@@ -696,7 +760,7 @@ class Controller extends BaseController
         
         }
     
-        $userUpdate = Learner::where('library_id',Auth::user()->id)->where('learner_id',$learner_id)->where('status', 1)->first();
+        $userUpdate = Learner::where('library_id',Auth::user()->id)->where('id',$learner_id)->where('status', 1)->first();
   
        
            $today = date('Y-m-d'); 
@@ -1063,7 +1127,7 @@ class Controller extends BaseController
             }
     
             // Insert new seats into the database
-            Seat::withoutGlobalScopes()->insert($seatsToAdd);
+            Seat::withoutGlobalScopes()->where('library_id', $library_id)->insert($seatsToAdd);
         }else{
             return;
         }
@@ -1256,70 +1320,74 @@ class Controller extends BaseController
 
         ]);
     }
-
+    // learner export functionality
     public function exportLearnerCSV()
     {
-        $fileName = 'learners.csv';  // The name of the CSV file
+        Log::info("Export CSV function called.");  // Track function call start
+        
+        $fileName = 'learners.csv';
+        
+        try {
+            // Create the streamed response
+            $response = new StreamedResponse(function () {
+                $handle = fopen('php://output', 'w');
+                Log::info("CSV file opened for output.");
 
-        // Create the streamed response
-        $response = new StreamedResponse(function () {
-            // Open output stream to write to the CSV
-            $handle = fopen('php://output', 'w');
+                // Set CSV headers
+                fputcsv($handle, ['name', 'email', 'mobile', 'seat_no', 'dob', 'address', 'plan', 'plan_type', 'plan_price', 'join_date', 'start_date', 'end_date', 'paid_amount', 'paid_date', 'payment_mode']);
+                Log::info("CSV headers written.");
 
-            // Set the CSV headers
-            fputcsv($handle, ['Name', 'Email', 'Mobile', 'Seat No', 'DOB', 'Address', 'Plan', 'Plan Type', 'Plan Price', 'Join Date', 'Start Date', 'End Date', 'Paid Amount', 'Paid Date', 'Payment Mode']);
+                // Fetch learners data
+                $learners = Learner::where('library_id', Auth::user()->id)->with(['learnerDetails', 'learnerTransactions'])->get();
+                Log::info("Fetched learners data.", ['count' => $learners->count()]);
 
-            // Fetch learners with their details and transactions
-            $learners = Learner::where('library_id',Auth::user()->id)->with(['learnerDetails', 'learnerTransactions'])->get();
-
-            // Loop through each learner and their associated details and transactions
-            foreach ($learners as $learner) {
-                // Check if there are details and transactions
-                if ($learner->learnerDetails->isEmpty() && $learner->learnerTransactions->isEmpty()) {
-                    fputcsv($handle, [
-                        $learner->name,
-                        $learner->email,
-                        $learner->mobile,
-                        $learner->seat_no,
-                        $learner->dob,
-                        $learner->address,
-                        '', '', '', '', '', '', '', '', ''
-                    ]);
-                } else {
-                    // Nested loops to combine learner details and transactions
-                    foreach ($learner->learnerDetails as $detail) {
-                        foreach ($learner->learnerTransactions as $transaction) {
-                            fputcsv($handle, [
-                                $learner->name,
-                                $learner->email,
-                                $learner->mobile,
-                                $learner->seat_no,
-                                $learner->dob,
-                                $learner->address,
-                                $detail->plan,
-                                $detail->plan_type,
-                                $detail->plan_price,
-                                $detail->join_date,
-                                $detail->plan_start_date,
-                                $detail->plan_end_date,
-                                $transaction->paid_amount,
-                                $transaction->paid_date,
-                                $transaction->payment_mode,
-                            ]);
+                foreach ($learners as $learner) {
+                    if ($learner->learnerDetails->isEmpty() && $learner->learnerTransactions->isEmpty()) {
+                        fputcsv($handle, [$learner->name, $learner->email, $learner->mobile, $learner->seat_no, $learner->dob, $learner->address]);
+                        Log::info("Wrote learner without details or transactions.", ['learner' => $learner->id]);
+                    } else {
+                        foreach ($learner->learnerDetails as $detail) {
+                            foreach ($learner->learnerTransactions as $transaction) {
+                                fputcsv($handle, [
+                                    $learner->name,
+                                    $learner->email,
+                                    $learner->mobile,
+                                    $learner->seat_no,
+                                    $learner->dob,
+                                    $learner->address,
+                                    $detail->plan->name, 
+                                    $detail->planType->name, 
+                                    $detail->plan_price_id,
+                                    $detail->join_date,
+                                    $detail->plan_start_date,
+                                    $detail->plan_end_date,
+                                    $transaction->paid_amount,
+                                    $transaction->paid_date,
+                                    $learner->payment_mode == 1 ? 'Online' : ($learner->payment_mode == 2 ? 'Offline' : 'Pay Later'),
+                                ]);
+                                Log::info("Wrote learner with details and transaction.", ['learner' => $learner->id]);
+                            }
                         }
                     }
                 }
-            }
 
-            fclose($handle); // Close the output stream
-        });
+                fclose($handle);  // Close the output stream
+                Log::info("CSV file output closed.");
+            });
 
-        // Set headers to force download of the CSV file
-        $response->headers->set('Content-Type', 'text/csv');
-        $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+            $response->headers->set('Content-Type', 'text/csv');
+            $response->headers->set('Content-Disposition', 'attachment; filename="' . $fileName . '"');
+            Log::info("Response headers set.");
 
-        return $response;
+            return $response;
+
+        } catch (\Exception $e) {
+            // Catch any exception, log it, and throw an error
+            Log::error("Error occurred in CSV export.", ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Failed to export CSV'], 500);
+        }
     }
+
    
     
     

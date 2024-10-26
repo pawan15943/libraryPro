@@ -40,9 +40,9 @@
                     </div>
                 </div>
             </form>
-            <div id="progress-container" style="display:none;">
-                <progress id="progress-bar" value="0" max="100" style="width: 100%;"></progress>
-                <span id="progress-text">0%</span>
+            <div id="export-progress-container">
+                <progress id="export-progress-bar" value="0" max="100" style="width: 100%;"></progress>
+                <span id="export-progress-text">Preparing download: 0%</span>
             </div>
         </div>
     </div>
@@ -82,12 +82,22 @@
             {{-- Trigger CSV Download Automatically --}}
             @if(session('autoExportCsv'))
             <script type="text/javascript">
-                let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
-                window.onload = function() {
-                    setTimeout(function() {
-                        window.location.href = exportrecordurl;
-                    }, 1000);
-                };
+                  let exportProgressBar = document.getElementById('export-progress-bar');
+                    let exportProgressText = document.getElementById('export-progress-text');
+                    let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+                    
+                    // Set an interval to update the progress bar every 100 ms
+                    let progress = 0;
+                    let interval = setInterval(function() {
+                        progress += 10;
+                        exportProgressBar.value = progress;
+                        exportProgressText.textContent = `Preparing download: ${progress}%`;
+                        
+                        if (progress >= 100) {
+                            clearInterval(interval);
+                            window.location.href = exportrecordurl;
+                        }
+                    }, 100); // 100 ms * 10 = 1 second, change as needed
             </script>
             @endif
 
@@ -97,7 +107,18 @@
                 document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
                     // Hide the invalid records section
                     document.getElementById('invalid-records-section').style.display = 'none';
+            
+                    // Reset the progress bar
+                    let exportProgressBar = document.getElementById('export-progress-bar');
+                    let exportProgressText = document.getElementById('export-progress-text');
+                    
+                    if (exportProgressBar && exportProgressText) {
+                        exportProgressBar.value = 0; // Reset progress to 0
+                        exportProgressText.textContent = ""; // Clear text percentage
+                    }
+            
                     let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
+                    
                     // Send AJAX request to clear session
                     fetch(clearSessionRoute, {
                             method: 'POST',
@@ -118,6 +139,7 @@
                         .catch(error => console.error('Error:', error));
                 });
             </script>
+            
         </div>
     </div>
 </div>

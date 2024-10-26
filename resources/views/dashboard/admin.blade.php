@@ -31,14 +31,18 @@
         <div class="col-lg-3">
             <div class="active-plan-box">
                 <div class="top-content">
-                    <h4>{{$plan->name}}<span><a href="">Upgrade Plan</a></span></h4>
+                    <h4>{{$plan->name}}
+                        @if(($librarydiffInDays <= 5 &&  !$is_renew && $isProfile))
+                        <span><a href="{{ route('subscriptions.choosePlan') }}">Upgrade Plan</a></span>
+                        @endif
+                    </h4>
                     <label for="">Active</label>
                 </div>
                 <div class="d-flex">
                     <ul class="plann-info">
-                        <li>Total Seat : <a href="">{{$total_seats}}</a> </li>
-                        <li>Plan Features : <a href="">{{$features_count}}</a> </li>
-                        <li>Plan Price : <a href="">{{$check->amount}}</a> </li>
+                        <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
+                        <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
+                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}}</a> </li>
                     </ul>
                 </div>
             </div>
@@ -228,19 +232,19 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-    </div>
-</div>
-<div class="col-lg-2">
-    <div class="booking-count bg-4">
-        <h6>Email Sended</h6>
-        <div class="d-flex">
-            <h4>80</h4>
-
+            </div>
         </div>
-        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        <div class="col-lg-2">
+            <div class="booking-count bg-4">
+                <h6>Email Sended</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div> --}}
     </div>
-</div> --}}
-</div>
 
 <h4 class="my-4">Plan Wise Count</h4>
 <div class="row g-4 planwisecount">
@@ -347,7 +351,7 @@
 </div>
 
 
-<!-- Available Seats -->
+    <!-- Available Seats -->
 
 <div class="row mt-5">
     <div class="col-lg-4">
@@ -373,7 +377,7 @@
                 @endforeach
                
             </ul>
-            <a href="" class="view-full-info">View All Available Seats</a>
+            <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
     </div>
 
@@ -403,7 +407,7 @@
                 @endforeach
               
             </ul>
-            <a href="" class="view-full-info">View All Availble Seats</a>
+            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
         </div>
     </div>
     <div class="col-lg-4">
@@ -432,7 +436,7 @@
                 @endforeach
             </ul>
 
-            <a href="" class="view-full-info">View All Availble Seats</a>
+            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
         </div>
     </div>
 </div>

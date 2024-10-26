@@ -81,7 +81,9 @@
                 @php
                 
                 $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
-                $expense = $expenses->firstWhere('year', $revenue->year) && $expenses->firstWhere('month', $revenue->month);
+                $expense = $expenses->first(function($item) use ($revenue) {
+                    return $item->year == $revenue['year'] && $item->month == $revenue['month'];
+                });
                 $total_expense = $expense ? $expense->total_expense : 0;
                 $net_profit = $revenue->total_revenue - $total_expense;
                 

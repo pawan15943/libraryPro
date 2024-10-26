@@ -166,7 +166,7 @@ class DashboardController extends Controller
             // Fetch expenses for the last three months
             $expenses = DB::table('monthly_expense')
                 ->where('library_id', Auth::user()->id)
-                ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$threeMonthsAgo, $endOfLastMonth])
+                ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$startOfYear, $endOfYear])
                 ->selectRaw('year, month, SUM(amount) as total_expense')
                 ->groupBy('year', 'month')
                 ->orderBy('year', 'asc')

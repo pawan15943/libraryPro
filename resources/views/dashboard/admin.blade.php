@@ -25,7 +25,7 @@
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
                 <h1>Welcome to <span>LibraryPro</span><br>
-                Where <span class="typing-text">Great Minds Gather!</span></h1>
+                    Where <span class="typing-text">Great Minds Gather!</span></h1>
             </div>
         </div>
         <div class="col-lg-3">
@@ -83,14 +83,14 @@
                 @foreach($revenues as $revenue)
 
                 @php
-                
+
                 $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
                 $expense = $expenses->first(function($item) use ($revenue) {
-                    return $item->year == $revenue['year'] && $item->month == $revenue['month'];
+                return $item->year == $revenue['year'] && $item->month == $revenue['month'];
                 });
                 $total_expense = $expense ? $expense->total_expense : 0;
                 $net_profit = $revenue->total_revenue - $total_expense;
-                
+
                 @endphp
                 <li>
                     <div class="d-flex">
@@ -116,19 +116,24 @@
             </ul>
         </div>
     </div>
+    <!-- Available Seats -->
 
+   
 
     <!-- Library Other Counts -->
-    <div class="row g-4 mb-3">
+    <div class="row g-4 mb-3 align-items-center">
+        <div class="col-lg-9">
+            <h4 class="my-4">Library Other Highlights</h4>
+        </div>
         <div class="col-lg-3">
-            <select id="dataFilter" class="form-select">
+            <select id="dataFilter" class="form-select form-control-sm">
                 <option value="monthly">Monthly</option>
                 <option value="weekly">Weekly</option>
                 <option value="today">Today</option>
             </select>
         </div>
     </div>
-    <h4 class="my-4">Library Other Highlights</h4>
+
     <div class="row g-4">
         <div class="col-lg-2">
             <div class="booking-count bg-3">
@@ -341,7 +346,7 @@
 
 </div>
 
-<div class="row">
+<div class="row mt-4">
     <div class="col-lg-8">
         <canvas id="revenueChart"></canvas>
     </div>
@@ -440,6 +445,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 <!-- Charts -->
 

@@ -13,13 +13,14 @@ $today = Carbon::today();
 <div class="row mb-4">
     <!-- Main Info -->
     <div class="col-lg-12">
+        <p><b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.</p>
         <div class="table-responsive">
             <table class="table text-center datatable">
                 <thead>
                     <tr>
                         <th style="width: 10%">Seat No.</th>
-                        <th style="width: 20%">Name</th>
-                        <th style="width: 10%">Plan Type</th>
+                        <th style="width: 20%">Seat Owner Name</th>
+                        <th style="width: 10%">Plan Info</th>
                         <th style="width: 10%">Join On</th>
                         <th style="width: 10%">Start On</th>
                         <th style="width: 10%">Ends On</th>
@@ -30,37 +31,38 @@ $today = Carbon::today();
                     @foreach($seats as $seat)
                     @php
                     // First, check if there are any customers with status 1 for the given seat
-                    $usersForSeat =  App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',1)->get();
+                    $usersForSeat = App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',1)->get();
                     // If no learners with status 1 are found, check for learners with status 0
                     if ($usersForSeat->isEmpty()) {
-                        $usersForSeat =  App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',0)->get();
-             
+                    $usersForSeat = App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',0)->get();
+
                     }
                     @endphp
                     @if($usersForSeat->count() > 0)
-                 
+
                     <tr>
                         <td rowspan="{{ $usersForSeat->count() }}">{{ $seat->seat_no }}</td>
                         @foreach($usersForSeat as $user)
                         @php
-                            $learner=App\Models\Learner::where('id',$user->learner_id)->first();
-                            $plantype = App\Models\PlanType::where('id', $user->plan_type_id)->first();
-                            $endDate = Carbon::parse($user->plan_end_date);
-                            $diffInDays = $today->diffInDays($endDate, false);
+                        $learner=App\Models\Learner::where('id',$user->learner_id)->first();
+                        $plan = App\Models\Plan::where('id', $user->plan_id)->first();
+                        $plantype = App\Models\PlanType::where('id', $user->plan_type_id)->first();
+                        $endDate = Carbon::parse($user->plan_end_date);
+                        $diffInDays = $today->diffInDays($endDate, false);
                         @endphp
                         @if (!$loop->first)
                     <tr>
                         @endif
-                        <td class="uppercaseṢ">{{ $learner->name }}</td>
-                        <td>{{ $plantype->name }}</td>
+                        <td class="uppercaseṢ">{{ $learner->name }}<br><small>{{ $learner->dob }}</small></td>
+                        <td>{{ $plantype->name }}<br><small>{{ $plan->name }}</small></td>
                         <td>{{ $user->join_date }}
                             @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block ">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
-                            <small class="text-danger fs-10 d-block ">Available for book</small>
-                            @else
-                            <small class="text-warning fs-10 d-block ">Expires today</small>
-                            @endif
+                                <small class="text-danger fs-10 d-block ">Available for book</small>
+                                @else
+                                <small class="text-warning fs-10 d-block ">Expires today</small>
+                                @endif
                         </td>
                         <td>{{ $user->plan_start_date }}</td>
                         <td>{{ $user->plan_end_date }}</td>

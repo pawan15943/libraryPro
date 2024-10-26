@@ -131,7 +131,7 @@ class DashboardController extends Controller
             ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day]) // Extended date is today or in the future
             ->with('planType') // Eager load related planType
             ->get();
-          
+            
             $threeMonthsAgo = $today->copy()->subMonths(2)->startOfMonth(); // Start of 3 months ago
             $endOfLastMonth = $today->copy()->subMonth()->endOfMonth(); // End of last month
            
@@ -300,8 +300,10 @@ class DashboardController extends Controller
         $extended_seats = $this->getLearnersByLibrary()
         ->where('learner_detail.is_paid',1)
         ->where('learner_detail.status',1)
-        ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) > CURDATE()", [$extend_day])
+        ->where('learner_detail.plan_end_date', '<', date('Y-m-d'))
+        ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
         ->count();       
+        
         $swap_seat=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','swapseat')->count();
         $learnerUpgrade=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','learnerUpgrade')->count();
         $reactive=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','reactive')->count();

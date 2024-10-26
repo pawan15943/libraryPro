@@ -151,14 +151,17 @@ class DashboardController extends Controller
                 $features_count=0;
             }
            
-            
-            $revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
+            $startOfYear = Carbon::now()->startOfYear();
+            $endOfYear = Carbon::now()->endOfYear();
+            $revenues = LearnerDetail::whereBetween('join_date', [$startOfYear, $endOfYear])
             ->where('is_paid', 1)
             ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
             ->groupBy('year', 'month')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')
-            ->get();
+            ->get()
+            ->keyBy('month');
+         
 
             // Fetch expenses for the last three months
             $expenses = DB::table('monthly_expense')

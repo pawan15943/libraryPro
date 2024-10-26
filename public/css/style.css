@@ -1649,7 +1649,10 @@ img.extedned,
     color: red !important;
 }
 
-
+p.not-found {
+    margin: 0;
+    text-align: center;
+}
 
 @keyframes blink {
     0% {
@@ -2654,16 +2657,23 @@ ul.plan-features li+li {
 }
 
 .col-lg-3:nth-child(1) .plan-box,
+.paymentinfo .basic,
 .basic {
     background: linear-gradient(2deg, #3F51B5, #081350);
 }
 
+a.btn.btn-primary.button.box-shadow.disabled.renew {
+    background: #00BCD4 ! IMPORTANT;
+}
+
 .col-lg-3:nth-child(2) .plan-box,
+.paymentinfo .standard,
 .standard {
     background: linear-gradient(3deg, #673AB7, #370099);
 }
 
 .col-lg-3:nth-child(3) .plan-box,
+.paymentinfo .premium,
 .premium {
     background: linear-gradient(0deg, #c3a81d, #ab8d15);
 }

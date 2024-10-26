@@ -13,7 +13,7 @@ $today = Carbon::today();
         <!-- <h4>Seat Booking History of Seat No. {{ $seat->seat_no }}</h4> -->
 
         @if($learners->isEmpty())
-        <p class="not-found">No customer history found for this seat.</p>
+        <p class="not-found py-4">There is currently no history available for this seat for any learners.</p>
         @else
         <div class="table-responsive mt-2">
             <table class="table text-center data-table" id="datatable" style="display:table !important;">
@@ -31,40 +31,38 @@ $today = Carbon::today();
                 </thead>
                 <tbody>
                     @foreach($learners as $learner)
-                        @foreach($learner->learnerDetails as $detail)
-                            @php
-                                $today = Carbon::today();
-                                $endDate = Carbon::parse($detail->plan_end_date);
-                                $diffInDays = $today->diffInDays($endDate, false);
-                            @endphp
-                            <tr>
-                                <td>{{ $seat->seat_no }}</td>
-                                <td><span class="uppercase truncate m-auto text-center d-block">{{ $learner->name }}</span></td>
-                                <td> +91-{{ $learner->mobile }}</td>
-                                <td> {{ $learner->email }}</td>
-                                <td> {{ $detail->plan->name ?? 'N/A' }}</td>
-                                <td> {{ $detail->planType->name ?? 'N/A' }}</td>
-                                <td> {{ $detail->plan_start_date }}</td>
-                                <td> {{ $detail->plan_end_date }}<br>
-                                    @if ($diffInDays > 0)
-                                        <small class="text-success fs-10">Expires in {{ $diffInDays }} days</small>
-                                    @elseif ($diffInDays < 0)
-                                        <small class="text-danger fs-10">Expired {{ abs($diffInDays) }} days ago</small>
-                                    @else
-                                        <small class="text-warning fs-10">Expires today</small>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
+                    @foreach($learner->learnerDetails as $detail)
+                    @php
+                    $today = Carbon::today();
+                    $endDate = Carbon::parse($detail->plan_end_date);
+                    $diffInDays = $today->diffInDays($endDate, false);
+                    @endphp
+                    <tr>
+                        <td>{{ $seat->seat_no }}</td>
+                        <td><span class="uppercase truncate m-auto text-center d-block">{{ $learner->name }}</span></td>
+                        <td> +91-{{ $learner->mobile }}</td>
+                        <td> {{ $learner->email }}</td>
+                        <td> {{ $detail->plan->name ?? 'N/A' }}</td>
+                        <td> {{ $detail->planType->name ?? 'N/A' }}</td>
+                        <td> {{ $detail->plan_start_date }}</td>
+                        <td> {{ $detail->plan_end_date }}<br>
+                            @if ($diffInDays > 0)
+                            <small class="text-success fs-10">Expires in {{ $diffInDays }} days</small>
+                            @elseif ($diffInDays < 0)
+                                <small class="text-danger fs-10">Expired {{ abs($diffInDays) }} days ago</small>
+                                @else
+                                <small class="text-warning fs-10">Expires today</small>
+                                @endif
+                        </td>
+                    </tr>
+                    @endforeach
                     @endforeach
                 </tbody>
             </table>
-            
-            
         </div>
         @endif
     </div>
 </div>
-           
+
 
 @endsection

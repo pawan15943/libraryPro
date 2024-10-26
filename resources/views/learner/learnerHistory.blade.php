@@ -91,7 +91,7 @@ $current_route = Route::currentRouteName();
         {{ session('success') }}
     </div>
 @endif
-<div class="row">
+<div class="row d-none">
     <div class="col-lg-12">
         <div class="filter-box">
             <h4 class="mb-3">Filter Box</h4>
@@ -153,9 +153,10 @@ $current_route = Route::currentRouteName();
 
 
 
-<div class="row mb-4">
+<div class="row">
     <div class="col-lg-12">
-        <div class="table-responsive mt-4">
+    <p><b>Important: </b>This section displays a list of all closed plans and expired seats. If a seat owner does not renew their plan within a month or specified extension period, the seat will automatically expire and become available for others to book.However, if a user wishes to rebook their seat at a later time, we offer an option to reactivate the seat under a different seat number using the reactivation feature. In this case, we will not collect personal information again; instead, we will use the existing information on file.</p>
+        <div class="table-responsive">
             <table class="table text-center datatable" id="datatable">
                 <thead>
                     <tr>
@@ -164,7 +165,6 @@ $current_route = Route::currentRouteName();
                         <th>Contact Info</th>
                         <th>Active Plan</th>
                         <th>Expired On</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -203,9 +203,6 @@ $current_route = Route::currentRouteName();
                                 @else
                                 <small class="text-warning fs-10 d-block">Expires today</small>
                                 @endif
-                        </td>
-                        <td>
-                            <button class="active-status">Active</button>
                         </td>
                         <td>
                             <ul class="actionalbls">

@@ -25,7 +25,7 @@
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
                 <h1>Welcome to <span>LibraryPro</span><br>
-                Where <span class="typing-text">Great Minds Gather!</span></h1>
+                    Where <span class="typing-text">Great Minds Gather!</span></h1>
             </div>
         </div>
         <div class="col-lg-3">
@@ -79,14 +79,14 @@
                 @foreach($revenues as $revenue)
 
                 @php
-                
+
                 $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
                 $expense = $expenses->first(function($item) use ($revenue) {
-                    return $item->year == $revenue['year'] && $item->month == $revenue['month'];
+                return $item->year == $revenue['year'] && $item->month == $revenue['month'];
                 });
                 $total_expense = $expense ? $expense->total_expense : 0;
                 $net_profit = $revenue->total_revenue - $total_expense;
-                
+
                 @endphp
                 <li>
                     <div class="d-flex">
@@ -112,19 +112,110 @@
             </ul>
         </div>
     </div>
+    <!-- Available Seats -->
 
+    <div class="row mt-2">
+        <div class="col-lg-4">
+
+            <!-- Show 10 availble Seats -->
+            <div class="seat-statistics ">
+                <h4 class="mb-4 text-center">Avaialble Seats</h4>
+                <ul class="contents">
+
+                    @foreach($available_seats as $key => $value)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. {{$value}}</h6>
+                                <small>Available</small>
+                            </div>
+
+                            <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
+                                data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
+                        </div>
+                    </li>
+                    @endforeach
+
+                </ul>
+                <a href="" class="view-full-info">View All Available Seats</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Seat About to Expire</h4>
+                <ul class="contents">
+                    @foreach($renewSeats as $key => $value)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. {{$value->seat_no}}</h6>
+                                <small>{{$value->planType->name}}</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
+                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$value->seat_id}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endforeach
+
+                </ul>
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Extend Seats</h4>
+                <ul class="contents">
+                    @foreach($extend_sets as $seat)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. {{ $seat->seat_no }}</h6>
+                                <small>{{ $seat->planType->name}}</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
+                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+
+                <a href="" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+    </div>
 
     <!-- Library Other Counts -->
-    <div class="row g-4 mb-3">
+    <div class="row g-4 mb-3 align-items-center">
+        <div class="col-lg-9">
+            <h4 class="my-4">Library Other Highlights</h4>
+        </div>
         <div class="col-lg-3">
-            <select id="dataFilter" class="form-select">
+            <select id="dataFilter" class="form-select form-control-sm">
                 <option value="monthly">Monthly</option>
                 <option value="weekly">Weekly</option>
                 <option value="today">Today</option>
             </select>
         </div>
     </div>
-    <h4 class="my-4">Library Other Highlights</h4>
+
     <div class="row g-4">
         <div class="col-lg-2">
             <div class="booking-count bg-3">
@@ -337,105 +428,23 @@
 
 </div>
 
-<div class="row">
+<div class="row mt-4">
     <div class="col-lg-8">
-        <canvas id="revenueChart"></canvas>
-    </div>
-    <div class="col-lg-4">
-        <canvas id="bookingCountChart"></canvas>
-    </div>
-</div>
-
-
-<!-- Available Seats -->
-
-<div class="row mt-5">
-    <div class="col-lg-4">
-
-        <!-- Show 10 availble Seats -->
-        <div class="seat-statistics ">
-            <h4 class="mb-4 text-center">Avaialble Seats</h4>
-            <ul class="contents">
-                
-                @foreach($available_seats as $key => $value)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                        <div class="seat-content">
-                            <h6>Seat No. {{$value}}</h6>
-                            <small>Available</small>
-                        </div>
-                     
-                        <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                        data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
-                    </div>
-                </li>
-                @endforeach
-               
-            </ul>
-            <a href="" class="view-full-info">View All Available Seats</a>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <div class="seat-statistics">
-            <h4 class="mb-3 text-center">Seat About to Expire</h4>
-            <ul class="contents">
-                @foreach($renewSeats as $key => $value)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
-                        <div class="seat-content">
-                            <h6>Seat No. {{$value->seat_no}}</h6>
-                            <small>{{$value->planType->name}}</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
-                            <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$value->seat_id}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
-                        </div>
-
-                        <ul class="d-flex inner">
-                            <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                            <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                @endforeach
-              
-            </ul>
-            <a href="" class="view-full-info">View All Availble Seats</a>
+        <div class="card">
+            <h4 class="pb-4">Planwise Revenue</h4>
+            <canvas id="revenueChart"></canvas>
         </div>
     </div>
     <div class="col-lg-4">
-        <div class="seat-statistics">
-            <h4 class="mb-3 text-center">Extend Seats</h4>
-            <ul class="contents">
-                @foreach($extend_sets as $seat)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
-                        <div class="seat-content">
-                            <h6>Seat No. {{ $seat->seat_no }}</h6>
-                            <small>{{ $seat->planType->name}}</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
-                        </div>
-
-                        <ul class="d-flex inner">
-                            <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                            <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                @endforeach
-            </ul>
-
-            <a href="" class="view-full-info">View All Availble Seats</a>
+        <div class="card">
+            <h4 class="pb-4">Planwise Bookings</h4>
+            <canvas id="bookingCountChart"></canvas>
         </div>
     </div>
 </div>
+
+
+
 
 <!-- Charts -->
 

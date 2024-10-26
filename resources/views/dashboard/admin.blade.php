@@ -20,14 +20,15 @@
     </div>
 </div>
 <div class="dashboard">
-
-
-    <div class="row align-items-center ">
-        <div class="col-lg-6">
-            <h1>Welcome to <span>LibraryPro</span>
+    <div class="row mt-4">
+        <div class="col-lg-9">
+            <div class="dashboard-Header">
+                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
+                <h1>Welcome to <span>LibraryPro</span><br>
                 Where <span class="typing-text">Great Minds Gather!</span></h1>
+            </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-lg-3">
             <div class="active-plan-box">
                 <div class="top-content">
                     <h4>{{$plan->name}}<span><a href="">Upgrade Plan</a></span></h4>
@@ -43,16 +44,9 @@
             </div>
         </div>
     </div>
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <div class="dashboard-Header">
-                <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-    </div>
     <!-- Library Main Counts -->
     <div class="row my-4">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
                 <h2>{{$total_seats}}</h2>
@@ -60,19 +54,19 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-               <small>Added on {{date('d-m-Y')}}</small>
+                <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2>{{$availble_seats}}</h2>
-               <small>Added on {{date('d-m-Y')}}</small>
+                <small>Added on {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -82,12 +76,15 @@
     <div class="row">
         <div class="col-lg-12">
             <ul class="revenue-box scroll-x">
-                @foreach($revenues  as $revenue)
+                @foreach($revenues as $revenue)
+
                 @php
-                  $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
-                    $expense = $expenses->firstWhere('year', $revenue->year) && $expenses->firstWhere('month', $revenue->month);
-                    $total_expense = $expense ? $expense->total_expense : 0;
-                    $net_profit = $revenue->total_revenue - $total_expense;
+                
+                $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
+                $expense = $expenses->firstWhere('year', $revenue->year) && $expenses->firstWhere('month', $revenue->month);
+                $total_expense = $expense ? $expense->total_expense : 0;
+                $net_profit = $revenue->total_revenue - $total_expense;
+                
                 @endphp
                 <li>
                     <div class="d-flex">
@@ -229,217 +226,218 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Email Sended</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div> --}}
     </div>
+</div>
+<div class="col-lg-2">
+    <div class="booking-count bg-4">
+        <h6>Email Sended</h6>
+        <div class="d-flex">
+            <h4>80</h4>
 
-    <h4 class="my-4">Plan Wise Count</h4>
-    <div class="row g-4 planwisecount">
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Full Day</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
         </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>First Half</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Second Half</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Hourly Slot 1</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Hourly Slot 2</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Hourly Slot 3</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Hourly Slot 4</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-3">
-                <h6>Total Booked Seats</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-3">
-                <h6>Available Seats</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-
+        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
     </div>
+</div> --}}
+</div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <canvas id="revenueChart"></canvas>
+<h4 class="my-4">Plan Wise Count</h4>
+<div class="row g-4 planwisecount">
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Full Day</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-        <div class="col-lg-4">
-            <canvas id="bookingCountChart"></canvas>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>First Half</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Second Half</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Hourly Slot 1</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Hourly Slot 2</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Hourly Slot 3</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-4">
+            <h6>Hourly Slot 4</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-3">
+            <h6>Total Booked Seats</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="booking-count bg-3">
+            <h6>Available Seats</h6>
+            <div class="d-flex">
+                <h4>80</h4>
+
+            </div>
+            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
 
+</div>
 
-    <!-- Available Seats -->
-    <div class="row mt-5">
-        <div class="col-lg-4">
+<div class="row">
+    <div class="col-lg-8">
+        <canvas id="revenueChart"></canvas>
+    </div>
+    <div class="col-lg-4">
+        <canvas id="bookingCountChart"></canvas>
+    </div>
+</div>
 
-            <!-- Show 10 availble Seats -->
-            <div class="seat-statistics ">
-                <h4 class="mb-4 text-center">Avaialble Seats</h4>
-                <ul class="contents">
-                    
-                    @foreach($available_seats as $key => $value)
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. {{$value}}</h6>
-                                <small>Available</small>
-                            </div>
-                         
-                            <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                            data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
+
+<!-- Available Seats -->
+
+<div class="row mt-5">
+    <div class="col-lg-4">
+
+        <!-- Show 10 availble Seats -->
+        <div class="seat-statistics ">
+            <h4 class="mb-4 text-center">Avaialble Seats</h4>
+            <ul class="contents">
+                
+                @foreach($available_seats as $key => $value)
+                <li>
+                    <div class="d-flex">
+                        <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
+                        <div class="seat-content">
+                            <h6>Seat No. {{$value}}</h6>
+                            <small>Available</small>
                         </div>
-                    </li>
-                    @endforeach
-                   
-                </ul>
-                <a href="" class="view-full-info">View All Available Seats</a>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="seat-statistics">
-                <h4 class="mb-3 text-center">Seat About to Expire</h4>
-                <ul class="contents">
-                    @foreach($renewSeats as $key => $value)
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. {{$value->seat_no}}</h6>
-                                <small>{{$value->planType->name}}</small>
-                            </div>
-                            <div class="seat-status">
-                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
-                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$value->seat_id}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
-                            </div>
-
-                            <ul class="d-flex inner">
-                                <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    @endforeach
-                  
-                </ul>
-                <a href="" class="view-full-info">View All Availble Seats</a>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="seat-statistics">
-                <h4 class="mb-3 text-center">Extend Seats</h4>
-                <ul class="contents">
-                    @foreach($extend_sets as $seat)
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
-                            <div class="seat-content">
-                                <h6>Seat No. {{ $seat->seat_no }}</h6>
-                                <small>{{ $seat->planType->name}}</small>
-                            </div>
-                            <div class="seat-status">
-                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
-                            </div>
-
-                            <ul class="d-flex inner">
-                                <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                                <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-
-                <a href="" class="view-full-info">View All Availble Seats</a>
-            </div>
+                     
+                        <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
+                        data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
+                    </div>
+                </li>
+                @endforeach
+               
+            </ul>
+            <a href="" class="view-full-info">View All Available Seats</a>
         </div>
     </div>
 
-    <!-- Charts -->
-   
-    
+    <div class="col-lg-4">
+        <div class="seat-statistics">
+            <h4 class="mb-3 text-center">Seat About to Expire</h4>
+            <ul class="contents">
+                @foreach($renewSeats as $key => $value)
+                <li>
+                    <div class="d-flex">
+                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                        <div class="seat-content">
+                            <h6>Seat No. {{$value->seat_no}}</h6>
+                            <small>{{$value->planType->name}}</small>
+                        </div>
+                        <div class="seat-status">
+                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
+                            <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$value->seat_id}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
+                        </div>
+
+                        <ul class="d-flex inner">
+                            <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                            <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
+                        </ul>
+                    </div>
+                </li>
+                @endforeach
+              
+            </ul>
+            <a href="" class="view-full-info">View All Availble Seats</a>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="seat-statistics">
+            <h4 class="mb-3 text-center">Extend Seats</h4>
+            <ul class="contents">
+                @foreach($extend_sets as $seat)
+                <li>
+                    <div class="d-flex">
+                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                        <div class="seat-content">
+                            <h6>Seat No. {{ $seat->seat_no }}</h6>
+                            <small>{{ $seat->planType->name}}</small>
+                        </div>
+                        <div class="seat-status">
+                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
+                            <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                        </div>
+
+                        <ul class="d-flex inner">
+                            <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                            <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
+                        </ul>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+
+            <a href="" class="view-full-info">View All Availble Seats</a>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+
+
 </div>
 <!-- End -->
 <!-- seat book poup -->
@@ -637,7 +635,7 @@
             $(".contents").mCustomScrollbar();
         });
     })(jQuery);
-  // (function($) {
+    // (function($) {
     //     $(window).on("load", function() {
     //         $(".scroll-x").mCustomScrollbar({
     //             axis: "x", // Enable horizontal scrolling
@@ -649,7 +647,6 @@
     //         });
     //     });
     // })(jQuery);
-   
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -694,14 +691,14 @@
     }
 </script>
 <script>
-    $(document).ready(function () {
-        var initialFilter = $('#dataFilter').val();  
-        fetchLibraryData(initialFilter);  
+    $(document).ready(function() {
+        var initialFilter = $('#dataFilter').val();
+        fetchLibraryData(initialFilter);
 
         // Fetch data when the filter is changed
-        $('#dataFilter').on('change', function () {
-            var selectedFilter = $(this).val(); 
-            fetchLibraryData(selectedFilter);  
+        $('#dataFilter').on('change', function() {
+            var selectedFilter = $(this).val();
+            fetchLibraryData(selectedFilter);
         });
 
         function fetchLibraryData(filter) {
@@ -709,12 +706,12 @@
                 url: '{{ route("dashboard.data.get") }}',
                 method: 'POST',
                 data: {
-                    filter: filter,  // Use the filter parameter passed to the function
-                    _token: '{{ csrf_token() }}'  // CSRF token for security
+                    filter: filter, // Use the filter parameter passed to the function
+                    _token: '{{ csrf_token() }}' // CSRF token for security
                 },
                 success: function(response) {
-                    
-                    updateHighlights(response.highlights); 
+
+                    updateHighlights(response.highlights);
                     console.log('Full response:', response);
 
                     var planWiseBookings = response.plan_wise_booking;
@@ -733,7 +730,7 @@
                             </div>`;
                         $('.row.g-4.planwisecount').append(html);
                     });
-                   // Ensure labels and data for Revenue Chart are properly fetched
+                    // Ensure labels and data for Revenue Chart are properly fetched
                     if (response.planTypeWiseRevenue && Array.isArray(response.planTypeWiseRevenue.labels) && Array.isArray(response.planTypeWiseRevenue.data)) {
                         renderRevenueChart(response.planTypeWiseRevenue.labels, response.planTypeWiseRevenue.data);
                     } else {
@@ -757,8 +754,8 @@
             });
         }
 
-            function updateHighlights(highlights) {
-        
+        function updateHighlights(highlights) {
+
             $('#totalBookings').text(highlights.total_booking);
             $('#onlinePaid').text(highlights.online_paid);
             $('#offlinePaid').text(highlights.offline_paid);
@@ -769,9 +766,9 @@
             $('#swap_seat').text(highlights.swap_seat);
             $('#learnerUpgrade').text(highlights.learnerUpgrade);
             $('#reactive').text(highlights.reactive);
-            }
+        }
 
-       
+
 
 
     });
@@ -779,34 +776,35 @@
 <script>
     function renderRevenueChart(labels, data) {
         if (Chart.getChart("revenueChart")) {
-        Chart.getChart("revenueChart").destroy();
-    }
-    var ctx = document.getElementById('revenueChart').getContext('2d');
-    var revenueChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Plan Type Wise Revenue',
-                data: data,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+            Chart.getChart("revenueChart").destroy();
+        }
+        var ctx = document.getElementById('revenueChart').getContext('2d');
+        var revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Plan Type Wise Revenue',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
     }
+
     function renderBookingCountChart(labels, data) {
         if (Chart.getChart("bookingCountChart")) {
-        Chart.getChart("bookingCountChart").destroy();
-    }
+            Chart.getChart("bookingCountChart").destroy();
+        }
         var ctx1 = document.getElementById('bookingCountChart').getContext('2d');
         var bookingCountChart = new Chart(ctx1, {
             type: 'pie',
@@ -844,7 +842,6 @@
             }
         });
     }
-
 </script>
 
 @include('learner.script')

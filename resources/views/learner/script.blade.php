@@ -388,19 +388,19 @@
         });
 
         $(document).on('submit', '#upgradeForm', function(event) {
-            
+           
             event.preventDefault();
             var formData = new FormData(this);
             var seat_no = $('#update_seat_no').val();
             var user_id = $('#update_user_id').val();
             var plan_id = $('#update_plan_id').val();
-            var payment_mode = $('#payment_mode').val();
+           
             
           
             var plan_type_id = $('#updated_plan_type_id').val();
             var plan_price_id = $('#updated_plan_price_id').val();
             var errors = {};
-            
+            console.log('seat_no',seat_no,'user_id',user_id,'plan_id',plan_id,'plan_type_id',plan_type_id,'payment_mode',payment_mode);
             if (!plan_id) {
                 errors.plan_id = 'Plan is required.';
             }
@@ -411,9 +411,9 @@
             if (!plan_price_id) {
                 errors.plan_price_id = 'Price is required.';
             }
-            if (!payment_mode) {
-                errors.payment_mode = 'Payment mode is required.';
-            }
+            // if (!payment_mode) {
+            //     errors.payment_mode = 'Payment mode is required.';
+            // }
 
             if (Object.keys(errors).length > 0) {
                 $(".is-invalid").removeClass("is-invalid");

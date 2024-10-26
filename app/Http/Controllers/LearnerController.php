@@ -1071,7 +1071,7 @@ class LearnerController extends Controller
     }
    
     public function learnerRenew(Request $request){
-       
+   
   
         $rules = [
            
@@ -1079,7 +1079,7 @@ class LearnerController extends Controller
             'plan_type_id' => 'required',
             'plan_price_id' => 'required',
             'user_id' => 'required',
-            'payment_mode' => 'required',
+            // 'payment_mode' => 'required',
          
         ];
         $validator = Validator::make($request->all(), $rules);
@@ -1112,8 +1112,10 @@ class LearnerController extends Controller
        $endDate = $start_date->copy()->addMonths($duration);
        if($request->payment_mode==1 || $request->payment_mode==2){
             $is_paid=1;
+            $payment_mode=$request->payment_mode;
         }else{
             $is_paid=0; 
+            $payment_mode=3;
         }
         if($customer->plan_end_date < $currentDate && $endDate->format('Y-m-d') >$currentDate  && $is_paid==1){
             $status=1;
@@ -1135,7 +1137,7 @@ class LearnerController extends Controller
            'status'=>$status,
            'is_paid' => $is_paid,
        ]);
-       if($request->payment_mode==1 || $request->payment_mode==2){
+       if($payment_mode==1 || $payment_mode==2){
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
                 'library_id' => Auth::user()->id,

@@ -120,9 +120,16 @@ class DashboardController extends Controller
             $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
             $fiveDaysbetween = $today->copy()->addDays(5);
             $renewSeats = $this->getLearnersByLibrary()
-            ->where('learner_detail.plan_end_date', '>=', $fiveDaysbetween->format('Y-m-d')) // plan_end_date is today - 5 days
-            ->where('learner_detail.status',1)
-            ->with('planType')
+            ->whereBetween('learner_detail.plan_end_date', [$today->format('Y-m-d'), $fiveDaysbetween->format('Y-m-d')]) // Filter between today and 5 days in the future
+            ->where('learner_detail.status', 1) // Only include active learners
+            ->with('planType') // Eager load related planType
+            ->get();
+            $extend_sets = $this->getLearnersByLibrary()
+            ->where('learner_detail.is_paid', 1) // Only paid learners
+            ->where('learner_detail.status', 1)  // Only active learners
+            ->where('learner_detail.plan_end_date', '<', $today->format('Y-m-d')) // plan_end_date is before today
+            ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day]) // Extended date is today or in the future
+            ->with('planType') // Eager load related planType
             ->get();
           
             $threeMonthsAgo = $today->copy()->subMonths(2)->startOfMonth(); // Start of 3 months ago
@@ -143,13 +150,7 @@ class DashboardController extends Controller
             }else{
                 $features_count=0;
             }
-            $extend_sets=$this->getLearnersByLibrary()
-            ->where('learner_detail.is_paid',1)
-            ->where('learner_detail.status',1)
-            ->where('learner_detail.plan_end_date', '<', $today->format('Y-m-d'))
-            ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) > CURDATE()", [$extend_day])
-            ->with('planType')
-            ->get();
+           
             
             $revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
             ->where('is_paid', 1)

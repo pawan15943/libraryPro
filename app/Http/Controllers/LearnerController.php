@@ -324,18 +324,20 @@ class LearnerController extends Controller
 
 
     public function getPlanType(Request $request){
+        
         $seatId = $request->seat_no_id;
        
-        $customer_plan=$this->getLearnersByLibrary()->where('seat_no', $seatId)->where('learners.id',$request->user_id)
+        $customer_plan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
         ->pluck('learner_detail.plan_type_id');
-       
+        
         // Step 1: Retrieve the plan_type_ids from learners for the given seat
         $filteredPlanTypes=PlanType::where('id',$customer_plan)->pluck('name', 'id');
 
-        $planTypesRemovals = $this->getLearnersByLibrary()->where('seat_no', $seatId)
+        $planTypesRemovals = $this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)
             ->pluck('plan_type_id')
             ->toArray();
-    
+           
+
         // Step 2: Retrieve all plan_types as an associative array
         $planTypes = PlanType::pluck('name', 'id');
       
@@ -348,9 +350,10 @@ class LearnerController extends Controller
                 });
             }
 
-        $selectedPlan=$this->getLearnersByLibrary()->where('seat_no', $seatId)->where('learners.id',$request->user_id)
+        $selectedPlan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
         ->pluck('plan_id');
         $selectedPlanName=Plan::where('id',$selectedPlan)->pluck('name','id');
+       
         // Return the filtered plan types as JSON
         return response()->json([$filteredPlanTypes,$selectedPlanName]);
     }
@@ -1068,6 +1071,7 @@ class LearnerController extends Controller
     }
    
     public function learnerRenew(Request $request){
+       
   
         $rules = [
            

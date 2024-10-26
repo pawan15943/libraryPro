@@ -135,7 +135,22 @@
            
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
-        
+           
+            fetchPlanTypes(seat_no_id, user_id);
+        });
+
+        $('.renew_extend').on('click', function(){
+            var user_id = $(this).data('user');
+            var seat_no_id = $(this).data('seat_id');
+            var end_date = $(this).data('end_date');
+            $('#seatAllotmentModal3').modal('show');
+            $('#update_seat_no').val(seat_no_id);
+            $('#update_user_id').val(user_id);
+            $('#update_plan_end_date').val(end_date);
+            fetchPlanTypes(seat_no_id, user_id);
+        });
+        function fetchPlanTypes(seat_no_id, user_id) {
+           
             if (seat_no_id && user_id) {
                 $.ajax({
                     url: '{{ route('gettypePlanwise') }}',
@@ -150,28 +165,25 @@
                     },
                     dataType: 'json',
                     success: function (html) {
-                       
+                        console.log('html',html);
+                        $("#updated_plan_type_id").empty(); // Clear existing options
                         if (html[0]) {
-                       
-                            $.each(html[0], function(key, value) {
-                                $("#updated_plan_type_id").append('<option value="'+key+'">'+value+'</option>');
+                            $.each(html[0], function (key, value) {
+                                $("#updated_plan_type_id").append('<option value="' + key + '">' + value + '</option>');
                             });
                         } else {
                             $("#updated_plan_type_id").append('<option value="">Select Plan Type</option>');
                         }
-
-
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error("AJAX error:", status, error); // Log any errors
                     }
-                    });
+                });
             } else {
-                    $("#updated_plan_type_id").empty();
-                    $("#updated_plan_type_id").append('<option value="">Select Plan Type</option>');
+                $("#updated_plan_type_id").empty();
+                $("#updated_plan_type_id").append('<option value="">Select Plan Type</option>');
             }
-        });
-      
+        }
 
         $('#plan_type_id, #plan_type_id2').on('change', function(event) {
         
@@ -202,11 +214,11 @@
         });
 
         $('#update_plan_id').on('change', function(event) {
-           
+          
             event.preventDefault();
             var update_plan_type_id = $('#updated_plan_type_id').val();
             var update_plan_id =$(this).val();
-           
+       
             if (update_plan_id && update_plan_type_id) {
                 $.ajax({
                     url: '{{ route('getPricePlanwiseUpgrade') }}',
@@ -221,7 +233,7 @@
                     },
                     dataType: 'json',
                     success: function(html) {
-                       
+                       console.log('price',html);
                         $.each(html, function(key, value) {
                             $("#updated_plan_price_id").val(value);
                         });
@@ -382,6 +394,8 @@
             var seat_no = $('#update_seat_no').val();
             var user_id = $('#update_user_id').val();
             var plan_id = $('#update_plan_id').val();
+            var payment_mode = $('#payment_mode').val();
+            
           
             var plan_type_id = $('#updated_plan_type_id').val();
             var plan_price_id = $('#updated_plan_price_id').val();
@@ -396,6 +410,9 @@
 
             if (!plan_price_id) {
                 errors.plan_price_id = 'Price is required.';
+            }
+            if (!payment_mode) {
+                errors.payment_mode = 'Payment mode is required.';
             }
 
             if (Object.keys(errors).length > 0) {
@@ -416,6 +433,7 @@
             formData.append('plan_id', plan_id);
             formData.append('plan_type_id', plan_type_id);
             formData.append('plan_price_id', plan_price_id);
+           
 
 
             $.ajax({

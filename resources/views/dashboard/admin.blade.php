@@ -390,8 +390,8 @@
                                 <small>{{$value->planType->name}}</small>
                             </div>
                             <div class="seat-status">
-                                <p>Expired in 2 Days</p>
-                                <small><a id="upgrade" class="btn btn-primary btn-block mt-2 button" >Renew Plan</a></small>
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
+                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$value->seat_id}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
                             </div>
 
                             <ul class="d-flex inner">
@@ -420,7 +420,7 @@
                             </div>
                             <div class="seat-status">
                                 <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                                <small><a href="{{ route('learner.payment', [$seat->id]) }}">Renew Plan</a></small>
+                                <small><a class="btn btn-primary btn-block mt-2 button renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
                             </div>
 
                             <ul class="d-flex inner">

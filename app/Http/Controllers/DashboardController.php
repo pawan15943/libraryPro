@@ -114,15 +114,17 @@ class DashboardController extends Controller
             }
 
             $available_seats=$this->learnerService->getAvailableSeats();
-           
+            
            
             $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
             $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
-            $fiveDaysBefore = $today->copy()->subDays(5);
+            $fiveDaysbetween = $today->copy()->addDays(5);
             $renewSeats = $this->getLearnersByLibrary()
-            ->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)  // plan_end_date is today - 5 days
-            ->orWhereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
+            ->where('learner_detail.plan_end_date', '>=', $fiveDaysbetween->format('Y-m-d')) // plan_end_date is today - 5 days
+            ->where('learner_detail.status',1)
+            ->with('planType')
             ->get();
+          
             $threeMonthsAgo = $today->copy()->subMonths(2)->startOfMonth(); // Start of 3 months ago
             $endOfLastMonth = $today->copy()->subMonth()->endOfMonth(); // End of last month
            
@@ -142,8 +144,13 @@ class DashboardController extends Controller
                 $features_count=0;
             }
             $extend_sets=$this->getLearnersByLibrary()
-            ->whereDate('learner_detail.plan_end_date', '=', $today->addDays($extend_day)) // plan_end_date + $extend_day
+            ->where('learner_detail.is_paid',1)
+            ->where('learner_detail.status',1)
+            ->where('learner_detail.plan_end_date', '<', $today->format('Y-m-d'))
+            ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) > CURDATE()", [$extend_day])
+            ->with('planType')
             ->get();
+            
             $revenues = LearnerDetail::whereBetween('join_date', [$threeMonthsAgo, $endOfLastMonth])
             ->where('is_paid', 1)
             ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
@@ -166,9 +173,9 @@ class DashboardController extends Controller
                 $endDate = Carbon::now()->endOfMonth();
                 $startDate = $startDate->format('Y-m-d');
                 $endDate = $endDate->format('Y-m-d');
-          
+                $plans = $this->learnerService->getPlans();
             
-            // Fetch expenses within filter date range for graph
+          
            
 
             $plan_wise_booking=LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
@@ -181,7 +188,7 @@ class DashboardController extends Controller
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('availble_seats','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels'));
+                return view('dashboard.admin',compact('availble_seats','plans','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels'));
             }else{
                 return redirect($redirectUrl);
             }
@@ -227,22 +234,8 @@ class DashboardController extends Controller
         
         Log::info("start date: $startDate, end date: $endDate");
 
-        // For graph
-        $revenues_graph = LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
-            ->where('is_paid', 1)
-            ->selectRaw('SUM(plan_price_id) as total_revenue')
-            ->get();
-        
-        // Fetch expenses within the filter date range for the graph
-        $expenses_graph = DB::table('monthly_expense')
-            ->where('library_id', Auth::user()->id)
-            ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$startDate, $endDate])
-            ->selectRaw('SUM(amount) as total_expense')
-            ->get();
-        
-        $revenueAmount = $revenues_graph->sum('total_revenue') ?? 0;
-        $expenseAmount = $expenses_graph->sum('total_expense') ?? 0;
-        $profitAmount = $revenueAmount - $expenseAmount;
+        // // For graph
+    
         $plan_wise_booking = LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
             ->where('is_paid', 1)
             ->groupBy('plan_type_id')
@@ -266,7 +259,18 @@ class DashboardController extends Controller
         })->toArray(); 
         
         $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
-        
+        //plantype wise revenue
+        $planTypeWiseRevenue = LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
+        ->where('is_paid', 1)
+        ->groupBy('plan_type_id')
+        ->selectRaw('SUM(plan_price_id) as revenue, plan_type_id')
+        ->with('planType') // Assuming planType is a relationship
+        ->get();
+
+    // Prepare labels and data for revenue
+    $revenueLabels = $planTypeWiseRevenue->pluck('planType.name')->toArray();
+    $revenueData = $planTypeWiseRevenue->pluck('revenue')->toArray();
+
         // Library other highlights
         $total_booking = LearnerDetail::where('status', 1)
             ->where('is_paid', 1)
@@ -284,19 +288,27 @@ class DashboardController extends Controller
         $other_paid = $this->getLearnersByLibrary()->whereBetween('learner_detail.join_date', [$startDate, $endDate])
             ->where('learners.payment_mode', 3)
             ->count();
-        
+        $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+        $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
         $fiveDaysBefore = Carbon::now()->addDays(-5)->format('Y-m-d'); // Add this line for the expired logic
         $expired_in_five = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)->count();
         $expired_seats = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '<', now())->count();
-
-        // Return response as JSON
+        $extended_seats = $this->getLearnersByLibrary()
+        ->where('learner_detail.is_paid',1)
+        ->where('learner_detail.status',1)
+        ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) > CURDATE()", [$extend_day])
+        ->count();       
+        $swap_seat=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','swapseat')->count();
+        $learnerUpgrade=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','learnerUpgrade')->count();
+        $reactive=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','reactive')->count();
+        
         return response()->json([
             'highlights' => [
-                'revenueAmount' => $revenueAmount,
-                'expenseAmount' => $expenseAmount,
-                'profitAmount' => $profitAmount,
-                'bookinglabels' => $bookinglabels,
-                'bookingcount' => $bookingcount,
+               
+                'swap_seat' => $swap_seat,
+                'learnerUpgrade' => $learnerUpgrade,
+                'reactive' => $reactive,
+                'extended_seats' => $extended_seats,
                 'total_booking' => $total_booking,
                 'online_paid' => $online_paid,
                 'offline_paid' => $offline_paid,
@@ -306,6 +318,14 @@ class DashboardController extends Controller
             ],
         
             'plan_wise_booking' => $data,
+            'planTypeWiseRevenue' => [
+                'labels' => $revenueLabels,
+                'data' => $revenueData,
+            ],
+            'planTypeWiseCount' => [
+                'labels' => $bookinglabels,
+                'data' => $bookingcount,
+            ],
         ]);
     }
 }

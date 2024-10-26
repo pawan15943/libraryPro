@@ -112,6 +112,7 @@
 
         });
         $('#upgrade').on('click', function() {
+        
             
             $("#update_plan_id").trigger('change');
            

@@ -1808,17 +1808,7 @@ ul.plann-info li {
     gap: 1rem;
 }
 
-.cardbg-1 {
-    background: linear-gradient(159deg, #151F38, #1B377D);
-}
 
-.cardbg-2 {
-    background: #1DAD87;
-}
-
-.cardbg-3 {
-    background: linear-gradient(159deg, #151F38, #1B377D);
-}
 
 .main-count span,
 .main-count h2,
@@ -1830,7 +1820,7 @@ ul.plann-info li {
 
 .main-count h2 {
     font-size: 2.5rem !important;
-    font-weight: 800;
+    font-weight: 500 !important;
 }
 
 .main-count small {
@@ -1842,7 +1832,20 @@ ul.plann-info li {
     right: 6%;
     top: 50%;
     transform: translateY(-50%);
-    width: 80px;
+    width: 56px;
+    animation: zoomInOut 2s ease-in-out infinite;
+}
+
+@keyframes zoomInOut {
+
+    0%,
+    100% {
+        transform: translateY(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateY(-50%) scale(1.1);
+    }
 }
 
 ul.revenue-box {
@@ -3652,7 +3655,7 @@ h1 * {
 }
 
 .active-plan-box {
-    background: #fff;
+    background: #e7fcff;
     padding: 1.5rem;
     border-radius: 1.5rem;
     box-shadow: 1px 0 5px #00000021;
@@ -3660,9 +3663,9 @@ h1 * {
 
 .active-plan-box .top-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: .5rem;
+    flex-direction: column;
 }
 
 .active-plan-box .d-flex .plann-info {
@@ -3672,6 +3675,8 @@ h1 * {
     justify-content: space-between;
     width: 100%;
     margin: 0;
+    flex-direction: column;
+    gap: .8rem;
 }
 
 .active-plan-box .d-flex .plann-info a {
@@ -3683,6 +3688,22 @@ h1 * {
 ul.plann-info li {
     font-weight: 700;
     font-size: .8rem;
+}
+
+.dashboard h1 {
+    color: #ffffff !important;
+    position: absolute;
+    bottom: 11%;
+    z-index: 2;
+    font-size: 1.8rem !important;
+    left: 4%;
+    font-weight: 400;
+}
+
+.dashboard h1 span {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #ffffffdb;
 }
 
 .dashboard h4 {
@@ -3705,6 +3726,26 @@ ul.plann-info li {
     border-radius: 1.5rem;
     position: relative;
     gap: 1rem;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.main-count::after {
+    content: '';
+    position: absolute;
+    RIGHT: -34%;
+    top: 50%;
+    width: 200px;
+    height: 200px;
+    border-radius: 200px;
+    background: #ffffff17;
+    z-index: -1;
+    transform: translateY(-50%);
+}
+
+.main-count small.d-flex {
+    justify-content: space-between;
+    align-items: center;
 }
 
 .cardbg-1 {
@@ -3712,7 +3753,7 @@ ul.plann-info li {
 }
 
 .cardbg-2 {
-    background: #1DAD87;
+    background: linear-gradient(45deg, #1e4d48, #1DAD87);
 }
 
 .cardbg-3 {
@@ -3741,7 +3782,7 @@ ul.plann-info li {
     right: 6%;
     top: 50%;
     transform: translateY(-50%);
-    width: 80px;
+    width: 56px;
 }
 
 ul.revenue-box {

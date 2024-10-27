@@ -138,6 +138,10 @@
   
 <script>
     document.getElementById("swapsubmit").disabled = true;
+     // Call the handleFormChanges function for the specific form when the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+        handleFormChanges('swapseat', {{$customer->id}});
+    });
    
 </script>
 @include('learner.script')

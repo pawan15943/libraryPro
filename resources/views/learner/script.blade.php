@@ -736,39 +736,52 @@
     });
 </script>
 <script>
-    // Generic function to handle form changes
+    // Function to handle changes in a specific form
     function handleFormChanges(formId, learnerId) {
-       
-        console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId); // Debugging log
+        // console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId);
+
         const form = document.getElementById(formId);
         if (!form) {
-            console.error('Form not found:', formId);  // Log error if form is not found
+            console.error('Form not found:', formId);
             return;
         }
+
+        const changes = {}; // Object to store changes
+
         const inputs = form.querySelectorAll('input, select, textarea');
-        
         inputs.forEach(input => {
-            console.log('Input :', input); 
+            // Store initial value in a dataset attribute
+            input.dataset.initialValue = input.value;
+
             input.addEventListener('change', function() {
                 const fieldName = this.name;
-                const oldValue = this.defaultValue;
+                const oldValue = this.dataset.initialValue;
                 const newValue = this.value;
-                console.log('fieldName', fieldName ,'oldValue',oldValue,'newValue',newValue);
-                // Log the change if value has changed
+                
+                // console.log(`Field changed: ${fieldName}, Old Value: ${oldValue}, New Value: ${newValue}`);
+                
+                // Only record the change if the value has actually changed
                 if (oldValue !== newValue) {
-                    console.log('Input changed:', fieldName);  // Log input field change
-                    logFieldChange(learnerId,formId,fieldName, oldValue, newValue);
+                    changes[fieldName] = { oldValue, newValue };
+                    this.dataset.initialValue = newValue; // Update initial value
                 }
             });
         });
 
-     
+        // Add submit event listener to the form
+        form.addEventListener('submit', function(event) {
+            // Log all field changes at once before the form is submitted
+            for (const fieldName in changes) {
+                const { oldValue, newValue } = changes[fieldName];
+                logFieldChange(learnerId, formId, fieldName, oldValue, newValue);
+            }
+        });
     }
-
 
     // Function to log the field changes
     function logFieldChange(learnerId, formId, fieldName, oldValue, newValue) {
-        console.log('Logging change for student:', learnerId,formId ,fieldName, oldValue, newValue); // Debugging log
+       
+        // console.log('Logging change for learner:', learnerId, formId, fieldName, oldValue, newValue);
         fetch("{{ route('learner.log') }}", {
             method: 'POST',
             headers: {
@@ -776,19 +789,20 @@
                 'X-CSRF-TOKEN': "{{ csrf_token() }}",
             },
             body: JSON.stringify({
-                learner_id: learnerId,                // ID of the student whose task is being edited
-                field_updated: fieldName,             // Field name (input field name)
-                old_value: oldValue,                  // Old value of the field
-                new_value: newValue,                  // New value of the field
-                operation: formId,                  // New value of the field
-                updated_by: {{ Auth::user()->id }},   // ID of the user who made the changes
-                created_at: new Date().toISOString(), // Current date and time
+                learner_id: learnerId,
+                field_updated: fieldName,
+                old_value: oldValue,
+                new_value: newValue,
+                operation: formId,
+                updated_by: {{ Auth::user()->id }},
+                created_at: new Date().toISOString(),
             }),
         })
         .then(response => response.json())
-        .then(data => console.log('Change logged successfully', data))
+        .then(data => console.log('Change logged successfully:', data))
         .catch(error => console.error('Error logging change:', error));
     }
 
     
 </script>
+

@@ -306,8 +306,12 @@ class DashboardController extends Controller
         
         $swap_seat=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','swapseat')->count();
         $learnerUpgrade=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','learnerUpgrade')->count();
-        $reactive=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','reactive')->count();
-        
+        $reactive = DB::table('learner_operations_log')
+        ->where('library_id', Auth::user()->id)
+        ->where('operation', '=', 'reactive')
+        ->groupBy('learner_id', 'created_at')
+        ->count();
+            
         return response()->json([
             'highlights' => [
                

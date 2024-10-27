@@ -455,14 +455,10 @@ $diffInDays = $today->diffInDays($endDate, false);
 
 @endif
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-       form.addEventListener('submit', function(event) {
-           event.preventDefault();
-           handleFormChanges('reactive', {{ $customer->id }});
-       });
-      
-      
-  });
+ 
+  document.addEventListener('DOMContentLoaded', function() {
+        handleFormChanges('reactive', {{$customer->id}});
+    });
 </script>
 @include('learner.script')
 @endsection

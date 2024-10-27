@@ -307,6 +307,8 @@ $current_route = Route::currentRouteName();
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
+    $('.datatable').DataTable({ 
+    });
 </script>
 
 @include('learner.script')

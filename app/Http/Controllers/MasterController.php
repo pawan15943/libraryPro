@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Expense;
 use App\Models\Hour;
+use App\Models\Learner;
 use App\Models\Library;
 use App\Models\PermissionCategory;
 use App\Models\Plan;
@@ -164,7 +165,8 @@ class MasterController extends Controller
         $seat_button=Library::where('id',Auth::user()->id)->where('status',1)->exists();
        $expenses=Expense::get();
        $is_extendday=Hour::whereNotNull('extend_days')->exists();
-        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses','is_extendday'));
+       $notleaner=Learner::where('id',Auth::user()->id)->count();
+        return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses','is_extendday','notleaner'));
     }
     
     public function storemaster(Request $request, $id = null)
@@ -276,7 +278,18 @@ class MasterController extends Controller
     
     public function seatsStore(Request $request) {
         $totalSeats = $request->input('total_seats');
-    
+        $libraryData = Library::where('id', Auth::user()->id)->first();
+
+        if ($libraryData) {
+            $seatLimit = ($libraryData->library_type == 1) ? 50 : (($libraryData->library_type == 2) ? 75 : null);
+        
+            if ($seatLimit !== null && $totalSeats > $seatLimit) {
+                return response()->json([
+                    'error' => true,
+                    'message' => 'Invalid number of seats'
+                ], 400);  
+            }
+        }
         if (!$totalSeats || $totalSeats <= 0) {
             return response()->json([
                 'error' => true,

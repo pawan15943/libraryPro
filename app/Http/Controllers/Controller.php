@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Expense;
 use App\Models\Subscription;
 use App\Traits\LearnerQueryTrait;
 
@@ -281,6 +282,7 @@ class Controller extends BaseController
     }
     
     public function uploadmastercsv(Request $request){
+        
         $request->validate([
             'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
         ]);
@@ -324,7 +326,7 @@ class Controller extends BaseController
         }else{
             $library_id=null; 
         }
-        
+       
         DB::transaction(function () use ($csvData, &$invalidRecords, &$successRecords,$library_id) {
             foreach ($csvData as $record) {
                 try {
@@ -848,7 +850,7 @@ class Controller extends BaseController
     protected function validateMasterInsert($data, &$successRecords, &$invalidRecords, $library_id)
     {
        
-        // Validate input data
+      
         $validator = Validator::make($data, [
             'Operating_hour' => 'required|integer',
             'start_time' => ['required', function($attribute, $value, $fail) {
@@ -865,9 +867,9 @@ class Controller extends BaseController
             'fullday_price' => 'required|integer',
             'halfday_price' => 'required|integer',
             'hourly_price' => 'required|integer',
-            'total_seat' => 'required|integer',
+            
         ]);
-    
+      
         if ($validator->fails()) {
           
             $errors = $validator->errors()->all();
@@ -882,7 +884,20 @@ class Controller extends BaseController
             return;
         }
        
+        $libraryData = Library::where('id', $library_id)->first();
 
+        if ($libraryData) {
+            $seatLimit = ($libraryData->library_type == 1) ? 50 : (($libraryData->library_type == 2) ? 75 : null);
+        
+            if ($seatLimit !== null && trim($data['total_seat']) > $seatLimit) {
+                $invalidRecords[] = array_merge($data, ['error' => 'Total seats not your Subscription according']);
+                return;  
+            }
+        } else {
+          
+            $invalidRecords[] = array_merge($data, ['error' => 'Library not found']);
+        }
+        
         $start_time = Carbon::createFromFormat('H:i', trim($data['start_time']));
         $end_time = Carbon::createFromFormat('H:i', trim($data['end_time']));
        
@@ -936,7 +951,7 @@ class Controller extends BaseController
                 $this->handelSeats($library_id,trim($data['total_seat']));
             }
            
-            
+            $this->expenseAdd($library_id);
         });
         
     }
@@ -973,21 +988,21 @@ class Controller extends BaseController
 
             if ($slot['type_id'] == 1 && !$user->can('has-permission', 'Full Day')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
+            } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'First Half')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'SecondHalf')) {
+            } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'Second Half')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly1')) {
+            } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly Slot 1')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly2')) {
+            } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly Slot 2')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly3')) {
+            } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly Slot 3')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly4')) {
+            } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
                 $hasPermission = false;
             }
             if (!$hasPermission) {
-                $invalidRecords[] = array_merge($data, ['error' => 'No permission for slot ' . $slot['type_id']]);
+                // $invalidRecords[] = array_merge($data, ['error' => 'No permission for slot ' . $slot['type_id']]);
                 continue; 
             }
 
@@ -1144,6 +1159,16 @@ class Controller extends BaseController
         //         ->take($seatsToRemoveCount)
         //         ->delete();
         // }
+    }
+
+    private function expenseAdd($library_id){
+        $data=['Electricity Bill','Water Camper','Internet Wi-Fi','Papers','Repair & Maintenance','Tea & Snacks','Petrol','Flex Oreinting'];
+        foreach ($data as $expenseName) {
+            Expense::withoutGlobalScopes()->create([
+                'library_id' => $library_id,
+                'name' => $expenseName
+            ]);
+        }
     }
 
     public function renewConfigration(){
@@ -1320,6 +1345,7 @@ class Controller extends BaseController
 
         ]);
     }
+
     // learner export functionality
     public function exportLearnerCSV()
     {

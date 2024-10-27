@@ -183,14 +183,10 @@ $readonlyStyle = '';
 </form>
 
 <script>
-     document.addEventListener('DOMContentLoaded', function() {
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            handleFormChanges('learnerUpgrade', {{ $customer->id }});
-        });
-       
-       
-   });
+  // Call the handleFormChanges function for the specific form when the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+        handleFormChanges('learnerUpgrade', {{$customer->id}});
+    });
 </script>
 
 @include('learner.script')

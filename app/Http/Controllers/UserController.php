@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CustomerDetail;
-use App\Models\Customers;
+
 use App\Models\Plan;
 use App\Models\PlanType;
 use App\Models\User;

@@ -37,13 +37,24 @@
 
 <div id="success-message" class="alert alert-success" style="display:none;"></div>
 <div id="error-message" class="alert alert-danger" style="display:none;"></div>
+@if($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 @if(session('successCount'))
 <div class="alert alert-success">
     {{ session('successCount') }} records imported successfully.
 </div>
 @endif
 <!-- Masters -->
-
+@php
+    // dd($iscomp);
+@endphp
 @if($iscomp)
 <div class="row g-4 mb-4">
     <div class="col-lg-12">
@@ -115,7 +126,11 @@
                                         @else
                                         <i class="fa fa-check"></i>
                                         @endif</a></li>
+                                      
+                                @if($notleaner==0)
                                 <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
+
+                                @endif
 
                             </ul>
                         </div>
@@ -181,8 +196,9 @@
                             <h4>{{($total_seat)}}</h4>
                             <ul>
                                 <li><a href=""><i class="fa fa-check"></i></a></li>
+                                @if($notleaner==0)
                                 <li><a href="javascript:void(0)" type="button" class="seat_edit" data-id="{{Auth::user()->id}}" data-table="Seat"><i class="fa fa-edit"></i></a></li>
-
+                                @endif
 
                             </ul>
                         </div>
@@ -640,7 +656,7 @@
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
         <div class="import-data">
-            <form action="{{ route('library.csv.upload') }}" method="POST" enctype="multipart/form-data" id="importForm">
+            <form action="{{ route('library.master.upload') }}" method="POST" enctype="multipart/form-data" >
                 @csrf
                 <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}">
                 <input type="hidden" name="library_import" value="library_master">
@@ -663,13 +679,12 @@
                 </div>
 
             </form>
-
+            <div id="export-progress-container">
+                <progress id="export-progress-bar" value="0" max="100" style="width: 100%;"></progress>
+                <span id="export-progress-text">Preparing download: 0%</span>
+            </div>
 
         </div>
-    </div>
-    <div id="progress-container" style="display:none;">
-        <progress id="progress-bar" value="0" max="100" style="width: 100%;"></progress>
-        <span id="progress-text">0%</span>
     </div>
 </div>
 
@@ -711,14 +726,23 @@
     {{-- Trigger CSV Download Automatically --}}
     @if(session('autoExportCsv'))
     <script type="text/javascript">
-        let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
-        window.onload = function() {
-            setTimeout(function() {
-                window.location.href = exportrecordurl; // Trigger the export CSV route
-            }, 1000); // Delay to ensure the page fully loads before triggering
-        };
+          let exportProgressBar = document.getElementById('export-progress-bar');
+            let exportProgressText = document.getElementById('export-progress-text');
+            let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+            
+            // Set an interval to update the progress bar every 100 ms
+            let progress = 0;
+            let interval = setInterval(function() {
+                progress += 10;
+                exportProgressBar.value = progress;
+                exportProgressText.textContent = `Preparing download: ${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    window.location.href = exportrecordurl;
+                }
+            }, 100); // 100 ms * 10 = 1 second, change as needed
     </script>
-
     @endif
     @endif
 
@@ -726,7 +750,18 @@
         document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
             // Hide the invalid records section
             document.getElementById('invalid-records-section').style.display = 'none';
+    
+            // Reset the progress bar
+            let exportProgressBar = document.getElementById('export-progress-bar');
+            let exportProgressText = document.getElementById('export-progress-text');
+            
+            if (exportProgressBar && exportProgressText) {
+                exportProgressBar.value = 0; // Reset progress to 0
+                exportProgressText.textContent = ""; // Clear text percentage
+            }
+    
             let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
+            
             // Send AJAX request to clear session
             fetch(clearSessionRoute, {
                     method: 'POST',

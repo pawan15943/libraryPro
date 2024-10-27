@@ -48,8 +48,8 @@ Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->na
 
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified'])->group(function () {
-
-Route::post('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data.get');
+  Route::post('/library/master/upload', [Controller::class, 'uploadmastercsv'])->name('library.master.upload');
+  Route::post('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data.get');
   Route::get('export-learners-csv', [Controller::class, 'exportLearnerCSV'])->name('learners.export-csv');
   Route::get('/csv/library/upload', [Controller::class, 'showUploadForm'])->name('library.upload.form');
   Route::post('/csv/library/learner/upload', [Controller::class, 'uploadCsv'])->name('library.csv.upload');
@@ -129,8 +129,9 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
+     
         Route::get('/csv/web/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
-        Route::post('/csv/web/upload', [Controller::class, 'uploadmastercsv'])->name('web.csv.upload');
+       
         Route::get('/export-invalid-records/web', [Controller::class, 'exportCsv'])->name('web.export.invalid.records');
         Route::post('/clear-invalid-records/web', [Controller::class, 'clearSession'])->name('web.clear.session');
    

@@ -304,7 +304,7 @@ class LearnerController extends Controller
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
                 'library_id' => Auth::user()->id,
-                'learner_deatail_id' => $learner_detail->id,
+                'learner_detail_id ' => $learner_detail->id,
                 'total_amount' => $request->input('plan_price_id'),
                 'paid_amount' => $request->input('plan_price_id'),
                 'pending_amount' => 0,
@@ -568,6 +568,7 @@ class LearnerController extends Controller
     //learner Edit and Upgrade
     public function userUpdate(Request $request, $id = null)
     {
+        
         $learner = Learner::find($id);
 
         // Call validateCustomer method to apply default validation
@@ -1141,7 +1142,7 @@ class LearnerController extends Controller
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
                 'library_id' => Auth::user()->id,
-                'learner_deatail_id' => $learner_detail->id,
+                'learner_detail_id ' => $learner_detail->id,
                 'total_amount' => $request->input('plan_price_id'),
                 'paid_amount' => $request->input('plan_price_id'),
                 'pending_amount' => 0,
@@ -1323,7 +1324,7 @@ class LearnerController extends Controller
     
         $data['total_amount'] = $total_amount;
         $data['pending_amount'] = $pending_amount;
-        $data['learner_deatail_id'] = $learnerDetail->id;
+        $data['learner_detail_id '] = $learnerDetail->id;
       
         try {
             $learner_transaction=LearnerTransaction::create($data);
@@ -1397,7 +1398,7 @@ class LearnerController extends Controller
             Log::info('Validation Successful:', $validatedData);
     
             $updated_user = $validatedData['updated_by'] ?? Auth::user()->id;
-            $old_value = $validatedData['operation'] ? $validatedData['operation'] : '';
+            $old_value = $validatedData['old_value'] ? $validatedData['old_value'] : $validatedData['operation'];
     
             // Insert data into the database and log success or errors
             DB::table('learner_operations_log')->insert([

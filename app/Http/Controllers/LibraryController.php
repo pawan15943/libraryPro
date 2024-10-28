@@ -472,12 +472,17 @@ class LibraryController extends Controller
 
       
         $library = Library::where('id', auth()->user()->id)->first();
+        $libraryCode = $this->generateLibraryCode();
        
         $update=$library->update($validated);
-        if($update){
-            $library->update([
-                'is_profile' => 1
-            ]);
+      
+        if ($update) {
+            $library->update(['is_profile' => 1]);
+            if (empty($library->library_no)) {
+                $libraryCode = $this->generateLibraryCode();
+                $library->library_no = $libraryCode;
+                $library->save();
+            }
         }
         
 
@@ -641,7 +646,11 @@ class LibraryController extends Controller
         }
     }
 
-
+    function generateLibraryCode() {
+        $prefix = "LB";
+        $randomNumber = rand(100000, 999999); // Generates a 6-digit random number
+        return $prefix . $randomNumber;
+    }
 
     
     

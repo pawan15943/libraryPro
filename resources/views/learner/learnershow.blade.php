@@ -214,7 +214,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                                 <tbody>
                                     @foreach($renew_detail as $key => $value)
                                     @php
-                                    $transactionRenew=App\Models\LearnerTransaction::where('learner_deatail_id',$value->id)->where('is_paid',1)->first();
+                                    $transactionRenew=App\Models\LearnerTransaction::where('learner_detail_id',$value->id)->where('is_paid',1)->first();
                                     @endphp
                                     <tr>
                                         <td>
@@ -268,7 +268,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         </div>
                     </div>
                 </div>
-
+                @if($seat_history->isNotEmpty())
                 <h4 class="mt-4"> Seat Previous History</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
@@ -354,6 +354,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -375,43 +376,38 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
             @endif
             <!-- End -->
         </div>
+        @if($learner_request->isNotEmpty())
         <div class="request-logs mt-4">
             <h5>Learners Request</h5>
             <ul class="request_list">
+                @foreach($learner_request as $key => $value)
                 <li>
                     <div class="d-flex">
                         <div class="icon"></div>
                         <div class="detials">
                             <p class="m-0"><i class="fa-solid fa-arrow-turn-down"></i> Request Name
-                                : Swap Seat</p>
+                                : {{$value->request_name}}</p>
                             <span class="description">Message Send by <b>[Seat Owner]</b> on
-                                10-05-2024.</span>
-                            <span class="timestamp"><i class="fa-solid fa-calendar"></i> 29-05-2024
-                                10:15:21 AM</span>
-                            <small class="status"> <b>Status : </b> <span
-                                    class=" text-danger d-inline">Pending</span> </small>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="d-flex">
-                        <div class="icon"></div>
-                        <div class="detials">
-                            <p class="m-0"><i class="fa-solid fa-arrow-turn-up"></i> Request Name :
-                                Upgrade Plan</p>
-                            <span class="description">Seat is Swapped by <b>[Seat Owner]</b> on
-                                10-05-2024.</span>
-                            <span class="timestamp"><i class="fa-solid fa-calendar"></i> 29-05-2024
-                                10:15:21 AM</span>
-                            <small class="status"> <b>Status : </b> <span
-                                    class=" text-success d-inline">Resolved (By Admin)</span>
+                                {{$value->request_date}}</span>
+                            <span class="timestamp"><i class="fa-solid fa-calendar"></i> {{$value->created_at}}</span>
+                            <small class="status"> <b>Status : </b> 
+                                @if($value->request_status==0)
+                                <span class=" text-danger d-inline">Pending</span>   
+                                @else
+                                <span class=" text-success d-inline">Resolved (By Admin)</span>
+                                @endif
+                                
                             </small>
-
                         </div>
                     </div>
-                </li>
+                </li>  
+                @endforeach
+            
+               
             </ul>
         </div>
+        @endif
+      
     </div>
 </div>
 

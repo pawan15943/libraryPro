@@ -19,6 +19,8 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Auth;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Route;
+
 class LoadMenus
 {
     /**
@@ -172,7 +174,6 @@ class LoadMenus
                 $hourly3Count = $counts['hourly3Count'];
                 $hourly4Count = $counts['hourly4Count'];
 
-            
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
             View::share('isProfile', $isProfile);
@@ -196,11 +197,15 @@ class LoadMenus
             View::share('hourly2Count', $hourly2Count); 
             View::share('hourly3Count', $hourly3Count); 
             View::share('hourly4Count', $hourly4Count); 
+            
           
             
         }
-        
-
+        if (auth()->check() && Auth::guard('library')->check()) {
+            $user = Auth::user();
+            $request->attributes->set('library_name', $user->library_name);
+        }
+       
      
          return $next($request);
      }

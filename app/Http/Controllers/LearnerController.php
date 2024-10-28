@@ -304,7 +304,7 @@ class LearnerController extends Controller
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
                 'library_id' => Auth::user()->id,
-                'learner_detail_id ' => $learner_detail->id,
+                'learner_detail_id' => $learner_detail->id,
                 'total_amount' => $request->input('plan_price_id'),
                 'paid_amount' => $request->input('plan_price_id'),
                 'pending_amount' => 0,
@@ -779,6 +779,7 @@ class LearnerController extends Controller
         $transaction = LearnerTransaction::where('learner_id', $customerId)
         ->orderBy('id', 'DESC') 
         ->first();
+       
         $all_transactions=LearnerTransaction::where('learner_id',$customerId)->where('is_paid',1)->get();
         $extend_days=Hour::select('extend_days')->first();
         if($extend_days){
@@ -792,10 +793,12 @@ class LearnerController extends Controller
         $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
         $diffExtendDay= $today->diffInDays($inextendDate, false);
         $customer['diffExtendDay'] = $diffExtendDay;
+
+        $learner_request=DB::table('learner_request')->where('learner_id',$customerId)->get();
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay'));
+            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay','learner_request'));
            
         }
     }
@@ -1142,7 +1145,7 @@ class LearnerController extends Controller
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
                 'library_id' => Auth::user()->id,
-                'learner_detail_id ' => $learner_detail->id,
+                'learner_detail_id' => $learner_detail->id,
                 'total_amount' => $request->input('plan_price_id'),
                 'paid_amount' => $request->input('plan_price_id'),
                 'pending_amount' => 0,

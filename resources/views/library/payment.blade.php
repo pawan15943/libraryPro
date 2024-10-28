@@ -80,12 +80,21 @@
 
             <div class="payment-information">
                 <h4 class="mb-3">Plan Features</h4>
+               
                 <ul class="plan-features">
+                    @php
+                    $premiumSub=App\Models\Subscription::where('id',3)->first();
+                        
+                    @endphp
                     @if($data->subscription->permissions->isNotEmpty())
                    
                     @foreach($data->subscription->permissions as $permission)
                     
                     <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
+                    @endforeach
+                    
+                    @foreach($premiumSub->permissions as $permission)
+                    <li><i class="fa-solid fa-xmark text-danger me-2"></i>{{ $permission->name }}</li>
                     @endforeach
                     @else
                     <li>No permissions available</li>

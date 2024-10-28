@@ -162,7 +162,7 @@ $current_route = Route::currentRouteName();
     </div>
     <div class="col-lg-12">
         <div class="table-responsive ">
-            <table class="table text-center datatable">
+            <table class="table text-center datatable" id="datatable">
                 <thead>
                     <tr>
                         <th>Seat No.</th>
@@ -298,7 +298,7 @@ $current_route = Route::currentRouteName();
 
 <script>
     $(document).ready(function() {
-        // Get the current URL
+        let table = new DataTable('#datatable');
         var url = window.location.href;
 
         // Check if there are any URL parameters
@@ -307,8 +307,7 @@ $current_route = Route::currentRouteName();
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
-    $('.datatable').DataTable({ 
-    });
+  
 </script>
 
 @include('learner.script')

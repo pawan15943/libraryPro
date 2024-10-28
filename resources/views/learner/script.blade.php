@@ -4,7 +4,8 @@
    
     // jQuery script
     $(document).ready(function() {
-        $('#datatable').DataTable();
+        let table = new DataTable('#datatable');
+        // $('#datatable').DataTable();
         /**customer edit page**/
         var edit_seat_id=$("#edit_seat").val();
        

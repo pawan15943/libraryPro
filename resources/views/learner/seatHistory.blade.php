@@ -88,6 +88,7 @@ $today = Carbon::today();
         </div>
     </div>
 </div>
+
 @include('learner.script')
 <!-- /.row (main row) -->
 @endsection

@@ -58,7 +58,7 @@
             <a href="{{route('library.create')}}" class="btn btn-primary button w-15"><i class="fa-solid fa-plus"></i> Add Library</a>
         </div>
         <div class="table-responsive mt-4">
-            <table class="table text-center">
+            <table class="table text-center" id="datatable">
                 <thead>
                     <tr>
                         <th>S.No.</th>

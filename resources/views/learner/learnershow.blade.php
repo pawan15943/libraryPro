@@ -91,12 +91,12 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         @if ($diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $diffInDays }} days</h5>
                         @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                            <h5 class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($diffExtendDay) }} days.</h5>
-                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
-                                @else
-                                <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</h5>
-                                @endif
+                        <h5 class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($diffExtendDay) }} days.</h5>
+                        @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                        <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
+                        @else
+                        <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</h5>
+                        @endif
 
                     </div>
                     <div class="col-lg-4">
@@ -360,15 +360,24 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
     </div>
     <div class="col-lg-3">
         <div class="seat--info">
-            <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+            @php 
+                $class='';  
+                if($diffInDays < 0 && $diffExtendDay>0){
+                    $class='extended';
+                }elseif($diffInDays < 0 ){
+                    $class='expired';
+                }
+            @endphp
+            <span class="d-block {{$class}}">Seat No : {{ $customer->seat_no}}</span>
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan_name}}</p>
             <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
             <!-- Expire days Info -->
+           
             @if ($diffInDays > 0)
                 <span class="text-success">Plan Expires in {{ $diffInDays }} days</sp>
             @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
+                <span class="text-danger fs-10 d-block">{{$learnerExtendText}}  {{ abs($diffExtendDay) }} days.</span>
             @elseif ($diffInDays < 0 && $diffExtendDay==0)
                 <span class="text-warning fs-10 d-block">Plan Expires today</span>
             @else

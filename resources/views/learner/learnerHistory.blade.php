@@ -333,12 +333,13 @@ $current_route = Route::currentRouteName();
         });
     });
 </script>
+
 <script>
-    let table = new DataTable('#datatable');
-</script>
-<script>
+     
     $(document).ready(function() {
-        // Get the current URL
+        let table = new DataTable('#datatable');
+
+
         var url = window.location.href;
 
         // Check if there are any URL parameters

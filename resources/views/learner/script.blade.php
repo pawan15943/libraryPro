@@ -4,7 +4,8 @@
    
     // jQuery script
     $(document).ready(function() {
-        $('#datatable').DataTable();
+        let table = new DataTable('#datatable');
+        // $('#datatable').DataTable();
         /**customer edit page**/
         var edit_seat_id=$("#edit_seat").val();
        
@@ -118,8 +119,8 @@
            
             var user_id = $('#user_id').val();
            
-            var seat_no_id = $('#seat_name').text().trim();
-          
+            var seat_no = $('#seat_name').text().trim();
+         
             var endOnDate = $('#endOn').text().trim();
             var plan_id=$('#update_plan_id').val();
            
@@ -128,30 +129,30 @@
 
             // Update the fields in the second modal
             $('#update_plan_end_date').val(endOnDate);
-            $('#update_seat_no').val(seat_no_id);
+            $('#update_seat_no').val(seat_no);
             $('#update_user_id').val(user_id);
-            $('#seat_number_upgrades').text('Renew Library Membership for Seat No '  + seat_no_id);
+            $('#seat_number_upgrades').text('Renew Library Membership for Seat No '  + seat_no);
           
            
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
            
-            fetchPlanTypes(seat_no_id, user_id);
+            fetchPlanTypes(seat_no, user_id);
         });
 
         $('.renew_extend').on('click', function(){
             var user_id = $(this).data('user');
-            var seat_no_id = $(this).data('seat_id');
+            var seat_no = $(this).data('seat_no');
             var end_date = $(this).data('end_date');
             $('#seatAllotmentModal3').modal('show');
-            $('#update_seat_no').val(seat_no_id);
+            $('#update_seat_no').val(seat_no);
             $('#update_user_id').val(user_id);
             $('#update_plan_end_date').val(end_date);
-            fetchPlanTypes(seat_no_id, user_id);
+            fetchPlanTypes(seat_no, user_id);
         });
-        function fetchPlanTypes(seat_no_id, user_id) {
+        function fetchPlanTypes(seat_no, user_id) {
            
-            if (seat_no_id && user_id) {
+            if (seat_no && user_id) {
                 $.ajax({
                     url: '{{ route('gettypePlanwise') }}',
                     headers: {
@@ -160,7 +161,7 @@
                     type: 'GET',
                     data: {
                         "_token": "{{ csrf_token() }}",
-                        "seat_no_id": seat_no_id,
+                        "seat_no": seat_no,
                         "user_id": user_id,
                     },
                     dataType: 'json',

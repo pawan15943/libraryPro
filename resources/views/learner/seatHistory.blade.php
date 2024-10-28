@@ -67,12 +67,14 @@ $today = Carbon::today();
                         <td>{{ $user->plan_start_date }}</td>
                         <td>{{ $user->plan_end_date }}</td>
                         @if ($loop->first)
-                        <td rowspan="{{ $usersForSeat->count() }}">
+                        <td rowspan="{{ $usersForSeat->count()  }}">
+                            
                             <ul class="actionalbls">
                                 <li>
                                     <a href="{{ url('seats/history', $seat->id) }}" title="View Seat Previous Booking "><i class="fa-solid fa-clock-rotate-left"></i></a>
                                 </li>
                             </ul>
+                           
                         </td>
                         @endif
                         @if (!$loop->first)

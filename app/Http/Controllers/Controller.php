@@ -424,11 +424,14 @@ class Controller extends BaseController
 
         $pending_amount = $planPrice->price - trim($data['paid_amount']);
         $paid_date = isset($data['paid_date']) ? $this->parseDate(trim($data['paid_date'])) : $start_date;
-        $status = $endDate > date('Y-m-d') ? 1 : 0;
+
+        $extend_days=Hour::select('extend_days')->first();
+        $extendDay = $extend_days ? $extend_days->extend_days : 0;
+       
+        $inextendDate = Carbon::parse($endDate)->addDays($extendDay);
+        $status = $inextendDate > Carbon::today() ? 1 : 0;
+
         $is_paid = $pending_amount <= 0 ? 1 : 0;
-        
-        
-      
         if ($status == 1) {
             // Check if the learner already exists with active status
             $alreadyLearner = Learner::where('library_id', Auth::user()->id)

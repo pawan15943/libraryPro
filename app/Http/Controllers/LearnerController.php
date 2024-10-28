@@ -325,11 +325,13 @@ class LearnerController extends Controller
 
     public function getPlanType(Request $request){
         
-        $seatId = $request->seat_no_id;
+        $seatNo = $request->seat_no;
+        $seatId=Seat::where('seat_no',$seatNo)->value('id');
+        
        
         $customer_plan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
         ->pluck('learner_detail.plan_type_id');
-        
+            
         // Step 1: Retrieve the plan_type_ids from learners for the given seat
         $filteredPlanTypes=PlanType::where('id',$customer_plan)->pluck('name', 'id');
 

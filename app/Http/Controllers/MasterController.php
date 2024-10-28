@@ -297,15 +297,18 @@ class MasterController extends Controller
             ], 400);
         }
     
-        $lastSeatNo = Seat::where('library_id', $request->library_id)
-                          ->orderBy('seat_no', 'desc')
-                          ->value('seat_no');
-    
+        $lastSeatNo = Seat::orderBy('seat_no', 'desc')->value('seat_no');
+     
         $startSeatNo = $lastSeatNo ? $lastSeatNo + 1 : 1;
-    
+     
+        $currentSeatCount = Seat::withoutGlobalScopes()->where('library_id', $request->library_id)->count();
+        $seatsToAdd = $totalSeats - $currentSeatCount;
+        if ($seatsToAdd > 0) {
+         
         $seats = [];
     
-        for ($i = 0; $i < $totalSeats; $i++) {
+        for ($i = 0; $i < $seatsToAdd; $i++) {
+            
             $seats[] = [
                 'seat_no' => $startSeatNo + $i,
                 'library_id' => $request->library_id,
@@ -314,7 +317,8 @@ class MasterController extends Controller
                 'updated_at' => now(),
             ];
         }
-    
+    }
+  
         // Use insert() for batch insertion
         Seat::insert($seats);
     

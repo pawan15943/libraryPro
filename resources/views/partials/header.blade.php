@@ -92,6 +92,8 @@
                     {{Auth::user()->name}}{{Auth::user()->library_name}}
                 </a>
                 <ul class="dropdown-menu">
+                    <li>{{Auth::user()->library_no ?? ''}}
+                    </li>
                     <li>
                         <img src="{{ url('public/img/user.png') }}" alt="profile" class="LibraryProfile">
                     </li>

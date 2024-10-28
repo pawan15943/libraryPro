@@ -32,9 +32,9 @@
             <div class="active-plan-box">
                 <div class="top-content">
                     <h4>{{$plan->name}}
-                        @if(($librarydiffInDays <= 5 &&  !$is_renew && $isProfile))
-                        <span><a href="{{ route('subscriptions.choosePlan') }}">Upgrade Plan</a></span>
-                        @endif
+                        @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
+                            <span><a href="{{ route('subscriptions.choosePlan') }}">Upgrade Plan</a></span>
+                            @endif
                     </h4>
                     <label for="">Active</label>
                 </div>
@@ -118,7 +118,7 @@
     </div>
     <!-- Available Seats -->
 
-   
+
 
     <!-- Library Other Counts -->
     <div class="row g-4 mb-3 align-items-center">
@@ -237,19 +237,19 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="booking-count bg-4">
-                <h6>Email Sended</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div> --}}
     </div>
+</div>
+<div class="col-lg-2">
+    <div class="booking-count bg-4">
+        <h6>Email Sended</h6>
+        <div class="d-flex">
+            <h4>80</h4>
+
+        </div>
+        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+    </div>
+</div> --}}
+</div>
 
 <h4 class="my-4">Plan Wise Count</h4>
 <div class="row g-4 planwisecount">
@@ -356,7 +356,7 @@
 </div>
 
 
-    <!-- Available Seats -->
+<!-- Available Seats -->
 
 <div class="row mt-5">
     <div class="col-lg-4">
@@ -365,7 +365,7 @@
         <div class="seat-statistics ">
             <h4 class="mb-4 text-center">Avaialble Seats</h4>
             <ul class="contents">
-                
+
                 @foreach($available_seats as $key => $value)
                 <li>
                     <div class="d-flex">
@@ -374,13 +374,13 @@
                             <h6>Seat No. {{$value}}</h6>
                             <small>Available</small>
                         </div>
-                     
+
                         <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                        data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
+                            data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
                     </div>
                 </li>
                 @endforeach
-               
+
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
@@ -410,7 +410,7 @@
                     </div>
                 </li>
                 @endforeach
-              
+
             </ul>
             <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
         </div>
@@ -447,15 +447,11 @@
 </div>
 
 
-
-
 <!-- Charts -->
-
 
 </div>
 <!-- End -->
 <!-- seat book poup -->
-
 <div class="modal fade" id="seatAllotmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div id="success-message" class="alert alert-success" style="display:none;"></div>
@@ -583,12 +579,14 @@
     <div id="error-message" class="alert alert-danger" style="display:none;"></div>
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title px-2 fs-5" id="seat_number_upgrades">Re-New Library Plan</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
             <div class="modal-body m-0">
-                <form id="upgradeForm">
-                    <div class="detailes">
-                        <button type="button" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
-                        <h3 id="seat_number_upgrades"></h3>
-                        <div class="row g-4 mt-1">
+                <form id="upgradeForm" class="m-0">
+                    <div class="">
+                        <div class="row g-3 m-0">
                             <div class="col-lg-6">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select id="update_plan_id" class="form-control" name="plan_id">
@@ -792,26 +790,86 @@
         if (Chart.getChart("revenueChart")) {
             Chart.getChart("revenueChart").destroy();
         }
+
         var ctx = document.getElementById('revenueChart').getContext('2d');
+
+        // Create gradient
+        var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, '#001f3f'); // Navy
+        gradient.addColorStop(1, '#0a284b'); // Dark Navy
+
+        var totalCount = data.reduce((a, b) => a + b, 0); // Calculate the total count
+
         var revenueChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
-                    label: 'Plan Type Wise Revenue',
+                    label: `Plan Type Wise Revenue (Total: ${totalCount})`, // Displaying total count in legend
                     data: data,
-                    backgroundColor: '#1D7BAD',
+                    backgroundColor: gradient,
+                    borderColor: 'rgba(54, 162, 235, 1)', // Blue Border
+                    borderWidth: 0,
+                    borderRadius: 15, // Rounded Edges
+                    barThickness: 30, // Bar Width
+                    borderSkipped: false,
                 }]
             },
             options: {
+                animation: {
+                    duration: 2000, // Animation duration
+                    easing: 'easeInOutQuart' // Animation easing
+                },
+                
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        grid: {
+                            display: false // Remove y-axis grid lines
+                        },
+                        ticks: {
+                            display: false // Hide y-axis labels
+                        },
+                        border: {
+                            display: false // Hide y-axis border line
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false // Remove x-axis grid lines
+                        },
+
+                        border: {
+                            display: false // Hide y-axis border line
+                        }
+                    }
+                },
+            },
+            plugins: {
+                legend: {
+                    display: true, // Show legend
+                    labels: {
+                        boxWidth: 0, // Remove the box
+                        padding: 10, // Add padding
+                        color: 'rgba(0, 0, 0, 0.7)' // Adjust label color
+                    }
+                },
+                datalabels: {
+                    color: 'rgba(0, 0, 0, 0.7)', 
+                    display: true, 
+                    anchor: 'end', 
+                    align: 'top', 
+                    offset: 4, 
+                    font: {
+                        weight: 'bold', 
+                        size: 12 // Font size
                     }
                 }
-            }
+            },
+            plugins: [ChartDataLabels]
         });
     }
+
 
     function renderBookingCountChart(labels, data) {
         if (Chart.getChart("bookingCountChart")) {

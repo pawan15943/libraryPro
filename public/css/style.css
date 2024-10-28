@@ -1880,6 +1880,7 @@ ul.revenue-box li .d-flex {
     padding: 1rem;
     border-radius: 1rem;
     position: relative;
+    box-shadow: 3px 3px 0 #acacac;
 }
 
 .booking-count {
@@ -3931,6 +3932,7 @@ ul.revenue-box li .d-flex {
     color: red;
     text-align: right;
     display: block;
+    cursor: pointer;
 }
 
 .d-flex.inner {

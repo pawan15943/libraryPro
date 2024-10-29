@@ -110,7 +110,7 @@
                 $net_profit = $revenue->total_revenue - $total_expense;
 
                 @endphp
-                <li>
+                <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
                     <div class="d-flex">
                         <h4>{{ $monthName }} {{ $revenue->year }} Revenue</h4>
                         <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>

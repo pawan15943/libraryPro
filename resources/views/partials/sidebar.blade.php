@@ -3,7 +3,7 @@ $current_route = Route::currentRouteName();
 @endphp
 
 <div class="sidebar">
-    <h4>Library <b>Pro</b></h4> 
+    <h4><b>Libraro</b></h4> 
         <ul class="list-unstyled ps-0 mt-4">
         @foreach($menus as $menu)
             {{-- Check if it's a parent menu and the guard matches --}}

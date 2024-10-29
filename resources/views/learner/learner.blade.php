@@ -162,7 +162,7 @@ $current_route = Route::currentRouteName();
     </div>
     <div class="col-lg-12">
         <div class="table-responsive ">
-            <table class="table text-center datatable" id="datatable">
+            <table class="table text-center datatable">
                 <thead>
                     <tr>
                         <th>Seat No.</th>

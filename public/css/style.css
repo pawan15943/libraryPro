@@ -740,16 +740,19 @@ ul.plan-features li+li {
 }
 
 .col-lg-3:nth-child(1) .plan-box,
+.active-plan-box.basic,
 .basic {
     background: linear-gradient(2deg, #3F51B5, #081350);
 }
 
 .col-lg-3:nth-child(2) .plan-box,
+.active-plan-box.standard,
 .standard {
     background: linear-gradient(3deg, #673AB7, #370099);
 }
 
 .col-lg-3:nth-child(3) .plan-box,
+.active-plan-box.premium,
 .premium {
     background: linear-gradient(0deg, #c3a81d, #ab8d15);
 }
@@ -1883,6 +1886,49 @@ ul.revenue-box li .d-flex {
     box-shadow: 3px 3px 0 #acacac;
 }
 
+.booking-count a.viewall {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-size: .8rem;
+    margin-bottom: -.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .5s ease, transform .5s ease;
+    transform: scale(1);
+}
+
+
+
+.booking-count:hover a.viewall {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* .booking-count:hover {
+    transform: scale(1.01);
+} */
+/* Link styling */
+a.text-white.text-decoration-none {
+    color: #fff;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: color .3s ease;
+}
+
+/* Arrow icon styling */
+a.text-white.text-decoration-none i.fa-long-arrow-right {
+    transition: transform .3s ease;
+}
+
+/* Hover effect */
+a.text-white.text-decoration-none:hover i.fa-long-arrow-right {
+    transform: translateX(5px);
+    /* Moves the arrow 5px to the right */
+}
+
 .booking-count {
     perspective: 1000px;
     /* Enables a 3D perspective */
@@ -1890,11 +1936,7 @@ ul.revenue-box li .d-flex {
     /* Smooth transition */
 }
 
-.booking-count:hover {
-    transform: rotateY(10deg) rotateX(10deg);
-    /* 3D rotation on hover */
-    box-shadow: 1px 0 5px #00000021;
-}
+
 
 .booking-count h6,
 .booking-count h4 {
@@ -3679,6 +3721,10 @@ h1 * {
     flex-direction: column;
 }
 
+.active-plan-box label {
+    color: #edededb0;
+}
+
 .active-plan-box .d-flex .plann-info {
     display: flex;
     list-style: none;
@@ -3688,6 +3734,19 @@ h1 * {
     margin: 0;
     flex-direction: column;
     gap: .8rem;
+}
+
+
+ul.plann-info li {
+    font-weight: 700;
+    font-size: .8rem;
+    color: #fff;
+}
+
+.active-plan-box .d-flex .plann-info a {
+    display: block;
+    text-decoration: none;
+    color: #f1f1f1 !important;
 }
 
 .active-plan-box .d-flex .plann-info a {
@@ -3769,6 +3828,10 @@ ul.plann-info li {
 
 .cardbg-3 {
     background: linear-gradient(159deg, #151F38, #1B377D);
+}
+
+.cardbg-4 {
+    background: linear-gradient(45deg, #612222, #ad1d1d);
 }
 
 .main-count span,
@@ -4091,4 +4154,46 @@ ul.revenue-box li .d-flex {
 h5.role-category-heading {
     font-size: 1rem;
     font-weight: 600;
+}
+
+/* DataTable */
+.table-responsive {
+    background: #fff !important;
+}
+
+div.dt-container div.dt-layout-row {
+    margin: 0 !important;
+}
+
+div#datatable_wrapper input,
+div#datatable_wrapper select {
+    height: 35px;
+    margin: .5rem;
+    border-color: #e7e7e7;
+}
+
+small.text-danger.fs-10.d-block {
+    width: 200px;
+}
+
+table#datatable {
+    border-bottom: 1px solid #e7e7e7;
+}
+
+div#datatable_info {
+    padding: .5rem;
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.content p {
+    color: #d400a4;
+    font-weight: 600;
+}
+
+.active-plan-box h4 {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: #ffffff !important;
 }

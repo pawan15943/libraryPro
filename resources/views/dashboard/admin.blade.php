@@ -20,7 +20,7 @@
     </div>
 </div>
 <div class="dashboard">
-    <div class="row">
+    <div class="row g-4">
         <div class="col-lg-9">
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
@@ -29,32 +29,32 @@
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="active-plan-box">
+            <div class="active-plan-box basic">
                 <div class="top-content">
                     <h4>{{$plan->name}}
                         @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
                             <span><a href="{{ route('subscriptions.choosePlan') }}">Upgrade Plan</a></span>
                             @endif
                     </h4>
-                    <label for="">Active</label>
+                    <label for="">Active </label>
                 </div>
                 <div class="d-flex">
                     <ul class="plann-info">
                         <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
                         <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
-                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}}</a> </li>
+                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}} (Yearly)</a> </li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <!-- Library Main Counts -->
-    <div class="row my-4">
+    <div class="row  g-4 my-4">
         <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
                 <h2>{{$total_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <small>As Today {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -62,7 +62,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -70,14 +70,24 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2>{{$availble_seats}}</h2>
-                <small>Added on {{date('d-m-Y')}}</small>
+                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="main-count cardbg-4">
+                <span>Expired Seats</span>
+                <h2>{{$availble_seats}}</h2>
+                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
     </div>
+    <!-- End -->
 
+    <!-- Library Revenue -->
     <h4 class="my-4">Monthly Revenues</h4>
-    <div class="row">
+    <div class="row g-4">
         <div class="col-lg-12">
             <ul class="revenue-box scroll-x">
                 @foreach($revenues as $revenue)
@@ -116,8 +126,7 @@
             </ul>
         </div>
     </div>
-    <!-- Available Seats -->
-
+    <!-- End -->
 
 
     <!-- Library Other Counts -->
@@ -134,62 +143,69 @@
         </div>
     </div>
 
+
     <div class="row g-4">
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Total Bookings</h6>
                 <div class="d-flex">
                     <h4 id="totalBookings">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
                     <h4 id="onlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Offline Paid</h6>
                 <div class="d-flex">
                     <h4 id="offlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Other Paid</h6>
                 <div class="d-flex">
                     <h4 id="otherPaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-1">
                 <h6>Expired in 5 Days</h6>
                 <div class="d-flex">
                     <h4 id="expiredInFive">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-2">
                 <h6>Expired Seats</h6>
                 <div class="d-flex">
                     <h4 id="expiredSeats">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Extended Seats</h6>
                 <div class="d-flex">
@@ -197,9 +213,10 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Swap Seats</h6>
                 <div class="d-flex">
@@ -207,19 +224,20 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Upgrade Seats</h6>
                 <div class="d-flex">
                     <h4 id="learnerUpgrade">80</h4>
-
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Reactive Seats</h6>
                 <div class="d-flex">
@@ -227,9 +245,10 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        {{-- <div class="col-lg-2">
+        {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>WhatsApp Sended</h6>
                 <div class="d-flex">
@@ -239,7 +258,7 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
     </div>
 </div>
-<div class="col-lg-2">
+<div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-4">
         <h6>Email Sended</h6>
         <div class="d-flex">
@@ -249,116 +268,116 @@
         <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
     </div>
 </div> --}}
-</div>
 
+</div>
+<!-- End -->
 <h4 class="my-4">Plan Wise Count</h4>
+<!-- Plan Wise Booking Counts -->
 <div class="row g-4 planwisecount">
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Full Day</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>First Half</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Second Half</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 1</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 2</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 3</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 4</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-3">
             <h6>Total Booked Seats</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2">
+    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-3">
             <h6>Available Seats</h6>
             <div class="d-flex">
                 <h4>80</h4>
-
             </div>
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
 
 </div>
+<!-- End -->
 
+<!-- Dahboard Charts -->
 <div class="row mt-4">
     <div class="col-lg-8">
-        <canvas id="revenueChart"></canvas>
+        <div class="card">
+            <canvas id="revenueChart"></canvas>
+        </div>
     </div>
     <div class="col-lg-4">
-        <canvas id="bookingCountChart"></canvas>
+        <div class="card">
+            <canvas id="bookingCountChart"></canvas>
+        </div>
     </div>
 </div>
+<!-- End -->
 
 
 <!-- Available Seats -->
 
-<div class="row mt-5">
+<div class="row g-4 mt-2 mb-4">
     <div class="col-lg-4">
 
         <!-- Show 10 availble Seats -->
@@ -429,7 +448,7 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            <small><a class="renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
                         </div>
 
                         <ul class="d-flex inner">
@@ -580,13 +599,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title px-2 fs-5" id="seat_number_upgrades">Re-New Library Plan</h1>
+                <h1 class="modal-title px-2 fs-5" id="seat_number_upgrades">Re-New Lerners Plan</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body m-0">
                 <form id="upgradeForm" class="m-0">
                     <div class="">
-                        <div class="row g-3 m-0">
+                        <div class="row g-4 m-0">
                             <div class="col-lg-6">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select id="update_plan_id" class="form-control" name="plan_id">
@@ -623,9 +642,9 @@
                                 </select>
                             </div>
                             <div class="col-lg-12">
-                                <span class="text-info">Your upcoming plan starts after your current plan expires.</span>
+                                <span class="text-info text-center">Your upcoming plan starts after your current plan expires.</span>
                             </div>
-                            <div class="col-lg-4 mt-1">
+                            <div class="col-lg-5 mt-3">
 
                                 <input type="hidden" class="form-control char-only" name="seat_no" value="" id="update_seat_no">
                                 <input type="hidden" class="form-control char-only" name="user_id" value="" id="update_user_id">
@@ -820,7 +839,7 @@
                     duration: 2000, // Animation duration
                     easing: 'easeInOutQuart' // Animation easing
                 },
-                
+
                 scales: {
                     y: {
                         beginAtZero: true,
@@ -855,18 +874,17 @@
                     }
                 },
                 datalabels: {
-                    color: 'rgba(0, 0, 0, 0.7)', 
-                    display: true, 
-                    anchor: 'end', 
-                    align: 'top', 
-                    offset: 4, 
+                    color: 'rgba(0, 0, 0, 0.7)',
+                    display: true,
+                    anchor: 'end',
+                    align: 'top',
+                    offset: 4,
                     font: {
-                        weight: 'bold', 
+                        weight: 'bold', // Font weight
                         size: 12 // Font size
                     }
                 }
-            },
-            plugins: [ChartDataLabels]
+            }
         });
     }
 

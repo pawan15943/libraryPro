@@ -13,7 +13,9 @@ $today = Carbon::today();
 <div class="row mb-4">
     <!-- Main Info -->
     <div class="col-lg-12">
-        <p><b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.</p>
+        <p class="info-message">
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.</p>
         <div class="table-responsive">
             <table class="table text-center datatable">
                 <thead>

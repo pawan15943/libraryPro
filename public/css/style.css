@@ -4209,6 +4209,95 @@ a.btn.btn-primary.export {
     opacity: 1;
     margin-left: .5rem;
 }
-a.btn.btn-primary.export:hover{
+
+a.btn.btn-primary.export:hover {
     opacity: .8;
+}
+
+.info-message {
+    position: relative;
+    font-size: .85rem;
+    color: #6a1b9a;
+    background-color: #f3e5f5;
+    border: 1px solid #d1c4e9;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: 500;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    animation: fade-in 0.6s ease-in-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #6a1b9a;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #d32f2f;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.greeting-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    animation: background-change 1.2s;
+}
+
+#greeting-message {
+    font-size: 1.5rem;
+    color: red !important;
+    margin-bottom: 20px;
+    font-weight: 600;
+    gap: 1rem;
+    animation: fade-in 1s ease-in-out;
+    background: -webkit-linear-gradient(45deg, #ff075b, #FF9800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.greeting-icon {
+    font-size: 1.5rem;
+    color: #ffc107;
+    animation: bounce 1s infinite alternate ease-in-out;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-5px);
+    }
 }

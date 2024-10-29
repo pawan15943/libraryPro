@@ -13,7 +13,10 @@ $today = Carbon::today();
         <!-- <h4>Seat Booking History of Seat No. {{ $seat->seat_no }}</h4> -->
 
         @if($learners->isEmpty())
-        <p class="not-found py-4">There is currently no history available for this seat for any learners.</p>
+        <p class="not-found info-message">
+        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+    
+        There is currently no history available for this seat for any learners.</p>
         @else
         <div class="table-responsive mt-2">
             <table class="table text-center data-table" id="datatable" style="display:table !important;">

@@ -20,6 +20,14 @@
     </div>
 </div>
 <div class="dashboard">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="greeting-container">
+                <i id="greeting-icon" class="fas fa-sun greeting-icon"></i>
+                <h2 id="greeting-message" class="typing-text">Good Morning! Library Owner</h2>
+            </div>
+        </div>
+    </div>
     <div class="row g-4">
         <div class="col-lg-9">
             <div class="dashboard-Header">
@@ -931,7 +939,30 @@
         });
     }
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const greetingMessage = document.getElementById('greeting-message');
+        const greetingIcon = document.getElementById('greeting-icon');
 
+        const currentHour = new Date().getHours();
+        let greetingText = "Good Morning! Library Owner";
+        let iconClass = "fas fa-sun"; // Morning icon
+
+        if (currentHour >= 12 && currentHour < 17) {
+            greetingText = "Good Afternoon! Library Owner";
+            iconClass = "fas fa-cloud-sun"; // Afternoon icon
+        } else if (currentHour >= 17 && currentHour < 20) {
+            greetingText = "Good Evening! Library Owner";
+            iconClass = "fas fa-cloud-moon"; // Evening icon
+        } else if (currentHour >= 20 || currentHour < 5) {
+            greetingText = "Good Night! Library Owner";
+            iconClass = "fas fa-moon"; // Night icon
+        }
+
+        greetingMessage.textContent = greetingText;
+        greetingIcon.className = `${iconClass} greeting-icon`;
+    });
+</script>
 @include('learner.script')
 
 

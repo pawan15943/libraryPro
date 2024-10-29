@@ -90,9 +90,13 @@ $current_route = Route::currentRouteName();
     {{ session('success') }}
 </div>
 @endif
-<a href="{{ route('learners.export-csv') }}" class="btn btn-primary">Export Learners to CSV</a>
+
 
 <div class="row">
+    <div class="col-lg-12 text-end">
+        <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export"><i class="fa-solid fa-file-export"></i> Export All Data in CSV</a>
+        <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
+    </div>
     <div class="col-lg-12">
         <div class="filter-box">
             <h4 class="mb-3">Filter Box</h4>
@@ -162,7 +166,7 @@ $current_route = Route::currentRouteName();
     </div>
     <div class="col-lg-12">
         <div class="table-responsive ">
-            <table class="table text-center datatable">
+            <table class="table text-center datatable border-bottom">
                 <thead>
                     <tr>
                         <th>Seat No.</th>
@@ -206,16 +210,16 @@ $current_route = Route::currentRouteName();
                             <small>{{$value->plan_name}}</small>
                         </td>
                         <td>{{$value->plan_end_date}}<br>
-                           
+
                             @if ($diffInDays > 0)
-                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                            <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays <= 0 && $diffExtendDay>0)
                                 <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                            @else
-                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                            @endif
+                                @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                    <small class="text-warning fs-10 d-block">Plan Expires today</small>
+                                    @else
+                                    <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                                    @endif
                         </td>
                         <td>
                             @if($value->status==1)
@@ -238,20 +242,20 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
                                 @endcan
                                 <!-- Swap Seat-->
-                                
+
                                 @can('has-permission', 'Swap Seat')
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-                                @endcan 
-                               
-                               
+                                @endcan
+
+
                                 <!-- upgrade Seat-->
-                               
+
                                 @can('has-permission', 'Upgrade Seat Plan')
                                 <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                                 @endcan
-                              
+
                                 <!-- Close Seat -->
-                               
+
                                 @can('has-permission', 'Close Seat')
                                 <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close"><i class="fas fa-times"></i></a></li>
                                 @endcan
@@ -308,7 +312,6 @@ $current_route = Route::currentRouteName();
             window.history.replaceState({}, document.title, window.location.pathname);
         }
     });
-  
 </script>
 
 @include('learner.script')

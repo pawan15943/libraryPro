@@ -4197,3 +4197,18 @@ div#datatable_info {
     gap: 1rem;
     color: #ffffff !important;
 }
+
+a.btn.btn-primary.export {
+    background: #151f38;
+    height: auto ! IMPORTANT;
+    border-radius: .3rem;
+    padding: .4rem .6rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    font-size: .8rem;
+    opacity: 1;
+    margin-left: .5rem;
+}
+a.btn.btn-primary.export:hover{
+    opacity: .8;
+}

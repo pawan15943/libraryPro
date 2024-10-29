@@ -1,48 +1,48 @@
 <div id="loader">
-  <div class="spinner"></div>
+    <div class="spinner"></div>
 </div>
 <div class="header">
     <div class="d-flex">
         <div class="conatent flex">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
-         
+
             @if(isset($upcomingdiffInDays) && Auth::guard('library')->check() && $is_renew && $isProfile)
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i>
                 @if($upcomingdiffInDays > 0)
                 Upcoming Plan after {{$upcomingdiffInDays}} days
                 @endif
-                
-                
+
+
             </small>
-           @endif
+            @endif
             @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew && $isProfile)
-                
+
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i>
                 @if($librarydiffInDays > 0)
                 Plan expires in {{$librarydiffInDays}} days
                 @elseif($librarydiffInDays < 0)
                     Plan expired {{ abs($librarydiffInDays) }} days ago
-                @else
+                    @else
                     Plan expires today
-                @endif
-                
-                
-            </small>
-          
-                @if(($librarydiffInDays <= 5 &&  !$is_renew && $isProfile))
-                <script>
-                    window.onload = function() {
+                    @endif
+
+
+                    </small>
+
+                    @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
+                        <script>
+                        window.onload = function() {
                         setTimeout(function() {
-                            var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
-                            modal.show();
-                        }, 1000); 
-                    };
-                </script>
-                
-                <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew Plan</a>
-                @endif
-            @endif
-         
+                        var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
+                        modal.show();
+                        }, 1000);
+                        };
+                        </script>
+
+                        <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew Plan</a>
+                        @endif
+                        @endif
+
         </div>
         <!-- Modal Popup for Expiry Warning -->
         <div class="modal fade" id="planExpiryModal" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
@@ -54,19 +54,19 @@
                     </div>
                     <div class="modal-body">
                         @if($librarydiffInDays < 0)
-                        <h4>Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</h4>
-                        @elseif($librarydiffInDays > 0)
-                        <h4>Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</h4>
-                        @else
-                        <h4>Your library plan expires today. Please consider renewing your plan!</h4>
-                        @endif
+                            <h4>Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</h4>
+                            @elseif($librarydiffInDays > 0)
+                            <h4>Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</h4>
+                            @else
+                            <h4>Your library plan expires today. Please consider renewing your plan!</h4>
+                            @endif
 
-                       
+
                     </div>
                 </div>
             </div>
         </div>
-         <!-- Modal Popup end for Expiry Warning -->
+        <!-- Modal Popup end for Expiry Warning -->
         <!-- Modal Popup for Configration -->
         <div class="modal fade" id="todayrenew" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -78,7 +78,7 @@
                     <div class="modal-body">
                         <h4>Your library Renew today. Please consider renewing your plan!</h4>
                         <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
-                    
+
                     </div>
                 </div>
             </div>
@@ -87,21 +87,25 @@
 
         <div class="profile">
             <div class="dropdown">
-                Welcome 
+                Welcome
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     {{Auth::user()->name}}{{Auth::user()->library_name}}
                 </a>
                 <ul class="dropdown-menu">
-                    <li>{{Auth::user()->library_no ?? ''}}
-                    </li>
+
                     <li>
                         <img src="{{ url('public/img/user.png') }}" alt="profile" class="LibraryProfile">
                     </li>
+                    <li>
+                        <a class="dropdown-item text-center" href="javascript:;">
+                            <small class="text-danger">Library Unique Id</small><br>
+                        {{Auth::user()->library_no ?? ''}}</a>
+                    </li>
                     <!-- Change Password -->
                     <li>
-                        <a class="dropdown-item" href="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <a class="dropdown-item" href="" >
                             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
-                            Change Password
+                            Change Library Password
                         </a>
                     </li>
                     <!-- Logout -->
@@ -123,7 +127,7 @@
                 setTimeout(function() {
                     var modal = new bootstrap.Modal(document.getElementById('todayrenew'));
                     modal.show();
-                }, 1000); 
+                }, 1000);
             };
 
             // Function to call renewConfigration via AJAX

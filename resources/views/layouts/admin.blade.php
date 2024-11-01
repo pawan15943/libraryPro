@@ -110,216 +110,13 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function() {
-            // Initialize validation
-            $(".validateForm").validate({
-                errorPlacement: function(error, element) {
-                    if (element.is(':checkbox') || element.is(':radio')) {
-                        element.closest('.form-group').find('.error-msg').append(error);
-                    } else {
-                        error.insertAfter(element);
-                    }
-                },
-                highlight: function(element) {
-                    $(element).addClass("is-invalid");
-                },
-                unhighlight: function(element) {
-                    $(element).removeClass("is-invalid");
-                },
-                ignore: ".no-validate", // Skip validation for fields with the 'no-validate' class
-                submitHandler: function(form) {
-                    // Prevent form submission if validation fails
-                    if ($(form).valid()) {
-                        alert("Form successfully submitted!");
-                        form.submit(); // Submit form only if valid
-                    }
-                }
-            });
 
-            // Add custom validator method for file size
-            $.validator.addMethod("filesize", function(value, element, param) {
-                // Check if file is selected and its size
-                if (element.files.length === 0) {
-                    return false; // Return false if no file is selected
-                }
-                return this.optional(element) || (element.files[0].size <= param);
-            }, "File size must be less than {0}.");
-
-            // Add custom validator for file extension
-            $.validator.addMethod("extension", function(value, element, param) {
-                const allowedExtensions = param.split('|');
-                const fileExtension = value.split('.').pop().toLowerCase();
-                return this.optional(element) || allowedExtensions.includes(fileExtension);
-            }, "Invalid file type. Only {0} are allowed.");
-
-            $.validator.addMethod("regex", function(value, element, regexpr) {
-                return regexpr.test(value); // Return true if the regex passes
-            }, "Invalid format.");
-
-            // Apply validation rules for each input type
-            const fields = [{
-                    type: 'input[type="text"]',
-                    rules: {
-                        required: true,
-                        minlength: 2
-                    },
-                    messages: {
-                        required: "This field is required.",
-                        minlength: "Enter at least 2 characters."
-                    }
-                },
-                {
-                    type: 'input[type="email"]',
-                    rules: {
-                        required: true,
-                        email: true,
-                        regex: /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i // Correct regex for email validation
-                    },
-                    messages: {
-                        required: "This field is required.",
-                        email: "Enter a valid email address.",
-                        regex: "Email must contain '@' and end with a valid domain (e.g., .com, .in)."
-                    }
-                },
-                {
-                    type: 'input[type="number"]',
-                    rules: {
-                        required: true,
-                        number: true,
-                        min: 1
-                    },
-                    messages: {
-                        required: "This field is required.",
-                        number: "Enter a valid number.",
-                        min: "Value must be greater than 0."
-                    }
-                },
-                {
-                    type: 'select',
-                    rules: {
-                        required: true
-                    },
-                    messages: {
-                        required: "Please select an option."
-                    }
-                },
-                {
-                    type: 'textarea',
-                    rules: {
-                        required: true,
-                        minlength: 10
-                    },
-                    messages: {
-                        required: "This field is required.",
-                        minlength: "Enter at least 10 characters."
-                    }
-                },
-                {
-                    type: 'input[type="checkbox"]',
-                    rules: {
-                        required: true
-                    },
-                    messages: {
-                        required: "You must agree to the terms."
-                    }
-                },
-                {
-                    type: 'input[type="radio"]',
-                    rules: {
-                        required: true
-                    },
-                    messages: {
-                        required: "Please select an option."
-                    }
-                },
-                {
-                    type: 'input[type="date"]',
-                    rules: {
-                        required: true,
-                        date: true
-                    },
-                    messages: {
-                        required: "Please select a date.",
-                        date: "Enter a valid date."
-                    }
-                },
-                {
-                    type: 'input[type="file"]',
-                    rules: {
-                        required: true,
-                        extension: "jpg|jpeg", // Allowed file types
-                        filesize: 5242880 // Max file size: 5MB
-                    },
-                    messages: {
-                        required: "Please upload a file.",
-                        extension: "Only JPG and JPEG files are allowed.", // Correct file types in message
-                        filesize: "File size must be less than 5MB."
-                    }
-                },
-                {
-                    type: 'input[type="password"]',
-                    rules: {
-                        required: true,
-                        minlength: 6,
-                    },
-                    messages: {
-                        required: "Password is required.",
-                        minlength: "Password must be at least 6 characters long."
-                    }
-                }
-            ];
-
-            // Apply rules and messages dynamically based on input types
-            fields.forEach(field => {
-                $(field.type).each(function() {
-                    if (!$(this).hasClass('no-validate')) {
-                        $(this).rules("add", {
-                            ...field.rules,
-                            messages: field.messages
-                        });
-                    }
-                });
-            });
-
-            // Add validation rules for the password confirmation field if found
-            if ($('.confirm-password').length > 0) {
-                $('.confirm-password').rules('add', {
-                    required: true,
-                    matchPassword: true,
-                    messages: {
-                        required: "Please confirm your password.",
-                        matchPassword: "Passwords do not match."
-                    }
-                });
-            }
-
-            // Restrictions for input fields without validation
-            $(document).on('input', '.digit-only', function() {
-                this.value = this.value.replace(/[^0-9.]/g, ''); // Restrict to numbers and decimal
-            });
-
-            $(document).on('input', '.char-only', function() {
-                this.value = this.value.replace(/[^a-zA-Z ]/g, ''); // Restrict to alphabetic characters and allow single space
-            });
-
-            $(document).on('input', '.char-with-sps', function() {
-                this.value = this.value.replace(/[^a-zA-Z!@#\$%\^\&*\)\(+=._-\s]/g, ''); // Allow letters, special symbols, and spaces
-            });
-
-            // Explicit validation check for file input on file change
-            $('input[type="file"]').on('change', function() {
-                $(this).valid(); // Force validation for file input on change
-            });
-        });
-    </script>
     <!-- jQuery -->
     <script>
         $(document).ready(function() {
             $('#toggleIcon').click(function() {
-                $('#idProofFields').slideToggle(); // Toggle visibility of the fields
+                $('#idProofFields').slideToggle(); 
 
-                // Change icon based on visibility
                 if ($('#idProofFields').is(':visible')) {
                     $('#toggleIcon').removeClass('fa-plus').addClass('fa-minus');
                 } else {
@@ -328,10 +125,10 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $('.info-icon').on('click', function() {
-                // Toggle the visibility of the corresponding .info-card
                 $(this).next('.info-card').toggle();
             });
         });
@@ -342,21 +139,12 @@
             });
         });
 
-        // $(document).ready(function() {
-        //     // Show loader on page load
-        //     $("#loader").show();
-
-        //     // Hide loader when the page is fully loaded
-        //     $(window).on("load", function() {
-        //         $("#loader").fadeOut("slow");
-        //     });
-        // });
-        // window.history.pushState(null, null, window.location.href);
-        // window.onpopstate = function () {
-        //     window.history.pushState(null, null, window.location.href);
-        //     // Optionally redirect to login or a specific page if needed
-        //     window.location.href = '/login'; // Redirect to the login page
-        // };
+        $(document).ready(function() {
+            $("#loader").show();
+            $(window).on("load", function() {
+                $("#loader").fadeOut("slow");
+            });
+        });
     </script>
 </body>
 

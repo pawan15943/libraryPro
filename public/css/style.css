@@ -5,6 +5,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    transition: all .5s;
 }
 
 /* Default Css */
@@ -12,8 +13,8 @@
 :root {
     --c1: #151F38;
     --c2: #1D7BAD;
-    --c3: #D14343 ;
-    --c0: #BD0909 ;
+    --c3: #D14343;
+    --c0: #BD0909;
     /* bLACK AND wHITE */
     --c4: #000;
     --c5: #fff;
@@ -32,8 +33,8 @@
     --bg4: #a2ed22;
     --bg5: #a2ed22;
 
-    --heading-1:#3F51B5;
-    --heading-2:#28c17a;
+    --heading-1: #3F51B5;
+    --heading-2: #28c17a;
 
     --bs-1: 1px 0px 5px #00000035;
     --bs-2: 1px 0px 5px #00000025;
@@ -73,12 +74,12 @@
     --ev-3: #d84823;
     --ev-4: maroon;
 
-    --gredient-1:linear-gradient(159deg, var(--c1), #1B377D);
-    --gredient-2:linear-gradient(45deg, #1e4d48, #1DAD87);
-    --gredient-3:linear-gradient(45deg, #612222, #ad1d1d);
-    --gredient-4:linear-gradient(2deg, var(--heading-1), #081350);
-    --gredient-5:linear-gradient(3deg, #673AB7, #370099);
-    --gredient-6:linear-gradient(0deg, #c3a81d, #ab8d15);
+    --gredient-1: linear-gradient(159deg, var(--c1), #1B377D);
+    --gredient-2: linear-gradient(45deg, #1e4d48, #1DAD87);
+    --gredient-3: linear-gradient(45deg, #612222, #ad1d1d);
+    --gredient-4: linear-gradient(2deg, var(--heading-1), #081350);
+    --gredient-5: linear-gradient(3deg, #673AB7, #370099);
+    --gredient-6: linear-gradient(0deg, #c3a81d, #ab8d15);
 }
 
 
@@ -1729,11 +1730,22 @@ span.d-block.mt-2 {
     /* Dark red text for better readability */
 }
 
+.master-box ul .contents li {
+    padding-top: .8rem;
+}
 
 .master-box ul.contents li:not(.master-box ul.contents li li) {
     background: var(--c5);
     padding: .5rem.5rem;
     border-radius: .5rem;
+}
+
+i.fa.fa-circle-check.fa-3x.text-success {
+    display: block;
+    margin: 0 auto;
+    margin-top: -1.5rem;
+    text-align: center;
+    color: #54c854 !important;
 }
 
 .master-box ul.contents li+li:not(.master-box ul.contents li li) {
@@ -3602,6 +3614,14 @@ span.d-block.mt-2 {
     cursor: pointer;
 }
 
+.contents {
+    height: 400px;
+    overflow: hidden;
+
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
 
 .master-box ul.contents li:not(.master-box ul.contents li li) {
     background: var(--c5);
@@ -3892,11 +3912,15 @@ ul.revenue-box li .d-flex {
 
 .seat-statistics a.view-full-info {
     text-decoration: none;
-    color: #000;
+    color: var(--c8);
     display: block;
     text-align: center;
     font-weight: 700 !important;
     font-size: .8rem;
+}
+
+.seat-statistics a.view-full-info:hover {
+    color: var(--c4);
 }
 
 .seat-statistics .d-flex a.book {
@@ -3905,13 +3929,18 @@ ul.revenue-box li .d-flex {
     text-decoration: none;
     color: var(--c5);
     border-radius: 1rem;
+    box-shadow: 0px 3px 0px #989898 ! IMPORTANT;
+    margin-right: .5rem;
+}
+
+.seat-statistics .d-flex a.book:hover {
+    box-shadow: 0px 0px 0px #989898 ! IMPORTANT;
 }
 
 .seat-status p {
     margin: 0;
     font-size: .8rem;
     color: var(--heading-1);
-    font-weight: 800 !IMPORTANT;
     text-align: right;
 }
 
@@ -4098,6 +4127,7 @@ div#datatable_wrapper select {
 
 small.text-danger.fs-10.d-block {
     width: 200px;
+    margin: 0 auto;
 }
 
 table#datatable {
@@ -4110,10 +4140,6 @@ div#datatable_info {
     font-weight: 700;
 }
 
-.content p {
-    color: #d400a4;
-    font-weight: 600;
-}
 
 .active-plan-box h4 {
     display: flex;
@@ -4141,10 +4167,10 @@ a.btn.btn-primary.export:hover {
 .info-message {
     position: relative;
     font-size: .85rem;
-    color: #6a1b9a;
-    background-color: #f3e5f5;
-    border: 1px solid #d1c4e9;
-    padding: 15px 20px;
+    color: #4CAF50;
+    background-color: #f4ffe7;
+    border: 1px solid #4CAF50;
+    padding: 15px 30px;
     border-radius: 5px;
     margin-bottom: 20px;
     font-weight: 500;
@@ -4398,4 +4424,26 @@ a.btn.btn-primary.export:hover {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+li.record-not-found {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+li.record-not-found .no-record {
+    width: 150px !important;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+li.record-not-found span {
+    display: block;
+    font-size: 0.8rem;
+    color: #000;
+    margin-top: -2rem;
+    font-weight: 600;
 }

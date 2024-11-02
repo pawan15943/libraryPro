@@ -139,12 +139,7 @@
             });
         });
 
-        $(document).ready(function() {
-            $("#loader").show();
-            $(window).on("load", function() {
-                $("#loader").fadeOut("slow");
-            });
-        });
+
     </script>
 </body>
 

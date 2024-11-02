@@ -33,11 +33,22 @@
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
                 <h1>Welcome to <span>LibraryPro</span><br>
-                    Where <span class="typing-text">Great Minds Gather!</span></h1>
+                    Let’s Make Your <span class="typing-text"> Library the Place to Be! 📚🌟</span></h1>
             </div>
         </div>
         <div class="col-lg-3">
-            <div class="active-plan-box basic">
+            <div class="active-plan-box 
+            @switch($plan->name)
+                @case('Basic Plan')
+                    basic
+                    @break
+                @case('Standard Plan')
+                    standard
+                    @break
+                @case('Premium Plan')
+                    premium
+                    @break
+            @endswitch">
                 <div class="top-content">
                     <h4>{{$plan->name}}
                         @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
@@ -49,8 +60,8 @@
                 <div class="d-flex">
                     <ul class="plann-info">
                         <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
-                        <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
-                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}} (Yearly)</a> </li>
+                        <li>Plan Features : <br>{{$features_count}} <a href="{{route('library.myplan')}}" class="d-inline">View All Features</a> </li>
+                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}} ({{ $check->month == '12' ? 'Yearly' : 'Monthly' }})</a> </li>
                     </ul>
                 </div>
             </div>
@@ -112,7 +123,7 @@
                 @endphp
                 <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
                     <div class="d-flex">
-                        <h4>{{ $monthName }} {{ $revenue->year }} Revenue</h4>
+                        <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
                         <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
                     </div>
                     <div class="d-flex mt-10">
@@ -122,15 +133,16 @@
                         </div>
                         <div class="value">
                             <small>Total Expense</small>
-                            <h4 class="totalExpense" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
+                            <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
                         </div>
                         <div class="value">
                             <small>Net Profit</small>
-                            <h4 class="netProfit" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
+                            <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
                         </div>
                     </div>
                 </li>
                 @endforeach
+
             </ul>
         </div>
     </div>
@@ -144,6 +156,7 @@
         </div>
         <div class="col-lg-3">
             <select id="dataFilter" class="form-select form-control-sm">
+                <option value="all">All</option>
                 <option value="monthly">Monthly</option>
                 <option value="weekly">Weekly</option>
                 <option value="today">Today</option>
@@ -371,11 +384,13 @@
 <div class="row mt-4">
     <div class="col-lg-8">
         <div class="card">
-            <canvas id="revenueChart"></canvas>
+            <h5 class="mb-3">Planwise Revenue</h4>
+            <canvas id="revenueChart" style="max-height:340px;"></canvas>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card">
+            <h5 class="mb-3">Planwise Booking</h4>
             <canvas id="bookingCountChart"></canvas>
         </div>
     </div>
@@ -390,7 +405,7 @@
 
         <!-- Show 10 availble Seats -->
         <div class="seat-statistics ">
-            <h4 class="mb-4 text-center">Avaialble Seats</h4>
+            <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
 
                 @foreach($available_seats as $key => $value)
@@ -407,7 +422,10 @@
                     </div>
                 </li>
                 @endforeach
-
+                <li class="record-not-found">
+                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                    <span>No Seats Available to Book</span>
+                </li>
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
@@ -437,9 +455,12 @@
                     </div>
                 </li>
                 @endforeach
-
+                <li class="record-not-found">
+                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                    <span>No Expired Seats Available.</span>
+                </li>
             </ul>
-            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
+            <a href="{{route('learners')}}" class="view-full-info opacity-0">View All Availble Seats</a>
         </div>
     </div>
     <div class="col-lg-4">
@@ -466,9 +487,14 @@
                     </div>
                 </li>
                 @endforeach
+                <li class="record-not-found">
+                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                    <span>No Extended Seats Available.</span>
+                </li>
+
             </ul>
 
-            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
+            <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>
         </div>
     </div>
 </div>
@@ -666,26 +692,20 @@
     </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
 <script>
     (function($) {
         $(window).on("load", function() {
-            $(".contents").mCustomScrollbar();
+            $(".contents").mCustomScrollbar({
+                theme: "dark",
+                scrollInertia: 300,
+                axis: "y",
+                autoHideScrollbar: false, // Keeps scrollbar visible
+            });
         });
     })(jQuery);
-    // (function($) {
-    //     $(window).on("load", function() {
-    //         $(".scroll-x").mCustomScrollbar({
-    //             axis: "x", // Enable horizontal scrolling
-    //             theme: "dark", // Optional theme for the scrollbar
-    //             advanced: {
-    //                 autoExpandHorizontalScroll: true // Automatically expand scrollbar for large content
-    //             },
-    //             scrollInertia: 200 // Optional: Set scroll speed
-    //         });
-    //     });
-    // })(jQuery);
 </script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -806,9 +826,6 @@
             $('#learnerUpgrade').text(highlights.learnerUpgrade);
             $('#reactive').text(highlights.reactive);
         }
-
-
-
 
     });
 </script>

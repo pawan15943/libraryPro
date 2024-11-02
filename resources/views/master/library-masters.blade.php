@@ -797,13 +797,19 @@
 </div>
 @endif
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
 <script>
     (function($) {
         $(window).on("load", function() {
-            $(".contents").mCustomScrollbar();
+            $(".contents").mCustomScrollbar({
+                theme: "dark",
+                scrollInertia: 300,
+                axis: "y",
+                autoHideScrollbar: false, // Keeps
+            });
         });
     })(jQuery);
 </script>

@@ -12,10 +12,20 @@
     </div>
     @endif
     <div class="row justify-content-center mb-4">
-        <div class="col-lg-6">
+        <div class="col-lg-4">
             <div class="payment-detaile">
 
-                <div class="paymentinfo basic <?php if ($plan ? $plan->name == 'Basic' : '') ?>">
+                <div class="paymentinfo  @switch($plan->name)
+                @case('Basic Plan')
+                    basic
+                    @break
+                @case('Standard Plan')
+                    standard
+                    @break
+                @case('Premium Plan')
+                    premium
+                    @break
+            @endswitch <?php if ($plan ? $plan->name == 'Basic' : '') ?>">
                     <div class="plan-info">
                         <div class="row g-4">
                             <div class="col-lg-6">
@@ -63,9 +73,9 @@
                 <div>
                     @php
                     $premiumSub=App\Models\Subscription::where('id',3)->first();
-                        
+
                     @endphp
-                    <ul class="plan-features contents">
+                    <ul class="plan-features contents mb-3">
                         @if(isset($data->subscription) && $data->subscription->permissions->isNotEmpty())
                         @foreach($data->subscription->permissions as $permission)
                         <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
@@ -81,29 +91,34 @@
                 </div>
 
             </div>
-
+            <i class="fa fa-circle-check fa-3x text-success"></i>
         </div>
     </div>
     <div class="row justify-content-center mb-4">
         <div class="col-lg-12 text-center">
             <p class="text-danger">Both buttons will be available starting 5 days before your plan’s expiration.</p>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <a href="" class="btn btn-primary button box-shadow disabled">Upgrade Plan</a>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-2">
             <a href="" class="btn btn-primary button box-shadow disabled renew">Renew your Plan</a>
         </div>
     </div>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
     <script>
         (function($) {
             $(window).on("load", function() {
-                $(".contents").mCustomScrollbar();
+                $(".contents").mCustomScrollbar({
+                    theme: "dark",
+                    scrollInertia: 300,
+                    axis: "y",
+                    autoHideScrollbar: false, // Keeps
+                });
             });
         })(jQuery);
     </script>

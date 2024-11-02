@@ -159,9 +159,8 @@ $current_route = Route::currentRouteName();
 <div class="row mb-4 mt-4">
     <div class="col-lg-12 mb-4">
         <div class="records">
-            <p class="mb-2">Total Seats : {{$total_seats}} | Available : {{$availble_seats}} | Booked : {{$booked_seats}}</p>
-
-            <span class="text-success">Available to Book ({{$availble_seats}})</span> <span class="text-success">Active ({{$active_seat_count}})</span> <span class="text-danger">Expired ({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">First Half ({{$firstHalfCount}})</span> <span class="text-danger">Second Half ({{$secondHalfCount}})</span> <span class="text-danger">Hourly 1 ({{$hourly1Count}})</span> <span class="text-danger">Hourly 2 ({{$hourly2Count}})</span> <span class="text-danger">Hourly 3 ({{$hourly3Count}})</span> <span class="text-danger">Hourly 4 ({{$hourly4Count}})</span>
+            <p class="mb-2 text-dark"><b>Total Seats : {{$total_seats}} | Available Seats : {{$availble_seats}} | Booked Seats: {{$booked_seats}}</b></p>
+            <span class="text-success">Total Available Slots ({{$availble_seats}})</span> <span class="text-success">Total Booked Slots ({{$active_seat_count}})</span> <span class="text-danger">Total Expired Slots({{$expired_seat}})</span> <span class="text-danger">Extended Slots({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">FH: First Half ({{$firstHalfCount}})</span> <span class="text-danger">SH: Second Half ({{$secondHalfCount}})</span> <span class="text-danger">H1: Hourly Slot 1 ({{$hourly1Count}})</span> <span class="text-danger">H2: Hourly Slot 2 ({{$hourly2Count}})</span> <span class="text-danger">H3: Hourly Slot 3 ({{$hourly3Count}})</span> <span class="text-danger">H4 : Hourly Slot 4 ({{$hourly4Count}})</span>
         </div>
     </div>
     <div class="col-lg-12">
@@ -236,11 +235,18 @@ $current_route = Route::currentRouteName();
                                 @can('has-permission', 'View Seat')
                                 <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
                                 @endcan
+
                                 <!-- Edit Seat Info -->
                                 @if($diffExtendDay>0)
                                 @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
                                 @endcan
+
+                                <li><a href="{{route('learner.expire',$value->id)}}" title="Custom Seat Expire"><i class="fas fa-calendar"></i></a></li>
+
+                                <!-- Make payment -->
+                                <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+
                                 <!-- Swap Seat-->
 
                                 @can('has-permission', 'Swap Seat')
@@ -268,13 +274,14 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                                 @endif
                                 @if($diffExtendDay>0)
-                                <!-- Make payment -->
-                                <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+
                                 <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
+                                <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
+
+
                                 <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
-                                <li><a href="{{route('learner.expire',$value->id)}}" title="Expire"><i class="fas fa-edit"></i></a></li>
+                                <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
+
                                 @endif
                             </ul>
                         </td>

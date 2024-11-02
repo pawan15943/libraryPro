@@ -20,9 +20,8 @@ $hourlyCount = 0;
 <div class="row mb-4">
     <div class="col-lg-12 mb-4">
         <div class="records">
-            <p class="mb-2">Total Seats : {{$total_seats}} | Available : {{$availble_seats}} | Booked : {{$booked_seats}}</p>
-
-            <span class="text-success">Available to Book ({{$availble_seats}})</span> <span class="text-success">Active ({{$active_seat_count}})</span> <span class="text-danger">Expired ({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">First Half ({{$firstHalfCount}})</span> <span class="text-danger">Second Half ({{$secondHalfCount}})</span> <span class="text-danger">Hourly 1 ({{$hourly1Count}})</span> <span class="text-danger">Hourly 2 ({{$hourly2Count}})</span> <span class="text-danger">Hourly 3 ({{$hourly3Count}})</span> <span class="text-danger">Hourly 4 ({{$hourly4Count}})</span>
+            <p class="mb-2 text-dark"><b>Total Seats : {{$total_seats}} | Available Seats : {{$availble_seats}} | Booked Seats: {{$booked_seats}}</b></p>
+            <span class="text-success">Total Available Slots ({{$availble_seats}})</span> <span class="text-success">Total Booked Slots ({{$active_seat_count}})</span> <span class="text-danger">Total Expired Slots({{$expired_seat}})</span> <span class="text-danger">Extended Slots({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">FH: First Half ({{$firstHalfCount}})</span> <span class="text-danger">SH: Second Half ({{$secondHalfCount}})</span> <span class="text-danger">H1: Hourly Slot 1 ({{$hourly1Count}})</span> <span class="text-danger">H2: Hourly Slot 2 ({{$hourly2Count}})</span> <span class="text-danger">H3: Hourly Slot 3 ({{$hourly3Count}})</span> <span class="text-danger">H4 : Hourly Slot 4 ({{$hourly4Count}})</span>
         </div>
     </div>
     <div class="col-lg-12">

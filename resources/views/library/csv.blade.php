@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <!-- Breadcrumb -->
 
 
@@ -27,13 +26,13 @@
     <div class="col-lg-4">
         <div class="import-data">
             <form action="{{  route('library.csv.upload')}}" method="POST" enctype="multipart/form-data" id="importForm"> @csrf
-               
+
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Select File</label>
                         <input type="file" class="form-control" name="csv_file">
                         <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample learnar CSV File</small></a>
-                       
+
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
@@ -82,22 +81,22 @@
             {{-- Trigger CSV Download Automatically --}}
             @if(session('autoExportCsv'))
             <script type="text/javascript">
-                  let exportProgressBar = document.getElementById('export-progress-bar');
-                    let exportProgressText = document.getElementById('export-progress-text');
-                    let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
-                    
-                    // Set an interval to update the progress bar every 100 ms
-                    let progress = 0;
-                    let interval = setInterval(function() {
-                        progress += 10;
-                        exportProgressBar.value = progress;
-                        exportProgressText.textContent = `Preparing download: ${progress}%`;
-                        
-                        if (progress >= 100) {
-                            clearInterval(interval);
-                            window.location.href = exportrecordurl;
-                        }
-                    }, 100); // 100 ms * 10 = 1 second, change as needed
+                let exportProgressBar = document.getElementById('export-progress-bar');
+                let exportProgressText = document.getElementById('export-progress-text');
+                let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+
+                // Set an interval to update the progress bar every 100 ms
+                let progress = 0;
+                let interval = setInterval(function() {
+                    progress += 10;
+                    exportProgressBar.value = progress;
+                    exportProgressText.textContent = `Preparing download: ${progress}%`;
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        window.location.href = exportrecordurl;
+                    }
+                }, 100); // 100 ms * 10 = 1 second, change as needed
             </script>
             @endif
 
@@ -107,18 +106,18 @@
                 document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
                     // Hide the invalid records section
                     document.getElementById('invalid-records-section').style.display = 'none';
-            
+
                     // Reset the progress bar
                     let exportProgressBar = document.getElementById('export-progress-bar');
                     let exportProgressText = document.getElementById('export-progress-text');
-                    
+
                     if (exportProgressBar && exportProgressText) {
                         exportProgressBar.value = 0; // Reset progress to 0
                         exportProgressText.textContent = ""; // Clear text percentage
                     }
-            
+
                     let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
-                    
+
                     // Send AJAX request to clear session
                     fetch(clearSessionRoute, {
                             method: 'POST',
@@ -139,7 +138,7 @@
                         .catch(error => console.error('Error:', error));
                 });
             </script>
-            
+
         </div>
     </div>
 </div>

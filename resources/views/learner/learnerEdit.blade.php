@@ -83,7 +83,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <h4 class="mb-4">Actionables</h4>
                         <div class="row g-4">
                             <div class="col-lg-6" >
-                                <label for="">Id Proof Received </label>
+                                <label for="">Id Proof Received (Optional)</label>
                                 <select id="id_proof_name" class="form-control @error('id_proof_name') is-invalid @enderror" name="id_proof_name" >
                                     <option value="">Select Id Proof</option>
                                     <option value="1" {{ old('id_proof_name', $customer->id_proof_name) == 1 ? 'selected' : '' }}>Aadhar</option>
@@ -97,14 +97,13 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 @enderror
                             </div>
                             <div class="col-lg-6" >
-                                <label for="">Upload Scan Copy of Proof </label>
+                                <label for="">Upload Scan Copy of Proof (Optional)</label>
                                 <input type="file" class="form-control @error('id_proof_file') is-invalid @enderror" name="id_proof_file" id="id_proof_file" autocomplete="off">
                                 @error('id_proof_file')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                                <span class="text-info">Uploading ID proof is optional; you can upload it later.</span>
                                 @if($customer->id_proof_file)
                                 <a href="{{ asset('storage/' . $customer->id_proof_file) }}" target="_blank">View</a>
                                 @endif

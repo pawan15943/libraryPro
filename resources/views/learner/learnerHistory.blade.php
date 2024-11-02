@@ -153,7 +153,9 @@ $current_route = Route::currentRouteName();
 
 <div class="row">
     <div class="col-lg-12">
-    <p><b>Important: </b>This section displays a list of all closed plans and expired seats. If a seat owner does not renew their plan within a month or specified extension period, the seat will automatically expire and become available for others to book.However, if a user wishes to rebook their seat at a later time, we offer an option to reactivate the seat under a different seat number using the reactivation feature. In this case, we will not collect personal information again; instead, we will use the existing information on file.</p>
+    <p class="info-message">
+    <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>    
+    <b>Important: </b>This section displays a list of all closed plans and expired seats. If a seat owner does not renew their plan within a month or specified extension period, the seat will automatically expire and become available for others to book.However, if a user wishes to rebook their seat at a later time, we offer an option to reactivate the seat under a different seat number using the reactivation feature. In this case, we will not collect personal information again; instead, we will use the existing information on file.</p>
         <div class="table-responsive">
             <table class="table text-center datatable" id="datatable">
                 <thead>

@@ -94,6 +94,7 @@ $readonlyStyle = '';
                             </div>
                         </div>
                     </h4>
+                    <p class="text-danger"><b>important Note:</b> Seat plan upgrades are work only when the learner's seat is about to expire or during plan renewal.</p>
                     <div class="row g-4">
                         <input id="edit_seat" type="hidden" name="seat_no" value="{{ old('seat_no', $customer->seat_no) }}">
                         <input type="hidden" name="user_id" value="{{ old('user_id', $customer->id) }}">

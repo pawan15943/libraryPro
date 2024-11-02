@@ -179,7 +179,8 @@ class DashboardController extends Controller
                 $endDate = $endDate->format('Y-m-d');
                 $plans = $this->learnerService->getPlans();
             
-          
+            $expired_seats = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '<', now())->count();
+
            
 
             $plan_wise_booking=LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
@@ -192,7 +193,7 @@ class DashboardController extends Controller
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('availble_seats','plans','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels'));
+                return view('dashboard.admin',compact('availble_seats','plans','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels','expired_seats'));
             }else{
                 return redirect($redirectUrl);
             }

@@ -1428,6 +1428,10 @@ class LearnerController extends Controller
             return response()->json(['success' => false, 'message' => 'Database insertion error']);
         }
     }
+
+    public function listView(Request $request){
+        return view('learner.list-view');
+    }
     
     
 }

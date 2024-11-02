@@ -42,7 +42,16 @@
                     <ul class="plann-info">
                         <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
                         <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
-                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}} (Yearly)</a> </li>
+                        <li>Plan Price : 
+                            <a href="{{route('library.transaction')}}">{{$check->amount}} 
+                                @if($check->month==12)
+                                (Yearly)
+                                @else
+                                (Monthly)
+                                @endif
+                            
+                            </a> 
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -62,7 +71,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <a href="{{route('learners.list.view')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -70,15 +79,15 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2>{{$availble_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <a href="{{route('learners.list.view')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-3">
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
-                <h2>{{$availble_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <h2>{{$expired_seats}}</h2>
+                <a href="{{route('learners.list.view')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -152,7 +161,7 @@
                     <h4 id="totalBookings">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -162,7 +171,7 @@
                     <h4 id="onlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -172,7 +181,7 @@
                     <h4 id="offlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -182,7 +191,7 @@
                     <h4 id="otherPaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -192,7 +201,7 @@
                     <h4 id="expiredInFive">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -202,7 +211,7 @@
                     <h4 id="expiredSeats">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -213,7 +222,7 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -224,7 +233,7 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -234,7 +243,7 @@
                     <h4 id="learnerUpgrade">80</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -245,7 +254,7 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">

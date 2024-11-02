@@ -95,7 +95,7 @@ $current_route = Route::currentRouteName();
 <div class="row">
     <div class="col-lg-12 text-end">
         <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export"><i class="fa-solid fa-file-export"></i> Export All Data in CSV</a>
-        <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
+        <a href="{{ route('library.upload.form') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
     </div>
     <div class="col-lg-12">
         <div class="filter-box">

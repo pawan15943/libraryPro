@@ -1718,16 +1718,16 @@ span.d-block.mt-2 {
 
 .records .text-success {
     background-color: #e6f4ea;
-    /* Light green background for success statuses */
     color: #28a745;
-    /* Dark green text for better readability */
+    display: inline-block;
+    margin-top: .5rem;
 }
 
 .records .text-danger {
     background-color: #fdecea;
-    /* Light red background for danger statuses */
     color: #dc3545;
-    /* Dark red text for better readability */
+    display: inline-block;
+    margin-top: .5rem;
 }
 
 .master-box ul .contents li {
@@ -4439,4 +4439,11 @@ li.record-not-found span {
     color: #000;
     margin-top: -2rem;
     font-weight: 600;
+}
+
+p.mb-2.text-dark b {
+    color: var(--c2);
+    font-family: 'Outfit';
+    font-weight: 600;
+    font-size: 1rem;
 }

@@ -28,8 +28,8 @@
                         <td>{{$x++}}</td>
                         <td>{{ $dt->format('F') }}, {{ $value['year'] }}</td>
                         <td><i class="fa fa-inr"></i> {{ number_format($value['total_revenue'], 2) }}</td>
-                        <td><i class="fa fa-inr"></i> {{ number_format($value['total_expenses'], 2) }}</td>
-                        <td><i class="fa fa-inr"></i> {{ number_format($value['total_revenue'] - $value['total_expenses'], 2) }}</td>
+                        <td class="text-danger"><i class="fa fa-inr"></i> {{ number_format($value['total_expenses'], 2) }}</td>
+                        <td class="text-success bold"><i class="fa fa-inr"></i> {{ number_format($value['total_revenue'] - $value['total_expenses'], 2) }}</td>
                         <td>
                             <ul class="actionalbls">
                                 <li>

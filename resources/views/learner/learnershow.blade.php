@@ -171,7 +171,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             @if(isset($transaction->is_paid) && $transaction->is_paid==1)
                             <h5 class="text-success">Paid</h5>
                             @else
-                            <h5 class="text-danger">Pending</h5>
+                            <h5 class="text-danger">Unpaid</h5>
                             @endif
 
 

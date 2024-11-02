@@ -959,7 +959,7 @@ button.expired-status {
 
 span.uppercase,
 span.truncate {
-    font-weight: 800;
+    font-weight: 700;
     display: block;
     text-align: center;
     margin: 0 auto;
@@ -1308,7 +1308,7 @@ span.timestamp {
 
 /* Master Design */
 .master-box {
-    background: #96dee1;
+    background: #e7e7e7;
     padding: 1.5rem;
     border-radius: .5rem;
 }
@@ -1745,7 +1745,7 @@ i.fa.fa-circle-check.fa-3x.text-success {
     margin: 0 auto;
     margin-top: -1.5rem;
     text-align: center;
-    color: #54c854 !important;
+    color: #54c854 !    important;
 }
 
 .master-box ul.contents li+li:not(.master-box ul.contents li li) {
@@ -2869,14 +2869,6 @@ button.expired-status {
     border-radius: 1rem;
 }
 
-span.uppercase,
-span.truncate {
-    font-weight: 800;
-    display: block;
-    text-align: center;
-    margin: 0 auto;
-    margin-bottom: -1.2rem;
-}
 
 .tooltip .tooltip-inner {
     font-size: 11px;
@@ -3634,7 +3626,7 @@ span.d-block.mt-2 {
 }
 
 .master-box ul.contents {
-    height: 150px;
+    height: 228px;
     overflow: auto;
 }
 
@@ -4438,6 +4430,7 @@ li.record-not-found .no-record {
     width: 150px !important;
     height: auto;
     margin-bottom: 1rem;
+    margin-top: -1.5rem;
 }
 
 li.record-not-found span {

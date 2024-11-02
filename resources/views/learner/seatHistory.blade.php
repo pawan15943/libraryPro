@@ -15,13 +15,15 @@ $today = Carbon::today();
     <div class="col-lg-12">
         <p class="info-message">
             <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
-            <b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.</p>
+            <b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.
+        </p>
         <div class="table-responsive">
             <table class="table text-center datatable">
                 <thead>
                     <tr>
                         <th style="width: 10%">Seat No.</th>
                         <th style="width: 20%">Seat Owner Name</th>
+                        <th style="width: 20%">Contact Info</th>
                         <th style="width: 10%">Plan Info</th>
                         <th style="width: 10%">Join On</th>
                         <th style="width: 10%">Start On</th>
@@ -55,9 +57,24 @@ $today = Carbon::today();
                         @if (!$loop->first)
                     <tr>
                         @endif
-                        <td class="uppercaseṢ">{{ $learner->name }}<br><small>{{ $learner->dob }}</small></td>
+                        <td><span class="uppercase">{{ $learner->name }}</span><br><small>{{ $learner->dob }}</small></td>
+                        <td><span class="truncate" data-bs-toggle="tooltip"
+                                data-bs-title="{{$learner->email }}" data-bs-placement="bottom"><i
+                                    class="fa-solid fa-times text-danger"></i></i>
+                                {{$learner->email }}</span> <br>
+                            <small> +91-{{$learner->mobile}}</small>
+                        </td>
                         <td>{{ $plantype->name }}<br><small>{{ $plan->name }}</small></td>
+
                         <td>{{ $user->join_date }}
+                            @if(isset($user->is_paid) && $user->is_paid==1)
+                            <small class="fs-10 d-block ">Paid</small>
+                            @else
+                            <small class="fs-10 d-block ">Unpaid</small>
+                            @endif
+                        </td>
+                        <td>{{ $user->plan_start_date }}</td>
+                        <td>{{ $user->plan_end_date }}
                             @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block ">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
@@ -66,17 +83,15 @@ $today = Carbon::today();
                                 <small class="text-warning fs-10 d-block ">Expires today</small>
                                 @endif
                         </td>
-                        <td>{{ $user->plan_start_date }}</td>
-                        <td>{{ $user->plan_end_date }}</td>
                         @if ($loop->first)
                         <td rowspan="{{ $usersForSeat->count()  }}">
-                            
+
                             <ul class="actionalbls">
                                 <li>
-                                    <a href="{{ url('seats/history', $seat->id) }}" title="View Seat Previous Booking "><i class="fa-solid fa-clock-rotate-left"></i></a>
+                                    <a href="{{ url('seats/history', $seat->id) }}" title="View Seat Previous Booking " class="disabled"><i class="fa-solid fa-clock-rotate-left"></i></a>
                                 </li>
                             </ul>
-                           
+
                         </td>
                         @endif
                         @if (!$loop->first)

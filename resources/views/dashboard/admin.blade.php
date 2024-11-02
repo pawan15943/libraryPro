@@ -32,7 +32,7 @@
         <div class="col-lg-9">
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
-                <h1>Welcome to <span>LibraryPro</span><br>
+                <h1>Welcome to <span>Libraro</span><br>
                     Let’s Make Your <span class="typing-text"> Library the Place to Be! 📚🌟</span></h1>
             </div>
         </div>
@@ -385,13 +385,13 @@
     <div class="col-lg-8">
         <div class="card">
             <h5 class="mb-3">Planwise Revenue</h4>
-            <canvas id="revenueChart" style="max-height:340px;"></canvas>
+                <canvas id="revenueChart" style="max-height:340px;"></canvas>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card">
             <h5 class="mb-3">Planwise Booking</h4>
-            <canvas id="bookingCountChart"></canvas>
+                <canvas id="bookingCountChart"></canvas>
         </div>
     </div>
 </div>
@@ -407,7 +407,7 @@
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
-
+                @if(!$available_seats->isEmpty())
                 @foreach($available_seats as $key => $value)
                 <li>
                     <div class="d-flex">
@@ -422,10 +422,12 @@
                     </div>
                 </li>
                 @endforeach
+                @else
                 <li class="record-not-found">
                     <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
                     <span>No Seats Available to Book</span>
                 </li>
+                @endif
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
@@ -435,6 +437,8 @@
         <div class="seat-statistics">
             <h4 class="mb-3 text-center">Seat About to Expire</h4>
             <ul class="contents">
+                @if(!$renewSeats->isEmpty())
+
                 @foreach($renewSeats as $key => $value)
                 <li>
                     <div class="d-flex">
@@ -455,10 +459,12 @@
                     </div>
                 </li>
                 @endforeach
+                @else
                 <li class="record-not-found">
                     <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
                     <span>No Expired Seats Available.</span>
                 </li>
+                @endif
             </ul>
             <a href="{{route('learners')}}" class="view-full-info opacity-0">View All Availble Seats</a>
         </div>
@@ -467,6 +473,7 @@
         <div class="seat-statistics">
             <h4 class="mb-3 text-center">Extend Seats</h4>
             <ul class="contents">
+                @if(!$extend_sets->isEmpty())
                 @foreach($extend_sets as $seat)
                 <li>
                     <div class="d-flex">
@@ -487,11 +494,12 @@
                     </div>
                 </li>
                 @endforeach
+                @else
                 <li class="record-not-found">
                     <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
                     <span>No Extended Seats Available.</span>
                 </li>
-
+                @endif
             </ul>
 
             <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>

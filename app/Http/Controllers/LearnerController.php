@@ -795,6 +795,7 @@ class LearnerController extends Controller
         $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
         $diffExtendDay= $today->diffInDays($inextendDate, false);
         $customer['diffExtendDay'] = $diffExtendDay;
+        $customer['diffInDays'] = $diffInDays;
 
         $learner_request=DB::table('learner_request')->where('learner_id',$customerId)->get();
         if ($request->expectsJson() || $request->has('id')) {
@@ -815,7 +816,20 @@ class LearnerController extends Controller
         $available_seat = $this->learnerService->getAvailableSeats();
        
         $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
-        
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
+        $customer['diffInDays'] = $diffInDays;
+
            
        return view('learner.learnerUpgrade', compact('customer', 'plans', 'planTypes','available_seat'));
     }
@@ -826,8 +840,20 @@ class LearnerController extends Controller
         $totalHour = $firstRecord ? $firstRecord->hour : null;
         
         $available_seat = Seat::where('total_hours', '!=', $totalHour)->pluck('seat_no', 'id');
-        
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
         $customer = $this->fetchCustomerData($customerId, false, $status=1, $detailStatus=1);
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
+        $customer['diffInDays'] = $diffInDays;
         return view('learner.swap', compact('customer','available_seat'));
     }
    
@@ -901,13 +927,25 @@ class LearnerController extends Controller
         $available_seat = $this->learnerService->getAvailableSeats();
        
         $customer = $this->fetchCustomerData($customerId, false, $status=0, $detailStatus=0);
-   
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        $today = Carbon::today();
+        $endDate = Carbon::parse($customer->plan_end_date);
+        $diffInDays = $today->diffInDays($endDate, false);
+        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+        $diffExtendDay= $today->diffInDays($inextendDate, false);
+        $customer['diffExtendDay'] = $diffExtendDay;
+        $customer['diffInDays'] = $diffInDays;
         if ($request->expectsJson() || $request->has('id')) {
            
             return response()->json($customer);
         } else {
            
-            return view('learner.learnerEdit', compact('customer', 'plans', 'planTypes','available_seat'));
+            return view('learner.learnerEdit', compact('customer', 'plans', 'planTypes','available_seat','extendDay','diffExtendDay','diffInDays'));
         }
     }
     
@@ -1429,9 +1467,7 @@ class LearnerController extends Controller
         }
     }
 
-    public function listView(Request $request){
-        return view('learner.list-view');
-    }
+   
     
     
 }

@@ -18,6 +18,7 @@ use App\Services\LibraryService;
 use App\Services\LearnerService;
 use App\Traits\LearnerQueryTrait;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Learner;
 use App\Models\PlanType;
 use App\Models\Subscription;
 use Log;
@@ -113,7 +114,7 @@ class DashboardController extends Controller
                 
             }
 
-            $available_seats=$this->learnerService->getAvailableSeats();
+            $available_seats=$this->learnerService->getAvailableSeatsPlantype();
             
            
             $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
@@ -217,7 +218,7 @@ class DashboardController extends Controller
     public function getData(Request $request)
     {
         // Fetch data based on the selected filter monthly, today, weekly
-        $filter = $request->filter ?? 'monthly'; 
+        $filter = $request->filter ?? 'all'; 
 
         switch ($filter) {
             case 'today':
@@ -272,9 +273,9 @@ class DashboardController extends Controller
         ->with('planType') // Assuming planType is a relationship
         ->get();
 
-    // Prepare labels and data for revenue
-    $revenueLabels = $planTypeWiseRevenue->pluck('planType.name')->toArray();
-    $revenueData = $planTypeWiseRevenue->pluck('revenue')->toArray();
+        // Prepare labels and data for revenue
+        $revenueLabels = $planTypeWiseRevenue->pluck('planType.name')->toArray();
+        $revenueData = $planTypeWiseRevenue->pluck('revenue')->toArray();
 
         // Library other highlights
         $total_booking = LearnerDetail::where('status', 1)
@@ -339,4 +340,72 @@ class DashboardController extends Controller
             ],
         ]);
     }
+
+    public function viewSeats($type = null)
+    {
+        $seats = [];
+        $extend_days=Hour::select('extend_days')->first();
+        if($extend_days){
+            $extendDay=$extend_days->extend_days;
+        }else{
+            $extendDay=0;
+        }
+        switch ($type) {
+            case 'booked':
+                $bookedSeats = Seat::where('is_available', '!=', 1)->where('total_hours', '!=', 0)->get();
+                foreach ($bookedSeats as $bookedSeat) {
+                 
+                    $learnerData = $this->getAllLearnersByLibrary()
+                                        ->where('learners.seat_no', $bookedSeat->seat_no)
+                                        ->where('learners.status', 1)
+                                        ->get();
+                 
+                    foreach ($learnerData as $learner) {
+                        $seats[] = ['learner' => $learner];
+                    }
+                }
+                break;
+        
+            case 'expired':
+                $learnerData = Learner::where('library_id', auth()->user()->id) 
+                    ->whereHas('learnerDetails', function ($query) {
+                        $query->whereDate('plan_end_date', '<', now());
+                    })
+                    ->with([
+                        'learnerDetails' => function($query) {
+                            $query->with(['seat', 'plan', 'planType']);
+                        }
+                    ])
+                    
+                    ->get();
+            
+                foreach ($learnerData as $learner) {
+                    $seats[] = ['learner' => $learner];
+                }
+                break;
+                
+            default:
+                
+                $allSeats = Seat::all();
+                foreach ($allSeats as $seat) {
+                    $learnerData = $this->getAllLearnersByLibrary()
+                                        ->where('learners.seat_no', $seat->seat_no)
+                                        ->get();
+                    foreach ($learnerData as $learner) {
+                        $seats[] = ['learner' => $learner ];
+                    }
+                }
+                break;
+        }
+
+        return view('learner.list-view', compact('extendDay','seats', 'type'));
+    }
+
+    public function viewFilterLearner($type = null, $filter = null){
+
+    }
+    
+    
+    
+
 }

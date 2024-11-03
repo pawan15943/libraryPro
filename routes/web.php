@@ -111,7 +111,9 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
       Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
       Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
-      Route::get('/list-view', [LearnerController::class, 'listView'])->name('learners.list.view');
+      
+      Route::get('/seats/{type?}', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
+
 
       
     });

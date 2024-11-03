@@ -2,18 +2,14 @@
 @section('content')
 
 <!-- Content Header (Page header) -->
-
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="row mb-4 mt-4">
-    <div class="col-lg-12 mb-4">
-        <div class="records">
-            <p class="mb-2">Total Seats : {{$total_seats}} | Available : {{$availble_seats}} | Booked : {{$booked_seats}}</p>
-
-            <span class="text-success">Available to Book ({{$availble_seats}})</span> <span class="text-success">Active ({{$active_seat_count}})</span> <span class="text-danger">Expired ({{$expired_seat}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">First Half ({{$firstHalfCount}})</span> <span class="text-danger">Second Half ({{$secondHalfCount}})</span> <span class="text-danger">Hourly 1 ({{$hourly1Count}})</span> <span class="text-danger">Hourly 2 ({{$hourly2Count}})</span> <span class="text-danger">Hourly 3 ({{$hourly3Count}})</span> <span class="text-danger">Hourly 4 ({{$hourly4Count}})</span>
-        </div>
-    </div>
+    
     <div class="col-lg-12">
         <div class="table-responsive ">
-            <table class="table text-center datatable border-bottom">
+            <table class="table text-center datatable border-bottom" id="datatable">
                 <thead>
                     <tr>
                         <th>Seat No.</th>
@@ -22,14 +18,86 @@
                         <th>Active Plan</th>
                         <th>Expired On</th>
                         <th>Status</th>
-                        <th>Action</th>
+                       
                     </tr>
                 </thead>
-
-
+                <tbody>
+                    @foreach ($seats as $data)
+                        <tr>
+                            <td>{{ $data['learner']->seat_no }}</td> <!-- Seat No -->
+                            
+                            <td><span class="uppercase truncate" data-bs-toggle="tooltip"
+                                data-bs-title="{{$data['learner']->name}}" data-bs-placement="bottom">{{$data['learner']->name}}</span>
+                            <br> <small>{{$data['learner']->dob}}</small>
+                            </td>
+                           
+                            <td><span class="truncate" data-bs-toggle="tooltip"
+                                data-bs-title="{{ $data['learner']->email }}" data-bs-placement="bottom"><i
+                                    class="fa-solid fa-times text-danger"></i></i>
+                                {{ $data['learner']->email }}</span> <br>
+                                <small> +91-{{$data['learner']->mobile}}</small>
+                            </td>
+                            <td>
+                                @if ($data['learner']->learnerDetails->isNotEmpty())
+                                    @php
+                                        $detail = $data['learner']->learnerDetails->first();
+                                        $today = Carbon::today();
+                                        $endDate = Carbon::parse($detail->plan_end_date);
+                                        $diffInDays = $today->diffInDays($endDate, false);
+                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
+                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
+                                    @endphp
+                            
+                                    {{ $detail->plan_start_date ?? 'N/A' }}<br>
+                                    <small>{{ $detail->plan->name ?? 'N/A' }}</small>
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                @if ($data['learner']->learnerDetails->isNotEmpty())
+                                    @php
+                                        $detail = $data['learner']->learnerDetails->first();
+                                        $endDate = Carbon::parse($detail->plan_end_date);
+                                    @endphp
+                                    {{ $detail->plan_end_date ?? 'N/A' }}<br>
+                                    <small>{{ $detail->planType->name ?? 'N/A' }}</small> 
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            <td>
+                                @if ($data['learner']->learnerDetails->isNotEmpty())
+                                    @php
+                                        $detail = $data['learner']->learnerDetails->first();
+                                        $today = Carbon::today();
+                                        $endDate = Carbon::parse($detail->plan_end_date);
+                                        $diffInDays = $today->diffInDays($endDate, false);
+                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
+                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
+                                    @endphp
+                            
+                                    {{ $data['learner']->status == 1 ? 'Active' : 'Inactive' }}
+                                    @if ($diffInDays > 0)
+                                        <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                                    @elseif ($diffInDays <= 0 && $diffExtendDay > 0)
+                                        <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
+                                    @elseif ($diffInDays < 0 && $diffExtendDay == 0)
+                                        <small class="text-warning fs-10 d-block">Plan Expires today</small>
+                                    @else
+                                        <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                                    @endif
+                                @else
+                                    N/A
+                                @endif
+                            </td>
+                            
+                            
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
-           
-
+          
         </div>
     </div>
 </div>

@@ -4,13 +4,7 @@
 
 
 <!-- Breadcrumb -->
-@if(isset($librarydiffInDays) && $librarydiffInDays <= 5)
-    <div class="row justify-content-center mb-4 mt-4">
-    <div class="col-lg-3">
-        <a href="{{route('subscriptions.choosePlan')}}" type="button" class="btn btn-primary button main">Renew Plan Now</a>
-    </div>
-    </div>
-    @endif
+
     <div class="row justify-content-center mb-4">
         <div class="col-lg-4">
             <div class="payment-detaile">
@@ -25,7 +19,7 @@
                 @case('Premium Plan')
                     premium
                     @break
-            @endswitch <?php if ($plan ? $plan->name == 'Basic' : '') ?>">
+                @endswitch <?php if ($plan ? $plan->name == 'Basic' : '') ?>">
                     <div class="plan-info">
                         <div class="row g-4">
                             <div class="col-lg-6">
@@ -73,9 +67,9 @@
                 <div>
                     @php
                     $premiumSub=App\Models\Subscription::where('id',3)->first();
-
+                    $subscribedPermissions = $data->subscription->permissions->pluck('name')->toArray();
                     @endphp
-                    <ul class="plan-features contents mb-3">
+                    {{-- <ul class="plan-features contents mb-3">
                         @if(isset($data->subscription) && $data->subscription->permissions->isNotEmpty())
                         @foreach($data->subscription->permissions as $permission)
                         <li><i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}</li>
@@ -86,6 +80,17 @@
                         @else
                         <li>No permissions available</li>
                         @endif
+                    </ul> --}}
+                    <ul class="plan-features">
+                        @foreach($premiumSub->permissions as $permission)
+                            @if(in_array($permission->name, $subscribedPermissions))
+                                <!-- Check mark for subscribed permissions -->
+                                <li><i class="fa-solid fa-check text-success me-2"></i>{{ $permission->name }}</li>
+                            @else
+                                <!-- Cross mark for non-subscribed permissions -->
+                                <li><i class="fa-solid fa-xmark text-danger me-2"></i>{{ $permission->name }}</li>
+                            @endif
+                        @endforeach
                     </ul>
 
                 </div>
@@ -98,12 +103,14 @@
         <div class="col-lg-12 text-center">
             <p class="text-danger">Both buttons will be available starting 5 days before your plan’s expiration.</p>
         </div>
+        @if(isset($librarydiffInDays) && $librarydiffInDays <= 5)
         <div class="col-lg-2">
-            <a href="" class="btn btn-primary button box-shadow disabled">Upgrade Plan</a>
+            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow disabled">Upgrade Plan</a>
         </div>
         <div class="col-lg-2">
-            <a href="" class="btn btn-primary button box-shadow disabled renew">Renew your Plan</a>
+            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow disabled renew">Renew your Plan</a>
         </div>
+        @endif
     </div>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">

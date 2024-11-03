@@ -211,14 +211,14 @@ $current_route = Route::currentRouteName();
                         <td>{{$value->plan_end_date}}<br>
 
                             @if ($diffInDays > 0)
-                            <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays <= 0 && $diffExtendDay>0)
                                 <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                                @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                    <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                                    @else
-                                    <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                    @endif
+                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
+                            @else
+                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                            @endif
                         </td>
                         <td>
                             @if($value->status==1)

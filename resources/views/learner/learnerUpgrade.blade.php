@@ -172,11 +172,30 @@ $readonlyStyle = '';
         </div>
         <div class="col-lg-3">
             <div class="seat--info">
-                <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+                @php 
+                    $class='';  
+                    if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
+                        $class='extedned';
+                    }elseif($customer->diffInDays < 0 ){
+                        $class='expired';
+                    }
+                @endphp
+                <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
                 <p>{{ $customer->plan_name}}</p>
-                <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-                <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+                <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+                <!-- Expire days Info -->
+               
+                @if ($customer->diffInDays > 0)
+                    <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
+                @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
+                    <span class="text-danger fs-10 d-block">{{$learnerExtendText}}  {{ abs($customer->diffExtendDay) }} days.</span>
+                @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+                    <span class="text-warning fs-10 d-block">Plan Expires today</span>
+                @else
+                    <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
+                @endif
+                <!-- End -->
             </div>
         </div>
     </div>

@@ -2,7 +2,6 @@
 @section('content')
 @php
 use App\Models\Learner;
-use Carbon\Carbon;
 $fullDayCount = 0;
 $halfDayFirstHalfCount = 0;
 $halfDaySecondHalfCount = 0;
@@ -31,142 +30,123 @@ $hourlyCount = 0;
             @foreach($seats as $seat)
             <div class="seat">
                 @php
-                $usersForSeat =Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->where('learners.library_id',auth()->user()->id)->where('learners.seat_no', $seat->seat_no)->select('learners.id','learners.seat_no','learner_detail.plan_type_id','plan_types.day_type_id','plan_types.image','learner_detail.plan_end_date')->where('learners.status',1)->where('learner_detail.status',1)->get();
+                $usersForSeat =Learner::leftJoin('learner_detail','learner_detail.learner_id','=','learners.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->where('learners.library_id',auth()->user()->id)->where('learners.seat_no', $seat->seat_no)->select('learners.id','learners.seat_no','learner_detail.plan_type_id','plan_types.day_type_id','plan_types.image')->where('learners.status',1)->where('learner_detail.status',1)->get();
                 $remainingHours = $total_hour - $seat->total_hours;
                 $seatCount = 0;
                 $halfday = 1;
                 $hourly = 1;
                 $x=1;
-              
-                    if ($remainingHours ==($total_hour-($total_hour/4)) && $seat->is_available == 4) {
-                    $seatCount = 3;
-                    } elseif ($remainingHours == ($total_hour-(2*$total_hour/4)) && $seat->is_available == 4) {
-                    $seatCount = 2;
-                    } elseif ($remainingHours == ($total_hour-(3*$total_hour/4)) && $seat->is_available == 4) {
-                    $seatCount = 1;
-                    } elseif ($remainingHours == ($total_hour/2) && $seat->is_available != 4) {
-                    $seatCount = 1;
-                    } elseif ($remainingHours == 0 && $seat->is_available != 4) {
-                    $seatCount = 0;
-                    }
+                // Determine seatCount based on remaining hours and availability
+                if ($remainingHours ==($total_hour-($total_hour/4)) && $seat->is_available == 4) {
+                $seatCount = 3;
+                } elseif ($remainingHours == ($total_hour-(2*$total_hour/4)) && $seat->is_available == 4) {
+                $seatCount = 2;
+                } elseif ($remainingHours == ($total_hour-(3*$total_hour/4)) && $seat->is_available == 4) {
+                $seatCount = 1;
+                } elseif ($remainingHours == ($total_hour/2) && $seat->is_available != 4) {
+                $seatCount = 1;
+                } elseif ($remainingHours == 0 && $seat->is_available != 4) {
+                $seatCount = 0;
+                }
 
                 @endphp
 
                 @if($usersForSeat->count() > 0)
-                    @php
+                @php
 
-                    $halfDayBookings = $usersForSeat->where('day_type_id', 2)->count() + $usersForSeat->where('day_type_id', 3)->count();
-                    $hourlyBookings = $usersForSeat->whereIn('day_type_id', [4, 5, 6, 7])->count();
-                    
-                    if ($halfDayBookings == 1 && $hourlyBookings == 1) {
-                    $seatCount = 1;
-                    }elseif($remainingHours != 0 && $hourlyBookings >0){
-                    $seatCount = 4-$hourlyBookings;
-                    }elseif($remainingHours != 0 && $halfDayBookings>0){
-                    $seatCount = 2-$halfDayBookings;
-                    }
-                    
-                    $extend_days_data = App\Models\Hour::where('library_id', Auth::user()->id)->first();
-                    $extendDay = $extend_days_data ? $extend_days_data->extend_days : 0;
+                $halfDayBookings = $usersForSeat->where('day_type_id', 2)->count() + $usersForSeat->where('day_type_id', 3)->count();
+                $hourlyBookings = $usersForSeat->whereIn('day_type_id', [4, 5, 6, 7])->count();
 
+                if ($halfDayBookings == 1 && $hourlyBookings == 1) {
+                $seatCount = 1;
+                }elseif($remainingHours != 0 && $hourlyBookings >0){
+                $seatCount = 4-$hourlyBookings;
+                }elseif($remainingHours != 0 && $halfDayBookings>0){
+                $seatCount = 2-$halfDayBookings;
+                }
 
-                    @endphp
-                    <ul>
-                        @foreach($usersForSeat as $user)
-
-                        @if($user->day_type_id == 1)
-                        <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
-                                data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
-                                    class="fa-solid fa-check-circle booked"></i></a></li>
-
-                        @elseif($user->day_type_id == 2)
-
-                        <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
-                                data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
-                                    class="fa-solid fa-check-circle booked"></i></a></li>
-
-
-                        @elseif($user->day_type_id == 3)
-                        <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
-                                data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
-                                    class="fa-solid fa-check-circle booked"></i></a></li>
-
-                        @elseif(in_array($user->day_type_id, [4, 5, 6, 7]))
-                        <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
-                                data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
-                                    class="fa-solid fa-check-circle booked"></i></a></li>
-                        @endif
-
-
-                        @endforeach
-                        @for ($i = 0; $i < $seatCount; $i++)
-
-
-                            <li><a href="javascript:;" data-bs-toggle="modal" class="first_popup"
-                                data-bs-target="#seatAllotmentModal" data-id="{{ $seat->id }}" data-seat_no="{{ $seat->seat_no }}"><i
-                                    class="fa-solid fa-check-circle available"></i></a></li>
-
-                            @endfor
-                    </ul>
-
+                @endphp
+                <ul>
                     @foreach($usersForSeat as $user)
-                        @php
-                           
-                            $today = Carbon::today();
-                            $endDate = Carbon::parse($user->plan_end_date);
-                            $diffInDays = $today->diffInDays($endDate, false);
-                            $inextendDate = $endDate->copy()->addDays($extendDay); 
-                            $diffExtendDay= $today->diffInDays($inextendDate, false);
-                            $class='';
-                            if($diffInDays < 0 && $diffExtendDay>0){
-                                $class='extedned';
-                            }
-                            if($diffInDays <=5 && $diffInDays >0){
-                                $class='expired';
-                            }
-                        @endphp
-                        
-                        @if($user->day_type_id == 1)
 
-                        <small class="text-dark d-inline {{$class}}">Fullday</small>
+                    @if($user->day_type_id == 1)
+                    <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
+                            data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
+                                class="fa-solid fa-check-circle booked"></i></a></li>
 
-                        @elseif($user->day_type_id == 2)
+                    @elseif($user->day_type_id == 2)
 
-                        <small class="text-dark d-inline {{$class}}">FH</small>
+                    <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
+                            data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
+                                class="fa-solid fa-check-circle booked"></i></a></li>
 
-                        @elseif($user->day_type_id == 3)
 
-                        <small class="text-dark d-inline {{$class}}">SH</small>
-                        @elseif($user->day_type_id == 4)
+                    @elseif($user->day_type_id == 3)
+                    <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
+                            data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
+                                class="fa-solid fa-check-circle booked"></i></a></li>
 
-                        <small class="text-dark d-inline {{$class}}">H1</small>
-                        @elseif($user->day_type_id == 5)
+                    @elseif(in_array($user->day_type_id, [4, 5, 6, 7]))
+                    <li><a href="javascript:;" data-bs-toggle="modal" class="second_popup" data-seat_no="{{ $seat->seat_no }}"
+                            data-bs-target="#seatAllotmentModal2" data-userid="{{ $user->id }}"><i
+                                class="fa-solid fa-check-circle booked"></i></a></li>
+                    @endif
 
-                        <small class="text-dark d-inline {{$class}}">H2</small>
-                        @elseif($user->day_type_id == 6)
 
-                        <small class="text-dark d-inline {{$class}}">H3</small>
-
-                        @elseif($user->day_type_id == 7)
-
-                        <small class="text-dark d-inline {{$class}}">H4</small>
-
-                        @endif
                     @endforeach
+                    @for ($i = 0; $i < $seatCount; $i++)
 
-                    <img src="{{ asset($user->image) }}" class="booked" alt="book">
-                    <small class="text-dark">Seat No.{{ $seat->seat_no }}</small>
-
-                @else
-                    <ul>
 
                         <li><a href="javascript:;" data-bs-toggle="modal" class="first_popup"
-                                data-bs-target="#seatAllotmentModal" data-id="{{ $seat->id }}" data-seat_no="{{ $seat->seat_no }}"><i
-                                    class="fa-solid fa-check-circle available "></i></a></li>
-                    </ul>
-                    <small class="text-dark">Available </small>
-                    <img src="{{ asset('public/img/available.png') }}" alt="book">
-                    <small class="text-dark">Seat No. {{ $seat->seat_no }}</small>
+                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat->id }}" data-seat_no="{{ $seat->seat_no }}"><i
+                                class="fa-solid fa-check-circle available"></i></a></li>
+
+                        @endfor
+                </ul>
+
+                @foreach($usersForSeat as $user)
+
+                @if($user->day_type_id == 1)
+
+                <small class="text-dark d-inline">Fullday</small>
+
+                @elseif($user->day_type_id == 2)
+
+                <small class="text-dark d-inline">FH</small>
+
+                @elseif($user->day_type_id == 3)
+
+                <small class="text-dark d-inline">SH</small>
+                @elseif($user->day_type_id == 4)
+
+                <small class="text-dark d-inline">H1</small>
+                @elseif($user->day_type_id == 5)
+
+                <small class="text-dark d-inline">H2</small>
+                @elseif($user->day_type_id == 6)
+
+                <small class="text-dark d-inline">H3</small>
+
+                @elseif($user->day_type_id == 7)
+
+                <small class="text-dark d-inline">H4</small>
+
+                @endif
+                @endforeach
+
+                <img src="{{ asset($user->image) }}" class="booked" alt="book">
+                <small class="text-dark">Seat No.{{ $seat->seat_no }}</small>
+
+                @else
+                <ul>
+
+                    <li><a href="javascript:;" data-bs-toggle="modal" class="first_popup"
+                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat->id }}" data-seat_no="{{ $seat->seat_no }}"><i
+                                class="fa-solid fa-check-circle available "></i></a></li>
+                </ul>
+                <small class="text-dark">Available </small>
+                <img src="{{ asset('public/img/available.png') }}" alt="book">
+                <small class="text-dark">Seat No. {{ $seat->seat_no }}</small>
 
 
                 @endif

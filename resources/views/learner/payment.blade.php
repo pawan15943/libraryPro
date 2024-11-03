@@ -221,8 +221,16 @@ $diffInDays = $today->diffInDays($endDate, false);
     </div>
     <div class="col-lg-3">
         <div class="seat--info">
+            @php 
+            $class='';  
+                if($diffInDays < 0 && $diffExtendDay>0){
+                    $class='extedned';
+                }elseif($diffInDays < 0 ){
+                    $class='expired';
+                }
+            @endphp
             <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan_name}}</p>
             <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
            

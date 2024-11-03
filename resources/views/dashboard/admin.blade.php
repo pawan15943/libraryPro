@@ -60,8 +60,17 @@
                 <div class="d-flex">
                     <ul class="plann-info">
                         <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
-                        <li>Plan Features : <br>{{$features_count}} <a href="{{route('library.myplan')}}" class="d-inline">View All Features</a> </li>
-                        <li>Plan Price : <a href="{{route('library.transaction')}}">{{$check->amount}} ({{ $check->month == '12' ? 'Yearly' : 'Monthly' }})</a> </li>
+                        <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
+                        <li>Plan Price : 
+                            <a href="{{route('library.transaction')}}">{{$check->amount}} 
+                                @if($check->month==12)
+                                (Yearly)
+                                @else
+                                (Monthly)
+                                @endif
+                            
+                            </a> 
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -81,7 +90,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <a href="{{ route('learners.list.view', ['type' => 'booked']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -89,15 +98,15 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2>{{$availble_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <a href="{{route('seats')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
         <div class="col-lg-3">
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
-                <h2>{{$availble_seats}}</h2>
-                <a href="" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <h2>{{$expired_seats}}</h2>
+                <a href="{{route('learners.list.view', ['type' => 'expired'])}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -173,7 +182,7 @@
                     <h4 id="totalBookings">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -183,7 +192,7 @@
                     <h4 id="onlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -193,7 +202,7 @@
                     <h4 id="offlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -203,7 +212,7 @@
                     <h4 id="otherPaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -213,7 +222,7 @@
                     <h4 id="expiredInFive">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -223,50 +232,50 @@
                     <h4 id="expiredSeats">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Extended Seats</h6>
                 <div class="d-flex">
-                    <h4 id="extended_seats">80</h4>
+                    <h4 id="extended_seats">0</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Swap Seats</h6>
                 <div class="d-flex">
-                    <h4 id="swap_seat">80</h4>
+                    <h4 id="swap_seat">0</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Upgrade Seats</h6>
                 <div class="d-flex">
-                    <h4 id="learnerUpgrade">80</h4>
+                    <h4 id="learnerUpgrade">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Reactive Seats</h6>
                 <div class="d-flex">
-                    <h4 id="reactive">80</h4>
+                    <h4 id="reactive">0</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -277,18 +286,18 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-    </div>
-</div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
-    <div class="booking-count bg-4">
-        <h6>Email Sended</h6>
-        <div class="d-flex">
-            <h4>80</h4>
-
+            </div>
         </div>
-        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-    </div>
-</div> --}}
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Email Sended</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div> --}}
 
 </div>
 <!-- End -->
@@ -407,27 +416,43 @@
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
-                @if(!$available_seats->isEmpty())
-                @foreach($available_seats as $key => $value)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{url('public/img/available.png')}}" alt="library" class="img-fluid rounded">
-                        <div class="seat-content">
-                            <h6>Seat No. {{$value}}</h6>
-                            <small>Available</small>
+              
+                @foreach($available_seats as $seat)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{ url('public/img/available.png') }}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. {{ $seat['seat_no'] }}</h6>
+                                @if(count($seat['available_plan_types']) > 3)
+                                <small>Available</small>
+                                @else
+                                    @foreach($seat['available_plan_types'] as $planType)
+                                    @if($planType['name']=='First Half')
+                                    <small>FH |</small>
+                                    @elseif($planType['name']=='Second Half')
+                                    <small>SH |</small>
+                                    @elseif($planType['name']=='Hourly Slot 1')
+                                    <small>H1 |</small>
+                                    @elseif($planType['name']=='Hourly Slot 2')
+                                    <small>H2 |</small>
+                                    @elseif($planType['name']=='Hourly Slot 3')
+                                    <small>H3 |</small>
+                                    @elseif($planType['name']=='Hourly Slot 4')
+                                    <small>H4 |</small>
+                                    @else
+                                    <small>{{ $planType['name'] }}</small> 
+                                    @endif
+                                        
+                                    @endforeach
+                                @endif
+                                
+                            </div>
+                            <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
+                                data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_no'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
                         </div>
-
-                        <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                            data-bs-target="#seatAllotmentModal" data-id="{{$key}}" data-seat_no="{{$value}}">Book</a>
-                    </div>
-                </li>
+                    </li>
                 @endforeach
-                @else
-                <li class="record-not-found">
-                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
-                    <span>No Seats Available to Book</span>
-                </li>
-                @endif
+               
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
@@ -822,6 +847,7 @@
         }
 
         function updateHighlights(highlights) {
+            console.log('highlights',highlights);
 
             $('#totalBookings').text(highlights.total_booking);
             $('#onlinePaid').text(highlights.online_paid);

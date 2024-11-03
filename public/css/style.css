@@ -1718,7 +1718,7 @@ span.d-block.mt-2 {
 
 .records .text-success {
     background-color: #e6f4ea;
-    color: #28a745;
+    color: rgb(79 194 18) !important;
     display: inline-block;
     margin-top: .5rem;
 }
@@ -1745,7 +1745,7 @@ i.fa.fa-circle-check.fa-3x.text-success {
     margin: 0 auto;
     margin-top: -1.5rem;
     text-align: center;
-    color: #54c854 !    important;
+    color: rgb(79 194 18) !important;
 }
 
 .master-box ul.contents li+li:not(.master-box ul.contents li li) {
@@ -4446,4 +4446,8 @@ p.mb-2.text-dark b {
     font-family: 'Outfit';
     font-weight: 600;
     font-size: 1rem;
+}
+
+.text-success{
+    color: rgb(79 194 18) !important;
 }

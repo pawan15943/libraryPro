@@ -76,12 +76,47 @@
             </div>
         </div>
     </div>
+    <div class="row m-3 align-items-center">
+        <div class="col-lg-3">
+            <label for="datayaer" class="form-label">Select Year:</label>
+            <select id="datayaer" class="form-select form-control-sm" readonly>
+                <option value="2024">2024</option>
+                
+            </select>
+        </div>
+        
+        <div class="col-lg-3">
+            <label for="dataFilter" class="form-label">Select Month:</label>
+            <select id="dataFilter" class="form-select form-control-sm">
+                <option value="">Select</option>
+                <option value="01">Jan</option>
+                <option value="02">Feb</option>
+                <option value="03">Mar</option>
+                <option value="04">Apr</option>
+                <option value="05">May</option>
+                <option value="06">Jun</option>
+                <option value="07">Jul</option>
+                <option value="08">Aug</option>
+                <option value="09">Sep</option>
+                <option value="10">Oct</option>
+                <option value="11">Nov</option>
+                <option value="12">Dec</option>
+            </select>
+        </div>
+    
+        <div class="col-lg-6">
+            <label for="dateRange" class="form-label">Select Date Range:</label>
+            <input type="text" id="dateRange" class="form-control form-control-sm" placeholder="YYYY-MM-DD to YYYY-MM-DD">
+        </div>
+        
+    </div>
+    
     <!-- Library Main Counts -->
     <div class="row  g-4 my-4">
         <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
-                <h2>{{$total_seats}}</h2>
+                <h2 id="total_seat">0</h2>
                 <small>As Today {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -89,7 +124,7 @@
         <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
-                <h2>{{$booked_seats}}</h2>
+                <h2 id="booked_seat">0</h2>
                 <a href="{{ route('learners.list.view', ['type' => 'booked']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -97,7 +132,7 @@
         <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
-                <h2>{{$availble_seats}}</h2>
+                <h2 id="available_seat">0</h2>
                 <a href="{{route('seats')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -105,7 +140,7 @@
         <div class="col-lg-3">
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
-                <h2>{{$expired_seats}}</h2>
+                <h2 id="expired_seat">0</h2>
                 <a href="{{route('learners.list.view', ['type' => 'expired'])}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -163,14 +198,7 @@
         <div class="col-lg-9">
             <h4 class="my-4">Library Other Highlights</h4>
         </div>
-        <div class="col-lg-3">
-            <select id="dataFilter" class="form-select form-control-sm">
-                <option value="all">All</option>
-                <option value="monthly">Monthly</option>
-                <option value="weekly">Weekly</option>
-                <option value="today">Today</option>
-            </select>
-        </div>
+       
     </div>
 
 
@@ -727,6 +755,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        flatpickr("#dateRange", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+           
+            maxDate: new Date().fp_incr(365), // Set the maximum date to one year from now
+        });
+    });
+</script>
 
 <script>
     (function($) {
@@ -784,25 +822,45 @@
 </script>
 <script>
     $(document).ready(function() {
-        var initialFilter = $('#dataFilter').val();
-        fetchLibraryData(initialFilter);
+        // Fetch initial data based on the default filter (month)
+        var initialYear = $('#datayaer').val();
+        var initialMonth = $('#dataFilter').val();
+        fetchLibraryData(initialYear, initialMonth, null);
 
-        // Fetch data when the filter is changed
-        $('#dataFilter').on('change', function() {
-            var selectedFilter = $(this).val();
-            fetchLibraryData(selectedFilter);
+        // Event listener for year filter
+        $('#datayaer').on('change', function() {
+            var selectedYear = $(this).val();
+            var selectedMonth = $('#dataFilter').val();
+            fetchLibraryData(selectedYear, selectedMonth, null);
         });
 
-        function fetchLibraryData(filter) {
+        // Event listener for month filter
+        $('#dataFilter').on('change', function() {
+            var selectedYear = $('#datayaer').val();
+            var selectedMonth = $(this).val();
+            fetchLibraryData(selectedYear, selectedMonth, null);
+        });
+
+        // Event listener for date range picker
+        $('#dateRange').on('change', function() {
+            var selectedYear = $('#datayaer').val();
+            var selectedMonth = $('#dataFilter').val();
+            var dateRange = $(this).val(); // Date range in the format "YYYY-MM-DD to YYYY-MM-DD"
+            fetchLibraryData(selectedYear, selectedMonth, dateRange);
+        });
+
+        // Function to fetch data based on filters
+        function fetchLibraryData(year, month, dateRange) {
             $.ajax({
                 url: '{{ route("dashboard.data.get") }}',
                 method: 'POST',
                 data: {
-                    filter: filter, // Use the filter parameter passed to the function
+                    year: year,
+                    month: month,
+                    date_range: dateRange,
                     _token: '{{ csrf_token() }}' // CSRF token for security
                 },
                 success: function(response) {
-
                     updateHighlights(response.highlights);
                     console.log('Full response:', response);
 
@@ -822,23 +880,19 @@
                             </div>`;
                         $('.row.g-4.planwisecount').append(html);
                     });
-                    // Ensure labels and data for Revenue Chart are properly fetched
+
+                    // Render charts for Revenue and Booking Count
                     if (response.planTypeWiseRevenue && Array.isArray(response.planTypeWiseRevenue.labels) && Array.isArray(response.planTypeWiseRevenue.data)) {
                         renderRevenueChart(response.planTypeWiseRevenue.labels, response.planTypeWiseRevenue.data);
                     } else {
                         console.error('Invalid data format for planTypeWiseRevenue:', response.planTypeWiseRevenue);
                     }
 
-                    // Ensure labels and data for Booking Count Chart are properly fetched
                     if (response.planTypeWiseCount && Array.isArray(response.planTypeWiseCount.labels) && Array.isArray(response.planTypeWiseCount.data)) {
                         renderBookingCountChart(response.planTypeWiseCount.labels, response.planTypeWiseCount.data);
                     } else {
                         console.error('Invalid data format for planTypeWiseCount:', response.planTypeWiseCount);
                     }
-
-
-
-
                 },
                 error: function(xhr) {
                     console.error(xhr);
@@ -846,8 +900,9 @@
             });
         }
 
+        // Function to update highlights
         function updateHighlights(highlights) {
-            console.log('highlights',highlights);
+            console.log('highlights', highlights);
 
             $('#totalBookings').text(highlights.total_booking);
             $('#onlinePaid').text(highlights.online_paid);
@@ -859,10 +914,14 @@
             $('#swap_seat').text(highlights.swap_seat);
             $('#learnerUpgrade').text(highlights.learnerUpgrade);
             $('#reactive').text(highlights.reactive);
+            $('#total_seat').text(highlights.total_seat);
+            $('#booked_seat').text(highlights.booked_seat);
+            $('#available_seat').text(highlights.available_seat);
+            $('#expired_seat').text(highlights.expired_seats);
         }
-
     });
 </script>
+
 <script>
     function renderRevenueChart(labels, data) {
         if (Chart.getChart("revenueChart")) {

@@ -94,10 +94,10 @@ class DashboardController extends Controller
             }
 
             
-            $availble_seats=Seat::where('total_hours','==',0)->count(); 
+            
           
-            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
-            $total_seats=Seat::count();
+           
+           
           
             // redirect check library  
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
@@ -180,7 +180,7 @@ class DashboardController extends Controller
                 $endDate = $endDate->format('Y-m-d');
                 $plans = $this->learnerService->getPlans();
             
-            $expired_seats = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '<', now())->count();
+            
 
            
 
@@ -194,7 +194,7 @@ class DashboardController extends Controller
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('availble_seats','plans','booked_seats','total_seats','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels','expired_seats'));
+                return view('dashboard.admin',compact('plans','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels'));
             }else{
                 return redirect($redirectUrl);
             }
@@ -217,39 +217,314 @@ class DashboardController extends Controller
     }
     public function getData(Request $request)
     {
-        // Fetch data based on the selected filter monthly, today, weekly
-        $filter = $request->filter ?? 'all'; 
-
-        switch ($filter) {
-            case 'today':
-                $startDate = Carbon::today();
-                $endDate = Carbon::today();
-                break;
-            case 'weekly':
-                $startDate = Carbon::now()->startOfWeek();
-                $endDate = Carbon::now()->endOfWeek();
-                break;
-            case 'monthly':
-                $startDate = Carbon::now()->startOfMonth();
-                $endDate = Carbon::now()->endOfMonth();
-                break;
-            default:
-                $startDate = Carbon::today();
-                $endDate = Carbon::today();
-        }
         
-        Log::info("start date: $startDate, end date: $endDate");
+        // Library other highlights
+        
+        $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+        $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+        $fiveDaysBefore = Carbon::now()->addDays(-5)->format('Y-m-d'); // Add this line for the expired logic
+        $expired_in_five = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)->count();
+       
 
-        // // For graph
+        $extended_seats = $this->getLearnersByLibrary()
+        ->where('learner_detail.is_paid',1)
+        ->where('learner_detail.status',1)
+        ->where('learner_detail.plan_end_date', '<', date('Y-m-d'))
+        ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
+        ->count();       
+        $total_seats=Seat::count();
+            
+            
+            // Check if date range is provided and filter by it
+         if ($request->filled('date_range')) {
+                // Split date range into start and end dates
+                [$startDate, $endDate] = explode(' to ', $request->date_range);
+            
+             $total_booking = LearnerDetail::where('status', 1)
+                ->where('is_paid', 1)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->count();
+        
+            $online_paid = LearnerDetail::where('is_paid', 1)
+                ->where('payment_mode', 1)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->count();
+        
+            $offline_paid = LearnerDetail::where('is_paid', 1)
+                ->where('payment_mode', 2)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->count();
+        
+            $other_paid = LearnerDetail::where('is_paid', 1)
+                ->where('payment_mode', 3)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->count();
+        
+            $expired_seats = LearnerDetail::where('status', 0)
+                ->where('is_paid', 1)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->count();
+        
+            // Similar adjustments for plan-wise booking and revenue, with conditions grouped properly
+            $plan_wise_booking = LearnerDetail::where('is_paid', 1)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->groupBy('plan_type_id')
+                ->selectRaw('COUNT(id) as booking, plan_type_id')
+                ->with('planType')
+                ->get();
+        
+            $planTypeWiseRevenue = LearnerDetail::where('is_paid', 1)
+                ->where(function ($query) use ($startDate, $endDate) {
+                    $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                        ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+                })
+                ->groupBy('plan_type_id')
+                ->selectRaw('SUM(plan_price_id) as revenue, plan_type_id')
+                ->with('planType')
+                ->get();
+            $booked_seats=LearnerDetail::where('is_paid', 1)
+            ->where(function ($query) use ($startDate, $endDate) {
+                $query->whereBetween('plan_start_date', [$startDate, $endDate])
+                    ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
+            }) ->groupBy('seat_id')->count();  
+
+        } else {
+            // Filter by year and/or month if date range is not provided
+            $query = LearnerDetail::where('status', 1)
+            ->where('is_paid', 1);
+
+            if ($request->filled('year') && !$request->filled('month')) {
+                // If only the year is provided
+                $query->where(function ($query) use ($request) {
+                    $query->whereYear('plan_start_date', $request->year)
+                        ->orWhereYear('plan_end_date', $request->year);
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+                // If both year and month are provided
+                $query->where(function ($query) use ($request) {
+                    $query->whereYear('plan_start_date', $request->year)
+                        ->whereMonth('plan_start_date', $request->month)
+                        ->orWhere(function ($query) use ($request) {
+                            $query->whereYear('plan_end_date', $request->year)
+                                    ->whereMonth('plan_end_date', $request->month);
+                        });
+                });
+            }
+
+            $total_booking = $query->count();
+            
+
+        
+            $online_paid = LearnerDetail::where('is_paid', 1)
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                // Filter by year only
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->orWhereYear('learner_detail.plan_end_date', $request->year);
+                });
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                // Filter by both year and month
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->whereMonth('learner_detail.plan_start_date', $request->month)
+                        ->orWhere(function ($query) use ($request) {
+                            $query->whereYear('learner_detail.plan_end_date', $request->year)
+                                    ->whereMonth('learner_detail.plan_end_date', $request->month);
+                        });
+                });
+            })
+            ->where('learner_detail.payment_mode', 1)
+            ->count();
+
+            $offline_paid = LearnerDetail::where('is_paid', 1)
+                ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                    return $query->where(function ($query) use ($request) {
+                        $query->whereYear('learner_detail.plan_start_date', $request->year)
+                            ->orWhereYear('learner_detail.plan_end_date', $request->year);
+                    });
+                })
+                ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                    return $query->where(function ($query) use ($request) {
+                        $query->whereYear('learner_detail.plan_start_date', $request->year)
+                            ->whereMonth('learner_detail.plan_start_date', $request->month)
+                            ->orWhere(function ($query) use ($request) {
+                                $query->whereYear('learner_detail.plan_end_date', $request->year)
+                                        ->whereMonth('learner_detail.plan_end_date', $request->month);
+                            });
+                    });
+                })
+                ->where('learner_detail.payment_mode', 2)
+                ->count();
+
+            $other_paid = LearnerDetail::where('is_paid', 1)
+                ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                    return $query->where(function ($query) use ($request) {
+                        $query->whereYear('learner_detail.plan_start_date', $request->year)
+                            ->orWhereYear('learner_detail.plan_end_date', $request->year);
+                    });
+                })
+                ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                    return $query->where(function ($query) use ($request) {
+                        $query->whereYear('learner_detail.plan_start_date', $request->year)
+                            ->whereMonth('learner_detail.plan_start_date', $request->month)
+                            ->orWhere(function ($query) use ($request) {
+                                $query->whereYear('learner_detail.plan_end_date', $request->year)
+                                        ->whereMonth('learner_detail.plan_end_date', $request->month);
+                            });
+                    });
+                })
+                ->where('learner_detail.payment_mode', 3)
+                ->count();
+
+            $swap_seat = DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', 'swapseat')
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year);
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year)
+                             ->whereMonth('created_at', $request->month);
+            })
+            ->count();
     
-        $plan_wise_booking = LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
-            ->where('is_paid', 1)
+            $learnerUpgrade = DB::table('learner_operations_log')
+                ->where('library_id', Auth::user()->id)
+                ->where('operation', 'learnerUpgrade')
+                ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                    return $query->whereYear('created_at', $request->year);
+                })
+                ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                    return $query->whereYear('created_at', $request->year)
+                                ->whereMonth('created_at', $request->month);
+                })
+                ->count();
+        
+            $reactive = DB::table('learner_operations_log')
+                ->where('library_id', Auth::user()->id)
+                ->where('operation', 'reactive')
+                ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                    return $query->whereYear('created_at', $request->year);
+                })
+                ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                    return $query->whereYear('created_at', $request->year)
+                                ->whereMonth('created_at', $request->month);
+                })
+                ->groupBy('learner_id', 'created_at')
+                ->count();
+            $expired_query = LearnerDetail::where('status', 0)->where('is_paid', 1);
+            
+            if ($request->filled('year') && !$request->filled('month')) {
+                // If only the year is provided
+                $expired_query->where(function ($expired_query) use ($request) {
+                    $expired_query->whereYear('plan_end_date', $request->year);
+                       
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+                // If both year and month are provided
+                $expired_query->where(function ($expired_query) use ($request) {
+                    $expired_query->whereYear('plan_end_date', $request->year)
+                        ->whereMonth('plan_end_date', $request->month);
+                       
+                });
+            }
+            $expired_seats=$expired_query->count();
+            // // For graph
+            $plan_wise_booking = LearnerDetail::where('is_paid', 1)
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                // Filter by year only
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->orWhereYear('learner_detail.plan_end_date', $request->year);
+                });
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+               
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->whereMonth('learner_detail.plan_start_date', $request->month)
+                        ->orWhere(function ($query) use ($request) {
+                            $query->whereYear('learner_detail.plan_end_date', $request->year)
+                                    ->whereMonth('learner_detail.plan_end_date', $request->month);
+                        });
+                });
+            })
+            
             ->groupBy('plan_type_id')
             ->selectRaw('COUNT(id) as booking, plan_type_id')
-            ->with('planType') // Assuming planType is a relationship
+            ->with('planType') 
             ->get();
 
-        // Prepare data for response
+              //plantype wise revenue
+            $planTypeWiseRevenue = LearnerDetail::where('is_paid', 1)
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->orWhereYear('learner_detail.plan_end_date', $request->year);
+                });
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                // Filter by both year and month
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('learner_detail.plan_start_date', $request->year)
+                        ->whereMonth('learner_detail.plan_start_date', $request->month)
+                        ->orWhere(function ($query) use ($request) {
+                            $query->whereYear('learner_detail.plan_end_date', $request->year)
+                                    ->whereMonth('learner_detail.plan_end_date', $request->month);
+                        });
+                });
+            })
+            
+            ->groupBy('plan_type_id')
+            ->selectRaw('SUM(plan_price_id) as revenue, plan_type_id')
+            ->with('planType')
+            ->get();
+
+            // first div
+            $booked_seats_query=LearnerDetail::where('is_paid','=',1) ;
+            if ($request->filled('year') && !$request->filled('month')) {
+                // If only the year is provided
+                $booked_seats_query->where(function ($booked_seats_query) use ($request) {
+                    $booked_seats_query->whereYear('plan_start_date', $request->year)
+                        ->orWhereYear('plan_end_date', $request->year);
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+                // If both year and month are provided
+                $booked_seats_query->where(function ($booked_seats_query) use ($request) {
+                    $booked_seats_query->whereYear('plan_start_date', $request->year)
+                        ->whereMonth('plan_start_date', $request->month)
+                        ->orWhere(function ($booked_seats_query) use ($request) {
+                            $booked_seats_query->whereYear('plan_end_date', $request->year)
+                                    ->whereMonth('plan_end_date', $request->month);
+                        });
+                });
+            }
+           $booked_seats= $booked_seats_query->groupBy('seat_id')->count();  
+
+        }
+       
+        
+        // Prepare data for response for graph
         $data = [];
         foreach ($plan_wise_booking as $booking) {
             $data[] = [
@@ -265,55 +540,18 @@ class DashboardController extends Controller
         })->toArray(); 
         
         $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
-        //plantype wise revenue
-        $planTypeWiseRevenue = LearnerDetail::whereBetween('join_date', [$startDate, $endDate])
-        ->where('is_paid', 1)
-        ->groupBy('plan_type_id')
-        ->selectRaw('SUM(plan_price_id) as revenue, plan_type_id')
-        ->with('planType') // Assuming planType is a relationship
-        ->get();
+      
 
         // Prepare labels and data for revenue
         $revenueLabels = $planTypeWiseRevenue->pluck('planType.name')->toArray();
         $revenueData = $planTypeWiseRevenue->pluck('revenue')->toArray();
 
-        // Library other highlights
-        $total_booking = LearnerDetail::where('status', 1)
-            ->where('is_paid', 1)
-            ->whereBetween('join_date', [$startDate, $endDate])
-            ->count();
+       
+
+       
         
-        $online_paid = $this->getLearnersByLibrary()->whereBetween('learner_detail.join_date', [$startDate, $endDate])
-            ->where('learners.payment_mode', 1)
-            ->count();
-        
-        $offline_paid = $this->getLearnersByLibrary()->whereBetween('learner_detail.join_date', [$startDate, $endDate])
-            ->where('learners.payment_mode', 2)
-            ->count();
-        
-        $other_paid = $this->getLearnersByLibrary()->whereBetween('learner_detail.join_date', [$startDate, $endDate])
-            ->where('learners.payment_mode', 3)
-            ->count();
-        $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
-        $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
-        $fiveDaysBefore = Carbon::now()->addDays(-5)->format('Y-m-d'); // Add this line for the expired logic
-        $expired_in_five = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)->count();
-        $expired_seats = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '<', now())->count();
-        $extended_seats = $this->getLearnersByLibrary()
-        ->where('learner_detail.is_paid',1)
-        ->where('learner_detail.status',1)
-        ->where('learner_detail.plan_end_date', '<', date('Y-m-d'))
-        ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
-        ->count();       
-        
-        $swap_seat=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','swapseat')->count();
-        $learnerUpgrade=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','learnerUpgrade')->count();
-        $reactive = DB::table('learner_operations_log')
-        ->where('library_id', Auth::user()->id)
-        ->where('operation', '=', 'reactive')
-        ->groupBy('learner_id', 'created_at')
-        ->count();
-            
+        $availble_seats=$total_seats-$booked_seats; 
+
         return response()->json([
             'highlights' => [
                
@@ -327,6 +565,10 @@ class DashboardController extends Controller
                 'other_paid' => $other_paid,
                 'expired_in_five' => $expired_in_five,
                 'expired_seats' => $expired_seats,
+                //first div
+                'total_seat' => $total_seats,
+                'booked_seat' => $booked_seats,
+                'available_seat'=>$availble_seats
             ],
         
             'plan_wise_booking' => $data,

@@ -6,6 +6,7 @@
     padding: 0;
     box-sizing: border-box;
     transition: all .5s;
+    outline: none;
 }
 
 /* Default Css */
@@ -2677,10 +2678,13 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 
 /* Seat Assignment */
 .seat-booking {
-    display: flex;
+    /* display: flex;
     flex-wrap: wrap;
     row-gap: .8rem;
-    column-gap: 7.6px;
+    column-gap: 7.6px; */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Adjust the number of columns as needed */
+    gap: 10px; /* Adjust space between seats */
 }
 
 .seat {
@@ -2720,7 +2724,7 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 }
 
 .seat ul .fa-check-circle {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
 }
 
 .bookedSeat {

@@ -281,7 +281,7 @@ class LearnerController extends Controller
             'id_proof_name' => $request->input('id_proof_name'),
             'id_proof_file' => $id_proof_file,
             'hours' => $hours,
-            'payment_mode' => $request->input('payment_mode'),
+           
             'library_id'=>Auth::user()->id,
             'password'=> bcrypt($request->mobile)
         ]);
@@ -298,6 +298,7 @@ class LearnerController extends Controller
             'seat_id' => $request->seat_id,
             'library_id'=>Auth::user()->id,
             'is_paid' => $is_paid,
+            'payment_mode' => $request->input('payment_mode'),
         ]);
 
         if($request->payment_mode==1 || $request->payment_mode==2){
@@ -683,7 +684,7 @@ class LearnerController extends Controller
         $customer->mobile = $request->input('mobile', $customer->mobile);
         $customer->email = $request->input('email', $customer->email);
         $customer->dob = $request->input('dob', $customer->dob);
-        $customer->payment_mode = $request->input('payment_mode', $customer->payment_mode);
+        
         $customer->id_proof_name = $request->input('id_proof_name', $customer->id_proof_name);
         $customer->hours = $hours;
         // Save the customer details
@@ -699,6 +700,7 @@ class LearnerController extends Controller
             $LearnerDetail->plan_type_id = $plan_type;
             $LearnerDetail->plan_price_id = $request->input('plan_price_id');
             $LearnerDetail->plan_end_date = $newEndDate->toDateString();
+            $LearnerDetail->payment_mode = $request->input('payment_mode');
             $LearnerDetail->save();
         }
         // Update seat availability
@@ -1097,7 +1099,7 @@ class LearnerController extends Controller
                'join_date' => date('Y-m-d'),
                'hour' =>$hours,
                'seat_id' =>$request->seat_id,
-              
+               'payment_mode' => $request->input('payment_mode'),
            ]);
             $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat_no)->sum('hours');
            
@@ -1180,6 +1182,7 @@ class LearnerController extends Controller
            'seat_id' =>$learner_detail->seat_id,
            'status'=>$status,
            'is_paid' => $is_paid,
+           'payment_mode' => $request->input('payment_mode'),
        ]);
        if($payment_mode==1 || $payment_mode==2){
             LearnerTransaction::create([

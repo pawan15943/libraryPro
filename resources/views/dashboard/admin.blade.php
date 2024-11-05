@@ -219,6 +219,26 @@
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
+                <h6>Active Bookings</h6>
+                <div class="d-flex">
+                    <h4 id="active_booking">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-2">
+                <h6>Expired Seats</h6>
+                <div class="d-flex">
+                    <h4 id="expiredSeats">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
                     <h4 id="onlinePaid">0</h4>
@@ -257,16 +277,7 @@
                 <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-2">
-                <h6>Expired Seats</h6>
-                <div class="d-flex">
-                    <h4 id="expiredSeats">0</h4>
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
-            </div>
-        </div>
+        
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Extended Seats</h6>
@@ -934,6 +945,7 @@
             $('#booked_seat').text(highlights.booked_seat);
             $('#available_seat').text(highlights.available_seat);
             $('#expired_seat').text(highlights.expired_seats);
+            $('#active_booking').text(highlights.active_booking);
         }
     });
 </script>

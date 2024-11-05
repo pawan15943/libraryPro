@@ -93,10 +93,6 @@ class DashboardController extends Controller
                 }
             }
 
-            
-            
-          
-           
            
           
             // redirect check library  
@@ -180,8 +176,6 @@ class DashboardController extends Controller
                 $endDate = $endDate->format('Y-m-d');
                 $plans = $this->learnerService->getPlans();
             
-            
-
            
 
             $plan_wise_booking=LearnerDetail::whereBetween('join_date', [$startDate, $endDate])

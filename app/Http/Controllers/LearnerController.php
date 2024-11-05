@@ -1310,6 +1310,7 @@ class LearnerController extends Controller
         return response()->json(['success' => 'Learner deleted successfully.']);
     }
     public function userclose(Request $request){
+       
         $customer = Learner::findOrFail($request->learner_id);
        
         $today = date('Y-m-d');

@@ -112,7 +112,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
       Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
       
-      Route::get('/seats/{type?}', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
+      Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
 
 
       

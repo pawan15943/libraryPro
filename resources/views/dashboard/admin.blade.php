@@ -214,7 +214,7 @@
                     <h4 id="totalBookings">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -224,7 +224,7 @@
                     <h4 id="active_booking">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'active_booking']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -234,7 +234,7 @@
                     <h4 id="expiredSeats">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'expired_seats']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -244,7 +244,7 @@
                     <h4 id="onlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'online_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -254,7 +254,7 @@
                     <h4 id="offlinePaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'offline_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -264,7 +264,7 @@
                     <h4 id="otherPaid">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'other_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -274,7 +274,7 @@
                     <h4 id="expiredInFive">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'expired_in_five']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         
@@ -286,7 +286,7 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'extended_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -297,7 +297,7 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'swap_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -307,7 +307,7 @@
                     <h4 id="learnerUpgrade">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'learnerUpgrade']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -318,7 +318,19 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{route('learners.list.view')}}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'reactive_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Close Seats</h6>
+                <div class="d-flex">
+                    <h4 id="close_seat">0</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'close_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -853,12 +865,14 @@
         var initialYear = $('#datayaer').val();
         var initialMonth = $('#dataFilter').val();
         fetchLibraryData(initialYear, initialMonth, null);
+        updateAllViewLinks(initialYear, initialMonth, null);
 
         // Event listener for year filter
         $('#datayaer').on('change', function() {
             var selectedYear = $(this).val();
             var selectedMonth = $('#dataFilter').val();
             fetchLibraryData(selectedYear, selectedMonth, null);
+            updateAllViewLinks(selectedYear, selectedMonth, null);
         });
 
         // Event listener for month filter
@@ -866,6 +880,7 @@
             var selectedYear = $('#datayaer').val();
             var selectedMonth = $(this).val();
             fetchLibraryData(selectedYear, selectedMonth, null);
+            updateAllViewLinks(selectedYear, selectedMonth, null);
         });
 
         // Event listener for date range picker
@@ -874,6 +889,7 @@
             var selectedMonth = $('#dataFilter').val();
             var dateRange = $(this).val(); // Date range in the format "YYYY-MM-DD to YYYY-MM-DD"
             fetchLibraryData(selectedYear, selectedMonth, dateRange);
+            updateAllViewLinks(selectedYear, selectedMonth, dateRange);
         });
 
         // Function to fetch data based on filters
@@ -946,6 +962,23 @@
             $('#available_seat').text(highlights.available_seat);
             $('#expired_seat').text(highlights.expired_seats);
             $('#active_booking').text(highlights.active_booking);
+            $('#close_seat').text(highlights.close_seat);
+        }
+        function updateAllViewLinks(year, month, dateRange) {
+            // Select all "View All" links and update them based on the filters
+            $('.viewall').each(function() {
+                var currentUrl = $(this).attr('href');
+                
+                // Construct the additional query parameters
+                var queryParams = [];
+                if (year) queryParams.push(`year=${year}`);
+                if (month) queryParams.push(`month=${month}`);
+                if (dateRange) queryParams.push(`date_range=${dateRange}`);
+
+                // Append the query parameters to the existing URL
+                var updatedUrl = currentUrl + (queryParams.length ? '&' + queryParams.join('&') : '');
+                $(this).attr('href', updatedUrl);
+            });
         }
     });
 </script>

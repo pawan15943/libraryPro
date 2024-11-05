@@ -756,8 +756,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -771,7 +769,6 @@
         });
     });
 </script>
->>>>>>> f6714633086f248ba1abef1fe9f5bbbcdef42a0a
 
 <script>
     (function($) {

@@ -271,6 +271,14 @@ class DashboardController extends Controller
                         ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
                 })
                 ->count();
+            $swap_seat=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','swapseat')->whereBetween('created_at', [$startDate, $endDate])->count();
+            $learnerUpgrade=DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','learnerUpgrade')->whereBetween('created_at', [$startDate, $endDate])->count();
+            $reactive = DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', '=', 'reactive')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('learner_id', 'created_at')
+            ->count();
         
             $expired_seats = LearnerDetail::where('status', 0)
                 ->where('is_paid', 1)

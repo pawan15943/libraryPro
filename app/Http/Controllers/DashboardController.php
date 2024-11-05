@@ -316,8 +316,7 @@ class DashboardController extends Controller
 
         } else {
             // Filter by year and/or month if date range is not provided
-            $query = LearnerDetail::where('status', 1)
-            ->where('is_paid', 1);
+            $query = LearnerDetail::where('is_paid', 1);
 
             if ($request->filled('year') && !$request->filled('month')) {
                 // If only the year is provided

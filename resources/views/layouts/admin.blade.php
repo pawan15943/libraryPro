@@ -33,9 +33,13 @@
                     @yield('content')
                     <script>
                         // Session expiration popup logic here
-                        const sessionLifetime = {{ config('session.lifetime') }} * 60;  // Convert to seconds
-                        const warningTime = sessionLifetime - 60;  // Show popup 1 minute before expiration
-                
+                        const sessionLifetime = {
+                            {
+                                config('session.lifetime')
+                            }
+                        }* 60; // Convert to seconds
+                        const warningTime = sessionLifetime - 60; // Show popup 1 minute before expiration
+
                         setTimeout(function() {
                             Swal.fire({
                                 title: 'Session Expiring Soon',
@@ -44,7 +48,7 @@
                                 confirmButtonText: 'Stay Logged In'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    location.reload();  // Refresh to reset session
+                                    location.reload(); // Refresh to reset session
                                 }
                             });
                         }, warningTime * 1000);
@@ -70,7 +74,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="{{ url('public/js/main-scripts.js') }}"></script>
     <script src="{{ url('public/js/main-validation.js') }}"></script>
-    
+
 
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
@@ -115,7 +119,7 @@
     <script>
         $(document).ready(function() {
             $('#toggleIcon').click(function() {
-                $('#idProofFields').slideToggle(); 
+                $('#idProofFields').slideToggle();
 
                 if ($('#idProofFields').is(':visible')) {
                     $('#toggleIcon').removeClass('fa-plus').addClass('fa-minus');
@@ -138,8 +142,21 @@
                 $('.sidebar').toggleClass('w-120');
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('selectstart', function(e) {
+                if (!$(e.target).is('input, select, textarea')) {
+                    e.preventDefault();
+                }
+            });
 
-
+            $(document).on('mousedown', function(e) {
+                if (!$(e.target).is('input, select, textarea')) {
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
 </body>
 

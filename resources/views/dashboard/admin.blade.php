@@ -6,6 +6,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- New Design Dahsbard Library -->
 <div class="support-container">
@@ -61,15 +62,15 @@
                     <ul class="plann-info">
                         <li>Total Seat : <a href="{{route('seats')}}">{{$total_seats}}</a> </li>
                         <li>Plan Features : <a href="{{route('library.myplan')}}">{{$features_count}}</a> </li>
-                        <li>Plan Price : 
-                            <a href="{{route('library.transaction')}}">{{$check->amount}} 
+                        <li>Plan Price :
+                            <a href="{{route('library.transaction')}}">{{$check->amount}}
                                 @if($check->month==12)
                                 (Yearly)
                                 @else
                                 (Monthly)
                                 @endif
-                            
-                            </a> 
+
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -90,7 +91,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2>{{$booked_seats}}</h2>
-                <a href="{{ route('learners.list.view', ['type' => 'booked']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
+                <a href="{{ route('learners.list.view', ['type' => 'booked']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -117,42 +118,45 @@
     <h4 class="my-4">Monthly Revenues</h4>
     <div class="row g-4">
         <div class="col-lg-12">
-            <ul class="revenue-box scroll-x">
-                @foreach($revenues as $revenue)
+            <div class="v-content">
+                <ul class="revenue-box scroll-x ">
+                    @foreach($revenues as $revenue)
 
-                @php
+                    @php
 
-                $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
-                $expense = $expenses->first(function($item) use ($revenue) {
-                return $item->year == $revenue['year'] && $item->month == $revenue['month'];
-                });
-                $total_expense = $expense ? $expense->total_expense : 0;
-                $net_profit = $revenue->total_revenue - $total_expense;
+                    $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
+                    $expense = $expenses->first(function($item) use ($revenue) {
+                    return $item->year == $revenue['year'] && $item->month == $revenue['month'];
+                    });
+                    $total_expense = $expense ? $expense->total_expense : 0;
+                    $net_profit = $revenue->total_revenue - $total_expense;
 
-                @endphp
-                <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
-                    <div class="d-flex">
-                        <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
-                        <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
-                    </div>
-                    <div class="d-flex mt-10">
-                        <div class="value">
-                            <small>Total Revenue</small>
-                            <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
+                    @endphp
+                    <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
+                        <div class="d-flex">
+                            <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
+                            <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
                         </div>
-                        <div class="value">
-                            <small>Total Expense</small>
-                            <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
+                        <div class="d-flex mt-10">
+                            <div class="value">
+                                <small>Total Revenue</small>
+                                <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
+                            </div>
+                            <div class="value">
+                                <small>Total Expense</small>
+                                <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
+                            </div>
+                            <div class="value">
+                                <small>Net Profit</small>
+                                <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
+                            </div>
                         </div>
-                        <div class="value">
-                            <small>Net Profit</small>
-                            <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
-                        </div>
-                    </div>
-                </li>
-                @endforeach
+                    </li>
+                    @endforeach
 
-            </ul>
+                </ul>
+            </div>
+
         </div>
     </div>
     <!-- End -->
@@ -286,18 +290,18 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
-                <h6>Email Sended</h6>
-                <div class="d-flex">
-                    <h4>80</h4>
+    </div>
+</div>
+<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="booking-count bg-4">
+        <h6>Email Sended</h6>
+        <div class="d-flex">
+            <h4>80</h4>
 
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-            </div>
-        </div> --}}
+        </div>
+        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+    </div>
+</div> --}}
 
 </div>
 <!-- End -->
@@ -416,43 +420,43 @@
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
-              
+
                 @foreach($available_seats as $seat)
-                    <li>
-                        <div class="d-flex">
-                            <img src="{{ url('public/img/available.png') }}" alt="library" class="img-fluid rounded">
-                            <div class="seat-content">
-                                <h6>Seat No. {{ $seat['seat_no'] }}</h6>
-                                @if(count($seat['available_plan_types']) > 3)
-                                <small>Available</small>
-                                @else
-                                    @foreach($seat['available_plan_types'] as $planType)
-                                    @if($planType['name']=='First Half')
-                                    <small>FH |</small>
-                                    @elseif($planType['name']=='Second Half')
-                                    <small>SH |</small>
-                                    @elseif($planType['name']=='Hourly Slot 1')
-                                    <small>H1 |</small>
-                                    @elseif($planType['name']=='Hourly Slot 2')
-                                    <small>H2 |</small>
-                                    @elseif($planType['name']=='Hourly Slot 3')
-                                    <small>H3 |</small>
-                                    @elseif($planType['name']=='Hourly Slot 4')
-                                    <small>H4 |</small>
-                                    @else
-                                    <small>{{ $planType['name'] }}</small> 
-                                    @endif
-                                        
-                                    @endforeach
-                                @endif
-                                
-                            </div>
-                            <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                                data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_no'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
+                <li>
+                    <div class="d-flex">
+                        <img src="{{ url('public/img/available.png') }}" alt="library" class="img-fluid rounded">
+                        <div class="seat-content">
+                            <h6>Seat No. {{ $seat['seat_no'] }}</h6>
+                            @if(count($seat['available_plan_types']) > 3)
+                            <small>Available</small>
+                            @else
+                            @foreach($seat['available_plan_types'] as $planType)
+                            @if($planType['name']=='First Half')
+                            <small>FH </small>
+                            @elseif($planType['name']=='Second Half')
+                            <small>SH </small>
+                            @elseif($planType['name']=='Hourly Slot 1')
+                            <small>H1 </small>
+                            @elseif($planType['name']=='Hourly Slot 2')
+                            <small>H2 </small>
+                            @elseif($planType['name']=='Hourly Slot 3')
+                            <small>H3 </small>
+                            @elseif($planType['name']=='Hourly Slot 4')
+                            <small>H4 </small>
+                            @else
+                            <small>{{ $planType['name'] }}</small>
+                            @endif
+
+                            @endforeach
+                            @endif
+
                         </div>
-                    </li>
+                        <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
+                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_no'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
+                    </div>
+                </li>
                 @endforeach
-               
+
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
@@ -724,10 +728,19 @@
         </div>
     </div>
 </div>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".v-content").mCustomScrollbar({
+                theme: "dark",
+                scrollInertia: 300,
+                axis: "x",
+                autoHideScrollbar: false, // Keeps scrollbar visible
+            });
+        });
+    })(jQuery);
+</script>
 <script>
     (function($) {
         $(window).on("load", function() {
@@ -847,7 +860,7 @@
         }
 
         function updateHighlights(highlights) {
-            console.log('highlights',highlights);
+            console.log('highlights', highlights);
 
             $('#totalBookings').text(highlights.total_booking);
             $('#onlinePaid').text(highlights.online_paid);

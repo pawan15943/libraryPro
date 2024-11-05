@@ -407,7 +407,8 @@ table td {
     align-items: center;
     height: 60px;
     padding: 0 1.5rem;
-    box-shadow: 1px 0 15px #00000025;
+    box-shadow: 1px 0 15px #0000002e !important;
+    position: relative;
 }
 
 .header .d-flex a {
@@ -496,7 +497,7 @@ nav ol {
 .content-area .content {
     flex: 1;
     padding: .5rem;
-    background: #f5f5f5;
+    background: linear-gradient(180deg, #eafdff, transparent);
 }
 
 .content .card {
@@ -613,13 +614,6 @@ ul.list-unstyled.ps-0>li {
     position: relative;
 }
 
-ul.list-unstyled.ps-0>li {
-    background: #ffffff0f;
-    padding: .3rem 1rem;
-    border-radius: .4rem;
-    position: relative;
-}
-
 
 ul.list-unstyled.ps-0>li+li {
     margin-top: .5rem;
@@ -673,7 +667,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a {
 
 .content-area .content h6 {
     margin-bottom: 1.2rem;
-    color: #4b4b4b ! IMPORTANT;
+    color: #4b4b4b !important;
     font-weight: 500;
     font-size: 1.5rem;
 }
@@ -2096,7 +2090,7 @@ body {
 }
 
 .adminstrator-login .left {
-    background-color: var(--c);
+    background-color: var(--c1);
     width: 70%;
     padding: 1.5rem 2rem;
 }
@@ -2316,7 +2310,7 @@ table td {
     align-items: center;
     height: 60px;
     padding: 0 1.5rem;
-    box-shadow: 1px 0 15px #00000025;
+    box-shadow: 1px 0 15px #00000025 !important;
 }
 
 .header .d-flex a {
@@ -2388,7 +2382,7 @@ nav ol {
 .content-area .content {
     flex: 1;
     padding: .5rem;
-    background: #f5f5f5;
+    background: linear-gradient(180deg, #eafdff, transparent);
 }
 
 .content .card {
@@ -2502,15 +2496,12 @@ ul.list-unstyled.ps-0 {
 ul.list-unstyled.ps-0>li {
     background: #ffffff0f;
     padding: 0 1rem;
-    border-radius: .3rem;
+    border-radius: 1.6rem;
     position: relative;
 }
 
-ul.list-unstyled.ps-0>li {
-    background: #ffffff0f;
-    padding: .3rem 1rem;
-    border-radius: 1.6rem;
-    position: relative;
+ul.btn-toggle-nav li:last-child {
+    margin-bottom: 0.4rem !important;
 }
 
 .seat-content h6 {
@@ -3801,8 +3792,6 @@ ul.revenue-box {
     margin: 0;
     display: flex;
     gap: 1.5rem;
-    overflow-x: auto;
-    padding-bottom: 1rem;
 }
 
 ul.revenue-box li {
@@ -4448,6 +4437,18 @@ p.mb-2.text-dark b {
     font-size: 1rem;
 }
 
-.text-success{
+.text-success {
     color: rgb(79 194 18) !important;
+}
+
+@media screen and (max-width:480px) {
+    .w-120 {
+        width: 0 !important;
+        overflow: hidden;
+    }
+
+    table.table.text-center.datatable.border-bottom th,
+    table.table.text-center.datatable.border-bottom td {
+        white-space: nowrap;
+    }
 }

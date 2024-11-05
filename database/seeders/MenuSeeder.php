@@ -18,6 +18,9 @@ class MenuSeeder extends Seeder
         $libraryPlna = Menu::create(['name' => 'Library Plan', 'url' => 'subscriptions.choosePlan', 'order' => 2]);
         $users = Menu::create(['name' => 'User', 'route' => null, 'order' => 2]);
         $masters = Menu::create(['name' => 'Master', 'route' => null, 'order' => 3]);
+        $suggestions = Menu::create(['name' => 'Suggestions', 'route' => null, 'order' => 8]);
+        $feedback = Menu::create(['name' => 'Feedback', 'route' => null, 'order' => 9]);
+        $settings = Menu::create(['name' => 'Library Settings', 'route' => null, 'order' => 10]);
         
 
         // Add submenus

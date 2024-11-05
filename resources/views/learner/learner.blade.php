@@ -263,7 +263,7 @@ $current_route = Route::currentRouteName();
                                 <!-- Close Seat -->
 
                                 @can('has-permission', 'Close Seat')
-                                <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close"><i class="fas fa-times"></i></a></li>
+                                <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close" data-plan_end_date="{{$value->plan_end_date}}"><i class="fas fa-times"></i></a></li>
                                 @endcan
                                 @endif
                                 <!-- Deletr Seat -->

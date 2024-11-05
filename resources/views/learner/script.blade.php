@@ -686,7 +686,15 @@
     $(document).on('click', '.link-close-plan', function() {
         const learner_id = this.getAttribute('data-id');
         var url = '{{ route('learners.close') }}'; // Adjust the route as necessary
-
+        var oldValue=this.getAttribute('data-plan_end_date');
+        var formId='closeSeat';
+        var fieldName='plan_end_date';
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        var day = String(today.getDate()).padStart(2, '0');
+        var newValue = `${year}-${month}-${day}`;
+        console.log(newValue);
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -705,6 +713,7 @@
                         learner_id: learner_id
                     },
                     success: function(response) {
+                        logFieldChange(learner_id, formId, fieldName, oldValue, newValue);
                         Swal.fire(
                             'Closed!',
                             'The user plan has been closed.',

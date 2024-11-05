@@ -209,7 +209,7 @@
     <div class="row g-4">
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
-                <h6>Total Bookings</h6>
+                <h6>Total Slots Bookings</h6>
                 <div class="d-flex">
                     <h4 id="totalBookings">0</h4>
                 </div>
@@ -219,7 +219,7 @@
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
-                <h6>Active Bookings</h6>
+                <h6>Active Slots</h6>
                 <div class="d-flex">
                     <h4 id="active_booking">0</h4>
                 </div>
@@ -229,7 +229,7 @@
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-2">
-                <h6>Expired Seats</h6>
+                <h6>Expired Slots</h6>
                 <div class="d-flex">
                     <h4 id="expiredSeats">0</h4>
                 </div>
@@ -259,7 +259,7 @@
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
-                <h6>Other Paid</h6>
+                <h6>Pay Later</h6>
                 <div class="d-flex">
                     <h4 id="otherPaid">0</h4>
                 </div>

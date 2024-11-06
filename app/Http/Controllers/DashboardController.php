@@ -315,28 +315,85 @@ class DashboardController extends Controller
 
         } else {
             // Filter by year and/or month if date range is not provided
-            $query = LearnerDetail::where('is_paid', 1);
+            // $query = LearnerDetail::where('is_paid', 1);
 
+            // if ($request->filled('year') && !$request->filled('month')) {
+            //     // If only the year is provided
+            //     $query->where(function ($query) use ($request) {
+            //         $query->whereYear('plan_start_date', $request->year)
+            //             ->orWhereYear('plan_end_date', $request->year);
+            //     });
+            // } elseif ($request->filled('year') && $request->filled('month')) {
+            //     // If both year and month are provided
+            //     $query->where(function ($query) use ($request) {
+            //         $query->whereYear('plan_start_date', $request->year)
+            //             ->whereMonth('plan_start_date', $request->month)
+            //             ->orWhere(function ($query) use ($request) {
+            //                 $query->whereYear('plan_end_date', $request->year)
+            //                         ->whereMonth('plan_end_date', $request->month);
+            //             });
+            //     });
+            // }
+                $query = LearnerDetail::where('is_paid', 1);
+              
+                if ($request->filled('year') && !$request->filled('month')) {
+                    // If only the year is provided
+                    $year = $request->year;
+                    $query->where(function ($q) use ($year) {
+                        $q->whereYear('plan_start_date', '<=', $year)
+                        ->whereYear('plan_end_date', '>=', $year);
+                    });
+                } elseif ($request->filled('year') && $request->filled('month')) {
+                    // If both year and month are provided
+                    $year = $request->year;
+                    $month = $request->month;
+                    $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
+                    $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+                
+                    $query->where(function ($q) use ($startOfMonth, $endOfMonth) {
+                        $q->where('plan_start_date', '<=', $endOfMonth)
+                        ->where('plan_end_date', '>=', $startOfMonth);
+                    });
+                }
+                
+                $total_booking = $query->count();
+            $expired_query = LearnerDetail::where('is_paid', 1);
+        
             if ($request->filled('year') && !$request->filled('month')) {
-                // If only the year is provided
-                $query->where(function ($query) use ($request) {
-                    $query->whereYear('plan_start_date', $request->year)
-                        ->orWhereYear('plan_end_date', $request->year);
+                $expired_query->where(function ($expired_query) use ($request) {
+                    $expired_query->whereYear('plan_end_date', $request->year);
+                        
                 });
             } elseif ($request->filled('year') && $request->filled('month')) {
-                // If both year and month are provided
-                $query->where(function ($query) use ($request) {
-                    $query->whereYear('plan_start_date', $request->year)
-                        ->whereMonth('plan_start_date', $request->month)
-                        ->orWhere(function ($query) use ($request) {
-                            $query->whereYear('plan_end_date', $request->year)
-                                    ->whereMonth('plan_end_date', $request->month);
-                        });
+                
+                $expired_query->where(function ($expired_query) use ($request) {
+                    $expired_query->whereYear('plan_end_date', $request->year)
+                        ->whereMonth('plan_end_date', $request->month);
+                        
+                });
+            }
+            $month_all_expired=$expired_query->count();
+            
+            $expired_seats=$month_all_expired;
+            $active_booking=$total_booking-$month_all_expired;
+            $month_total_active_booking=LearnerDetail::where('is_paid', 1);
+            
+            if ($request->filled('year') && !$request->filled('month')) {
+              
+                $month_total_active_booking->where(function ($month_total_active_booking) use ($request) {
+                    $month_total_active_booking->whereYear('join_date', $request->year);
+                       
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+           
+                $month_total_active_booking->where(function ($month_total_active_booking) use ($request) {
+                    $month_total_active_booking->whereYear('join_date', $request->year)
+                        ->whereMonth('join_date', $request->month);
+                       
                 });
             }
 
-            $total_booking = $query->count();
-            $active_booking=$query->where('status',1)->count();
+            $month_total_active_book=$month_total_active_booking->count();
             
         
             $online_paid = LearnerDetail::where('is_paid', 1)
@@ -448,23 +505,7 @@ class DashboardController extends Controller
                                 ->whereMonth('created_at', $request->month);
             })
             ->count();
-            $expired_query = LearnerDetail::where('status', 0)->where('is_paid', 1);
-            
-            if ($request->filled('year') && !$request->filled('month')) {
-                // If only the year is provided
-                $expired_query->where(function ($expired_query) use ($request) {
-                    $expired_query->whereYear('plan_end_date', $request->year);
-                       
-                });
-            } elseif ($request->filled('year') && $request->filled('month')) {
-                // If both year and month are provided
-                $expired_query->where(function ($expired_query) use ($request) {
-                    $expired_query->whereYear('plan_end_date', $request->year)
-                        ->whereMonth('plan_end_date', $request->month);
-                       
-                });
-            }
-            $expired_seats=$expired_query->count();
+           
             // // For graph
             $plan_wise_booking = LearnerDetail::where('is_paid', 1)
             ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
@@ -518,7 +559,7 @@ class DashboardController extends Controller
             ->get();
 
             // first div
-            $booked_seats_query = LearnerDetail::where('is_paid', 1)->where('status', 1);
+            $booked_seats_query = LearnerDetail::where('is_paid', 1);
            
             
             if ($request->filled('year') && !$request->filled('month')) {
@@ -570,10 +611,6 @@ class DashboardController extends Controller
         $revenueLabels = $planTypeWiseRevenue->pluck('planType.name')->toArray();
         $revenueData = $planTypeWiseRevenue->pluck('revenue')->toArray();
 
-       
-
-       
-        
         $availble_seats=$total_seats-$booked_seats; 
 
         return response()->json([
@@ -594,7 +631,9 @@ class DashboardController extends Controller
                 'total_seat' => $total_seats,
                 'booked_seat' => $booked_seats,
                 'available_seat'=>$availble_seats,
-                'close_seat'=>$close_seat
+                'close_seat'=>$close_seat,
+                'month_total_active_book'=>$month_total_active_book,
+                'month_all_expired'=>$month_all_expired,
             ],
         
             'plan_wise_booking' => $data,

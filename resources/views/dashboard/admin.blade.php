@@ -238,6 +238,26 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-2">
+                <h6>This Month Booked</h6>
+                <div class="d-flex">
+                    <h4 id="month_total_active_book">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-2">
+                <h6>This Month Expired</h6>
+                <div class="d-flex">
+                    <h4 id="month_all_expired">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'expire_booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Online Paid</h6>
                 <div class="d-flex">
@@ -963,6 +983,8 @@
             $('#expired_seat').text(highlights.expired_seats);
             $('#active_booking').text(highlights.active_booking);
             $('#close_seat').text(highlights.close_seat);
+            $('#month_total_active_book').text(highlights.month_total_active_book);
+            $('#month_all_expired').text(highlights.month_all_expired);
         }
         function updateAllViewLinks(year, month, dateRange) {
             // Select all "View All" links and update them based on the filters

@@ -277,7 +277,13 @@ class DashboardController extends Controller
             ->whereBetween('created_at', [$startDate, $endDate])
             ->groupBy('learner_id', 'created_at')
             ->count();
-        
+            $renew = DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', '=', 'renewSeat')
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('learner_id', 'created_at')
+            ->count();
+            
             $expired_seats = LearnerDetail::where('status', 0)
                 ->where('is_paid', 1)
                 ->where(function ($query) use ($startDate, $endDate) {
@@ -312,7 +318,10 @@ class DashboardController extends Controller
                     ->orWhereBetween('plan_end_date', [$startDate, $endDate]);
             }) ->groupBy('seat_id')->count(); 
             $close_seat =DB::table('learner_operations_log')->where('library_id', Auth::user()->id)->where('operation','=','closeSeat')->whereBetween('created_at', [$startDate, $endDate])->count();
-
+            $delete_seat=DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', 'deleteSeat')
+            ->whereBetween('created_at', [$startDate, $endDate])->count();
         } else {
             // Filter by year and/or month if date range is not provided
             // $query = LearnerDetail::where('is_paid', 1);
@@ -494,6 +503,18 @@ class DashboardController extends Controller
                 })
                 ->groupBy('learner_id', 'created_at')
                 ->count();
+            $renew = DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', 'renewSeat')
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year);
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year)
+                            ->whereMonth('created_at', $request->month);
+            })
+            ->groupBy('learner_id', 'created_at')
+            ->count();
             $close_seat = DB::table('learner_operations_log')
             ->where('library_id', Auth::user()->id)
             ->where('operation', 'closeSeat')
@@ -505,7 +526,17 @@ class DashboardController extends Controller
                                 ->whereMonth('created_at', $request->month);
             })
             ->count();
-           
+            $delete_seat=DB::table('learner_operations_log')
+            ->where('library_id', Auth::user()->id)
+            ->where('operation', 'deleteSeat')
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year);
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                return $query->whereYear('created_at', $request->year)
+                                ->whereMonth('created_at', $request->month);
+            })
+            ->count();
             // // For graph
             $plan_wise_booking = LearnerDetail::where('is_paid', 1)
             ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
@@ -616,6 +647,8 @@ class DashboardController extends Controller
         return response()->json([
             'highlights' => [
                
+                'delete_seat' => $delete_seat,
+                'renew_seat' => $renew,
                 'swap_seat' => $swap_seat,
                 'learnerUpgrade' => $learnerUpgrade,
                 'reactive' => $reactive,

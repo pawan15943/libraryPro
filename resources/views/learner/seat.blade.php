@@ -400,6 +400,7 @@ $hourlyCount = 0;
                     <div class="detailes">
                         <button type="button" data-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
                         <h3 id="seat_number_upgrades"></h3>
+                        <input type="hidden" id="hidden_plan" >
                         <div class="row g-4 mt-1">
                             <div class="col-lg-6">
                                 <label for="">Select Plan <span>*</span></label>

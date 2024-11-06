@@ -1117,8 +1117,7 @@ class LearnerController extends Controller
     }
    
     public function learnerRenew(Request $request){
-   
-  
+ 
         $rules = [
            
             'plan_id' => 'required',

@@ -72,13 +72,15 @@ $diffInDays = $today->diffInDays($endDate, false);
             </div>
             @php
                
-                if(($diffInDays < 0 && $diffExtendDay>0)){
+                if(($diffInDays <= 5 && $diffExtendDay>0)){
+                    $id='renewSeat';
                     $route=route('learners.renew');
                 }else{
                     $route=route('learner.payment.store');
+                    $id='payment';
                 }
             @endphp
-            <form action="{{$route}}" method="POST" enctype="multipart/form-data">
+            <form action="{{$route}}" method="POST" enctype="multipart/form-data" id="{{$id}}"  class="payment_page">
                 @csrf
                 @method('POST')
                 <div class="action-box">
@@ -104,7 +106,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <label for="">Plan <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0)
+                            @if($diffInDays <= 5 && $diffExtendDay>0)
                             <select  id="update_plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
                                 <option value="">Select Plan</option>
                                 @foreach($plans as $key => $value)
@@ -122,7 +124,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                         <div class="col-lg-6">
                             <label for="">Plan Type <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0)
+                            @if($diffInDays <= 5 && $diffExtendDay>0)
                             <select  id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" readonly>
                                 
                                 <option value="{{ $customer->plan_type_id }}">{{ $customer->plan_type_name }}</option>
@@ -136,7 +138,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                         <div class="col-lg-6">
                             <label for="">Payment Mode</label>
-                            @if($diffInDays < 0 && $diffExtendDay>0)
+                            @if($diffInDays <= 5 && $diffExtendDay>0)
                             <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
                                 <option value="">Select Payment Mode</option>
                                 <option value="1">Online</option>
@@ -164,7 +166,7 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                         <div class="col-lg-6">
                             <label for="">Plan Price <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0)
+                            @if($diffInDays <= 5 && $diffExtendDay>0)
                             <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" @readonly(true)>
 
                             @else
@@ -211,8 +213,9 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            <input type="submit" class="btn btn-primary btn-block button" value="Payment">
-                        </div>
+                            <input type="submit" class="btn btn-primary btn-block button" 
+                            value="@if($diffInDays <= 5 && $diffExtendDay > 0) Renew @else Payment @endif">
+                                             </div>
                     </div>
 
                 </div>
@@ -223,7 +226,7 @@ $diffInDays = $today->diffInDays($endDate, false);
         <div class="seat--info">
             @php 
             $class='';  
-                if($diffInDays < 0 && $diffExtendDay>0){
+                if($diffInDays <= 5 && $diffExtendDay>0){
                     $class='extedned';
                 }elseif($diffInDays < 0 ){
                     $class='expired';
@@ -246,7 +249,17 @@ $diffInDays = $today->diffInDays($endDate, false);
         </div>
     </div>
 </div>
+<script>
+ 
+document.addEventListener('DOMContentLoaded', function() {
+  
+    const formId = document.querySelector('form.payment_page').id;
+    
+    handleFormChanges(formId, {{$customer->id}});
+});
 
+
+</script>
 
 
 @include('learner.script')

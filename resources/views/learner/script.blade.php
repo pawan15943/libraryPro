@@ -48,7 +48,7 @@
                     },
                     dataType: 'json',
                     success: function(html) {
-                           console.log(html);
+                          
                         $('#owner').text(html.name);
                         $('#learner_dob').text(html.dob);
                         $('#learner_email').text(html.email);
@@ -166,7 +166,7 @@
                     },
                     dataType: 'json',
                     success: function (html) {
-                        console.log('html',html);
+                     
                         $("#updated_plan_type_id").empty(); // Clear existing options
                         if (html[0]) {
                             $.each(html[0], function (key, value) {
@@ -175,6 +175,18 @@
                         } else {
                             $("#updated_plan_type_id").append('<option value="">Select Plan Type</option>');
                         }
+                       
+
+                        if (html[1]) {
+                            $.each(html[1], function (key, value) {
+                                $('#update_plan_id > option[value="'+ key +'"]').prop('selected', true);
+                                $("#hidden_plan").val(key);
+                            });
+                            $('#update_plan_id').trigger('change');
+                        }
+
+
+
                     },
                     error: function (xhr, status, error) {
                         console.error("AJAX error:", status, error); // Log any errors
@@ -396,12 +408,11 @@
             var user_id = $('#update_user_id').val();
             var plan_id = $('#update_plan_id').val();
            
-            
+           console.log("heena",$('#hidden_plan').val());
           
             var plan_type_id = $('#updated_plan_type_id').val();
             var plan_price_id = $('#updated_plan_price_id').val();
             var errors = {};
-            console.log('seat_no',seat_no,'user_id',user_id,'plan_id',plan_id,'plan_type_id',plan_type_id,'payment_mode',payment_mode);
             if (!plan_id) {
                 errors.plan_id = 'Plan is required.';
             }
@@ -412,10 +423,7 @@
             if (!plan_price_id) {
                 errors.plan_price_id = 'Price is required.';
             }
-            // if (!payment_mode) {
-            //     errors.payment_mode = 'Payment mode is required.';
-            // }
-
+   
             if (Object.keys(errors).length > 0) {
                 $(".is-invalid").removeClass("is-invalid");
                 $(".invalid-feedback").remove();
@@ -434,20 +442,23 @@
             formData.append('plan_id', plan_id);
             formData.append('plan_type_id', plan_type_id);
             formData.append('plan_price_id', plan_price_id);
-           
+            var formId='renewSeat';
+            var fieldName='plan';
+            var newValue=plan_id ;
+            var oldValue=$('#hidden_plan').val();
 
 
             $.ajax({
-                url: '{{ route('learners.renew') }}', // Update this URL to your route for updating seats
+                url: '{{ route('learners.renew') }}', 
                 type: 'POST',
                 data: formData,
                 processData: false,
                 contentType: false,
                 dataType: 'json',
                 success: function(response) {
-                    console.log("renew",response);
+                    
                     if (response.success) {
-                        
+                        logFieldChange(user_id, formId, fieldName, oldValue, newValue); 
                         $("#success-message").text('Form submission successful').show();
                         $("#error-message").hide();
                         setTimeout(function() {
@@ -645,6 +656,10 @@
         var url = '{{ route('learners.destroy', ':id') }}';
     
         url = url.replace(':id', id);  
+        var formId='deleteSeat';
+        var fieldName='deleted_at';
+        var newValue = new Date().toISOString()
+        var oldValue = null;
        
         Swal.fire({
             title: 'Are you sure?',
@@ -663,6 +678,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
+                        logFieldChange(id, formId, fieldName, oldValue, newValue);
                         Swal.fire(
                             'Deleted!',
                             'User has been deleted.',
@@ -694,7 +710,7 @@
         var month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
         var day = String(today.getDate()).padStart(2, '0');
         var newValue = `${year}-${month}-${day}`;
-        console.log(newValue);
+       
         Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -748,7 +764,7 @@
 <script>
     // Function to handle changes in a specific form
     function handleFormChanges(formId, learnerId) {
-        // console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId);
+        //  console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId);
 
         const form = document.getElementById(formId);
         if (!form) {

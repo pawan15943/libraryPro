@@ -341,7 +341,17 @@
                 <a href="{{ route('learners.list.view', ['type' => 'reactive_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Renew Seats</h6>
+                <div class="d-flex">
+                    <h4 id="renew_seat">0</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'renew_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Close Seats</h6>
@@ -351,6 +361,17 @@
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
                 <a href="{{ route('learners.list.view', ['type' => 'close_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Delete Seats</h6>
+                <div class="d-flex">
+                    <h4 id="delete_seat">0</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'delete_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -746,6 +767,7 @@
             </div>
             <div class="modal-body m-0">
                 <form id="upgradeForm" class="m-0">
+                    <input type="hidden" id="hidden_plan" >
                     <div class="">
                         <div class="row g-4 m-0">
                             <div class="col-lg-6">

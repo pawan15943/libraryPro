@@ -652,8 +652,11 @@ class LibraryController extends Controller
         return $prefix . $randomNumber;
     }
 
-    
-    
+    // Library Setting
+    public function librarySetting()
+    {
+        return view('library.settings'); // Adjust the view path as needed
+    }
 
 
 }

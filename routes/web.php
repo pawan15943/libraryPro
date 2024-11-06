@@ -90,6 +90,12 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       Route::get('monthly/create', [ReportController::class, 'monthlyReport'])->name('report.monthly');
       Route::get('report/expense/{year}/{month}', [ReportController::class, 'monthlyExpenseCreate'])->name('report.expense');
       Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
+      
+      // Other Pages Routes
+      Route::get('settings', [LibraryController::class, 'librarySetting'])->name('library.settings');
+   
+   
+   
     });
     
   

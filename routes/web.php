@@ -93,6 +93,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       
       // Other Pages Routes
       Route::get('settings', [LibraryController::class, 'librarySetting'])->name('library.settings');
+      Route::get('feedback', [LibraryController::class, 'libraryFeedback'])->name('library.feedback');
    
    
    

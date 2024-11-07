@@ -657,6 +657,10 @@ class LibraryController extends Controller
     {
         return view('library.settings'); // Adjust the view path as needed
     }
+    public function libraryfeedback()
+    {
+        return view('library.feedback'); // Adjust the view path as needed
+    }
 
 
 }

@@ -127,12 +127,19 @@ class LoadMenus
             $learnerExtendText='Extend Days are Active Now & Remaining Days are';
 
             $total_seats=Seat::count();
-            $availble_seats=Seat::where('total_hours','==',0)->count(); 
+            $availble_seats=Seat::where('total_hours','!=',16)->count(); 
           
-            $booked_seats=Seat::where('is_available','!=',1)->where('total_hours','!=',0)->count();
+            $booked_seats=Seat::where('total_hours','!=',0)->count();
             $active_seat_count =  Learner::where('library_id',Auth::user()->id)->where('status', 1) 
             ->distinct() 
-            ->count('seat_no');
+            ->count();
+            $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+            $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+            $extended_seats =LearnerDetail::where('learner_detail.is_paid',1)
+            ->where('learner_detail.status',1)
+            ->where('learner_detail.plan_end_date', '<', date('Y-m-d'))
+            ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
+            ->count(); 
             $expired_seat=Learner::where('library_id',Auth::user()->id)->where('status',0)->count();
             // Initialize an array to hold the counts for each plan type
                 $counts = [];
@@ -197,6 +204,7 @@ class LoadMenus
             View::share('hourly2Count', $hourly2Count); 
             View::share('hourly3Count', $hourly3Count); 
             View::share('hourly4Count', $hourly4Count); 
+            View::share('extended_seats', $extended_seats); 
             
           
             

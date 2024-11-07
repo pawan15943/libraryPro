@@ -254,7 +254,7 @@
                     <h4 id="month_all_expired">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{ route('learners.list.view', ['type' => 'expire_booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'expire_booking_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -512,7 +512,7 @@
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
-
+              
                 @foreach($available_seats as $seat)
                 <li>
                     <div class="d-flex">
@@ -544,7 +544,7 @@
 
                         </div>
                         <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_no'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
+                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_id'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
                     </div>
                 </li>
                 @endforeach

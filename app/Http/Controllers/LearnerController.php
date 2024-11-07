@@ -205,6 +205,7 @@ class LearnerController extends Controller
     }
     //learner store
     public function learnerStore(Request $request){
+       
         $additionalRules = [
             'payment_mode' => 'required',
             'plan_start_date' => 'required|date',
@@ -271,6 +272,12 @@ class LearnerController extends Controller
         }else{
             $is_paid=0; 
         }
+
+        $extend_days=Hour::select('extend_days')->first();
+        $extendDay = $extend_days ? $extend_days->extend_days : 0;
+       
+        $inextendDate = Carbon::parse($endDate)->addDays($extendDay);
+        $status = $inextendDate > Carbon::today() ? 1 : 0;
         
         $customer = Learner::create([
             'seat_no' => $request->input('seat_no'),
@@ -281,7 +288,7 @@ class LearnerController extends Controller
             'id_proof_name' => $request->input('id_proof_name'),
             'id_proof_file' => $id_proof_file,
             'hours' => $hours,
-           
+            'status'=>$status,
             'library_id'=>Auth::user()->id,
             'password'=> bcrypt($request->mobile)
         ]);
@@ -298,6 +305,7 @@ class LearnerController extends Controller
             'seat_id' => $request->seat_id,
             'library_id'=>Auth::user()->id,
             'is_paid' => $is_paid,
+            'status'=>$status,
             'payment_mode' => $request->input('payment_mode'),
         ]);
 
@@ -313,9 +321,12 @@ class LearnerController extends Controller
                 'is_paid' => 1
             ]);
         }
+        if($status==1){
+            $this->seat_availablity($request);
+            $this->dataUpdate();
+        }
 
-        $this->seat_availablity($request);
-        $this->dataUpdate();
+       
        
         return response()->json([
             'success' => true,

@@ -230,6 +230,7 @@
                                                             class="fa-solid fa-eye"></i></a></li>
 
                                                 @can('has-permission', 'Receipt Generation')
+                                                @if($value->is_paid==1)
                                                 <li>
 
                                                     <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
@@ -243,6 +244,8 @@
                                                     </form>
 
                                                 </li>
+                                                @endif
+                                                
                                                 @endcan
                                             </ul>
                                         </td>

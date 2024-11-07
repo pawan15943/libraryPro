@@ -54,7 +54,7 @@ class Controller extends BaseController
             ->with(['plan', 'planType'])
             ->first();
            
-            $data = LearnerTransaction::where('learner_deatail_id', $learnerDeatail->id)->where('is_paid',1)->first();
+            $data = LearnerTransaction::where('learner_detail_id', $learnerDeatail->id)->where('is_paid',1)->first();
         
             $user = Learner::where('id', $data->learner_id)->first();
           

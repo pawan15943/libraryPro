@@ -388,7 +388,7 @@ class Controller extends BaseController
         $plan = Plan::where('plan_id', trim($data['plan']))->first();
         $planType = PlanType::where('name', 'LIKE', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
-        if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly4') && $planType->day_type_id==7)){
+        if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
             return;
         }
@@ -503,7 +503,7 @@ class Controller extends BaseController
                     $this->updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid);
                 } else {
                     // Create learner details for the existing learner
-                    $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date);
+                    $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date,$payment_mode);
                 }
             } else {
                 if (empty($data['name']) || empty($data['email']) || empty($data['mobile']) || empty($hours) || empty($seat) || empty($start_date) || empty($planPrice->price)) {
@@ -580,7 +580,7 @@ class Controller extends BaseController
                 'dob' => $dob,
                 'hours' => trim($hours),
                 'seat_no' => trim($data['seat_no']),
-                'payment_mode' => $payment_mode,
+                
                 'address' => trim($data['address']),
                 'status' => $status,
             ]);
@@ -597,6 +597,7 @@ class Controller extends BaseController
                 'hour' => $hours,
                 'seat_id' => $seat->id,
                 'library_id' => Auth::user()->id,
+                'payment_mode' => $payment_mode,
                 'is_paid' => $is_paid,
                 'status' => $status,
             ]);
@@ -633,7 +634,7 @@ class Controller extends BaseController
     }
     
 
-    function createLearnerDetail($learner_id, $plan, $status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date)
+    function createLearnerDetail($learner_id, $plan, $status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date,$payment_mode)
     {
         
         DB::beginTransaction();
@@ -651,6 +652,7 @@ class Controller extends BaseController
                 'hour' => $hours,
                 'seat_id' => $seat->id,
                 'library_id' => Auth::user()->id,
+                'payment_mode' => $payment_mode,
                 'is_paid' => $is_paid,
                 'status' => $status,
             ]);
@@ -690,7 +692,7 @@ class Controller extends BaseController
             'dob' => $dob,
             'hours' => trim($hours),
             'seat_no' => trim($data['seat_no']),
-            'payment_mode' => $payment_mode,
+            
             'address' => trim($data['address']),
             'status' => $status,
         ]);
@@ -708,6 +710,7 @@ class Controller extends BaseController
                 'seat_id' => $seat->id,
                 'is_paid' => $is_paid,
                 'status' => $status,
+                'payment_mode' => $payment_mode,
             ]);
             $this->seat_availablity_update_now($seat->id,$planType->id);
             $this->dataUpdateNow($learnerData->id);

@@ -126,7 +126,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2 id="booked_seat">0</h2>
-                <a href="{{ route('learners.list.view', ['type' => 'booked']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
+                <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -134,6 +134,7 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2 id="available_seat">0</h2>
+               
                 <a href="{{route('seats')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -142,7 +143,8 @@
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
                 <h2 id="expired_seat">0</h2>
-                <a href="{{route('learners.list.view', ['type' => 'expired'])}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+               
+                <a href="{{route('learners.list.view', ['type' => 'expired_seats'])}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>

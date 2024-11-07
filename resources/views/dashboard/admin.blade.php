@@ -105,10 +105,10 @@
             </select>
         </div>
     
-        <div class="col-lg-6">
+        {{-- <div class="col-lg-6">
             <label for="dateRange" class="form-label">Select Date Range:</label>
             <input type="text" id="dateRange" class="form-control form-control-sm" placeholder="YYYY-MM-DD to YYYY-MM-DD">
-        </div>
+        </div> --}}
         
     </div>
     

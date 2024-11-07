@@ -348,7 +348,7 @@ class DashboardController extends Controller
                 }
                 
                 $total_booking = $query->count();
-                $expired_query = LearnerDetail::where('is_paid', 1);
+                $expired_query = LearnerDetail::where('is_paid', 1)->where('status',0);
             
                 if ($request->filled('year') && !$request->filled('month')) {
                     $expired_query->where(function ($expired_query) use ($request) {
@@ -364,9 +364,10 @@ class DashboardController extends Controller
                     });
                 }
                 $month_all_expired=$expired_query->count();
-            
+                
                 $expired_seats=$month_all_expired;
                 $active_booking=$total_booking-$month_all_expired;
+
                 $month_total_active_booking=LearnerDetail::where('is_paid', 1);
                 
                 if ($request->filled('year') && !$request->filled('month')) {
@@ -796,7 +797,7 @@ class DashboardController extends Controller
 
                 case 'expire_booking_slot':
                     $expired_query = LearnerDetail::with(['plan', 'planType', 'seat', 'learner']) // Eager load relationships
-                    ->where('is_paid', 1);
+                    ->where('is_paid', 1)->where('status',0);
             
                     if ($request->filled('year') && !$request->filled('month')) {
                         $expired_query->where(function ($expired_query) use ($request) {

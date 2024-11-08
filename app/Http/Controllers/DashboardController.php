@@ -563,10 +563,12 @@ class DashboardController extends Controller
                     
                 });
             }
-            $revenues =$revenue_query->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue, SUM(plan_price_id / plan_id) as monthly_revenue')->groupBy('year', 'month')
+            
+            $revenues =$revenue_query->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue, SUM(plan_price_id / plans.plan_id) as monthly_revenue')->groupBy('year', 'month')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')->get()
             ->keyBy('month');
+            
             $expense_query=DB::table('monthly_expense')
             ->where('library_id', Auth::user()->id);
             

@@ -1657,9 +1657,10 @@ button#clearInvalidRecordsButton {
 img.extedned,
 .extedned {
     animation: blink 2s infinite;
-    filter: drop-shadow(0 0 3px red);
     color: red !important;
 }
+
+
 
 p.not-found {
     margin: 0;

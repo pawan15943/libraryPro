@@ -77,33 +77,36 @@
             </div>
         </div>
     </div>
+    @php
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+    @endphp
     <div class="row m-3 align-items-center">
         <div class="col-lg-3">
             <label for="datayaer" class="form-label">Select Year:</label>
-            <select id="datayaer" class="form-select form-control-sm" readonly>
-                <option value="2024">2024</option>
-                
+            <select id="datayaer" class="form-select form-control-sm">
+                <option value="">Select Year</option>
+                @foreach($dynamicyears as $year)
+                <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                    {{ $year }}
+                </option>
+                @endforeach
             </select>
         </div>
         
         <div class="col-lg-3">
             <label for="dataFilter" class="form-label">Select Month:</label>
             <select id="dataFilter" class="form-select form-control-sm">
-                <option value="">Select</option>
-                <option value="01">Jan</option>
-                <option value="02">Feb</option>
-                <option value="03">Mar</option>
-                <option value="04">Apr</option>
-                <option value="05">May</option>
-                <option value="06">Jun</option>
-                <option value="07">Jul</option>
-                <option value="08">Aug</option>
-                <option value="09">Sep</option>
-                <option value="10">Oct</option>
-                <option value="11">Nov</option>
-                <option value="12">Dec</option>
+                <option value="">Select Month</option>
+                @foreach($dynamicmonths as $month)
+                <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" 
+                        {{ str_pad($month, 2, '0', STR_PAD_LEFT) == $currentMonth ? 'selected' : '' }}>
+                    {{ DateTime::createFromFormat('!m', $month)->format('M') }}
+                </option>
+                @endforeach
             </select>
         </div>
+        
     
         {{-- <div class="col-lg-6">
             <label for="dateRange" class="form-label">Select Date Range:</label>
@@ -156,8 +159,8 @@
     <div class="row g-4">
         <div class="col-lg-12">
             <div class="v-content">
-                <ul class="revenue-box scroll-x ">
-                    @foreach($revenues as $revenue)
+                <ul class="revenue-box scroll-x " id="monthlyData">
+                    {{-- @foreach($revenues as $revenue)
 
                     @php
 
@@ -180,6 +183,10 @@
                                 <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
                             </div>
                             <div class="value">
+                                <small>Monthly Revenue</small>
+                                <h4 class="totalRevenue" data-box=""></h4>
+                            </div>
+                            <div class="value">
                                 <small>Total Expense</small>
                                 <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
                             </div>
@@ -189,7 +196,7 @@
                             </div>
                         </div>
                     </li>
-                    @endforeach
+                    @endforeach --}}
 
                 </ul>
             </div>
@@ -607,7 +614,7 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}"  data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
                         </div>
 
                         <ul class="d-flex inner">
@@ -948,6 +955,7 @@
                     _token: '{{ csrf_token() }}' // CSRF token for security
                 },
                 success: function(response) {
+                    updateRevenue(response.revenu_expense);
                     updateHighlights(response.highlights);
                     console.log('Full response:', response);
 
@@ -980,6 +988,8 @@
                     } else {
                         console.error('Invalid data format for planTypeWiseCount:', response.planTypeWiseCount);
                     }
+
+                    
                 },
                 error: function(xhr) {
                     console.error(xhr);
@@ -1026,6 +1036,45 @@
                 $(this).attr('href', updatedUrl);
             });
         }
+
+        function updateRevenue(data) {
+             
+                $('#monthlyData').empty();
+
+                // Loop through each item in the data array and create HTML for each month
+                data.forEach(function(item) {
+                    let html = `
+                        <li style="background: #fff url('{{ asset('public/img/revenue.png') }}'); background-size: contain; background-position: center;">
+                            <div class="d-flex">
+                                <h4>${item.month}, ${item.year}</h4> 
+                                <span class="toggleButton" data-box=""><i class="fa fa-eye-slash"></i></span>
+                            </div>
+                            <div class="d-flex mt-10">
+                                <div class="value">
+                                    <small>Total Revenue</small>
+                                    <h4 class="totalRevenue" data-box="1">${item.totalRevenue}</h4>
+                                </div>
+                                <div class="value">
+                                    <small>Monthly Revenue</small>
+                                    <h4 class="totalRevenue" data-box="2">${item.monthlyRevenue}</h4>
+                                </div>
+                                <div class="value">
+                                    <small>Total Expense</small>
+                                    <h4 class="totalExpense text-danger" data-box="3">${item.totalExpense}</h4>
+                                </div>
+                                <div class="value">
+                                    <small>Net Profit</small>
+                                    <h4 class="netProfit text-success" data-box="4">${item.netProfit}</h4>
+                                </div>
+                            </div>
+                        </li>`;
+                    
+                    // Append the generated HTML to the #monthlyData container
+                    $('#monthlyData').append(html);
+                });
+        }
+
+
     });
 </script>
 

@@ -85,12 +85,13 @@
                         var planEndDate = new Date(planEndDateStr);
                         var timeDiff = planEndDate - today;
                         var daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
-
+                       
                         if(daysRemaining <= 5 && isRenew==0) {
                             $('#upgrade').show();
                         }else{
                             $('#upgrade').hide();
                         }
+                       
 
                         var extendDay=html.diffExtendDay;
                         var message = '';
@@ -144,6 +145,7 @@
             var user_id = $(this).data('user');
             var seat_no = $(this).data('seat_no');
             var end_date = $(this).data('end_date');
+            
             $('#seatAllotmentModal3').modal('show');
             $('#update_seat_no').val(seat_no);
             $('#update_user_id').val(user_id);

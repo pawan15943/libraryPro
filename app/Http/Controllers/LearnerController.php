@@ -336,14 +336,13 @@ class LearnerController extends Controller
 
 
     public function getPlanType(Request $request){
-        
+       
         $seatNo = $request->seat_no;
         $seatId=Seat::where('seat_no',$seatNo)->value('id');
-        
-       
-        $customer_plan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
-        ->pluck('learner_detail.plan_type_id');
-            
+      
+        $customer_plan=LearnerDetail::where('seat_id', $seatId)->where('learner_id',$request->user_id)
+        ->pluck('plan_type_id');
+      
         // Step 1: Retrieve the plan_type_ids from learners for the given seat
         $filteredPlanTypes=PlanType::where('id',$customer_plan)->pluck('name', 'id');
 
@@ -1173,12 +1172,16 @@ class LearnerController extends Controller
             $is_paid=0; 
             $payment_mode=3;
         }
-        if($customer->plan_end_date < $currentDate && $endDate->format('Y-m-d') >$currentDate  && $is_paid==1){
+      
+        if($learner_detail->plan_end_date< $currentDate && $endDate->format('Y-m-d') >$currentDate  && $is_paid==1){
+           
             $status=1;
         }else{
+           
             $status=0;
         }
-        
+      
+      
         $learner_detail=LearnerDetail::create([
             'library_id'=>$customer->library_id,
            'learner_id' => $customer->id, 
@@ -1192,7 +1195,7 @@ class LearnerController extends Controller
            'seat_id' =>$learner_detail->seat_id,
            'status'=>$status,
            'is_paid' => $is_paid,
-           'payment_mode' => $request->input('payment_mode'),
+           'payment_mode' => $payment_mode,
        ]);
        if($payment_mode==1 || $payment_mode==2){
             LearnerTransaction::create([
@@ -1207,11 +1210,11 @@ class LearnerController extends Controller
             ]);
         }
         $learnerStatus = LearnerDetail::where('learner_id', $customer->id)
-            ->where('is_paid', 1)
-            ->get();
-        
-      
-
+        ->where('is_paid', 1)
+        ->where('plan_end_date', '<', $currentDate) // Corrected comparison syntax
+        ->where('status', 1)
+        ->get();
+    
         foreach ($learnerStatus as $data) {
             if ($data->plan_end_date < $currentDate) {
                 $data->status = 0;  // Expired

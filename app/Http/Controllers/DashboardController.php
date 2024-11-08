@@ -119,14 +119,26 @@ class DashboardController extends Controller
             $fiveDaysbetween = $today->copy()->addDays(5);
             $renewSeats = $this->getLearnersByLibrary()
             ->whereBetween('learner_detail.plan_end_date', [$today->format('Y-m-d'), $fiveDaysbetween->format('Y-m-d')]) // Filter between today and 5 days in the future
-            ->where('learner_detail.status', 1) // Only include active learners
-            ->with('planType') // Eager load related planType
+            ->where('learner_detail.status', 1)
+            ->whereNotExists(function ($query) use ($fiveDaysbetween) {
+                $query->select(DB::raw(1))
+                    ->from('learner_detail as ld')
+                    ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
+                    ->where('ld.plan_end_date', '>', $fiveDaysbetween->format('Y-m-d'));
+            })
+            ->with('planType')
             ->get();
             $extend_sets = $this->getLearnersByLibrary()
             ->where('learner_detail.is_paid', 1) // Only paid learners
             ->where('learner_detail.status', 1)  // Only active learners
             ->where('learner_detail.plan_end_date', '<', $today->format('Y-m-d')) // plan_end_date is before today
             ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day]) // Extended date is today or in the future
+            ->whereNotExists(function ($query) use ($fiveDaysbetween) {
+                $query->select(DB::raw(1))
+                    ->from('learner_detail as ld')
+                    ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
+                    ->where('ld.plan_end_date', '>', $fiveDaysbetween->format('Y-m-d'));
+            })
             ->with('planType') // Eager load related planType
             ->get();
             
@@ -151,31 +163,31 @@ class DashboardController extends Controller
            
             $startOfYear = Carbon::now()->startOfYear();
             $endOfYear = Carbon::now()->endOfYear();
-            $revenues = LearnerDetail::whereBetween('join_date', [$startOfYear, $endOfYear])
-            ->where('is_paid', 1)
-            ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
-            ->groupBy('year', 'month')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->get()
-            ->keyBy('month');
+            // $revenues = LearnerDetail::whereBetween('join_date', [$startOfYear, $endOfYear])
+            // ->where('is_paid', 1)
+            // ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
+            // ->groupBy('year', 'month')
+            // ->orderBy('year', 'asc')
+            // ->orderBy('month', 'asc')
+            // ->get()
+            // ->keyBy('month');
          
 
-            // Fetch expenses for the last three months
-            $expenses = DB::table('monthly_expense')
-                ->where('library_id', Auth::user()->id)
-                ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$startOfYear, $endOfYear])
-                ->selectRaw('year, month, SUM(amount) as total_expense')
-                ->groupBy('year', 'month')
-                ->orderBy('year', 'asc')
-                ->orderBy('month', 'asc')
-                ->get();
+            // // Fetch expenses for the last three months
+            // $expenses = DB::table('monthly_expense')
+            //     ->where('library_id', Auth::user()->id)
+            //     ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$startOfYear, $endOfYear])
+            //     ->selectRaw('year, month, SUM(amount) as total_expense')
+            //     ->groupBy('year', 'month')
+            //     ->orderBy('year', 'asc')
+            //     ->orderBy('month', 'asc')
+            //     ->get();
                 
-                $startDate = Carbon::now()->startOfMonth();
-                $endDate = Carbon::now()->endOfMonth();
-                $startDate = $startDate->format('Y-m-d');
-                $endDate = $endDate->format('Y-m-d');
-                $plans = $this->learnerService->getPlans();
+            $startDate = Carbon::now()->startOfMonth();
+            $endDate = Carbon::now()->endOfMonth();
+            $startDate = $startDate->format('Y-m-d');
+            $endDate = $endDate->format('Y-m-d');
+            $plans = $this->learnerService->getPlans();
             
            
 
@@ -185,11 +197,17 @@ class DashboardController extends Controller
                 return $booking->planType->name; 
             })->toArray(); 
             $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
-          
+            $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'asc')
+            ->get();
+            $dynamicyears = $uniqueDates->pluck('year')->unique();
+            $dynamicmonths = $uniqueDates->pluck('month')->unique();
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('plans','available_seats','renewSeats','revenues','expenses','plan','features_count','check','extend_sets','bookingcount','bookinglabels'));
+                return view('dashboard.admin',compact('plans','available_seats','renewSeats','plan','features_count','check','extend_sets','bookingcount','bookinglabels','dynamicyears','dynamicmonths'));
             }else{
                 return redirect($redirectUrl);
             }
@@ -529,8 +547,69 @@ class DashboardController extends Controller
             
             // Get the count of unique seat_id
             $booked_seats = $booked_seats_query->distinct('seat_id')->count('seat_id');
+            // revenue expense div
+            $revenue_query=LearnerDetail::with(['plan'])->where('is_paid', 1);
+            if ($request->filled('year') && !$request->filled('month')) {
+                
+                $revenue_query->where(function ($revenue_query) use ($request) {
+                    $revenue_query->whereYear('join_date', $request->year);
+                    
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
         
+                $revenue_query->where(function ($revenue_query) use ($request) {
+                    $revenue_query->whereYear('join_date', $request->year)
+                        ->whereMonth('join_date', $request->month);
+                    
+                });
+            }
+            $revenues =$revenue_query->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue, SUM(plan_price_id / plan_id) as monthly_revenue')->groupBy('year', 'month')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')->get()
+            ->keyBy('month');
+            $expense_query=DB::table('monthly_expense')
+            ->where('library_id', Auth::user()->id);
+            
+            if ($request->filled('year') && !$request->filled('month')) {
+                    
+                    $expense_query->where(function ($expense_query) use ($request) {
+                        $expense_query->whereYear('year', $request->year);
+                        
+                    });
+                } elseif ($request->filled('year') && $request->filled('month')) {
+            
+                    $expense_query->where(function ($expense_query) use ($request) {
+                        $expense_query->whereYear('year', $request->year)
+                            ->whereMonth('month', $request->month);
+                        
+                    });
+                }
 
+                $expenses = $expense_query->selectRaw('year, month, SUM(amount) as total_expense')
+                    ->groupBy('year', 'month')
+                    ->orderBy('year', 'asc')
+                    ->orderBy('month', 'asc')
+                    ->get();
+
+                $revenu_expense = [];
+                foreach ($revenues as $month => $revenue) {
+                    $monthName = Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
+                    $expense = $expenses->get($month);
+                    $totalExpense = $expense ? $expense->total_expense : 0;
+                    $totalRevenue = $revenue->total_revenue;
+                    $monthlyRevenue=number_format($revenue->monthly_revenue,2);
+                    $netProfit = $monthlyRevenue - $totalExpense;
+            
+                    $revenu_expense[] = [
+                        'month' => $monthName,
+                        'totalRevenue' => $totalRevenue,
+                        'totalExpense' => $totalExpense,
+                        'netProfit' => $netProfit,
+                        'year'=>$request->year,
+                        'monthlyRevenue' =>$monthlyRevenue,
+                    ];
+                }
+           
         }
        
         
@@ -592,73 +671,75 @@ class DashboardController extends Controller
                 'labels' => $bookinglabels,
                 'data' => $bookingcount,
             ],
+
+            'revenu_expense' => $revenu_expense,
         ]);
     }
 
-    public function listView(Request $request)
-    {
+    // public function listView(Request $request)
+    // {
      
-        $type = $request->get('type');
-        $year = $request->get('year');
-        $month = $request->get('month');
-        $dateRange = $request->get('date_range');
-        $seats = [];
-        $extend_days=Hour::select('extend_days')->first();
-        if($extend_days){
-            $extendDay=$extend_days->extend_days;
-        }else{
-            $extendDay=0;
-        }
-        switch ($type) {
-            case 'booked':
-                $bookedSeats = Seat::where('is_available', '!=', 1)->where('total_hours', '!=', 0)->get();
-                foreach ($bookedSeats as $bookedSeat) {
+    //     $type = $request->get('type');
+    //     $year = $request->get('year');
+    //     $month = $request->get('month');
+    //     $dateRange = $request->get('date_range');
+    //     $seats = [];
+    //     $extend_days=Hour::select('extend_days')->first();
+    //     if($extend_days){
+    //         $extendDay=$extend_days->extend_days;
+    //     }else{
+    //         $extendDay=0;
+    //     }
+    //     switch ($type) {
+    //         case 'booked':
+    //             $bookedSeats = Seat::where('is_available', '!=', 1)->where('total_hours', '!=', 0)->get();
+    //             foreach ($bookedSeats as $bookedSeat) {
                  
-                    $learnerData = $this->getAllLearnersByLibrary()
-                                        ->where('learners.seat_no', $bookedSeat->seat_no)
-                                        ->where('learners.status', 1)
-                                        ->get();
+    //                 $learnerData = $this->getAllLearnersByLibrary()
+    //                                     ->where('learners.seat_no', $bookedSeat->seat_no)
+    //                                     ->where('learners.status', 1)
+    //                                     ->get();
                  
-                    foreach ($learnerData as $learner) {
-                        $seats[] = ['learner' => $learner];
-                    }
-                }
-                break;
+    //                 foreach ($learnerData as $learner) {
+    //                     $seats[] = ['learner' => $learner];
+    //                 }
+    //             }
+    //             break;
         
-            case 'expired':
-                $learnerData = Learner::where('library_id', auth()->user()->id) 
-                    ->whereHas('learnerDetails', function ($query) {
-                        $query->whereDate('plan_end_date', '<', now());
-                    })
-                    ->with([
-                        'learnerDetails' => function($query) {
-                            $query->with(['seat', 'plan', 'planType']);
-                        }
-                    ])
+    //         case 'expired':
+    //             $learnerData = Learner::where('library_id', auth()->user()->id) 
+    //                 ->whereHas('learnerDetails', function ($query) {
+    //                     $query->whereDate('plan_end_date', '<', now());
+    //                 })
+    //                 ->with([
+    //                     'learnerDetails' => function($query) {
+    //                         $query->with(['seat', 'plan', 'planType']);
+    //                     }
+    //                 ])
                     
-                    ->get();
+    //                 ->get();
             
-                foreach ($learnerData as $learner) {
-                    $seats[] = ['learner' => $learner];
-                }
-                break;
+    //             foreach ($learnerData as $learner) {
+    //                 $seats[] = ['learner' => $learner];
+    //             }
+    //             break;
                 
-            default:
+    //         default:
                 
-                $allSeats = Seat::all();
-                foreach ($allSeats as $seat) {
-                    $learnerData = $this->getAllLearnersByLibrary()
-                                        ->where('learners.seat_no', $seat->seat_no)
-                                        ->get();
-                    foreach ($learnerData as $learner) {
-                        $seats[] = ['learner' => $learner ];
-                    }
-                }
-                break;
-        }
+    //             $allSeats = Seat::all();
+    //             foreach ($allSeats as $seat) {
+    //                 $learnerData = $this->getAllLearnersByLibrary()
+    //                                     ->where('learners.seat_no', $seat->seat_no)
+    //                                     ->get();
+    //                 foreach ($learnerData as $learner) {
+    //                     $seats[] = ['learner' => $learner ];
+    //                 }
+    //             }
+    //             break;
+    //     }
 
-        return view('learner.list-view', compact('extendDay','seats', 'type'));
-    }
+    //     return view('learner.list-view', compact('extendDay','seats', 'type'));
+    // }
 
     public function viewSeats(Request $request)
     {

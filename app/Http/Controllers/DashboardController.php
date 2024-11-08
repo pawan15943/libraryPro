@@ -548,7 +548,12 @@ class DashboardController extends Controller
             // Get the count of unique seat_id
             $booked_seats = $booked_seats_query->distinct('seat_id')->count('seat_id');
             // revenue expense div
-            $revenue_query=LearnerDetail::with(['plan'])->where('is_paid', 1);
+          
+            
+            $revenue_query=LearnerDetail::withoutGlobalScopes()
+            ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id') // Join with plans table on plan_id
+            ->where('learner_detail.is_paid', 1);
+           
             if ($request->filled('year') && !$request->filled('month')) {
                 
                 $revenue_query->where(function ($revenue_query) use ($request) {
@@ -564,11 +569,11 @@ class DashboardController extends Controller
                 });
             }
             
-            $revenues =$revenue_query->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue, SUM(plan_price_id / plans.plan_id) as monthly_revenue')->groupBy('year', 'month')
+            $revenues =$revenue_query->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue, SUM(learner_detail.plan_price_id / plans.plan_id) as monthly_revenue')->groupBy('year', 'month')
             ->orderBy('year', 'asc')
             ->orderBy('month', 'asc')->get()
             ->keyBy('month');
-            
+           
             $expense_query=DB::table('monthly_expense')
             ->where('library_id', Auth::user()->id);
             
@@ -599,9 +604,12 @@ class DashboardController extends Controller
                     $expense = $expenses->get($month);
                     $totalExpense = $expense ? $expense->total_expense : 0;
                     $totalRevenue = $revenue->total_revenue;
+                    
                     $monthlyRevenue=number_format($revenue->monthly_revenue,2);
+                    $monthlyRevenue = (float) str_replace(',', '', $monthlyRevenue);
+                   
                     $netProfit = $monthlyRevenue - $totalExpense;
-            
+                 
                     $revenu_expense[] = [
                         'month' => $monthName,
                         'totalRevenue' => $totalRevenue,

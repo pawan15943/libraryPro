@@ -94,8 +94,12 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       // Other Pages Routes
       Route::get('settings', [LibraryController::class, 'librarySetting'])->name('library.settings');
       Route::get('feedback', [LibraryController::class, 'libraryFeedback'])->name('library.feedback');
-   
-   
+      Route::get('pending/payment', [ReportController::class, 'pendingPayment'])->name('pending.payment.report');
+      Route::get('learner/report', [ReportController::class, 'learnerReport'])->name('learner.report');
+      Route::get('upcoming/payment/report', [ReportController::class, 'upcomingPayment'])->name('upcoming.payment.report');
+      Route::get('expired/learner/report', [ReportController::class, 'expiredLearner'])->name('expired.learner.report');
+      
+  
    
     });
     
@@ -135,7 +139,7 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     Route::get('getPlanTypeSeatWise', [LearnerController::class, 'getPlanTypeSeatWise'])->name('gettypeSeatwise');
     Route::get('getPrice', [LearnerController::class, 'getPrice'])->name('getPricePlanwise');
     Route::get('getPricePlanwiseUpgrade', [LearnerController::class, 'getPricePlanwiseUpgrade'])->name('getPricePlanwiseUpgrade');
-  
+    
 });
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {

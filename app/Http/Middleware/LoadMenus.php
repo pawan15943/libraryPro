@@ -180,7 +180,12 @@ class LoadMenus
                 $hourly2Count = $counts['hourly2Count'];
                 $hourly3Count = $counts['hourly3Count'];
                 $hourly4Count = $counts['hourly4Count'];
-
+                $extend_days=Hour::select('extend_days')->first();
+                if($extend_days){
+                    $extendDay=$extend_days->extend_days;
+                }else{
+                    $extendDay=0;
+                }
             View::share('checkSub', $checkSub);
             View::share('ispaid', $ispaid);
             View::share('isProfile', $isProfile);
@@ -205,6 +210,7 @@ class LoadMenus
             View::share('hourly3Count', $hourly3Count); 
             View::share('hourly4Count', $hourly4Count); 
             View::share('extended_seats', $extended_seats); 
+            View::share('extendDay', $extendDay); 
             
           
             

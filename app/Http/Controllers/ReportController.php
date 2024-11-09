@@ -9,12 +9,19 @@ use App\Models\LearnerDetail;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+use App\Services\LearnerService;
+use Carbon\Carbon;
+use App\Traits\LearnerQueryTrait;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
-
-
-
+    use LearnerQueryTrait;
+    protected $learnerService;
+    public function __construct(LearnerService $learnerService)
+    {
+        $this->learnerService = $learnerService;
+    }
     public function monthlyReport()
     {
         // Fetch monthly revenues
@@ -117,6 +124,286 @@ class ReportController extends Controller
         return redirect()->route('report.monthly')->with('success', 'Expenses recorded successfully!');
     }
 
+    public function pendingPayment(Request $request){
+        $plans = $this->learnerService->getPlans();
+        $plan_type =$this->learnerService->getPlanTypes();
+        $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'asc')
+            ->get();
+        $dynamicyears = $uniqueDates->pluck('year')->unique();
+        $dynamicmonths = $uniqueDates->pluck('month')->unique();
+        $filters = [
+            'year' => $request->get('year'),
+            'month' => $request->get('month'),
+            'plan_id' => $request->get('plan_id'),
+            'plan_type'  => $request->get('plan_type'),
+            'search'  => $request->get('search'),
+        ];
+        $query = $this->getAllLearnersByLibrary()
+        ->whereHas('learnerDetails', function ($query) {
+            $query->where('is_paid', 0);
+        });
+        $learners = $this->fetchlearnerData( $filters,$query);
+    //    dd( $learners);
+        return view('report.pending_payment', compact('plans', 'plan_type', 'dynamicyears', 'dynamicmonths', 'learners'));
+
+    }
+
+   
+    
+    public function learnerReport(Request $request){
+        $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
+        ->distinct()
+        ->orderBy('year', 'desc')
+        ->orderBy('month', 'asc')
+        ->get();
+        $dynamicyears = $uniqueDates->pluck('year')->unique();
+        $dynamicmonths = $uniqueDates->pluck('month')->unique();
+
+        $filters = [
+            'year' => $request->get('year'),
+            'month' => $request->get('month'),
+            'is_paid' => $request->get('is_paid'),
+            'status'  => $request->get('status'),
+            'search'  => $request->get('search'),
+        ];
+
+        $query = $this->getAllLearnersByLibrary();
+        $learners = $this->fetchlearnerData( $filters,$query);
+        return view('report.learner_report',compact('learners', 'dynamicyears', 'dynamicmonths'));
+    }
+
+    public function upcomingPayment(){
+        $today = Carbon::now()->format('Y-m-d');
+        $fiveDaysLater = Carbon::now()->addDays(5)->format('Y-m-d');
+
+        $learners = $this->getAllLearnersByLibrary()
+            ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
+                $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
+            })->get();
+
+        return view('report.upcoming_payment',compact('learners'));
+    }
+
+    public function expiredLearner(Request $request){
+       
+        $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
+            ->distinct()
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'asc')
+            ->get();
+        $dynamicyears = $uniqueDates->pluck('year')->unique();
+        $dynamicmonths = $uniqueDates->pluck('month')->unique();
+        $filters = [
+            'expiredyear' => $request->get('expiredyear'),
+            'expiredmonth' => $request->get('expiredmonth'),
+        ];
+        $query = $this->getAllLearnersByLibrary()->where('status',0)
+        ->whereHas('learnerDetails', function ($query) {
+            $query->where('status', 0);
+        });
+        $learners = $this->fetchlearnerData( $filters,$query);
+  
+        return view('report.expired_learner', compact('dynamicyears', 'dynamicmonths', 'learners'));
+
+    }
+
+    public function fetchlearnerData( $filters,$query){
+      
+        Log::info('Filters applied:', $filters);
+        if (!empty($filters)) {
+          
+            if (!empty($filters['plan_id'])) {
+                $query->whereHas('learnerDetails', function ($query) use ($filters) {
+                    $query->where('plan_id', $filters['plan_id']);
+                });
+            }
+            
+    
+            if (!empty($filters['plan_type'])) {
+                $query->whereHas('learnerDetails', function ($query) use ($filters) {
+                    $query->where('plan_type', $filters['plan_type']);
+                });
+               
+            }
+
+            if (!empty($filters['expiredyear'])) {
+                Log::info('Filter applied: expiredyear ');
+                $year = $filters['expiredyear'];
+                $query->whereHas('learnerDetails', function ($query) use ($year) {
+                    $query->whereYear('plan_end_date', $year);
+                });
+            }
+        
+            if (!empty($filters['expiredmonth']) && !empty($filters['expiredyear'])) {
+                Log::info('Filter applied: expiredyear and expiredmonth');
+                $year = $filters['expiredyear'];
+                $month = $filters['expiredmonth'];
+                $query->whereHas('learnerDetails', function ($query) use ($year, $month) {
+                    $query->whereYear('plan_end_date', $year)
+                          ->whereMonth('plan_end_date', $month);
+                });
+            }
+           
+            if (!empty($filters['is_paid'])) {
+                $query->whereHas('learnerDetails', function ($query) use ($filters) {
+                    $query->where('is_paid', $filters['is_paid']);
+                });
+            }
+
+                // Apply the year filter if provided
+            if (!empty($filters['year'])) {
+                Log::info('Filter applied: year');
+                $year = $filters['year'];
+                
+                // Adjust query to cover plan dates within the given year
+                $query->whereHas('learnerDetails', function ($query) use ($year) {
+                    $query->whereYear('plan_start_date', '<=', $year)
+                        ->whereYear('plan_end_date', '>=', $year);
+                });
+            }
+        
+            // Apply the month filter if provided (year should be set either by filter or default)
+            if (!empty($filters['month'])) {
+                Log::info('Filter applied: year and month');
+                $year = $filters['year'] ?? date('Y');
+                $month = $filters['month'];
+                
+                $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        
+                $query->whereHas('learnerDetails', function ($query) use ($startOfMonth, $endOfMonth) {
+                    $query->where('plan_start_date', '<=', $endOfMonth)
+                        ->where('plan_end_date', '>=', $startOfMonth);
+                });
+            }
+
+                // Apply the status filter if provided
+            if (isset($filters['status'])) {
+                $status = $filters['status'];
+                
+                // If status = 0 (expired), filter based on the year and/or month, if provided
+                if ($status == 0 && ($filters['year'] || $filters['month'])) {
+                    Log::info('Filter applied: expired status with year and/or month');
+                    $year = $filters['year'] ?? date('Y');
+                    $month = $filters['month'] ?? null;
+                    
+                    $query->whereHas('learnerDetails', function($q) use ($status, $year, $month) {
+                        $q->where('status', $status)
+                        ->whereYear('plan_end_date', $year);
+                        
+                        if ($month) {
+                            $q->whereMonth('plan_end_date', $month);
+                        }
+                    });
+                } else {
+                    // Apply regular status filter if not expired with specific year/month
+                    $query->whereHas('learnerDetails', function($q) use ($status) {
+                        $q->where('status', $status);
+                    });
+                }
+            }
+
+            // Search by Name, Mobile, or Email
+           if (!empty($filters['search'])) {
+            $searchTerm = $filters['search'];
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhere('mobile', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+            });
+            }
+           
+        }
+        // \DB::enableQueryLog();
+        // $learners = $query->get();
+        // dd(\DB::getQueryLog());
+        
+        return $query->get();
+    }
+
+  
+
+    public function fetchAllLearnerData($filters, $query)
+    {
+        // Apply the year filter if provided
+        if (!empty($filters['year'])) {
+            Log::info('Filter applied: year');
+            $year = $filters['year'];
+            
+            // Adjust query to cover plan dates within the given year
+            $query->whereHas('learnerDetails', function ($query) use ($year) {
+                $query->whereYear('plan_start_date', '<=', $year)
+                      ->whereYear('plan_end_date', '>=', $year);
+            });
+        }
+    
+        // Apply the month filter if provided (year should be set either by filter or default)
+        if (!empty($filters['month'])) {
+            Log::info('Filter applied: year and month');
+            $year = $filters['year'] ?? date('Y');
+            $month = $filters['month'];
+            
+            $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
+            $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+    
+            $query->whereHas('learnerDetails', function ($query) use ($startOfMonth, $endOfMonth) {
+                $query->where('plan_start_date', '<=', $endOfMonth)
+                      ->where('plan_end_date', '>=', $startOfMonth);
+            });
+        }
+    
+        // Apply the status filter if provided
+        if (isset($filters['status'])) {
+            $status = $filters['status'];
+            
+            // If status = 0 (expired), filter based on the year and/or month, if provided
+            if ($status == 0 && ($filters['year'] || $filters['month'])) {
+                Log::info('Filter applied: expired status with year and/or month');
+                $year = $filters['year'] ?? date('Y');
+                $month = $filters['month'] ?? null;
+                
+                $query->whereHas('learnerDetails', function($q) use ($status, $year, $month) {
+                    $q->where('status', $status)
+                      ->whereYear('plan_end_date', $year);
+                    
+                    if ($month) {
+                        $q->whereMonth('plan_end_date', $month);
+                    }
+                });
+            } else {
+                // Apply regular status filter if not expired with specific year/month
+                $query->whereHas('learnerDetails', function($q) use ($status) {
+                    $q->where('status', $status);
+                });
+            }
+        }
+    
+        // Apply the payment status filter if provided
+        if (isset($filters['is_paid'])) {
+            $isPaid = $filters['is_paid'];
+            $query->whereHas('learnerDetails', function ($query) use ($isPaid) {
+                $query->where('is_paid', $isPaid);
+            });
+         
+        }
+    
+        // Apply search filter for name, mobile, or email if provided
+        if (!empty($filters['search'])) {
+            $searchTerm = $filters['search'];
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhere('mobile', 'LIKE', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
+            });
+        }
+    
+        // Return the filtered results
+        return $query->get();
+    }
+    
 
     
 }

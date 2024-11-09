@@ -163,25 +163,7 @@ class DashboardController extends Controller
            
             $startOfYear = Carbon::now()->startOfYear();
             $endOfYear = Carbon::now()->endOfYear();
-            // $revenues = LearnerDetail::whereBetween('join_date', [$startOfYear, $endOfYear])
-            // ->where('is_paid', 1)
-            // ->selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
-            // ->groupBy('year', 'month')
-            // ->orderBy('year', 'asc')
-            // ->orderBy('month', 'asc')
-            // ->get()
-            // ->keyBy('month');
-         
-
-            // // Fetch expenses for the last three months
-            // $expenses = DB::table('monthly_expense')
-            //     ->where('library_id', Auth::user()->id)
-            //     ->whereBetween(DB::raw('DATE(CONCAT(year, "-", month, "-01"))'), [$startOfYear, $endOfYear])
-            //     ->selectRaw('year, month, SUM(amount) as total_expense')
-            //     ->groupBy('year', 'month')
-            //     ->orderBy('year', 'asc')
-            //     ->orderBy('month', 'asc')
-            //     ->get();
+            
                 
             $startDate = Carbon::now()->startOfMonth();
             $endDate = Carbon::now()->endOfMonth();
@@ -232,11 +214,16 @@ class DashboardController extends Controller
     {
         
         // Library other highlights
-        
+         $today = Carbon::now()->format('Y-m-d');
         $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
         $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
-        $fiveDaysBefore = Carbon::now()->addDays(-5)->format('Y-m-d'); // Add this line for the expired logic
-        $expired_in_five = $this->getLearnersByLibrary()->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)->count();
+       
+        $fiveDaysLater = Carbon::now()->addDays(5)->format('Y-m-d');
+
+        $expired_in_five  = $this->getAllLearnersByLibrary()
+            ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
+                $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
+            })->count();
        
 
         $extended_seats = $this->getLearnersByLibrary()
@@ -760,9 +747,10 @@ class DashboardController extends Controller
 
         $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
         $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
-        $fiveDaysBefore = Carbon::now()->addDays(-5)->format('Y-m-d'); 
-       
         
+       
+        $today = Carbon::now()->format('Y-m-d');
+        $fiveDaysLater = Carbon::now()->addDays(5)->format('Y-m-d');
         if ($request->filled('date_range')) {
             // Split date range into start and end dates
             [$startDate, $endDate] = explode(' to ', $request->date_range);
@@ -973,7 +961,7 @@ class DashboardController extends Controller
                     break;
                 case 'expired_in_five':
                     $result = LearnerDetail::with(['plan', 'planType', 'seat', 'learner']) 
-                    ->where('is_paid', 1)->whereDate('learner_detail.plan_end_date', '=', $fiveDaysBefore)->get();
+                    ->where('is_paid', 1)->whereBetween('plan_end_date', [$today, $fiveDaysLater])->get();
                     break;
                 case 'extended_seat':
                     $result = LearnerDetail::with(['plan', 'planType', 'seat', 'learner']) 

@@ -107,6 +107,22 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Monthly Revenue Report' => route('report.monthly')
             ],
+            'pending.payment.report' => [
+                'Dashboard' => route('library.home'),
+                'Payment Pending Report' => route('pending.payment.report')
+            ],
+            'learner.report' => [
+                'Dashboard' => route('library.home'),
+                'All Learners Report' => route('learner.report')
+            ],
+            'upcoming.payment.report' => [
+                'Dashboard' => route('library.home'),
+                'Upcoming Payment Report' => route('upcoming.payment.report')
+            ],
+            'expired.learner.report' => [
+                'Dashboard' => route('library.home'),
+                'Expired Learners Report' => route('expired.learner.report')
+            ],
             'learnerHistory' => [
                 'Dashboard' => route('library.home'),
                 'Learner History' => route('learnerHistory'),
@@ -153,6 +169,10 @@ class AppServiceProvider extends ServiceProvider
             'library.myplan' => 'My Plan',
             'library.transaction' => 'My Payment Transactions',
             'report.monthly' => 'Monthly Revenue Report',
+            'pending.payment.report' => 'Payment Pending Report',
+            'learner.report' => 'All Learners Report',
+            'upcoming.payment.report' => 'Upcoming Payment Report',
+            'expired.learner.report' => 'Expired Learners Report',
             'library.master' => 'Configure Library',
             'learners.reactive' => 'Reactive Learner',
             'learnerHistory' => 'Learner History',

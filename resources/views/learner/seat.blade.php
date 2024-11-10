@@ -25,7 +25,9 @@ $hourlyCount = 0;
             <span class="text-success">Total Available Slots ({{$availble_seats}})</span> <span class="text-success">Total Booked Slots ({{$active_seat_count}})</span> <span class="text-danger">Total Expired Slots({{$expired_seat}})</span> <span class="text-danger">Extended Slots({{$extended_seats}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">FH: First Half ({{$firstHalfCount}})</span> <span class="text-danger">SH: Second Half ({{$secondHalfCount}})</span> <span class="text-danger">H1: Hourly Slot 1 ({{$hourly1Count}})</span> <span class="text-danger">H2: Hourly Slot 2 ({{$hourly2Count}})</span> <span class="text-danger">H3: Hourly Slot 3 ({{$hourly3Count}})</span> <span class="text-danger">H4 : Hourly Slot 4 ({{$hourly4Count}})</span>
         </div>
     </div>
-    <div class="col-lg-12">
+    <h4>Monthly Seat Activity: Current & Past Bookings</h4>
+    <p class="mt-2">Explore an overview of your library seat bookings across the current and previous months. This dashboard tracks each seat's booking, expiration, and renewal status, updating monthly as seats are renewed on varying dates. Stay up-to-date with your seating activity in one convenient place.</p>
+    <div class="col-lg-12 mt-2">
         <div class="seat-booking">
 
             @foreach($seats as $seat)

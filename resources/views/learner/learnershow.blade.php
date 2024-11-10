@@ -92,7 +92,7 @@
                             @if($customer->status==1)
                             <h5 class="text-success">Active</h5>
                             @else
-                            <h5 class="text-danger">InActive</h5>
+                            <h5 class="text-danger">Expired on 20-10-2024</h5>
                             @endif
                         </h5>
                     </div>
@@ -182,7 +182,7 @@
                         @endif
                     </div>
                 </div>
-                <h4 class="mt-4">Current Seat Owner Plan Re-New History :</h4>
+                <h4 class="mt-4">Current Seat Owner’s Renewal History</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
@@ -259,7 +259,7 @@
                     </div>
                 </div>
                 @if($seat_history->isNotEmpty())
-                <h4 class="mt-4"> Seat Previous History</h4>
+                <h4 class="mt-4"> History of Previous Seat Owners</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
@@ -401,11 +401,17 @@
                     </div>
                 </li>  
                 @endforeach
-            
-               
             </ul>
         </div>
         @endif
+        <div class="seat-activity">
+            <h5 class="py-4">All Seat Activity Logs:</h5>
+            <ul class="activity-log">
+                <li>
+                    <p>10-12-2024 : Seat Swapped </p>
+                </li>
+            </ul>
+        </div>
       
     </div>
 </div>

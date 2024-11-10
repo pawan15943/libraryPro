@@ -163,6 +163,7 @@ $current_route = Route::currentRouteName();
             <span class="text-success">Total Available Slots ({{$availble_seats}})</span> <span class="text-success">Total Booked Slots ({{$active_seat_count}})</span> <span class="text-danger">Total Expired Slots({{$expired_seat}})</span> <span class="text-danger">Extended Slots({{$extended_seats}})</span> <span class="text-danger">Full day ({{$fullday_count}})</span> <span class="text-danger">FH: First Half ({{$firstHalfCount}})</span> <span class="text-danger">SH: Second Half ({{$secondHalfCount}})</span> <span class="text-danger">H1: Hourly Slot 1 ({{$hourly1Count}})</span> <span class="text-danger">H2: Hourly Slot 2 ({{$hourly2Count}})</span> <span class="text-danger">H3: Hourly Slot 3 ({{$hourly3Count}})</span> <span class="text-danger">H4 : Hourly Slot 4 ({{$hourly4Count}})</span>
         </div>
     </div>
+    <p>Total 10 out of 61 Records 1-10</p>
     <div class="col-lg-12">
         <div class="table-responsive ">
             <table class="table text-center datatable border-bottom">
@@ -177,7 +178,6 @@ $current_route = Route::currentRouteName();
                         <th>Action</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     @php
                     $user = Auth::user();
@@ -274,11 +274,8 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                                 @endif
                                 @if($diffExtendDay>0)
-
                                 <!-- Sent Mail -->
                                 <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
-
-
                                 <!-- Sent Mail -->
                                 <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
 

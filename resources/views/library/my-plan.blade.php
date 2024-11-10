@@ -6,7 +6,7 @@
 <!-- Breadcrumb -->
 
     <div class="row justify-content-center mb-4">
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="payment-detaile">
 
                 <div class="paymentinfo  @switch($plan->name)
@@ -52,14 +52,14 @@
                             <div class="col-lg-6">
                                 <span> Status :</span>
                                 @if($month->status ==1)
-                                <h4 class="text-success">Active</h4>
+                                <h4 class="text-white">Active</h4>
                                 @else
                                 <h4 class="text-danger">Inactive</h4>
                                 @endif
                             </div>
                             <div class="col-lg-6">
                                 <span>Next Due Date</span>
-                                <h4></h4>
+                                <h4>{{ $month->end_date}}</h4>
                             </div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                         <li>No permissions available</li>
                         @endif
                     </ul> --}}
-                    <ul class="plan-features">
+                    <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)
                             @if(in_array($permission->name, $subscribedPermissions))
                                 <!-- Check mark for subscribed permissions -->

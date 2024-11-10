@@ -27,7 +27,7 @@ $currentMonth = date('m');
             <h4 class="mb-3">Filter Box</h4>
 
             <form action="{{ route('pending.payment.report') }}" method="GET">
-                <div class="row">
+                <div class="row g-4">
                         <!-- Filter By Payment Status -->
                         <div class="col-lg-3">
                             <label for="year">Filter By Year</label>
@@ -103,7 +103,7 @@ $currentMonth = date('m');
     </div>
 </div>
 
-<div class="row mb-4 mt-4">
+<div class="row mb-4">
    
     <div class="col-lg-12">
         <div class="table-responsive ">

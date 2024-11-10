@@ -20,7 +20,7 @@ $currentMonth = date('m');
 @endif
 
 
-<div class="row mb-4 mt-4">
+<div class="row mb-4">
    
     <div class="col-lg-12">
         <div class="table-responsive ">

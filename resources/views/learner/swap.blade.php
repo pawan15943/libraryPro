@@ -80,6 +80,7 @@
                             </div>
                         </div>
                     </h4>
+                    <p class="text-danger font-weight-bold">Note : You can swap your seat with any other seat that has the same plan available for booking.</p>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
                     <div class="row">
                         <div class="col-lg-6">

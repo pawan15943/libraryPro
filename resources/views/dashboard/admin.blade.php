@@ -78,14 +78,16 @@
         </div>
     </div>
     @php
-        $currentYear = date('Y');
-        $currentMonth = date('m');
+    $currentYear = date('Y');
+    $currentMonth = date('m');
     @endphp
-    <div class="row m-3 align-items-center">
+    <div class="row align-items-center mt-4">
         <div class="col-lg-3">
-            <label for="datayaer" class="form-label">Select Year:</label>
+            <h4>Filter Dashboard Data</h4>
+        </div>
+        <div class="col-lg-3"></div>
+        <div class="col-lg-3">
             <select id="datayaer" class="form-select form-control-sm">
-                <option value="">Select Year</option>
                 @foreach($dynamicyears as $year)
                 <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
                     {{ $year }}
@@ -93,30 +95,29 @@
                 @endforeach
             </select>
         </div>
-        
+
         <div class="col-lg-3">
-            <label for="dataFilter" class="form-label">Select Month:</label>
             <select id="dataFilter" class="form-select form-control-sm">
                 <option value="">Select Month</option>
                 @foreach($dynamicmonths as $month)
-                <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" 
-                        {{ str_pad($month, 2, '0', STR_PAD_LEFT) == $currentMonth ? 'selected' : '' }}>
+                <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}"
+                    {{ str_pad($month, 2, '0', STR_PAD_LEFT) == $currentMonth ? 'selected' : '' }}>
                     {{ DateTime::createFromFormat('!m', $month)->format('M') }}
                 </option>
                 @endforeach
             </select>
         </div>
-        
-    
+
+
         {{-- <div class="col-lg-6">
             <label for="dateRange" class="form-label">Select Date Range:</label>
             <input type="text" id="dateRange" class="form-control form-control-sm" placeholder="YYYY-MM-DD to YYYY-MM-DD">
         </div> --}}
-        
+
     </div>
-    
+
     <!-- Library Main Counts -->
-    <div class="row  g-4 my-4">
+    <div class="row  g-4 mt-1 mb-4">
         <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
@@ -129,7 +130,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2 id="booked_seat">0</h2>
-                <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>                
+                <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
@@ -137,7 +138,7 @@
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2 id="available_seat">0</h2>
-               
+
                 <a href="{{route('seats')}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -146,7 +147,7 @@
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
                 <h2 id="expired_seat">0</h2>
-               
+
                 <a href="{{route('learners.list.view', ['type' => 'expired_seats'])}}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -157,8 +158,9 @@
     <!-- Library Revenue -->
     <h4 class="my-4">Monthly Revenues</h4>
     <div class="row g-4">
-        <div class="col-lg-12">
+        <div class="col-lg-9">
             <div class="v-content">
+
                 <ul class="revenue-box scroll-x " id="monthlyData">
                     {{-- @foreach($revenues as $revenue)
 
@@ -173,28 +175,28 @@
 
                     @endphp
                     <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
-                        <div class="d-flex">
-                            <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
-                            <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
+                    <div class="d-flex">
+                        <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
+                        <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
+                    </div>
+                    <div class="d-flex mt-10">
+                        <div class="value">
+                            <small>Total Revenue</small>
+                            <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
                         </div>
-                        <div class="d-flex mt-10">
-                            <div class="value">
-                                <small>Total Revenue</small>
-                                <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
-                            </div>
-                            <div class="value">
-                                <small>Monthly Revenue</small>
-                                <h4 class="totalRevenue" data-box=""></h4>
-                            </div>
-                            <div class="value">
-                                <small>Total Expense</small>
-                                <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
-                            </div>
-                            <div class="value">
-                                <small>Net Profit</small>
-                                <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
-                            </div>
+                        <div class="value">
+                            <small>Monthly Revenue</small>
+                            <h4 class="totalRevenue" data-box=""></h4>
                         </div>
+                        <div class="value">
+                            <small>Total Expense</small>
+                            <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
+                        </div>
+                        <div class="value">
+                            <small>Net Profit</small>
+                            <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
+                        </div>
+                    </div>
                     </li>
                     @endforeach --}}
 
@@ -207,11 +209,10 @@
 
 
     <!-- Library Other Counts -->
-    <div class="row g-4 mb-3 align-items-center">
+    <div class="row g-4 align-items-center">
         <div class="col-lg-9">
-            <h4 class="my-4">Library Other Highlights</h4>
+            <h4 class="my-4">Total Slots Booked Till Today</h4>
         </div>
-       
     </div>
 
 
@@ -227,7 +228,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-3">
+            <div class="booking-count bg-4">
                 <h6>Active Slots</h6>
                 <div class="d-flex">
                     <h4 id="active_booking">0</h4>
@@ -237,7 +238,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-2">
+            <div class="booking-count bg-1">
                 <h6>Expired Slots</h6>
                 <div class="d-flex">
                     <h4 id="expiredSeats">0</h4>
@@ -246,8 +247,24 @@
                 <a href="{{ route('learners.list.view', ['type' => 'expired_seats']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
+    </div>
+    <h4 class="pt-4">Current Month Slots Booked</h4>
+    <div class="col-lg-12 pb-4">
+        <p class="text-danger m-0 mt-1">Note : Expired and Extended seat counts are always based on the Past and Current Month, as the system operates on a monthly subscription model.</p>
+    </div>
+    <div class="row g-4">
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-2">
+            <div class="booking-count bg-3">
+                <h6>This Month Total</h6>
+                <div class="d-flex">
+                    <h4 id="month_total_active_book">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
                 <h6>This Month Booked</h6>
                 <div class="d-flex">
                     <h4 id="month_total_active_book">0</h4>
@@ -257,13 +274,34 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-2">
+            <div class="booking-count bg-1">
                 <h6>This Month Expired</h6>
                 <div class="d-flex">
                     <h4 id="month_all_expired">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
                 <a href="{{ route('learners.list.view', ['type' => 'expire_booking_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-1">
+                <h6>Expired in 5 Days</h6>
+                <div class="d-flex">
+                    <h4 id="expiredInFive">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'expired_in_five']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Extended Seats</h6>
+                <div class="d-flex">
+                    <h4 id="extended_seats">0</h4>
+
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'extended_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -296,30 +334,10 @@
                 <a href="{{ route('learners.list.view', ['type' => 'other_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-1">
-                <h6>Expired in 5 Days</h6>
-                <div class="d-flex">
-                    <h4 id="expiredInFive">0</h4>
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{ route('learners.list.view', ['type' => 'expired_in_five']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
-            </div>
-        </div>
+       
         
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
-                <h6>Extended Seats</h6>
-                <div class="d-flex">
-                    <h4 id="extended_seats">0</h4>
-
-                </div>
-                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{ route('learners.list.view', ['type' => 'extended_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
-            </div>
-        </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Swap Seats</h6>
                 <div class="d-flex">
                     <h4 id="swap_seat">0</h4>
@@ -330,7 +348,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Upgrade Seats</h6>
                 <div class="d-flex">
                     <h4 id="learnerUpgrade">0</h4>
@@ -340,7 +358,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Reactive Seats</h6>
                 <div class="d-flex">
                     <h4 id="reactive">0</h4>
@@ -351,7 +369,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Renew Seats</h6>
                 <div class="d-flex">
                     <h4 id="renew_seat">0</h4>
@@ -362,7 +380,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Close Seats</h6>
                 <div class="d-flex">
                     <h4 id="close_seat">0</h4>
@@ -373,7 +391,7 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-            <div class="booking-count bg-4">
+            <div class="booking-count bg-3">
                 <h6>Delete Seats</h6>
                 <div class="d-flex">
                     <h4 id="delete_seat">0</h4>
@@ -403,6 +421,7 @@
         <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
     </div>
 </div> --}}
+    
 
 </div>
 <!-- End -->
@@ -521,7 +540,7 @@
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
-              
+
                 @foreach($available_seats as $seat)
                 <li>
                     <div class="d-flex">
@@ -614,7 +633,7 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}"  data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
                         </div>
 
                         <ul class="d-flex inner">
@@ -776,7 +795,7 @@
             </div>
             <div class="modal-body m-0">
                 <form id="upgradeForm" class="m-0">
-                    <input type="hidden" id="hidden_plan" >
+                    <input type="hidden" id="hidden_plan">
                     <div class="">
                         <div class="row g-4 m-0">
                             <div class="col-lg-6">
@@ -838,7 +857,7 @@
         flatpickr("#dateRange", {
             mode: "range",
             dateFormat: "Y-m-d",
-           
+
             maxDate: new Date().fp_incr(365), // Set the maximum date to one year from now
         });
     });
@@ -868,48 +887,7 @@
         });
     })(jQuery);
 </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Initially hide the values (show as ****)
-        document.querySelectorAll('.totalRevenue, .totalExpense, .netProfit').forEach(function(item) {
-            item.dataset.originalValue = item.innerText; // Store the original value in a data attribute
-            item.innerText = '****'; // Hide the value initially
-        });
 
-        // Toggle button logic
-        document.querySelectorAll('.toggleButton').forEach(function(button) {
-            button.addEventListener('click', function() {
-                const boxId = this.getAttribute('data-box');
-                const revenue = document.querySelector(`.totalRevenue[data-box="${boxId}"]`);
-                const expense = document.querySelector(`.totalExpense[data-box="${boxId}"]`);
-                const profit = document.querySelector(`.netProfit[data-box="${boxId}"]`);
-                const icon = this.querySelector('i');
-
-                // Check current state and toggle visibility
-                if (revenue.innerText === '****') {
-                    // Show original values
-                    revenue.innerText = revenue.dataset.originalValue;
-                    expense.innerText = expense.dataset.originalValue;
-                    profit.innerText = profit.dataset.originalValue;
-                    icon.classList.remove('fa-eye-slash');
-                    icon.classList.add('fa-eye');
-                } else {
-                    // Hide values
-                    revenue.innerText = '****';
-                    expense.innerText = '****';
-                    profit.innerText = '****';
-                    icon.classList.remove('fa-eye');
-                    icon.classList.add('fa-eye-slash');
-                }
-            });
-        });
-    });
-
-    function toggleSupportCard() {
-        var card = document.getElementById('supportCard');
-        card.style.display = card.style.display === 'block' ? 'none' : 'block';
-    }
-</script>
 <script>
     $(document).ready(function() {
         // Fetch initial data based on the default filter (month)
@@ -989,7 +967,7 @@
                         console.error('Invalid data format for planTypeWiseCount:', response.planTypeWiseCount);
                     }
 
-                    
+
                 },
                 error: function(xhr) {
                     console.error(xhr);
@@ -1020,11 +998,12 @@
             $('#month_total_active_book').text(highlights.month_total_active_book);
             $('#month_all_expired').text(highlights.month_all_expired);
         }
+
         function updateAllViewLinks(year, month, dateRange) {
             // Select all "View All" links and update them based on the filters
             $('.viewall').each(function() {
                 var currentUrl = $(this).attr('href');
-                
+
                 // Construct the additional query parameters
                 var queryParams = [];
                 if (year) queryParams.push(`year=${year}`);
@@ -1038,12 +1017,12 @@
         }
 
         function updateRevenue(data) {
-             
-                $('#monthlyData').empty();
 
-                // Loop through each item in the data array and create HTML for each month
-                data.forEach(function(item) {
-                    let html = `
+            $('#monthlyData').empty();
+
+            // Loop through each item in the data array and create HTML for each month
+            data.forEach(function(item) {
+                let html = `
                         <li style="background: #fff url('{{ asset('public/img/revenue.png') }}'); background-size: contain; background-position: center;">
                             <div class="d-flex">
                                 <h4>${item.month}, ${item.year}</h4> 
@@ -1068,10 +1047,10 @@
                                 </div>
                             </div>
                         </li>`;
-                    
-                    // Append the generated HTML to the #monthlyData container
-                    $('#monthlyData').append(html);
-                });
+
+
+                $('#monthlyData').append(html);
+            });
         }
 
 
@@ -1228,6 +1207,23 @@
         greetingMessage.textContent = greetingText;
         greetingIcon.className = `${iconClass} greeting-icon`;
     });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Initially hide the values (show as ****)
+    $('.totalRevenue, .monthlyRevenue, .totalExpense, .netProfit').each(function() {
+        $(this).data('originalValue', $(this).text()); // Store the original value in a data attribute
+        $(this).text('****'); // Hide the value initially
+    });
+
+    // Toggle button logic
+    $('.toggleButton').on('click', function() {
+        alert('dsfdsf');
+    });
+
+    function toggleSupportCard() {
+        $('#supportCard').toggle();
+    }
 </script>
 @include('learner.script')
 

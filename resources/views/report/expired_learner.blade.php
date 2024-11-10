@@ -29,7 +29,7 @@ $currentMonth = date('m');
             <form action="{{ route('expired.learner.report') }}" method="GET">
                 <div class="row">
                     
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <label for="expiredyear">Filter By Year</label>
                         <select id="expiredyear" class="form-select form-control-sm" name="expiredyear">
                             <option value="">Select Year</option>
@@ -43,8 +43,8 @@ $currentMonth = date('m');
                         </select>
                     </div>
                     
-                    <div class="col-lg-3">
-                        <label for="expiredmonth" class="form-label">Select Month:</label>
+                    <div class="col-lg-4">
+                        <label for="expiredmonth">Select Month:</label>
                         <select id="expiredmonth" class="form-select form-control-sm" name="expiredmonth">
                             <option value="">Select Month</option>
                             @foreach($dynamicmonths as $month)
@@ -58,7 +58,7 @@ $currentMonth = date('m');
                     
 
                     <!-- Search By Name, Mobile & Email -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <label for="search">Search By Name, Mobile & Email</label>
                         <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email"
                             value="{{ request()->get('search') }}">

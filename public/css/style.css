@@ -2743,7 +2743,7 @@ ul.actionalbls {
     display: flex;
     gap: .5rem;
     justify-content: center;
-    margin: 0;
+    margin: 0 auto;
 }
 
 ul.actionalbls li i {
@@ -4456,4 +4456,15 @@ p.mb-2.text-dark b {
     table.table.text-center.datatable.border-bottom td {
         white-space: nowrap;
     }
+}
+
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: .8rem .8rem;
+    box-shadow: 1px 3px 10px #00000021;
+    margin-left: -20px;
+    margin-right: -20px;
 }

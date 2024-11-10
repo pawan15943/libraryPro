@@ -53,13 +53,16 @@
 @endif
 <!-- Masters -->
 @php
-    // dd($iscomp);
+// dd($iscomp);
 @endphp
 @if($iscomp)
 <div class="row g-4 mb-4">
     <div class="col-lg-12">
-        <span class="d-block text-denager text-danger">This is the master console of your library. Everything in your library will function based on the information you enter here, so make sure to add it carefully and accurately.</span>
-        <span class="d-block mt-2 text-danger">यह आपकी लाइब्रेरी का मास्टर कंसोल है। आपकी लाइब्रेरी में सब कुछ इस जानकारी के आधार पर काम करेगा, इसलिए इसे ध्यान से और सही तरीके से जोड़ें।</span>
+        <p class="info-message">
+            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+            <b>Important: </b>This is the master console of your library. Everything in your library will function based on the information you enter here, so make sure to add it carefully and accurately.
+            <span class="font-weight-blod">यह आपकी लाइब्रेरी का मास्टर कंसोल है। आपकी लाइब्रेरी में सब कुछ इस जानकारी के आधार पर काम करेगा, इसलिए इसे ध्यान से और सही तरीके से जोड़ें।</span>
+        </p>
     </div>
 
     <!-- Add Operating Hours -->
@@ -126,7 +129,7 @@
                                         @else
                                         <i class="fa fa-check"></i>
                                         @endif</a></li>
-                                      
+
                                 @if($notleaner==0)
                                 <li><a href="javascript:void(0)" type="button" class="hour_edit" data-id="{{$value->id}}" data-table="Hour"><i class="fa fa-edit"></i></a></li>
 
@@ -656,7 +659,7 @@
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
         <div class="import-data">
-            <form action="{{ route('library.master.upload') }}" method="POST" enctype="multipart/form-data" >
+            <form action="{{ route('library.master.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}">
                 <input type="hidden" name="library_import" value="library_master">
@@ -726,22 +729,22 @@
     {{-- Trigger CSV Download Automatically --}}
     @if(session('autoExportCsv'))
     <script type="text/javascript">
-          let exportProgressBar = document.getElementById('export-progress-bar');
-            let exportProgressText = document.getElementById('export-progress-text');
-            let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
-            
-            // Set an interval to update the progress bar every 100 ms
-            let progress = 0;
-            let interval = setInterval(function() {
-                progress += 10;
-                exportProgressBar.value = progress;
-                exportProgressText.textContent = `Preparing download: ${progress}%`;
-                
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    window.location.href = exportrecordurl;
-                }
-            }, 100); // 100 ms * 10 = 1 second, change as needed
+        let exportProgressBar = document.getElementById('export-progress-bar');
+        let exportProgressText = document.getElementById('export-progress-text');
+        let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+
+        // Set an interval to update the progress bar every 100 ms
+        let progress = 0;
+        let interval = setInterval(function() {
+            progress += 10;
+            exportProgressBar.value = progress;
+            exportProgressText.textContent = `Preparing download: ${progress}%`;
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                window.location.href = exportrecordurl;
+            }
+        }, 100); // 100 ms * 10 = 1 second, change as needed
     </script>
     @endif
     @endif
@@ -750,18 +753,18 @@
         document.getElementById('clearInvalidRecordsButton').addEventListener('click', function() {
             // Hide the invalid records section
             document.getElementById('invalid-records-section').style.display = 'none';
-    
+
             // Reset the progress bar
             let exportProgressBar = document.getElementById('export-progress-bar');
             let exportProgressText = document.getElementById('export-progress-text');
-            
+
             if (exportProgressBar && exportProgressText) {
                 exportProgressBar.value = 0; // Reset progress to 0
                 exportProgressText.textContent = ""; // Clear text percentage
             }
-    
+
             let clearSessionRoute = "{{ Auth::guard('library')->check() ? route('library.clear.session') : route('web.clear.session') }}";
-            
+
             // Send AJAX request to clear session
             fetch(clearSessionRoute, {
                     method: 'POST',

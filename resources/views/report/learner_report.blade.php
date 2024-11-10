@@ -26,7 +26,7 @@ $currentMonth = date('m');
             <h4 class="mb-3">Filter Box</h4>
 
             <form action="{{ route('learner.report') }}" method="GET">
-                <div class="row">
+                <div class="row g-4">
                    
                     <div class="col-lg-3">
                         <label for="year">Filter By Year</label>
@@ -43,7 +43,7 @@ $currentMonth = date('m');
                     </div>
                     
                     <div class="col-lg-3">
-                        <label for="month" class="form-label">Select Month:</label>
+                        <label for="month">Select Month:</label>
                         <select id="month" class="form-select form-control-sm" name="month">
                             <option value="">Select Month</option>
                             @foreach($dynamicmonths as $month)

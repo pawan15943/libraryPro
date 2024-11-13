@@ -51,9 +51,9 @@
                             <option value="">5 Star</option>
                         </select>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <label for="">Feedback Description <span>*</span></label>
-                        <textarea name="" id="" class="form-control" placeholder="Feedback Description"></textarea>
+                        <textarea name="" id="" class="form-control" placeholder="Feedback Description" style="height:100px !important;"></textarea>
                     </div>
                     <div class="col-lg-6">
                         <label for="">Attachment (If Needed) <span>*</span></label>
@@ -66,6 +66,9 @@
                             <option value="">Yes</option>
                             <option value="">No</option>
                         </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="submit" value="Submit Feedback" class="btn btn-primary button">
                     </div>
                 </div>
 

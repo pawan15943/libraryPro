@@ -2,7 +2,7 @@
 $current_route = Route::currentRouteName();
 @endphp
 
-<div class="sidebar">
+<div class="sidebar scroll">
     <h4><b>Libraro</b></h4> 
         <ul class="list-unstyled ps-0 mt-4">
         @foreach($menus as $menu)

@@ -373,25 +373,39 @@ class DashboardController extends Controller
                 $expired_seats=$month_all_expired;
                 $active_booking=$total_booking-$month_all_expired;
 
-                $month_total_active_booking=LearnerDetail::where('is_paid', 1);
+                $month_total_active_booking = LearnerDetail::where('is_paid', 1);
+
+                if ($request->filled('year') && !$request->filled('month')) {
+                    $month_total_active_booking->whereYear('join_date', $request->year);
+                } elseif ($request->filled('year') && $request->filled('month')) {
+                    $month_total_active_booking->whereYear('join_date', $request->year)
+                        ->whereMonth('join_date', $request->month);
+                }
+                
+                $month_total_active_book = $month_total_active_booking->count();
+                
+                $thismonth_total_booking = LearnerDetail::query();
                 
                 if ($request->filled('year') && !$request->filled('month')) {
-                
-                    $month_total_active_booking->where(function ($month_total_active_booking) use ($request) {
-                        $month_total_active_booking->whereYear('join_date', $request->year);
-                        
+                    $thismonth_total_booking->where(function ($query) use ($request) {
+                        $query->whereYear('join_date', $request->year)
+                              ->orWhereYear('plan_end_date', $request->year);
                     });
                 } elseif ($request->filled('year') && $request->filled('month')) {
-            
-                    $month_total_active_booking->where(function ($month_total_active_booking) use ($request) {
-                        $month_total_active_booking->whereYear('join_date', $request->year)
-                            ->whereMonth('join_date', $request->month);
-                        
+                    $thismonth_total_booking->where(function ($query) use ($request) {
+                        $query->where(function ($subQuery) use ($request) {
+                            $subQuery->whereYear('join_date', $request->year)
+                                     ->whereMonth('join_date', $request->month);
+                        })
+                        ->orWhere(function ($subQuery) use ($request) {
+                            $subQuery->whereYear('plan_end_date', $request->year)
+                                     ->whereMonth('plan_end_date', $request->month);
+                        });
                     });
                 }
-
-                $month_total_active_book=$month_total_active_booking->count();
-            
+                
+                $thismonth_total_book = $thismonth_total_booking->count();
+                
         
             // Base query with year and month filters applied for online,offline,paylater seats
             $data = LearnerDetail::where('is_paid', 1)
@@ -656,6 +670,7 @@ class DashboardController extends Controller
                 'available_seat'=>$availble_seats,
                 'close_seat'=>$close_seat,
                 'month_total_active_book'=>$month_total_active_book,
+                'thismonth_total_book'=>$thismonth_total_book,
                 'month_all_expired'=>$month_all_expired,
             ],
         
@@ -947,7 +962,32 @@ class DashboardController extends Controller
                     }
                     $result =$month_total_active_booking->get();
                     break;
-               
+                case 'thisbooking_slot':
+                    $thismonth_total_booking = LearnerDetail::with(['plan', 'planType', 'seat', 'learner']);
+
+                    // Apply year and month filters based on join learner and expired learner
+                    if ($request->filled('year') && !$request->filled('month')) {
+                        $thismonth_total_booking->where(function ($query) use ($request) {
+                            $query->whereYear('join_date', $request->year)
+                                  ->orWhereYear('plan_end_date', $request->year);
+                        });
+                    } elseif ($request->filled('year') && $request->filled('month')) {
+                        $thismonth_total_booking->where(function ($query) use ($request) {
+                            $query->where(function ($subQuery) use ($request) {
+                                $subQuery->whereYear('join_date', $request->year)
+                                         ->whereMonth('join_date', $request->month);
+                            })
+                            ->orWhere(function ($subQuery) use ($request) {
+                                $subQuery->whereYear('plan_end_date', $request->year)
+                                         ->whereMonth('plan_end_date', $request->month);
+                            });
+                        });
+                    }
+                    
+                    $result = $thismonth_total_booking->get();
+                    
+                    break;
+                    
                 case 'online_paid':
                     $result = (clone $data)->where('payment_mode', 1)->get();
                     break;

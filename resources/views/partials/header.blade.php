@@ -82,7 +82,54 @@
             </div>
         </div>
         <!-- Modal Popup end for Configration -->
-
+        <!--Notifications -->
+        <div>
+            <ul>
+                @php
+                    $guard = null;
+                    if (Auth::guard('web')->check()) {
+                        $guard = 'web';
+                    } elseif (Auth::guard('library')->check()) {
+                        $guard = 'library';
+                    } elseif (Auth::guard('learner')->check()) {
+                        $guard = 'learner';
+                    }
+                    $unreadNotifications = auth()->user()->unreadNotifications->where('data.guard', $guard);
+                @endphp
+        
+                <li class="nav-item dropdown no-arrow mx-1">
+                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-bell fa-fw"></i>
+                        <!-- Counter - Alerts -->
+                        <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
+                    </a>
+                    <!-- Dropdown - Alerts -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                        <h6 class="dropdown-header">Alerts Center</h6>
+        
+                        @forelse($unreadNotifications as $notification)
+                            <a class="dropdown-item d-flex align-items-center" data-notification-id="{{ $notification->id }}" href="{{ $notification->data['link'] ?? '#' }}">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="small text-gray-500">{{ $notification->data['title'] ?? 'No Title' }}</div>
+                                    <span class="font-weight-bold">{{ $notification->data['description'] ?? 'No Description' }}</span>
+                                </div>
+                            </a>
+                        @empty
+                            <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
+                        @endforelse
+        
+                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        
         <div class="profile">
             <div class="dropdown">
                 Welcome
@@ -101,7 +148,7 @@
                     </li>
                     <!-- Change Password -->
                     <li>
-                        <a class="dropdown-item" href="">
+                        <a class="dropdown-item" href="{{route('change.password')}}">
                             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
                             Change Library Password
                         </a>
@@ -118,6 +165,7 @@
                     </li>
                 </ul>
             </div>
+          
         </div>
         @if($today_renew)
         <script>

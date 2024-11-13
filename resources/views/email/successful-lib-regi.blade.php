@@ -1,7 +1,7 @@
 <html xmlns="https://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Libraro</title>
+    <title>Library Registration Successful</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="https://www.allenoverseas.com/wp-content/uploads/2022/06/favicon.png" type="image/png">
@@ -34,10 +34,11 @@
             </tr>
             <tr>
                 <td style="padding: 0px 15px;">
-                    <p style="margin: 0; margin-top: 15px; font-weight: 500; line-height: 24px;">Dear Student,</p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">In order to proceed with the
-                        password reset process, kindly make use of the provided One-Time Password (OTP):</p>
-                    <h2 style="margin: 0; font-weight: 600; padding: 1rem 0;">{{$otp}}</h2>
+                    <p style="margin: 0; margin-top: 15px; font-weight: 500; line-height: 24px;">>Welcome to the Library, {{ $name }}!</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Thank you for registering with our library. We're excited to have you as a member!</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Enjoy our collection and the benefits of being part of our community.</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Library No.</p>
+                    <h2 style="margin: 0; font-weight: 600; padding: 1rem 0;">{{$library_no}}</h2>
                   
                 </td>
             </tr>

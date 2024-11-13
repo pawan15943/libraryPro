@@ -257,10 +257,10 @@
             <div class="booking-count bg-3">
                 <h6>This Month Total</h6>
                 <div class="d-flex">
-                    <h4 id="month_total_active_book">0</h4>
+                    <h4 id="thismonth_total_book">0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                <a href="{{ route('learners.list.view', ['type' => 'booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+                <a href="{{ route('learners.list.view', ['type' => 'thisbooking_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
@@ -997,6 +997,7 @@
             $('#close_seat').text(highlights.close_seat);
             $('#month_total_active_book').text(highlights.month_total_active_book);
             $('#month_all_expired').text(highlights.month_all_expired);
+            $('#thismonth_total_book').text(highlights.thismonth_total_book);
         }
 
         function updateAllViewLinks(year, month, dateRange) {

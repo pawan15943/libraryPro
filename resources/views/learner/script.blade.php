@@ -833,4 +833,30 @@
 
     
 </script>
+<script>
+    function incrementMessageCount(id, type) {
+        // Send AJAX request to the server to update the count
+        fetch(`increment-message-count`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Laravel CSRF token for security
+            },
+            body: JSON.stringify({
+                id: id,
+                type: type
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.success) {
+                console.log(`${type} message count updated for user ID: ${id}`);
+            } else {
+                console.error('Failed to update message count');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+</script>
+
 

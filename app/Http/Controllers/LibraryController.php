@@ -482,6 +482,7 @@ class LibraryController extends Controller
                 $libraryCode = $this->generateLibraryCode();
                 $library->library_no = $libraryCode;
                 $library->save();
+                $this->sendSuccessfulEmail($library);
             }
         }
         
@@ -660,6 +661,20 @@ class LibraryController extends Controller
     public function libraryfeedback()
     {
         return view('library.feedback'); // Adjust the view path as needed
+    }
+
+    public function sendSuccessfulEmail($library)
+    {
+        // Prepare the data to send to the email view
+        $data = [
+            'name' => $library->library_name,
+            'email' => $library->email,
+            'library_no' => $library->library_no,
+        ];
+
+        Mail::send('email.successful-lib-regi', $data, function($message) use ($data) {
+            $message->to($data['email'], $data['name'])->subject('Library Registration Successful');
+        });
     }
 
 

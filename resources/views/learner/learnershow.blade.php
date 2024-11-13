@@ -186,7 +186,7 @@
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="datatable">
                                 <thead>
                                     <tr>
                                         <th>Plan </th>
@@ -224,10 +224,9 @@
 
                                         <td>
                                             <ul class="actionalbls" style="width: 90px;">
-                                                <li><a href="javascript:;" data-toggle="modal"
-                                                        data-target="#bookingDetailsModal"
-                                                        title="View Transaction Details"><i
-                                                            class="fa-solid fa-eye"></i></a></li>
+                                                {{-- @can('has-permission', 'View Seat')
+                                                <li><a href="{{route('learners.show',$value->id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                                                @endcan --}}
 
                                                 @can('has-permission', 'Receipt Generation')
                                                 @if($value->is_paid==1)
@@ -263,7 +262,7 @@
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
-                            <table class="table text-center">
+                            <table class="table text-center" id="datatable">
                                 <thead>
                                     <tr>
                                         <th>Owner Name</th>
@@ -279,7 +278,9 @@
                                   
                                     @foreach ($seat_history as $learner)
                                     <tr>
-                                        <td>{{ $learner->name }}</td> <!-- Owner Name -->
+                                        <td>{{ $learner->name }}<br>
+                                            <small>{{$learner->seat_no}}</small>
+                                        </td> <!-- Owner Name -->
                                         <td>{{ $learner->mobile }}</td> <!-- Mobile -->
                                         <td>{{ $learner->email }}</td> <!-- Email -->
                                 
@@ -289,13 +290,15 @@
                                                 $firstDetail = $learner->learnerDetails->first();
                                             @endphp
                                             <!-- Display the first learner detail in the same row -->
-                                            <td>{{ $firstDetail->plan->name ?? 'N/A' }}</td> <!-- Plan Name -->
-                                            <td>{{ $firstDetail->start_date ?? 'N/A' }}</td> <!-- Start Date -->
-                                            <td>{{ $firstDetail->end_date ?? 'N/A' }}</td> <!-- End Date -->
+                                            <td>{{ $firstDetail->plan->name ?? 'N/A' }}<br><small>{{ $firstDetail->planType->name ?? 'N/A' }}</small></td> <!-- Plan Name -->
+                                            <td>{{ $firstDetail->plan_start_date ?? 'N/A' }}</td> <!-- Start Date -->
+                                            <td>{{ $firstDetail->plan_end_date ?? 'N/A' }}</td> <!-- End Date -->
                                             <td>
                                                 <!-- Action buttons for the first learner detail -->
                                                 <ul class="actionalbls" style="width: 90px;">
-                                                    <li><a href="javascript:;" data-toggle="modal" data-target="#bookingDetailsModal" title="View Transaction Details"><i class="fa-solid fa-eye"></i></a></li>
+                                                    @can('has-permission', 'View Seat')
+                                                    <li><a href="{{route('learners.show',$firstDetail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                                                    @endcan
                                                     <li>
                                                         <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                             @csrf
@@ -318,7 +321,10 @@
                                                 <td>{{ $detail->end_date ?? 'N/A' }}</td> <!-- End Date -->
                                                 <td>
                                                     <ul class="actionalbls" style="width: 90px;">
-                                                        <li><a href="javascript:;" data-toggle="modal" data-target="#bookingDetailsModal" title="View Transaction Details"><i class="fa-solid fa-eye"></i></a></li>
+                                                        @can('has-permission', 'View Seat')
+                                                        <li><a href="{{route('learners.show',$detail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                                                        @endcan
+                                                     
                                                         <li>
                                                             <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                                 @csrf
@@ -337,7 +343,7 @@
                                         <td colspan="4">No details available</td>
                                     </tr>
                                     @endif
-                                @endforeach
+                                    @endforeach
                                 
                                 </tbody>
                             </table>
@@ -407,14 +413,37 @@
         <div class="seat-activity">
             <h5 class="py-4">All Seat Activity Logs:</h5>
             <ul class="activity-log">
+                @foreach($learnerlog as $key => $value)
                 <li>
-                    <p>10-12-2024 : Seat Swapped </p>
-                </li>
+                    <p>{{ $value->created_at->format('Y-m-d') }} : 
+                        @if($value->operation=='learnerUpgrade')
+                        Seat Upgrade  
+                        @elseif($value->operation=='swapseat')
+                        Seat Swapped 
+                        @elseif($value->operation=='renewSeat')
+                        Seat Renew   
+                        @elseif($value->operation=='reactive')
+                        Reactive   
+                        @elseif($value->operation=='closeSeat')
+                        Close Seat 
+                        @endif
+                    
+                    </p>
+                </li>  
+                @endforeach
+               
             </ul>
         </div>
       
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        let table = new DataTable('#datatable', {
+            searching: false // This option hides the search bar
+        });
+    });
+</script>
 
 
 

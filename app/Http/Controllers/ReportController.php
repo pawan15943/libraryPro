@@ -57,11 +57,11 @@ class ReportController extends Controller
 
     public function monthlyExpenseCreate($year, $month)
     {
-        $monthlyExpenses = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
-            ->where('year', $year)
-            ->where('month', $month)
+        $monthlyExpenses = DB::table('monthly_expense')->leftJoin('expenses','monthly_expense.expense_id','=','expenses.id')->where('monthly_expense.library_id', Auth::user()->id)
+            ->where('monthly_expense.year', $year)
+            ->where('monthly_expense.month', $month)
             ->get();
-
+       
         $library_revenue =  LearnerDetail::whereMonth('join_date', date('m'))
             ->whereYear('join_date', date('Y'))
             ->sum('plan_price_id');
@@ -247,7 +247,8 @@ class ReportController extends Controller
                 });
             }
            
-            if (!empty($filters['is_paid'])) {
+            if (isset($filters['is_paid'])) {
+                Log::info('Filter applied: unpaid');
                 $query->whereHas('learnerDetails', function ($query) use ($filters) {
                     $query->where('is_paid', $filters['is_paid']);
                 });
@@ -326,83 +327,6 @@ class ReportController extends Controller
 
   
 
-    public function fetchAllLearnerData($filters, $query)
-    {
-        // Apply the year filter if provided
-        if (!empty($filters['year'])) {
-            Log::info('Filter applied: year');
-            $year = $filters['year'];
-            
-            // Adjust query to cover plan dates within the given year
-            $query->whereHas('learnerDetails', function ($query) use ($year) {
-                $query->whereYear('plan_start_date', '<=', $year)
-                      ->whereYear('plan_end_date', '>=', $year);
-            });
-        }
-    
-        // Apply the month filter if provided (year should be set either by filter or default)
-        if (!empty($filters['month'])) {
-            Log::info('Filter applied: year and month');
-            $year = $filters['year'] ?? date('Y');
-            $month = $filters['month'];
-            
-            $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
-            $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
-    
-            $query->whereHas('learnerDetails', function ($query) use ($startOfMonth, $endOfMonth) {
-                $query->where('plan_start_date', '<=', $endOfMonth)
-                      ->where('plan_end_date', '>=', $startOfMonth);
-            });
-        }
-    
-        // Apply the status filter if provided
-        if (isset($filters['status'])) {
-            $status = $filters['status'];
-            
-            // If status = 0 (expired), filter based on the year and/or month, if provided
-            if ($status == 0 && ($filters['year'] || $filters['month'])) {
-                Log::info('Filter applied: expired status with year and/or month');
-                $year = $filters['year'] ?? date('Y');
-                $month = $filters['month'] ?? null;
-                
-                $query->whereHas('learnerDetails', function($q) use ($status, $year, $month) {
-                    $q->where('status', $status)
-                      ->whereYear('plan_end_date', $year);
-                    
-                    if ($month) {
-                        $q->whereMonth('plan_end_date', $month);
-                    }
-                });
-            } else {
-                // Apply regular status filter if not expired with specific year/month
-                $query->whereHas('learnerDetails', function($q) use ($status) {
-                    $q->where('status', $status);
-                });
-            }
-        }
-    
-        // Apply the payment status filter if provided
-        if (isset($filters['is_paid'])) {
-            $isPaid = $filters['is_paid'];
-            $query->whereHas('learnerDetails', function ($query) use ($isPaid) {
-                $query->where('is_paid', $isPaid);
-            });
-         
-        }
-    
-        // Apply search filter for name, mobile, or email if provided
-        if (!empty($filters['search'])) {
-            $searchTerm = $filters['search'];
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('name', 'LIKE', '%' . $searchTerm . '%')
-                  ->orWhere('mobile', 'LIKE', '%' . $searchTerm . '%')
-                  ->orWhere('email', 'LIKE', '%' . $searchTerm . '%');
-            });
-        }
-    
-        // Return the filtered results
-        return $query->get();
-    }
     
 
     

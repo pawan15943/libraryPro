@@ -31,7 +31,7 @@ $readonlyStyle = '';
 @endif
 
 
-<form action="{{ route('learners.update', $customer->id) }}" method="POST" enctype="multipart/form-data" id="learnerUpgrade">
+<form action="{{ route('learners.update.upgrade', $customer->id) }}" method="POST" enctype="multipart/form-data" id="learnerUpgrade">
     @csrf
     @method('PUT')
 

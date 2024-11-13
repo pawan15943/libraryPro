@@ -22,7 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\NoCacheMiddleware::class,
-        
+        \App\Http\Middleware\LoggerMiddleware::class,
         
     ];
 
@@ -77,6 +77,6 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
        'load.menus' => \App\Http\Middleware\LoadMenus::class,
        'no-cache' => \App\Http\Middleware\NoCacheMiddleware::class,
-    
+        'log.requests' => \App\Http\Middleware\LoggerMiddleware::class,
     ];
 }

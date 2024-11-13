@@ -18,7 +18,7 @@ $today = Carbon::today();
             <b>Important :</b> The Seat History page displays a comprehensive list of all library seats, along with seat-specific booking details in a single view. If you need information about library seats, this section provides helpful details to guide you.
         </p>
         <div class="table-responsive">
-            <table class="table text-center datatable">
+            <table class="table text-center datatable" >
                 <thead>
                     <tr>
                         <th style="width: 10%">Seat No.</th>

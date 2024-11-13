@@ -467,21 +467,21 @@ class LearnerController extends Controller
                 'plan_types.image',
                 'learner_detail.is_paid'
             );
-    
-        // Apply dynamic filters if provided
-        if (!empty($filters)) {
+             //  Apply dynamic filters if provided
+         if (!empty($filters)) {
             // Filter by Plan ID
             if (!empty($filters['plan_id'])) {
                 $query->where('learner_detail.plan_id', $filters['plan_id']);
             }
-    
+           
             // Filter by Payment Status
-            if (!empty($filters['is_paid'])) {
+            
+            if (isset($filters['is_paid'])) {
                 $query->where('learner_detail.is_paid', $filters['is_paid']);
             }
     
             // If a status filter is provided, apply it and skip the default status conditions
-            if (!empty($filters['status'])) {
+            if (isset($filters['status'])) {
                 if ($filters['status'] === 'active') {
                     // Only select active learners and details
                     $query->where('learners.status', 1)
@@ -489,7 +489,7 @@ class LearnerController extends Controller
                 } elseif ($filters['status'] === 'expired') {
                     // Only select expired learners or details
                     $query->where(function ($q) {
-                        $q->where('learner_detail.status', 0)->where('learners.status',0);
+                        $q->where('learner_detail.status', 0);
                     });
                 }
             } else {
@@ -536,10 +536,13 @@ class LearnerController extends Controller
            
             return $customer;
         }
+       
+        // return $query->paginate(perPage: 10);
         
+        return $query->get();
         
        
-        return $query->paginate(perPage: 10);
+       
     }
     
 
@@ -578,7 +581,8 @@ class LearnerController extends Controller
         return view('learner.learnerHistory', compact('learnerHistory','plans'));
         
     }
-    //learner Edit and Upgrade
+
+    //learner  Upgrade
     public function userUpdate(Request $request, $id = null)
     {
         
@@ -810,10 +814,12 @@ class LearnerController extends Controller
         $customer['diffInDays'] = $diffInDays;
 
         $learner_request=DB::table('learner_request')->where('learner_id',$customerId)->get();
+
+        $learnerlog=DB::table('learner_operations_log')->where('learner_id',$customerId)->get();
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
-            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay','learner_request'));
+            return view('learner.learnershow',compact('customer', 'plans', 'planTypes','available_seat','renew_detail','seat_history','transaction','all_transactions','extendDay','learner_request','learnerlog'));
            
         }
     }
@@ -1484,7 +1490,97 @@ class LearnerController extends Controller
         }
     }
 
-   
+    public function incrementMessageCount(Request $request)
+    {
+        
+        $id = $request->input('id');
+        $type = $request->input('type');
+
+        // Find the learner record
+        $learner = Learner::find($id);
+
+        if ($learner) {
+            // Retrieve the relevant row in the email_message table for this learner
+            $detailCount = DB::table('email_message')->where('learner_id', $learner->id)->first();
+
+            if ($detailCount) {
+                if ($type === 'whatsapp') {
+                    $newMessageCount = $detailCount->learner_message + 1;
+                    DB::table('email_message')->where('learner_id', $learner->id)->update([
+                        'learner_message' => $newMessageCount,
+                    ]);
+                } elseif ($type === 'email') {
+                    $newEmailCount = $detailCount->learner_email + 1;
+                    DB::table('email_message')->where('learner_id', $learner->id)->update([
+                        'learner_email' => $newEmailCount,
+                    ]);
+                }
+
+                return response()->json(['success' => true]);
+            }
+        }
+
+        return response()->json(['success' => false], 404);
+    }
+    //learner  update
+    public function learnerUpdate(Request $request, $id = null){
+        $learner = Learner::find($id);
+
+        // Call validateCustomer method to apply default validation
+        $validator = $this->validateCustomer($request);
+    
+        // Update the validation rule for the 'email' field
+        $validator = Validator::make($request->all(), array_merge($validator->getRules(), [
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('learners')->where(function ($query) use ($request) {
+                    return $query->where('library_id', Auth::user()->id);
+                })->ignore($learner->id), // Ignore current learner's email
+            ],
+        ]));
+
+        if ($validator->fails()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            } else {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+        }
+
+        // Determine user_id based on $id or request input
+        $user_id = $id ?: $request->input('user_id');
+        
+
+        $customer = Learner::findOrFail($user_id);
+         // Handle the file upload
+         if ($request->hasFile('id_proof_file')) {
+            $id_proof_file = $request->file('id_proof_file');
+            $id_proof_fileNewName = "id_proof_file_" . time() . "_" . $id_proof_file->getClientOriginalName();
+            
+            // Store the file in the 'public/uploads' directory
+            $id_proof_file->move(public_path('uploads'), $id_proof_fileNewName);
+            $id_proof_filePath = 'uploads/' . $id_proof_fileNewName;
+
+            // Set the path in the customer model
+            $customer->id_proof_file = $id_proof_filePath;
+        }
+
+        // Update customer details only if the field is provided
+        $customer->name = $request->input('name', $customer->name);
+        $customer->mobile = $request->input('mobile', $customer->mobile);
+      
+        $customer->dob = $request->input('dob', $customer->dob);
+        
+        $customer->id_proof_name = $request->input('id_proof_name', $customer->id_proof_name);
+        
+        // Save the customer details
+        $customer->save();
+        return redirect()->route('learners')->with('success', 'Learner updated successfully.');
+    }
     
     
 }

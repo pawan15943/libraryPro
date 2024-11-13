@@ -185,10 +185,12 @@ $currentMonth = date('m');
 
 <script>
     $(document).ready(function() {
-        let table = new DataTable('#datatable');
-       
+        let table = new DataTable('#datatable', {
+            searching: false // This option hides the search bar
+        });
     });
 </script>
+
 
 @include('learner.script')
 @endsection

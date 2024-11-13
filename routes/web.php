@@ -12,6 +12,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -47,7 +48,7 @@ Route::post('library/store', [LibraryController::class, 'store'])->name('library
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
 
 // Routes for library users with 'auth:library' guard
-Route::middleware(['auth:library', 'verified'])->group(function () {
+Route::middleware(['auth:library', 'verified','log.requests'])->group(function () {
   
     Route::post('/library/master/upload', [Controller::class, 'uploadmastercsv'])->name('library.master.upload');
     Route::post('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data.get');
@@ -98,20 +99,20 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
       Route::get('learner/report', [ReportController::class, 'learnerReport'])->name('learner.report');
       Route::get('upcoming/payment/report', [ReportController::class, 'upcomingPayment'])->name('upcoming.payment.report');
       Route::get('expired/learner/report', [ReportController::class, 'expiredLearner'])->name('expired.learner.report');
-      
+      Route::post('increment-message-count', [LearnerController::class, 'incrementMessageCount'])->name('increment.message.count');
+
   
    
     });
-    
-  
-    
+   
     Route::prefix('library/learners')->group(function () {
       Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
       Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
       Route::get('/history/list', [LearnerController::class, 'learnerHistory'])->name('learnerHistory');
       Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
       Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
-      Route::put('/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update');
+      Route::put('/upgrade/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update.upgrade');
+      Route::put('/update/{id?}', [LearnerController::class, 'learnerUpdate'])->name('learners.update');
       
       Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
       Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
@@ -130,7 +131,8 @@ Route::middleware(['auth:library', 'verified'])->group(function () {
     });
     Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
     Route::get('seats/history/{id?}', [LearnerController::class, 'history'])->name('seats.history.show');
-    
+    Route::post('change-password', [UserController::class, 'changePassword'])->name('change-password');
+    Route::get('change/password', [UserController::class, 'changePasswordView'])->name('change.password');
     
     //condition base route
     Route::post('learner/renew/', [LearnerController::class, 'learnerRenew'])->name('learners.renew');
@@ -171,7 +173,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('library/show/{id?}', [LibraryController::class, 'showLibrary'])->name('library.show');
         Route::delete('library/learners/delete/{id?}', [LibraryController::class, 'destroyLearners'])->name('library.learners.destroy');
         Route::delete('library/masters/delete/{id?}', [LibraryController::class, 'destroyAllMasters'])->name('library.masters.destroy');
-            
+        Route::get('create/notification', [NotificationController::class, 'create'])->name('create.notification'); 
+        Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send'); 
     });
 });
 

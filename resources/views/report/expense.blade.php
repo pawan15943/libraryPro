@@ -91,14 +91,14 @@
                         @php
                         $x=1;
                         @endphp
-                        @foreach($revenue_expense as $expense)
+                        @foreach($monthlyExpenses as $expense)
                         @php
                         $dt = DateTime::createFromFormat('!m', $month);
                         @endphp
                         <tr>
                             <td>{{$x++}}</td>
                             <td>{{ $dt->format('F') }}, {{$year }} </td>
-                            <td>{{ $expense->expense_name }}</td>
+                            <td>{{ $expense->name }}</td>
                             <td>{{ $expense->amount }}</td>
                         </tr>
                         @endforeach

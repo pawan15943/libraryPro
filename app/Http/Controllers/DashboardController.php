@@ -185,6 +185,13 @@ class DashboardController extends Controller
             ->orderBy('month', 'asc')
             ->get();
             $dynamicyears = $uniqueDates->pluck('year')->unique();
+
+            if ($dynamicyears->isEmpty()) {
+                $dynamicyears = collect([date("Y")]);
+            }
+            
+          
+            
             $dynamicmonths = $uniqueDates->pluck('month')->unique();
             if($is_expire){
                 return redirect()->route('library.myplan');
@@ -553,7 +560,7 @@ class DashboardController extends Controller
             
             $revenue_query=LearnerDetail::withoutGlobalScopes()
             ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id') // Join with plans table on plan_id
-            ->where('learner_detail.is_paid', 1);
+            ->where('learner_detail.is_paid', 1)->where('library_id', Auth::user()->id);
            
             if ($request->filled('year') && !$request->filled('month')) {
                 
@@ -620,6 +627,7 @@ class DashboardController extends Controller
                         'monthlyRevenue' =>$monthlyRevenue,
                     ];
                 }
+                
            
         }
        

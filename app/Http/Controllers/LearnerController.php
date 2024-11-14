@@ -815,7 +815,12 @@ class LearnerController extends Controller
 
         $learner_request=DB::table('learner_request')->where('learner_id',$customerId)->get();
 
-        $learnerlog=DB::table('learner_operations_log')->where('learner_id',$customerId)->get();
+        $learnerlog = DB::table('learner_operations_log')
+        ->select('learner_id', 'created_at', DB::raw('MAX(operation) as operation'))
+        ->where('learner_id', $customerId)
+        ->groupBy('learner_id', 'created_at')
+        ->get();
+    
         if ($request->expectsJson() || $request->has('id')) {
             return response()->json($customer);
         } else {
@@ -1103,9 +1108,15 @@ class LearnerController extends Controller
             if (!$customer->save()) {
                 throw new \Exception('Failed to update customer');
             }
-
-            LearnerDetail::create([
-                'library_id'=>$customer->library_id,
+            if($request->payment_mode==1 || $request->payment_mode==2){
+                $is_paid=1;
+                $payment_mode=$request->payment_mode;
+            }else{
+                $is_paid=0; 
+                $payment_mode=3;
+            }
+            $learner_detail=LearnerDetail::create([
+               'library_id'=>$customer->library_id,
                'learner_id' => $customer->id, 
                'plan_id' => $request->input('plan_id'),
                'plan_type_id' => $request->input('plan_type_id'),
@@ -1115,8 +1126,21 @@ class LearnerController extends Controller
                'join_date' => date('Y-m-d'),
                'hour' =>$hours,
                'seat_id' =>$request->seat_id,
-               'payment_mode' => $request->input('payment_mode'),
+               'payment_mode' => $payment_mode,
+               'is_paid'=>$is_paid
            ]);
+           if($payment_mode==1 || $payment_mode==2){
+            LearnerTransaction::create([
+                'learner_id' =>$customer->id, 
+                'library_id' => $customer->library_id,
+                'learner_detail_id' => $learner_detail->id,
+                'total_amount' => $request->input('plan_price_id'),
+                'paid_amount' => $request->input('plan_price_id'),
+                'pending_amount' => 0,
+                'paid_date' => date('Y-m-d'),
+                'is_paid' => 1
+            ]);
+        }
             $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat_no)->sum('hours');
            
             $updateseat=Seat::where('seat_no', $seat_no)->update(['total_hours' => $total_hourse]);

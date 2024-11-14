@@ -199,6 +199,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                   
                                     @foreach($renew_detail as $key => $value)
                                     @php
                                     $transactionRenew=App\Models\LearnerTransaction::where('learner_detail_id',$value->id)->where('is_paid',1)->first();
@@ -415,7 +416,7 @@
             <ul class="activity-log">
                 @foreach($learnerlog as $key => $value)
                 <li>
-                    <p>{{ $value->created_at->format('Y-m-d') }} : 
+                    <p>{{ \Carbon\Carbon::parse($value->created_at)->format('Y-m-d') }} :
                         @if($value->operation=='learnerUpgrade')
                         Seat Upgrade  
                         @elseif($value->operation=='swapseat')

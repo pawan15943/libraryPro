@@ -464,6 +464,8 @@ nav ol {
     width: 270px;
     position: relative;
     z-index: 1;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .sidebar::after {
@@ -705,15 +707,6 @@ ul.plan-features {
     overflow: auto;
 }
 
-.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-    background-color: #3498db;
-    /* Change this color to your desired scrollbar color */
-}
-
-.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
-    background-color: #2980b9;
-    /* Change this color to your desired hover color */
-}
 
 span.showmore {
     display: block;
@@ -2365,6 +2358,8 @@ nav ol {
 .library-dashbaord .sidebar {
     background: var(--c1);
     width: 270px;
+    height: 100vh;
+    overflow: hidden;
 }
 
 .library-dashbaord .content-area {
@@ -2493,6 +2488,7 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.collapsed {
 ul.list-unstyled.ps-0 {
     padding: 0 1rem !IMPORTANT;
     text-align: center;
+    padding-right: 0 !important;
 }
 
 ul.list-unstyled.ps-0>li {
@@ -2601,15 +2597,7 @@ ul.plan-features {
     overflow: auto;
 }
 
-.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-    background-color: #3498db;
-    /* Change this color to your desired scrollbar color */
-}
 
-.mCustomScrollbar .mCSB_scrollTools .mCSB_dragger:hover .mCSB_dragger_bar {
-    background-color: #2980b9;
-    /* Change this color to your desired hover color */
-}
 
 span.showmore {
     display: block;

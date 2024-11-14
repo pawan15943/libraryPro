@@ -78,10 +78,8 @@
 
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
-
-    <!-- Include DataTables JS -->
-
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
+
     <script>
         $(document).ready(function() {
             // Attach event listeners for collapse events once

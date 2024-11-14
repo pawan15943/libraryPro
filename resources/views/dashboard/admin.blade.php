@@ -395,13 +395,12 @@
                 <h6>Delete Seats</h6>
                 <div class="d-flex">
                     <h4 id="delete_seat">0</h4>
-
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
                 <a href="{{ route('learners.list.view', ['type' => 'delete_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6 d-none">
             <div class="booking-count bg-4">
                 <h6>WhatsApp Sended</h6>
                 <div class="d-flex">
@@ -409,20 +408,17 @@
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-    </div>
-</div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
-    <div class="booking-count bg-4">
-        <h6>Email Sended</h6>
-        <div class="d-flex">
-            <h4>80</h4>
-
+            </div>
         </div>
-        <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-    </div>
-</div> --}}
-    
-
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6 d-none">
+            <div class="booking-count bg-4">
+                <h6>Email Sended</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+            </div>
+        </div> 
 </div>
 <!-- End -->
 <h4 class="my-4">Plan Wise Count</h4>
@@ -857,7 +853,6 @@
         flatpickr("#dateRange", {
             mode: "range",
             dateFormat: "Y-m-d",
-
             maxDate: new Date().fp_incr(365), // Set the maximum date to one year from now
         });
     });

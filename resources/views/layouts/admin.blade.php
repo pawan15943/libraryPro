@@ -156,6 +156,39 @@
             });
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Function to show a popup
+            function showOfflinePopup() {
+                Swal.fire({
+                    title: 'No Internet Connection',
+                    text: 'Your internet connection is lost. Please check your connection.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+    
+            // Check if already offline on page load
+            if (!navigator.onLine) {
+                showOfflinePopup();
+            }
+    
+            // Listen for offline and online events
+            window.addEventListener('offline', function () {
+                showOfflinePopup();
+            });
+    
+            window.addEventListener('online', function () {
+                Swal.fire({
+                    title: 'Back Online',
+                    text: 'Your internet connection has been restored.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    </script>
+    
 </body>
 
 </html>

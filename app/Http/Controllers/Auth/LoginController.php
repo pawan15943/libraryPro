@@ -65,7 +65,6 @@ class LoginController extends Controller
                         Auth::guard('library')->logout();
                         return redirect()->route('verification.notice')->with('email', $user->email);
 
-                        // return redirect()->back()->withErrors(['error' => 'Your email address is not verified.']);
                     }
     
                     if (!$user->hasRole('admin', 'library')) {

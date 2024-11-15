@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLibraryRequest;
 use App\Models\City;
+use App\Models\Feedback;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
 use App\Models\LearnerTransaction;
 use App\Models\Library;
+use App\Models\LibrarySetting;
 use App\Models\LibraryTransaction;
 use App\Models\Plan;
 use App\Models\PlanPrice;
@@ -676,6 +678,58 @@ class LibraryController extends Controller
             $message->to($data['email'], $data['name'])->subject('Library Registration Successful');
         });
     }
+
+    public function feedbackStore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'feedback_type' => 'required',
+            'rating' => 'required|integer|min:1|max:5',
+            'description' => 'required|string',
+            'attachment' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'recommend' => 'required|string',
+        ]);
+
+        $validatedData['recommend'] = $validatedData['recommend'] === 'Yes' ? 1 : 0;
+      
+        $validatedData['library_id'] = Auth::user()->id;
+
+        Feedback::create($validatedData);
+
+        return redirect()->back()->with('success', 'Feedback submitted successfully.');
+    }
+  
+
+    public function SettingStore(Request $request)
+    {
+        $validatedData = $request->validate([
+            'library_favicon' => 'nullable|file|mimes:jpg,jpeg,png,ico|max:2048',
+            'library_title' => 'required|string|max:255',
+            'library_meta_description' => 'required|string',
+            'library_primary_color' => 'required|string|max:7',
+            'library_language' => 'required|string',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('library_favicon')) {
+            $file = $request->file('library_favicon');
+            $filePath = $file->store('library_favicons', 'public');
+            $validatedData['library_favicon'] = $filePath;
+        }
+
+        // Include library_id
+        $validatedData['library_id'] = auth()->id(); // or replace with the relevant library ID source
+
+        // Save data to the database
+        LibrarySetting::updateOrCreate(
+            ['library_id' => $validatedData['library_id']], // Update existing entry or create new one
+            $validatedData
+        );
+
+        return redirect()->back()->with('success', 'Library settings saved successfully.');
+    }
+
+
+
 
 
 }

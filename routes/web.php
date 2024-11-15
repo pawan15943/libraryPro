@@ -93,14 +93,17 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
       
       // Other Pages Routes
-      Route::get('settings', [LibraryController::class, 'librarySetting'])->name('library.settings');
-      Route::get('feedback', [LibraryController::class, 'libraryFeedback'])->name('library.feedback');
+     
       Route::get('pending/payment', [ReportController::class, 'pendingPayment'])->name('pending.payment.report');
       Route::get('learner/report', [ReportController::class, 'learnerReport'])->name('learner.report');
       Route::get('upcoming/payment/report', [ReportController::class, 'upcomingPayment'])->name('upcoming.payment.report');
       Route::get('expired/learner/report', [ReportController::class, 'expiredLearner'])->name('expired.learner.report');
       Route::post('increment-message-count', [LearnerController::class, 'incrementMessageCount'])->name('increment.message.count');
-
+      Route::get('settings', [LibraryController::class, 'librarySetting'])->name('library.settings');
+      Route::post('settings/store', [LibraryController::class, 'SettingStore'])->name('library.settings.store');
+      Route::get('feedback', [LibraryController::class, 'libraryFeedback'])->name('library.feedback');
+      Route::post('feedback/store', [LibraryController::class, 'feedbackStore'])->name('library.feedback.store');
+     
   
    
     });

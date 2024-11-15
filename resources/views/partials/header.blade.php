@@ -2,8 +2,8 @@
     <div class="spinner"></div>
 </div>
 <div class="header">
-    <div class="d-flex">
-        <div class="conatent flex">
+    <div class="d-flex" style="gap:1rem">
+        <div class="conatent flex" style="flex: 1;">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
 
             @if(isset($upcomingdiffInDays) && Auth::guard('library')->check() && $is_renew && $isProfile)
@@ -21,25 +21,25 @@
             <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$librarydiffInDays}} days!</small>
 
             @elseif($librarydiffInDays < 0)
-            <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($librarydiffInDays) }} days ago </small>
+                <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($librarydiffInDays) }} days ago </small>
 
-            @else
-            <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
-            @endif
-
-            @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
-                <script>
-                window.onload = function() {
-                setTimeout(function() {
-                var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
-                modal.show();
-                }, 1000);
-                };
-                </script>
-
-                <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
+                @else
+                <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
                 @endif
-                @endif
+
+                @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
+                    <script>
+                    window.onload = function() {
+                    setTimeout(function() {
+                    var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
+                    modal.show();
+                    }, 1000);
+                    };
+                    </script>
+
+                    <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
+                    @endif
+                    @endif
 
         </div>
         <!-- Modal Popup for Expiry Warning -->
@@ -83,31 +83,35 @@
         </div>
         <!-- Modal Popup end for Configration -->
         <!--Notifications -->
-        <div>
-            <ul>
+
+        <div class="notification">
+            <div class="dropdown">
                 @php
-                    $guard = null;
-                    if (Auth::guard('web')->check()) {
-                        $guard = 'web';
-                    } elseif (Auth::guard('library')->check()) {
-                        $guard = 'library';
-                    } elseif (Auth::guard('learner')->check()) {
-                        $guard = 'learner';
-                    }
-                    $unreadNotifications = auth()->user()->unreadNotifications->where('data.guard', $guard);
+                $guard = null;
+                if (Auth::guard('web')->check()) {
+                $guard = 'web';
+                } elseif (Auth::guard('library')->check()) {
+                $guard = 'library';
+                } elseif (Auth::guard('learner')->check()) {
+                $guard = 'learner';
+                }
+                $unreadNotifications = auth()->user()->unreadNotifications->where('data.guard', $guard);
                 @endphp
-        
-                <li class="nav-item dropdown no-arrow mx-1">
-                    <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-bell fa-fw"></i>
-                        <!-- Counter - Alerts -->
-                        <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
-                    </a>
-                    <!-- Dropdown - Alerts -->
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                        <h6 class="dropdown-header">Alerts Center</h6>
-        
-                        @forelse($unreadNotifications as $notification)
+                <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fas fa-bell fa-fw"></i>
+                            <!-- Counter - Alerts -->
+                            <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
+                </a>
+                <ul class="dropdown-menu">
+
+
+                    <li>
+                        
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">Alerts Center</h6>
+
+                            @forelse($unreadNotifications as $notification)
                             <a class="dropdown-item d-flex align-items-center" data-notification-id="{{ $notification->id }}" href="{{ $notification->data['link'] ?? '#' }}">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-primary">
@@ -119,17 +123,19 @@
                                     <span class="font-weight-bold">{{ $notification->data['description'] ?? 'No Description' }}</span>
                                 </div>
                             </a>
-                        @empty
+                            @empty
                             <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
-                        @endforelse
-        
-                        <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                    </div>
-                </li>
-            </ul>
+                            @endforelse
+
+                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+
         </div>
-        
-        
+
         <div class="profile">
             <div class="dropdown">
                 Welcome
@@ -165,7 +171,7 @@
                     </li>
                 </ul>
             </div>
-          
+
         </div>
         @if($today_renew)
         <script>

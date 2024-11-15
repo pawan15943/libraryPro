@@ -706,7 +706,12 @@ ul.plan-features {
     max-height: 364px;
     overflow: auto;
 }
-
+span.badge.badge-danger.badge-counter {
+    color: #1d7bad;
+    position: absolute;
+    top: -7px;
+    right: 3px;
+}
 
 span.showmore {
     display: block;

@@ -223,8 +223,9 @@ class ReportController extends Controller
             
     
             if (!empty($filters['plan_type'])) {
+                Log::info('Filter applied: plan type');
                 $query->whereHas('learnerDetails', function ($query) use ($filters) {
-                    $query->where('plan_type', $filters['plan_type']);
+                    $query->where('plan_type_id', $filters['plan_type']);
                 });
                
             }

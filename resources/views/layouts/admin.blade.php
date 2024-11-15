@@ -33,11 +33,7 @@
                     @yield('content')
                     <script>
                         // Session expiration popup logic here
-                        const sessionLifetime = {
-                            {
-                                config('session.lifetime')
-                            }
-                        }* 60; // Convert to seconds
+                        const sessionLifetime = {{ config('session.lifetime')}}* 60; // Convert to seconds
                         const warningTime = sessionLifetime - 60; // Show popup 1 minute before expiration
 
                         setTimeout(function() {

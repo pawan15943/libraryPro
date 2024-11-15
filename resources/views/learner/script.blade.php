@@ -766,7 +766,8 @@
 <script>
     // Function to handle changes in a specific form
     function handleFormChanges(formId, learnerId) {
-        //  console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId);
+       
+         console.log('handleFormChanges called with formId:', formId, 'learnerId:', learnerId);
 
         const form = document.getElementById(formId);
         if (!form) {
@@ -786,7 +787,7 @@
                 const oldValue = this.dataset.initialValue;
                 const newValue = this.value;
                 
-                // console.log(`Field changed: ${fieldName}, Old Value: ${oldValue}, New Value: ${newValue}`);
+                console.log(`Field changed: ${fieldName}, Old Value: ${oldValue}, New Value: ${newValue}`);
                 
                 // Only record the change if the value has actually changed
                 if (oldValue !== newValue) {
@@ -809,7 +810,7 @@
     // Function to log the field changes
     function logFieldChange(learnerId, formId, fieldName, oldValue, newValue) {
        
-        // console.log('Logging change for learner:', learnerId, formId, fieldName, oldValue, newValue);
+        console.log('Logging change for learner:', learnerId, formId, fieldName, oldValue, newValue);
         fetch("{{ route('learner.log') }}", {
             method: 'POST',
             headers: {

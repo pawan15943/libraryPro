@@ -285,9 +285,10 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                                 <select id="plan_id2" class="form-select @error('plan_id') is-invalid @enderror" name="plan_id">
                                     <option value="">Select Plan</option>
                                     @foreach($plans as $key => $value)
-                                    <option value="{{ $value->id }}" {{ old('plan_id') == $value->id ? 'selected' : '' }}>
-                                        {{ $value->name }}
-                                    </option>
+                                        <option value="{{ $value->id }}"
+                                            {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>
+                                            {{ $value->name }}
+                                        </option>
                                     @endforeach
                                 </select>
 
@@ -304,7 +305,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                                     <option value="">Select Plan Type</option>
                                     @foreach($planTypes as $planType)
                                     <option value="{{ $planType->id }}"
-                                        {{ old('plan_type_id') == $planType->id ? 'selected' : '' }}>
+                                        {{ old('plan_type_id',$customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
                                         {{ $planType->name }}
                                     </option>
                                     @endforeach
@@ -318,7 +319,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
 
                             <div class="col-lg-4">
                                 <label for="">Plan Price <span>*</span></label>
-                                <input id="plan_price_id" class="form-control @error('plan_price_id') is-invalid @enderror" name="plan_price_id" value="{{ old('plan_price_id') }}" readonly placeholder="Plan Price">
+                                <input id="plan_price_id" class="form-control @error('plan_price_id') is-invalid @enderror" name="plan_price_id" value="{{ old('plan_price_id',$customer->plan_price_id) }}" readonly placeholder="Plan Price">
                                 @error('plan_price_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -500,11 +501,8 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
 @endif
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        handleFormChanges('reactive', {
-            {
-                $customer - > id
-            }
-        });
+        handleFormChanges('reactive', {{$customer->id}});
+       
     });
 </script>
 @include('learner.script')

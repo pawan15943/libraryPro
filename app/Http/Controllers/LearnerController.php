@@ -930,11 +930,11 @@ class LearnerController extends Controller
                 }
             ])
             ->whereHas('learnerDetails', function($query) use ($id) {
-                $query->where('seat_id', $id);
+                $query->where('seat_id', $id)->where('learner_detail.status',0);
             })
           
             ->get();
-
+        
         // Fetch the seat number
         $seat = Seat::find($id, ['seat_no']);
 

@@ -40,6 +40,7 @@ $today = Carbon::today();
                     $endDate = Carbon::parse($detail->plan_end_date);
                     $diffInDays = $today->diffInDays($endDate, false);
                     @endphp
+                    @if($detail->status==0)
                     <tr>
                         <td>{{ $seat->seat_no }}</td>
                         <td><span class="uppercase truncate m-auto text-center d-block">{{ $learner->name }}</span></td>
@@ -58,6 +59,8 @@ $today = Carbon::today();
                                 @endif
                         </td>
                     </tr>
+                    @endif
+                  
                     @endforeach
                     @endforeach
                 </tbody>

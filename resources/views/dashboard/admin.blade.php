@@ -994,6 +994,7 @@
             $('#month_all_expired').text(highlights.month_all_expired);
             $('#thismonth_total_book').text(highlights.thismonth_total_book);
             $('#renew_seat').text(highlights.renew_seat);
+            $('#delete_seat').text(highlights.delete_seat);
         }
 
         function updateAllViewLinks(year, month, dateRange) {

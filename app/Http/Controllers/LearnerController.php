@@ -465,7 +465,9 @@ class LearnerController extends Controller
                 'learner_detail.plan_price_id',
                 'learner_detail.status as learner_detail_status',
                 'plan_types.image',
-                'learner_detail.is_paid'
+                'learner_detail.is_paid',
+                'learner_detail.payment_mode',
+                'learner_detail.id as learner_detail_id'
             );
              //  Apply dynamic filters if provided
          if (!empty($filters)) {
@@ -796,10 +798,10 @@ class LearnerController extends Controller
         ->where('id', '!=', $customerId)
         ->get();
       
-        $transaction = LearnerTransaction::where('learner_id', $customerId)
+        $transaction = LearnerTransaction::where('learner_id', $customerId)->where('learner_detail_id',$customer->learner_detail_id)
         ->orderBy('id', 'DESC') 
         ->first();
-       
+      
         $all_transactions=LearnerTransaction::where('learner_id',$customerId)->where('is_paid',1)->get();
         $extend_days=Hour::select('extend_days')->first();
         if($extend_days){

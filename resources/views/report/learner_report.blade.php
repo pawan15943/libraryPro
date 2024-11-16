@@ -114,44 +114,35 @@ $currentMonth = date('m');
                 </thead>
 
                 <tbody>
+                  
                     @foreach($learners as $value)
-                    @foreach ($value->learnerDetails as $detail)
+                    
                     @php
                     $today = Carbon::today();
-                    $endDate = Carbon::parse($detail->plan_end_date);
+                    $endDate = Carbon::parse($value->plan_end_date);
                     $diffInDays = $today->diffInDays($endDate, false);
                     @endphp
 
                     <tr>
-                        <td>{{$value->seat_no}}<br>
-                            <small>{{$detail->planType->name}}</small>
+                        <td>{{$value->learner->seat_no}}<br>
+                            <small>{{$value->planType->name}}</small>
                         </td>
                         <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
-                            <br> <small>{{$value->dob}}</small>
+                                data-bs-title="{{$value->learner->name}}" data-bs-placement="bottom">{{$value->learner->name}}</span>
+                            <br> <small>{{$value->learner->dob}}</small>
                         </td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$value->email }}" data-bs-placement="bottom"><i
+                                data-bs-title="{{$value->learner->email }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                {{$value->email }}</span> <br>
-                            <small> +91-{{$value->mobile}}</small>
+                                {{$value->learner->email }}</span> <br>
+                            <small> +91-{{$value->learner->mobile}}</small>
                         </td>
-                        <td>{{$detail->plan_start_date}}<br>
-                            <small>{{$detail->plan->name}}</small>
+                        <td>{{$value->plan_start_date}}<br>
+                            <small>{{$value->plan->name}}</small>
                         </td>
                        
-                        <td>{{$detail->plan_end_date}}<br>
-                            {{-- @if ($detail->diffInDays > 0)
-                                <small class="text-success">Plan Expires in {{ $detail->diffInDays }} days</sp>
-                            @elseif ($detail->diffInDays < 0 && $detail->diffExtendDay>0)
-                                <small class="text-danger fs-10 d-block">{{$learnerExtendText}}  {{ abs($detail->diffExtendDay) }} days.</small>
-                            @elseif ($detail->diffInDays < 0 && $detail->diffExtendDay==0)
-                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                            @else
-                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($detail->diffInDays) }} days ago</small>
-                            @endif --}}
-
-                        
+                        <td>{{$value->plan_end_date}}<br>
+                          
                             @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
@@ -161,17 +152,15 @@ $currentMonth = date('m');
                             @endif
                         </td>
                         <td>
-                            @if($detail->is_paid==1)
+                            @if($value->is_paid==1)
                                 Paid
                             @else
                                 Unpaid
                             @endif
                         </td>
-                       
-                       
-
+                     
                     </tr>
-                    @endforeach
+                   
                     @endforeach
                 </tbody>
                 

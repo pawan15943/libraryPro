@@ -124,7 +124,7 @@ $currentMonth = date('m');
 
                 <tbody>
                     @foreach($learners as $value)
-                    @foreach ($value->learnerDetails as $detail)
+                 
                     @php
                     $today = Carbon::today();
                     $endDate = Carbon::parse($value->plan_end_date);
@@ -134,24 +134,24 @@ $currentMonth = date('m');
                     @endphp
 
                     <tr>
-                        <td>{{$value->seat_no}}<br>
-                            <small>{{$detail->planType->name}}</small>
+                        <td>{{$value->learner->seat_no}}<br>
+                            <small>{{$value->planType->name}}</small>
                         </td>
                         <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
-                            <br> <small>{{$value->dob}}</small>
+                                data-bs-title="{{$value->learner->name}}" data-bs-placement="bottom">{{$value->learner->name}}</span>
+                            <br> <small>{{$value->learner->dob}}</small>
                         </td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$value->email }}" data-bs-placement="bottom"><i
+                                data-bs-title="{{$value->learner->email }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                {{$value->email }}</span> <br>
-                            <small> +91-{{$value->mobile}}</small>
+                                {{$value->learner->email }}</span> <br>
+                            <small> +91-{{$value->learner->mobile}}</small>
                         </td>
-                        <td>{{$detail->plan_start_date}}<br>
-                            <small>{{$detail->plan->name}}</small>
+                        <td>{{$value->plan_start_date}}<br>
+                            <small>{{$value->plan->name}}</small>
                         </td>
                        
-                        <td>{{$detail->plan_end_date}}<br>
+                        <td>{{$value->plan_end_date}}<br>
                             @if ($diffInDays > 0)
                             <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                         @elseif ($diffInDays <= 0 && $diffExtendDay>0)
@@ -173,23 +173,23 @@ $currentMonth = date('m');
                         <td>
                             <ul class="actionalbls">
                             <!-- Make payment -->
-                            <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                            <li><a href="{{route('learner.payment',$value->learner->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                             </ul>
                         </td>
                         <td>
                             <ul class="actionalbls">
                              <!-- Sent Mail -->
-                             <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
+                             <li><a href="https://web.whatsapp.com/send?phone=91{{$value->learner->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="{{$value->learner->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
 
 
                              <!-- Sent Mail -->
-                             <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
+                             <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="{{$value->learner->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
                             </ul>
                         </td>
 
                     </tr>
                     @endforeach
-                    @endforeach
+                 
                 </tbody>
                 
 

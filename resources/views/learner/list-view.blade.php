@@ -51,6 +51,7 @@
                                     
                                     $today = Carbon::today();
                                     $endDate = Carbon::parse($data->plan_end_date);
+                                    
                                     $diffInDays = $today->diffInDays($endDate, false);
                                     $inextendDate = $endDate->copy()->addDays($extendDay); 
                                     $diffExtendDay= $today->diffInDays($inextendDate, false);

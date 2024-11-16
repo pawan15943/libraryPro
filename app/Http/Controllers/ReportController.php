@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CustomerDetail;
 use App\Models\Customers;
 use App\Models\Expense;
+use App\Models\Learner;
 use App\Models\LearnerDetail;
 use Illuminate\Http\Request;
 use DB;
@@ -141,12 +142,10 @@ class ReportController extends Controller
             'plan_type'  => $request->get('plan_type'),
             'search'  => $request->get('search'),
         ];
-        $query = $this->getAllLearnersByLibrary()
-        ->whereHas('learnerDetails', function ($query) {
-            $query->where('is_paid', 0);
-        });
+        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->where('is_paid', 0);
+       
         $learners = $this->fetchlearnerData( $filters,$query);
-    //    dd( $learners);
+    
         return view('report.pending_payment', compact('plans', 'plan_type', 'dynamicyears', 'dynamicmonths', 'learners'));
 
     }
@@ -169,9 +168,11 @@ class ReportController extends Controller
             'status'  => $request->get('status'),
             'search'  => $request->get('search'),
         ];
-
-        $query = $this->getAllLearnersByLibrary();
+       
+        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner']);
+         
         $learners = $this->fetchlearnerData( $filters,$query);
+       
         return view('report.learner_report',compact('learners', 'dynamicyears', 'dynamicmonths'));
     }
 
@@ -200,10 +201,8 @@ class ReportController extends Controller
             'expiredyear' => $request->get('expiredyear'),
             'expiredmonth' => $request->get('expiredmonth'),
         ];
-        $query = $this->getAllLearnersByLibrary()->where('status',0)
-        ->whereHas('learnerDetails', function ($query) {
-            $query->where('status', 0);
-        });
+        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->where('status', 0);
+       
         $learners = $this->fetchlearnerData( $filters,$query);
   
         return view('report.expired_learner', compact('dynamicyears', 'dynamicmonths', 'learners'));
@@ -214,45 +213,40 @@ class ReportController extends Controller
       
         Log::info('Filters applied:', $filters);
         if (!empty($filters)) {
-          
+            $year = $filters['year'] ?? date('Y');
+            $month = $filters['month'] ?? null;
+
             if (!empty($filters['plan_id'])) {
-                $query->whereHas('learnerDetails', function ($query) use ($filters) {
                     $query->where('plan_id', $filters['plan_id']);
-                });
             }
-            
-    
             if (!empty($filters['plan_type'])) {
                 Log::info('Filter applied: plan type');
-                $query->whereHas('learnerDetails', function ($query) use ($filters) {
-                    $query->where('plan_type_id', $filters['plan_type']);
-                });
                
+                $query->where('plan_type_id', $filters['plan_type']);
+            
             }
 
             if (!empty($filters['expiredyear'])) {
                 Log::info('Filter applied: expiredyear ');
                 $year = $filters['expiredyear'];
-                $query->whereHas('learnerDetails', function ($query) use ($year) {
-                    $query->whereYear('plan_end_date', $year);
-                });
+                $query->whereYear('plan_end_date', $year);
+               
             }
         
             if (!empty($filters['expiredmonth']) && !empty($filters['expiredyear'])) {
                 Log::info('Filter applied: expiredyear and expiredmonth');
                 $year = $filters['expiredyear'];
                 $month = $filters['expiredmonth'];
-                $query->whereHas('learnerDetails', function ($query) use ($year, $month) {
-                    $query->whereYear('plan_end_date', $year)
-                          ->whereMonth('plan_end_date', $month);
-                });
+               
+                $query->whereYear('plan_end_date', $year)->whereMonth('plan_end_date', $month);
+               
             }
            
             if (isset($filters['is_paid'])) {
                 Log::info('Filter applied: unpaid');
-                $query->whereHas('learnerDetails', function ($query) use ($filters) {
-                    $query->where('is_paid', $filters['is_paid']);
-                });
+               
+                $query->where('is_paid', $filters['is_paid']);
+               
             }
 
                 // Apply the year filter if provided
@@ -261,25 +255,19 @@ class ReportController extends Controller
                 $year = $filters['year'];
                 
                 // Adjust query to cover plan dates within the given year
-                $query->whereHas('learnerDetails', function ($query) use ($year) {
-                    $query->whereYear('plan_start_date', '<=', $year)
-                        ->whereYear('plan_end_date', '>=', $year);
-                });
+                $query->whereYear('plan_start_date', '<=', $year)
+                ->whereYear('plan_end_date', '>=', $year);
             }
         
             // Apply the month filter if provided (year should be set either by filter or default)
             if (!empty($filters['month'])) {
-                Log::info('Filter applied: year and month');
-                $year = $filters['year'] ?? date('Y');
-                $month = $filters['month'];
-                
+               
+               
+                Log::info('Filter applied: year and month',['year' => $year,'month' => $month,]);
                 $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
                 $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
-        
-                $query->whereHas('learnerDetails', function ($query) use ($startOfMonth, $endOfMonth) {
-                    $query->where('plan_start_date', '<=', $endOfMonth)
-                        ->where('plan_end_date', '>=', $startOfMonth);
-                });
+                $query->where('plan_start_date', '<=', $endOfMonth)->where('plan_end_date', '>=', $startOfMonth);
+             
             }
 
                 // Apply the status filter if provided
@@ -288,23 +276,22 @@ class ReportController extends Controller
                 
                 // If status = 0 (expired), filter based on the year and/or month, if provided
                 if ($status == 0 && ($filters['year'] || $filters['month'])) {
-                    Log::info('Filter applied: expired status with year and/or month');
-                    $year = $filters['year'] ?? date('Y');
-                    $month = $filters['month'] ?? null;
                     
-                    $query->whereHas('learnerDetails', function($q) use ($status, $year, $month) {
-                        $q->where('status', $status)
-                        ->whereYear('plan_end_date', $year);
-                        
-                        if ($month) {
-                            $q->whereMonth('plan_end_date', $month);
-                        }
-                    });
+                    Log::info('Filter applied: expired status with year and/or month', ['year' => $year,'month' => $month,'status' => $status,]);
+                    
+                    $query->where('learner_detail.status', $status)
+                    ->whereYear('learner_detail.plan_end_date', $year);
+                
+                    if ($month) {
+                        Log::info('in month');
+                        $query->whereMonth('learner_detail.plan_end_date', $month);
+                    }
                 } else {
                     // Apply regular status filter if not expired with specific year/month
-                    $query->whereHas('learnerDetails', function($q) use ($status) {
-                        $q->where('status', $status);
-                    });
+                    Log::info('not expired with specific year/month');
+                   
+                        $query->where('status', $status);
+                   
                 }
             }
 
@@ -322,7 +309,7 @@ class ReportController extends Controller
         // \DB::enableQueryLog();
         // $learners = $query->get();
         // dd(\DB::getQueryLog());
-        
+       
         return $query->get();
     }
 

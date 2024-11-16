@@ -250,8 +250,8 @@ class LearnerController extends Controller
             
             $hours=PlanType::where('id',$request->plan_type_id)->value('slot_hours');
         }
-       
-        if(($this->getLearnersByLibrary()->where('seat_no',$request->seat_no)->where('learners.status',1)->sum('hours') + $hours)>$total_hour){
+        
+        if(($this->getLearnersByLibrary()->where('seat_no',$request->seat_no)->where('learner_detail.status',1)->sum('hours') + $hours)>$total_hour){
            
             return response()->json([
                 'error' => true,

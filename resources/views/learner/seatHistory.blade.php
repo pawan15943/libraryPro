@@ -54,6 +54,8 @@ $today = Carbon::today();
                         $plantype = App\Models\PlanType::where('id', $user->plan_type_id)->first();
                         $endDate = Carbon::parse($user->plan_end_date);
                         $diffInDays = $today->diffInDays($endDate, false);
+                        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+                        $diffExtendDay= $today->diffInDays($inextendDate, false);
                         @endphp
                         @if (!$loop->first)
                     <tr>
@@ -75,14 +77,23 @@ $today = Carbon::today();
                             @endif
                         </td>
                         <td>{{ $user->plan_start_date }}</td>
-                        <td>{{ $user->plan_end_date }}
-                            @if ($diffInDays > 0)
+                        <td>{{ $user->plan_end_date }}<br>
+                            {{-- @if ($diffInDays > 0)
                             <small class="text-success fs-10 d-block ">Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays < 0)
                                 <small class="text-danger fs-10 d-block ">Available for book</small>
                                 @else
                                 <small class="text-warning fs-10 d-block ">Expires today</small>
-                                @endif
+                                @endif --}}
+                                @if ($diffInDays > 0)
+                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                            @elseif ($diffInDays <= 0 && $diffExtendDay>0)
+                                <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
+                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
+                            @else
+                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                            @endif
                         </td>
                         @if ($loop->first)
                         <td rowspan="{{ $usersForSeat->count()  }}">

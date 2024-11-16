@@ -1044,7 +1044,12 @@ class DashboardController extends Controller
         }else{
             $extendDay=0;
         }
+<<<<<<< Updated upstream
      
+=======
+      
+       
+>>>>>>> Stashed changes
         return view('learner.list-view', compact('result', 'type','extendDay'));
         
     }

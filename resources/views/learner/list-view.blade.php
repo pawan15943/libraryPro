@@ -22,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                 
+                    
                     @foreach ($result as $data)
                     <tr>
                         <td>{{ $data->learner->seat_no }}</td> <!-- Seat No -->
@@ -50,14 +50,28 @@
                             @php
                                     
                                     $today = Carbon::today();
+<<<<<<< Updated upstream
                                     $endDate = Carbon::parse($data->plan_end_date);
                                     
+=======
+                                    if($data->plan_end_date){
+                                        $endDate =$data->plan_end_date;
+                                    }elseif($data->learner->plan_end_date){
+                                        $endDate =$data->learner->plan_end_date;
+                                    }
+                                    $endDate = Carbon::parse($endDate);
+>>>>>>> Stashed changes
                                     $diffInDays = $today->diffInDays($endDate, false);
                                     $inextendDate = $endDate->copy()->addDays($extendDay); 
                                     $diffExtendDay= $today->diffInDays($inextendDate, false);
                                 @endphp
-                        
-                                {{ $data->status == 1 ? 'Active' : 'Inactive' }}<br>
+                                
+                                @if ($data->status == 1 || $data->learner->status == 1)
+                                    Active
+                                @else
+                                    Inactive
+                                @endif
+                                <br>
                                 @if ($diffInDays > 0)
                                     <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                                 @elseif ($diffInDays <= 0 && $diffExtendDay > 0)

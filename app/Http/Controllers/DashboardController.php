@@ -473,10 +473,12 @@ class DashboardController extends Controller
            
             $close_seat = (clone $baseQuery)
             ->where('operation', 'closeSeat')
+            ->get()
             ->count();
 
             $delete_seat = (clone $baseQuery)
             ->where('operation', 'deleteSeat')
+            ->get()
             ->count();
 
             // // For graph

@@ -939,7 +939,6 @@ class LearnerController extends Controller
         return view('learner.seatHistoryView', compact('learners', 'seat'));
     }
 
-    
     public function reactiveUser(Request $request, $id = null){
        
         $customerId = $request->id ?? $id;
@@ -1489,10 +1488,24 @@ class LearnerController extends Controller
     
             $updated_user = $validatedData['updated_by'] ?? Auth::user()->id;
             $old_value = $validatedData['old_value'] ? $validatedData['old_value'] : $validatedData['operation'];
-    
+            if($validatedData['operation']=='renewSeat' || $validatedData['operation']=='reactive' || $validatedData['operation']=='learnerUpgrade'){
+                $learner_detail_id = LearnerDetail::where('learner_id', $validatedData['learner_id'])
+                                    ->orderBy('id', 'DESC')
+                                    ->value('id');
+
+            }elseif($validatedData['operation']=='closeSeat' || $validatedData['operation']=='deleteSeat'){
+                $learner_detail_id = LearnerDetail::where('learner_id', $validatedData['learner_id'])
+                    ->whereNull('deleted_at')
+                    ->orderBy('id', 'DESC')
+                    ->value('id');
+            }else{
+                $learner_detail_id=null;
+            }
+           
             // Insert data into the database and log success or errors
             DB::table('learner_operations_log')->insert([
                 'learner_id' => $validatedData['learner_id'],
+                'learner_detail_id' => $learner_detail_id,
                 'library_id' => Auth::user()->id,
                 'field_updated' => $validatedData['field_updated'],
                 'old_value' => $old_value,
@@ -1552,8 +1565,7 @@ class LearnerController extends Controller
 
         // Call validateCustomer method to apply default validation
         $validator = $this->validateCustomer($request);
-    
-        // Update the validation rule for the 'email' field
+ 
         $validator = Validator::make($request->all(), array_merge($validator->getRules(), [
             'email' => [
                 'required',

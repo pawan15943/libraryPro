@@ -166,7 +166,7 @@ $current_route = Route::currentRouteName();
     {{-- <p>Total 10 out of 61 Records 1-10</p> --}}
     <div class="col-lg-12">
         <div class="table-responsive ">
-            <table class="table text-center datatable border-bottom">
+            <table class="table text-center datatable border-bottom" id="datatable">
                 <thead>
                     <tr>
                         <th>Seat No.</th>

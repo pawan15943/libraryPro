@@ -179,20 +179,36 @@ class DashboardController extends Controller
                 return $booking->planType->name; 
             })->toArray(); 
             $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
-            $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
+           
+            $uniqueDates = LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
             ->distinct()
             ->orderBy('year', 'desc')
             ->orderBy('month', 'asc')
             ->get();
+
+            // Get the unique years
             $dynamicyears = $uniqueDates->pluck('year')->unique();
 
             if ($dynamicyears->isEmpty()) {
                 $dynamicyears = collect([date("Y")]);
             }
+
+            $currentYear = date("Y");
+            $currentMonth = date("m");
+
+            $firstMonth = $uniqueDates->firstWhere('year', $currentYear)->month;
+
+            if ($currentYear == $dynamicyears->first()) {
+                // If the current year is the most recent year in the data, use the current month as the end month
+                $monthsRange = collect(range($firstMonth, $currentMonth));
+            } else {
+                // If it's a previous year, go from the first month to December
+                $monthsRange = collect(range($firstMonth, 12));
+            }
+
+
             
-          
-            
-            $dynamicmonths = $uniqueDates->pluck('month')->unique();
+            $dynamicmonths = $monthsRange;
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){

@@ -848,6 +848,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         flatpickr("#dateRange", {
@@ -1055,131 +1056,151 @@
 </script>
 
 <script>
-    function renderRevenueChart(labels, data) {
-        if (Chart.getChart("revenueChart")) {
-            Chart.getChart("revenueChart").destroy();
-        }
+function renderRevenueChart(labels, data) {
+    if (Chart.getChart("revenueChart")) {
+        Chart.getChart("revenueChart").destroy();
+    }
 
-        var ctx = document.getElementById('revenueChart').getContext('2d');
+    var ctx = document.getElementById('revenueChart').getContext('2d');
 
-        // Create gradient
-        var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-        gradient.addColorStop(0, '#001f3f'); // Navy
-        gradient.addColorStop(1, '#0a284b'); // Dark Navy
+    // Create gradient
+    var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, '#001f3f'); // Navy
+    gradient.addColorStop(1, '#0a284b'); // Dark Navy
 
-        var totalCount = data.reduce((a, b) => a + b, 0); // Calculate the total count
+    var totalCount = data.reduce((a, b) => a + b, 0); // Calculate the total count
 
-        var revenueChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: `Plan Type Wise Revenue (Total: ${totalCount})`, // Displaying total count in legend
-                    data: data,
-                    backgroundColor: gradient,
-                    borderColor: 'rgba(54, 162, 235, 1)', // Blue Border
-                    borderWidth: 0,
-                    borderRadius: 15, // Rounded Edges
-                    barThickness: 30, // Bar Width
-                    borderSkipped: false,
-                }]
+    var revenueChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: `Plan Type Wise Revenue (Total: ${totalCount})`, // Total revenue
+                data: data,
+                backgroundColor: gradient,
+                borderColor: 'rgba(54, 162, 235, 1)', // Blue Border
+                borderWidth: 0,
+                borderRadius: 15, // Rounded Edges
+                barThickness: 30, // Bar Width
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            animation: {
+                duration: 2000, // Animation duration
+                easing: 'easeInOutQuart' // Animation easing
             },
-            options: {
-                animation: {
-                    duration: 2000, // Animation duration
-                    easing: 'easeInOutQuart' // Animation easing
-                },
-
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            display: false // Remove y-axis grid lines
-                        },
-                        ticks: {
-                            display: false // Hide y-axis labels
-                        },
-                        border: {
-                            display: false // Hide y-axis border line
-                        }
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false // Remove y-axis grid lines
                     },
-                    x: {
-                        grid: {
-                            display: false // Remove x-axis grid lines
-                        },
-
-                        border: {
-                            display: false // Hide y-axis border line
-                        }
+                    ticks: {
+                        display: false // Show y-axis labels
+                    },
+                    border: {
+                        display: false // Hide y-axis border line
                     }
                 },
+                x: {
+                    grid: {
+                        display: false // Remove x-axis grid lines
+                    },
+                    border: {
+                        display: false // Hide x-axis border line
+                    }
+                }
             },
             plugins: {
                 legend: {
                     display: true, // Show legend
                     labels: {
-                        boxWidth: 0, // Remove the box
+                        boxWidth: 15, // Legend box size
                         padding: 10, // Add padding
                         color: 'rgba(0, 0, 0, 0.7)' // Adjust label color
                     }
                 },
                 datalabels: {
-                    color: 'rgba(0, 0, 0, 0.7)',
-                    display: true,
+                    color: 'rgba(0, 0, 0, 0.8)', // Label color
+                    display: true, // Enable datalabels
                     anchor: 'end',
                     align: 'top',
-                    offset: 4,
                     font: {
-                        weight: 'bold', // Font weight
-                        size: 12 // Font size
-                    }
+                        size: 14,
+                        weight: 'bold'
+                    },
+                    formatter: (value) => value // Show raw data value
                 }
             }
-        });
+        },
+        plugins: [ChartDataLabels] // Register the datalabels plugin
+    });
+}
+
+function renderBookingCountChart(labels, data) {
+    if (Chart.getChart("bookingCountChart")) {
+        Chart.getChart("bookingCountChart").destroy();
     }
 
-
-    function renderBookingCountChart(labels, data) {
-        if (Chart.getChart("bookingCountChart")) {
-            Chart.getChart("bookingCountChart").destroy();
-        }
-        var ctx1 = document.getElementById('bookingCountChart').getContext('2d');
-        var bookingCountChart = new Chart(ctx1, {
-            type: 'pie',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Plan Type Wise Booking Count',
-                    data: data,
-                    backgroundColor: [
-                        'rgba(153, 102, 255, 0.6)',
-                        'rgba(255, 159, 64, 0.6)',
-                        'rgba(255, 99, 132, 0.6)',
-                        'rgba(54, 162, 235, 0.6)',
-                        'rgba(75, 192, 192, 0.6)',
-                        'rgba(255, 206, 86, 0.6)'
-                    ],
-                    borderColor: 'rgba(255, 255, 255, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw + ' bookings';
-                            }
+    var ctx1 = document.getElementById('bookingCountChart').getContext('2d');
+    var bookingCountChart = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: labels.map((label, index) => `${label}: ${data[index]} bookings`), // Add counts to labels
+            datasets: [{
+                label: 'Plan Type Wise Booking Count',
+                data: data,
+                backgroundColor: [
+                    '#001f3f', // Dark Navy for Full Day
+                    '#85144b', // Maroon for First Half
+                    '#FF4136', // Red for Second Half
+                    '#3D9970', // Dark Green for Hourly 1
+                    '#FF851B', // Orange for Hourly 2
+                    '#0074D9', // Blue for Hourly 3
+                    '#7FDBFF'  // Light Blue for Hourly 4
+                ],
+                borderColor: 'rgba(255, 255, 255, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    
+                    position: 'top',
+                    labels: {
+                        color: '#000', // Legend text color
+                        font: {
+                            size: 12
                         }
                     }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            const label = tooltipItem.label || '';
+                            const value = tooltipItem.raw || 0;
+                            return `${label}: ${value} bookings`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#fff', // Label text color
+                    display: true,
+                    formatter: (value) => value, // Show count directly on the chart
+                    font: {
+                        size: 20,
+                        weight: 'regular'
+                    }
                 }
             }
-        });
-    }
+        },
+        plugins: [ChartDataLabels] // Register ChartDataLabels plugin
+    });
+}
+
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

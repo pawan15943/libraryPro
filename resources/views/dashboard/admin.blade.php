@@ -334,8 +334,8 @@
                 <a href="{{ route('learners.list.view', ['type' => 'other_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-       
-        
+
+
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Swap Seats</h6>
@@ -418,242 +418,242 @@
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-        </div> 
-</div>
-<!-- End -->
-<h4 class="my-4">Plan Wise Count</h4>
-<!-- Plan Wise Booking Counts -->
-<div class="row g-4 planwisecount">
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Full Day</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        </div>
+    </div>
+    <!-- End -->
+    <h4 class="my-4">Plan Wise Count</h4>
+    <!-- Plan Wise Booking Counts -->
+    <div class="row g-4 planwisecount">
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Full Day</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>First Half</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>First Half</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Second Half</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Second Half</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Hourly Slot 1</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 1</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Hourly Slot 2</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 2</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Hourly Slot 3</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 3</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-4">
-            <h6>Hourly Slot 4</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Hourly Slot 4</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-3">
-            <h6>Total Booked Seats</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-3">
+                <h6>Total Booked Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
-    </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
-        <div class="booking-count bg-3">
-            <h6>Available Seats</h6>
-            <div class="d-flex">
-                <h4>80</h4>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-3">
+                <h6>Available Seats</h6>
+                <div class="d-flex">
+                    <h4>80</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
-            <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+        </div>
+
+    </div>
+    <!-- End -->
+
+    <!-- Dahboard Charts -->
+    <div class="row mt-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <h5 class="mb-3">Planwise Revenue</h4>
+                    <canvas id="revenueChart" style="max-height:340px;"></canvas>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <h5 class="mb-3">Planwise Booking</h4>
+                    <canvas id="bookingCountChart"></canvas>
+            </div>
         </div>
     </div>
-
-</div>
-<!-- End -->
-
-<!-- Dahboard Charts -->
-<div class="row mt-4">
-    <div class="col-lg-8">
-        <div class="card">
-            <h5 class="mb-3">Planwise Revenue</h4>
-                <canvas id="revenueChart" style="max-height:340px;"></canvas>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <h5 class="mb-3">Planwise Booking</h4>
-                <canvas id="bookingCountChart"></canvas>
-        </div>
-    </div>
-</div>
-<!-- End -->
+    <!-- End -->
 
 
-<!-- Available Seats -->
+    <!-- Available Seats -->
 
-<div class="row g-4 mt-2 mb-4">
-    <div class="col-lg-4">
+    <div class="row g-4 mt-2 mb-4">
+        <div class="col-lg-4">
 
-        <!-- Show 10 availble Seats -->
-        <div class="seat-statistics ">
-            <h4 class="mb-3 text-center">Avaialble Seats</h4>
-            <ul class="contents">
+            <!-- Show 10 availble Seats -->
+            <div class="seat-statistics ">
+                <h4 class="mb-3 text-center">Avaialble Seats</h4>
+                <ul class="contents">
 
-                @foreach($available_seats as $seat)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{ url('public/img/available.png') }}" alt="library" class="img-fluid rounded">
-                        <div class="seat-content">
-                            <h6>Seat No. {{ $seat['seat_no'] }}</h6>
-                            @if(count($seat['available_plan_types']) > 3)
-                            <small>Available</small>
-                            @else
-                            @foreach($seat['available_plan_types'] as $planType)
-                            @if($planType['name']=='First Half')
-                            <small>FH </small>
-                            @elseif($planType['name']=='Second Half')
-                            <small>SH </small>
-                            @elseif($planType['name']=='Hourly Slot 1')
-                            <small>H1 </small>
-                            @elseif($planType['name']=='Hourly Slot 2')
-                            <small>H2 </small>
-                            @elseif($planType['name']=='Hourly Slot 3')
-                            <small>H3 </small>
-                            @elseif($planType['name']=='Hourly Slot 4')
-                            <small>H4 </small>
-                            @else
-                            <small>{{ $planType['name'] }}</small>
-                            @endif
+                    @foreach($available_seats as $seat)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{ url('public/img/available.png') }}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. {{ $seat['seat_no'] }}</h6>
+                                @if(count($seat['available_plan_types']) > 3)
+                                <small>Available</small>
+                                @else
+                                @foreach($seat['available_plan_types'] as $planType)
+                                @if($planType['name']=='First Half')
+                                <small>FH </small>
+                                @elseif($planType['name']=='Second Half')
+                                <small>SH </small>
+                                @elseif($planType['name']=='Hourly Slot 1')
+                                <small>H1 </small>
+                                @elseif($planType['name']=='Hourly Slot 2')
+                                <small>H2 </small>
+                                @elseif($planType['name']=='Hourly Slot 3')
+                                <small>H3 </small>
+                                @elseif($planType['name']=='Hourly Slot 4')
+                                <small>H4 </small>
+                                @else
+                                <small>{{ $planType['name'] }}</small>
+                                @endif
 
-                            @endforeach
-                            @endif
+                                @endforeach
+                                @endif
 
+                            </div>
+                            <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
+                                data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_id'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
                         </div>
-                        <a href="javascript:;" data-bs-toggle="modal" class="first_popup book"
-                            data-bs-target="#seatAllotmentModal" data-id="{{ $seat['seat_id'] }}" data-seat_no="{{ $seat['seat_no'] }}">Book</a>
-                    </div>
-                </li>
-                @endforeach
+                    </li>
+                    @endforeach
 
-            </ul>
-            <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
+                </ul>
+                <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Seat About to Expire</h4>
+                <ul class="contents">
+                    @if(!$renewSeats->isEmpty())
+
+                    @foreach($renewSeats as $key => $value)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
+                            <div class="seat-content">
+                                <h6>Seat No. {{$value->seat_no}}</h6>
+                                <small>{{$value->planType->name}}</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
+                                <small><a class="renew_extend" data-seat_no="{{$value->seat_no}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endforeach
+                    @else
+                    <li class="record-not-found">
+                        <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                        <span>No Expired Seats Available.</span>
+                    </li>
+                    @endif
+                </ul>
+                <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="seat-statistics">
+                <h4 class="mb-3 text-center">Extend Seats</h4>
+                <ul class="contents">
+                    @if(!$extend_sets->isEmpty())
+
+                    @foreach($extend_sets as $seat)
+                    <li>
+                        <div class="d-flex">
+                            <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
+                            <div class="seat-content">
+                                <h6>Seat No. {{ $seat->seat_no }}</h6>
+                                <small>{{ $seat->planType->name}}</small>
+                            </div>
+                            <div class="seat-status">
+                                <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
+                                <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            </div>
+
+                            <ul class="d-flex inner">
+                                <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
+                                <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endforeach
+                    @else
+                    <li class="record-not-found">
+                        <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                        <span>No Extended Seats Available.</span>
+                    </li>
+                    @endif
+                </ul>
+                <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>
+            </div>
         </div>
     </div>
 
-    <div class="col-lg-4">
-        <div class="seat-statistics">
-            <h4 class="mb-3 text-center">Seat About to Expire</h4>
-            <ul class="contents">
-                @if(!$renewSeats->isEmpty())
 
-                @foreach($renewSeats as $key => $value)
-                <li>
-                    <div class="d-flex">
-                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
-                        <div class="seat-content">
-                            <h6>Seat No. {{$value->seat_no}}</h6>
-                            <small>{{$value->planType->name}}</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_no="{{$value->seat_no}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
-                        </div>
-
-                        <ul class="d-flex inner">
-                            <li><a href="https://wa.me/{{ $value->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                            <li><a href="mailto:{{ $value->email }}"><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                @endforeach
-                @else
-                <li class="record-not-found">
-                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
-                    <span>No Expired Seats Available.</span>
-                </li>
-                @endif
-            </ul>
-            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="seat-statistics">
-            <h4 class="mb-3 text-center">Extend Seats</h4>
-            <ul class="contents">
-                @if(!$extend_sets->isEmpty())
-                
-                @foreach($extend_sets as $seat)
-                <li>
-                    <div class="d-flex" >
-                        <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
-                        <div class="seat-content">
-                            <h6>Seat No. {{ $seat->seat_no }}</h6>
-                            <small>{{ $seat->planType->name}}</small>
-                        </div>
-                        <div class="seat-status">
-                            <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
-                        </div>
-
-                        <ul class="d-flex inner">
-                            <li><a href="https://wa.me/{{ $seat->mobile }}"><i class="fab fa-whatsapp"></i></a></li>
-                            <li><a href="mailto:{{ $seat->email }}"><i class="fa fa-envelope"></i></a></li>
-                        </ul>
-                    </div>
-                </li>
-                @endforeach
-                @else
-                <li class="record-not-found">
-                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
-                    <span>No Extended Seats Available.</span>
-                </li>
-                @endif
-            </ul>
-            <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>
-        </div>
-    </div>
-</div>
-
-
-<!-- Charts -->
+    <!-- Charts -->
 
 </div>
 <!-- End -->
@@ -1057,151 +1057,156 @@
 </script>
 
 <script>
-function renderRevenueChart(labels, data) {
-    if (Chart.getChart("revenueChart")) {
-        Chart.getChart("revenueChart").destroy();
-    }
+    function renderRevenueChart(labels, data) {
+        if (Chart.getChart("revenueChart")) {
+            Chart.getChart("revenueChart").destroy();
 
-    var ctx = document.getElementById('revenueChart').getContext('2d');
+        };
 
-    // Create gradient
-    var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, '#001f3f'); // Navy
-    gradient.addColorStop(1, '#0a284b'); // Dark Navy
+        var ctx = document.getElementById('revenueChart').getContext('2d');
 
-    var totalCount = data.reduce((a, b) => a + b, 0); // Calculate the total count
+        // Create gradient
+        var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'green'); // Navy
+        gradient.addColorStop(1, '#0a284b'); // Dark Navy
 
-    var revenueChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: `Plan Type Wise Revenue (Total: ${totalCount})`, // Total revenue
-                data: data,
-                backgroundColor: gradient,
-                borderColor: 'rgba(54, 162, 235, 1)', // Blue Border
-                borderWidth: 0,
-                borderRadius: 15, // Rounded Edges
-                barThickness: 30, // Bar Width
-                borderSkipped: false,
-            }]
-        },
-        options: {
-            animation: {
-                duration: 2000, // Animation duration
-                easing: 'easeInOutQuart' // Animation easing
+        var totalCount = data.reduce((a, b) => a + b, 0); // Calculate the total count
+
+        var revenueChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: `Plan Type Wise Revenue (Total: ${totalCount})`, // Total revenue
+                    data: data,
+                    backgroundColor: gradient,
+                    borderColor: 'rgba(54, 162, 235, 1)', // Blue Border
+                    borderWidth: 0,
+                    borderRadius: 15, // Rounded Edges
+                    barThickness: 30, // Bar Width
+                    borderSkipped: false,
+                }]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false // Remove y-axis grid lines
-                    },
-                    ticks: {
-                        display: false // Show y-axis labels
-                    },
-                    border: {
-                        display: false // Hide y-axis border line
+            options: {
+                animation: {
+                    duration: 2000, // Animation duration
+                    easing: 'easeInOutQuart' // Animation easing
+                },
+                layout: {
+                    padding: {
+                        top: 35, // Add more space above the chart
                     }
                 },
-                x: {
-                    grid: {
-                        display: false // Remove x-axis grid lines
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false // Remove y-axis grid lines
+                        },
+                        ticks: {
+                            display: false // Show y-axis labels
+                        },
+                        border: {
+                            display: false // Hide y-axis border line
+                        }
                     },
-                    border: {
-                        display: false // Hide x-axis border line
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true, // Show legend
-                    labels: {
-                        boxWidth: 15, // Legend box size
-                        padding: 10, // Add padding
-                        color: 'rgba(0, 0, 0, 0.7)' // Adjust label color
+                    x: {
+                        grid: {
+                            display: false // Remove x-axis grid lines
+                        },
+                        border: {
+                            display: false // Hide x-axis border line
+                        }
                     }
                 },
-                datalabels: {
-                    color: 'rgba(0, 0, 0, 0.8)', // Label color
-                    display: true, // Enable datalabels
-                    anchor: 'end',
-                    align: 'top',
-                    font: {
-                        size: 14,
-                        weight: 'bold'
+                plugins: {
+                    legend: {
+                        display: false, // Show legend
+                        labels: {
+                            boxWidth: 15, // Legend box size
+                            padding: 10, // Add padding
+                            color: 'rgba(0, 0, 0, 0.7)' // Adjust label color
+                        }
                     },
-                    formatter: (value) => value // Show raw data value
-                }
-            }
-        },
-        plugins: [ChartDataLabels] // Register the datalabels plugin
-    });
-}
-
-function renderBookingCountChart(labels, data) {
-    if (Chart.getChart("bookingCountChart")) {
-        Chart.getChart("bookingCountChart").destroy();
-    }
-
-    var ctx1 = document.getElementById('bookingCountChart').getContext('2d');
-    var bookingCountChart = new Chart(ctx1, {
-        type: 'pie',
-        data: {
-            labels: labels.map((label, index) => `${label}: ${data[index]} bookings`), // Add counts to labels
-            datasets: [{
-                label: 'Plan Type Wise Booking Count',
-                data: data,
-                backgroundColor: [
-                    '#001f3f', // Dark Navy for Full Day
-                    '#85144b', // Maroon for First Half
-                    '#FF4136', // Red for Second Half
-                    '#3D9970', // Dark Green for Hourly 1
-                    '#FF851B', // Orange for Hourly 2
-                    '#0074D9', // Blue for Hourly 3
-                    '#7FDBFF'  // Light Blue for Hourly 4
-                ],
-                borderColor: 'rgba(255, 255, 255, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    
-                    position: 'top',
-                    labels: {
-                        color: '#000', // Legend text color
+                    datalabels: {
+                        color: 'rgba(0, 0, 0, 0.8)', // Label color
+                        display: true, // Enable datalabels
+                        anchor: 'end',
+                        align: 'top',
                         font: {
-                            size: 12
-                        }
-                    }
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            const label = tooltipItem.label || '';
-                            const value = tooltipItem.raw || 0;
-                            return `${label}: ${value} bookings`;
-                        }
-                    }
-                },
-                datalabels: {
-                    color: '#fff', // Label text color
-                    display: true,
-                    formatter: (value) => value, // Show count directly on the chart
-                    font: {
-                        size: 20,
-                        weight: 'regular'
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        formatter: (value) => value // Show raw data value
                     }
                 }
-            }
-        },
-        plugins: [ChartDataLabels] // Register ChartDataLabels plugin
-    });
-}
+            },
+            plugins: [ChartDataLabels] // Register the datalabels plugin
+        });
+    }
 
+    function renderBookingCountChart(labels, data) {
+        if (Chart.getChart("bookingCountChart")) {
+            Chart.getChart("bookingCountChart").destroy();
+        }
+
+        var ctx1 = document.getElementById('bookingCountChart').getContext('2d');
+        var bookingCountChart = new Chart(ctx1, {
+            type: 'pie',
+            data: {
+                labels: labels.map((label, index) => `${label}: ${data[index]} bookings`), // Add counts to labels
+                datasets: [{
+                    label: 'Plan Type Wise Booking Count',
+                    data: data,
+                    backgroundColor: [
+                        '#001f3f', // Dark Navy for Full Day
+                        '#85144b', // Maroon for First Half
+                        '#FF4136', // Red for Second Half
+                        '#3D9970', // Dark Green for Hourly 1
+                        '#FF851B', // Orange for Hourly 2
+                        '#0074D9', // Blue for Hourly 3
+                        '#7FDBFF' // Light Blue for Hourly 4
+                    ],
+                    borderColor: 'rgba(255, 255, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+
+                        position: 'top',
+                        labels: {
+                            color: '#000', // Legend text color
+                            font: {
+                                size: 12
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                const label = tooltipItem.label || '';
+                                const value = tooltipItem.raw || 0;
+                                return `${label}: ${value} bookings`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff', // Label text color
+                        display: true,
+                        formatter: (value) => value, // Show count directly on the chart
+                        font: {
+                            size: 20,
+                            weight: 'regular'
+                        }
+                    }
+                }
+            },
+            plugins: [ChartDataLabels] // Register ChartDataLabels plugin
+        });
+    }
 </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {

@@ -5,10 +5,10 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="row mb-4 mt-4">
-    
+<div class="row mb-4">
     <div class="col-lg-12">
-        <div class="table-responsive ">
+        <b class="d-block pb-3">Active Bookings for November: [Count]</b>
+        <div class="table-responsive">
             <table class="table text-center datatable border-bottom" id="datatable">
                 <thead>
                     <tr>
@@ -50,17 +50,12 @@
                             @php
                                     
                                     $today = Carbon::today();
-<<<<<<< Updated upstream
-                                    $endDate = Carbon::parse($data->plan_end_date);
-                                    
-=======
                                     if($data->plan_end_date){
                                         $endDate =$data->plan_end_date;
                                     }elseif($data->learner->plan_end_date){
                                         $endDate =$data->learner->plan_end_date;
                                     }
                                     $endDate = Carbon::parse($endDate);
->>>>>>> Stashed changes
                                     $diffInDays = $today->diffInDays($endDate, false);
                                     $inextendDate = $endDate->copy()->addDays($extendDay); 
                                     $diffExtendDay= $today->diffInDays($inextendDate, false);

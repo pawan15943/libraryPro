@@ -435,9 +435,24 @@ class DashboardController extends Controller
             // Clone the base query for each payment mode count
             $online_paid = (clone $data)->where('payment_mode', 1)->count();
             $offline_paid = (clone $data)->where('payment_mode', 2)->count();
-            $other_paid = (clone $data)->where('payment_mode', 3)->count();
+            $other_paid = LearnerDetail::where('payment_mode', 3)
+            ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('plan_start_date', $request->year)
+                        ->orWhereYear('plan_end_date', $request->year);
+                });
+            })
+            ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
+                return $query->where(function ($query) use ($request) {
+                    $query->whereYear('plan_start_date', $request->year)
+                        ->whereMonth('plan_start_date', $request->month)
+                        ->orWhere(function ($query) use ($request) {
+                            $query->whereYear('plan_end_date', $request->year)
+                                    ->whereMonth('plan_end_date', $request->month);
+                        });
+                });
+            })->count();
 
-            
             // Define the base query for learner_operations_log with common filters applied
             $baseQuery = DB::table('learner_operations_log')
             ->select(DB::raw('COUNT(*) as total_renew_count'))

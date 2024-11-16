@@ -240,8 +240,7 @@ class DashboardController extends Controller
         ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
         ->count();       
         $total_seats=Seat::count();
-            
-            
+       
             // Check if date range is provided and filter by it
          if ($request->filled('date_range')) {
                 // Split date range into start and end dates
@@ -438,9 +437,10 @@ class DashboardController extends Controller
             $offline_paid = (clone $data)->where('payment_mode', 2)->count();
             $other_paid = (clone $data)->where('payment_mode', 3)->count();
 
-
+            
             // Define the base query for learner_operations_log with common filters applied
             $baseQuery = DB::table('learner_operations_log')
+            ->select(DB::raw('COUNT(*) as total_renew_count'))
             ->where('library_id', Auth::user()->id)
             ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
                 return $query->whereYear('created_at', $request->year);
@@ -448,27 +448,29 @@ class DashboardController extends Controller
             ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
                 return $query->whereYear('created_at', $request->year)
                             ->whereMonth('created_at', $request->month);
-            });
+            }) ->groupBy('learner_id', DB::raw('DATE(created_at)'));
 
             // Clone the base query and apply specific filters for each operation
             $swap_seat = (clone $baseQuery)
             ->where('operation', 'swapseat')
+            ->get()
             ->count();
 
             $learnerUpgrade = (clone $baseQuery)
             ->where('operation', 'learnerUpgrade')
+            ->get()
             ->count();
 
             $reactive = (clone $baseQuery)
             ->where('operation', 'reactive')
-            ->groupBy('learner_id', 'created_at')
+            ->get()
             ->count();
 
             $renew = (clone $baseQuery)
             ->where('operation', 'renewSeat')
-            ->groupBy('learner_id', 'created_at')
+            ->get()
             ->count();
-
+           
             $close_seat = (clone $baseQuery)
             ->where('operation', 'closeSeat')
             ->count();
@@ -626,7 +628,7 @@ class DashboardController extends Controller
                         'year'=>$request->year,
                         'monthlyRevenue' =>$monthlyRevenue,
                     ];
-                }
+            }
                 
            
         }

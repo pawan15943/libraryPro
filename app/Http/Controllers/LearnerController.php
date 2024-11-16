@@ -932,7 +932,7 @@ class LearnerController extends Controller
             ->whereHas('learnerDetails', function($query) use ($id) {
                 $query->where('seat_id', $id);
             })
-            ->where('status', 0)
+          
             ->get();
 
         // Fetch the seat number

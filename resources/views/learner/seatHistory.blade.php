@@ -32,6 +32,7 @@ $today = Carbon::today();
                     </tr>
                 </thead>
                 <tbody>
+                    
                     @foreach($seats as $seat)
                     @php
                     // First, check if there are any customers with status 1 for the given seat

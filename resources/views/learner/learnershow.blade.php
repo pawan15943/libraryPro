@@ -78,12 +78,12 @@
                         @if ($customer->diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $customer->diffInDays }} days</h5>
                         @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                        <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
-                        @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                        <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
-                        @else
-                        <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
-                        @endif
+                            <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
+                            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+                                <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
+                                @else
+                                <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
+                                @endif
 
                     </div>
                     <div class="col-lg-4">
@@ -186,7 +186,7 @@
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
-                            <table class="table text-center" id="datatable">
+                            <table class="table text-center border-bottom" id="datatable">
                                 <thead>
                                     <tr>
                                         <th>Plan </th>
@@ -199,7 +199,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+
                                     @foreach($renew_detail as $key => $value)
                                     @php
                                     $transactionRenew=App\Models\LearnerTransaction::where('learner_detail_id',$value->id)->where('is_paid',1)->first();
@@ -245,7 +245,7 @@
 
                                                 </li>
                                                 @endif
-                                                
+
                                                 @endcan
                                             </ul>
                                         </td>
@@ -263,7 +263,7 @@
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <div class="table-responsive">
-                            <table class="table text-center" id="datatable">
+                            <table class="table text-center border-bottom" id="datatable1">
                                 <thead>
                                     <tr>
                                         <th>Owner Name</th>
@@ -276,7 +276,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
+
                                     @foreach ($seat_history as $learner)
                                     <tr>
                                         <td>{{ $learner->name }}<br>
@@ -284,68 +284,68 @@
                                         </td> <!-- Owner Name -->
                                         <td>{{ $learner->mobile }}</td> <!-- Mobile -->
                                         <td>{{ $learner->email }}</td> <!-- Email -->
-                                
+
                                         <!-- Loop through learner details and display Plan, Start Date, End Date -->
                                         @if ($learner->learnerDetails->isNotEmpty())
-                                            @php
-                                                $firstDetail = $learner->learnerDetails->first();
-                                            @endphp
-                                            <!-- Display the first learner detail in the same row -->
-                                            <td>{{ $firstDetail->plan->name ?? 'N/A' }}<br><small>{{ $firstDetail->planType->name ?? 'N/A' }}</small></td> <!-- Plan Name -->
-                                            <td>{{ $firstDetail->plan_start_date ?? 'N/A' }}</td> <!-- Start Date -->
-                                            <td>{{ $firstDetail->plan_end_date ?? 'N/A' }}</td> <!-- End Date -->
-                                            <td>
-                                                <!-- Action buttons for the first learner detail -->
-                                                <ul class="actionalbls" style="width: 90px;">
-                                                    @can('has-permission', 'View Seat')
-                                                    <li><a href="{{route('learners.show',$firstDetail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-                                                    @endcan
-                                                    <li>
-                                                        <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
-                                                            @csrf
-                                                            <input type="hidden" id="custId" name="id" value="{{ $firstDetail->id }}">
-                                                            <input type="hidden" name="type" value="learner">
-                                                            <button type="submit"><i class="fa fa-print"></i></button>
-                                                        </form>
-                                                    </li>
-                                                    {{-- <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li> --}}
-                                                </ul>
-                                            </td>
-                                        </tr>
-                                
-                                        <!-- Display additional learner details in new rows (if any) -->
-                                        @foreach ($learner->learnerDetails->skip(1) as $detail)
-                                            <tr>
-                                                <td colspan="3"></td> <!-- Empty columns for owner name, mobile, and email -->
-                                                <td>{{ $detail->plan->name ?? 'N/A' }}</td> <!-- Plan Name -->
-                                                <td>{{ $detail->start_date ?? 'N/A' }}</td> <!-- Start Date -->
-                                                <td>{{ $detail->end_date ?? 'N/A' }}</td> <!-- End Date -->
-                                                <td>
-                                                    <ul class="actionalbls" style="width: 90px;">
-                                                        @can('has-permission', 'View Seat')
-                                                        <li><a href="{{route('learners.show',$detail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
-                                                        @endcan
-                                                     
-                                                        <li>
-                                                            <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
-                                                                @csrf
-                                                                <input type="hidden" id="custId" name="id" value="{{ $detail->id }}">
-                                                                <input type="hidden" name="type" value="learner">
-                                                                <button type="submit"><i class="fa fa-print"></i></button>
-                                                            </form>
-                                                        </li>
-                                                        <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                        @php
+                                        $firstDetail = $learner->learnerDetails->first();
+                                        @endphp
+                                        <!-- Display the first learner detail in the same row -->
+                                        <td>{{ $firstDetail->plan->name ?? 'N/A' }}<br><small>{{ $firstDetail->planType->name ?? 'N/A' }}</small></td> <!-- Plan Name -->
+                                        <td>{{ $firstDetail->plan_start_date ?? 'N/A' }}</td> <!-- Start Date -->
+                                        <td>{{ $firstDetail->plan_end_date ?? 'N/A' }}</td> <!-- End Date -->
+                                        <td>
+                                            <!-- Action buttons for the first learner detail -->
+                                            <ul class="actionalbls" style="width: 90px;">
+                                                @can('has-permission', 'View Seat')
+                                                <li><a href="{{route('learners.show',$firstDetail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                                                @endcan
+                                                <li>
+                                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="hidden" id="custId" name="id" value="{{ $firstDetail->id }}">
+                                                        <input type="hidden" name="type" value="learner">
+                                                        <button type="submit"><i class="fa fa-print"></i></button>
+                                                    </form>
+                                                </li>
+                                                {{-- <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li> --}}
+                                            </ul>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Display additional learner details in new rows (if any) -->
+                                    @foreach ($learner->learnerDetails->skip(1) as $detail)
+                                    <tr>
+                                        <td colspan="3"></td> <!-- Empty columns for owner name, mobile, and email -->
+                                        <td>{{ $detail->plan->name ?? 'N/A' }}</td> <!-- Plan Name -->
+                                        <td>{{ $detail->start_date ?? 'N/A' }}</td> <!-- Start Date -->
+                                        <td>{{ $detail->end_date ?? 'N/A' }}</td> <!-- End Date -->
+                                        <td>
+                                            <ul class="actionalbls" style="width: 90px;">
+                                                @can('has-permission', 'View Seat')
+                                                <li><a href="{{route('learners.show',$detail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
+                                                @endcan
+
+                                                <li>
+                                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                                        @csrf
+                                                        <input type="hidden" id="custId" name="id" value="{{ $detail->id }}">
+                                                        <input type="hidden" name="type" value="learner">
+                                                        <button type="submit"><i class="fa fa-print"></i></button>
+                                                    </form>
+                                                </li>
+                                                <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                     @else
-                                        <!-- If no learner details are available, show 'N/A' -->
-                                        <td colspan="4">No details available</td>
+                                    <!-- If no learner details are available, show 'N/A' -->
+                                    <td colspan="4">No details available</td>
                                     </tr>
                                     @endif
                                     @endforeach
-                                
+
                                 </tbody>
                             </table>
                         </div>
@@ -357,30 +357,30 @@
     </div>
     <div class="col-lg-3">
         <div class="seat--info">
-            @php 
-                $class='';  
-                if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
-                    $class='extedned';
+            @php
+            $class='';
+            if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
+                $class='extedned';
                 }elseif($customer->diffInDays < 0 ){
-                    $class='expired';
-                }
-            @endphp
-            <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
-            <p>{{ $customer->plan_name}}</p>
-            <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <!-- Expire days Info -->
-           
-            @if ($customer->diffInDays > 0)
-                <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                <span class="text-danger fs-10 d-block">{{$learnerExtendText}}  {{ abs($customer->diffExtendDay) }} days.</span>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                <span class="text-warning fs-10 d-block">Plan Expires today</span>
-            @else
-                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
-            @endif
-            <!-- End -->
+                    $class='expired' ;
+                    }
+                    @endphp
+                    <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+                    <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+                    <p>{{ $customer->plan_name}}</p>
+                    <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+                    <!-- Expire days Info -->
+
+                    @if ($customer->diffInDays > 0)
+                    <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
+                        @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
+                            <span class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</span>
+                            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+                                <span class="text-warning fs-10 d-block">Plan Expires today</span>
+                                @else
+                                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
+                                @endif
+                                <!-- End -->
         </div>
         @if($learner_request->isNotEmpty())
         <div class="request-logs mt-4">
@@ -396,17 +396,17 @@
                             <span class="description">Message Send by <b>[Seat Owner]</b> on
                                 {{$value->request_date}}</span>
                             <span class="timestamp"><i class="fa-solid fa-calendar"></i> {{$value->created_at}}</span>
-                            <small class="status"> <b>Status : </b> 
+                            <small class="status"> <b>Status : </b>
                                 @if($value->request_status==0)
-                                <span class=" text-danger d-inline">Pending</span>   
+                                <span class=" text-danger d-inline">Pending</span>
                                 @else
                                 <span class=" text-success d-inline">Resolved (By Admin)</span>
                                 @endif
-                                
+
                             </small>
                         </div>
                     </div>
-                </li>  
+                </li>
                 @endforeach
             </ul>
         </div>
@@ -418,30 +418,35 @@
                 <li>
                     <p>{{ \Carbon\Carbon::parse($value->created_at)->format('Y-m-d') }} :
                         @if($value->operation=='learnerUpgrade')
-                        Seat Upgrade  
+                        Seat Upgrade
                         @elseif($value->operation=='swapseat')
-                        Seat Swapped 
+                        Seat Swapped
                         @elseif($value->operation=='renewSeat')
-                        Seat Renew   
+                        Seat Renew
                         @elseif($value->operation=='reactive')
-                        Reactive   
+                        Reactive
                         @elseif($value->operation=='closeSeat')
-                        Close Seat 
+                        Close Seat
                         @endif
-                    
+
                     </p>
-                </li>  
+                </li>
                 @endforeach
-               
+
             </ul>
         </div>
-      
+
     </div>
 </div>
 <script>
     $(document).ready(function() {
         let table = new DataTable('#datatable', {
-            searching: false // This option hides the search bar
+            searching: false, // This option hides the search bar
+        });
+    });
+    $(document).ready(function() {
+        let table = new DataTable('#datatable1', {
+            searching: false, // This option hides the search bar
         });
     });
 </script>

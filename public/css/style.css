@@ -4103,6 +4103,12 @@ div#datatable_wrapper select {
     margin: .5rem;
     border-color: #e7e7e7;
 }
+div#datatable1_wrapper input,
+div#datatable1_wrapper select {
+    height: 35px;
+    margin: .5rem;
+    border-color: #e7e7e7;
+}
 
 small.text-danger.fs-10.d-block {
     width: 200px;
@@ -4114,6 +4120,11 @@ table#datatable {
 }
 
 div#datatable_info {
+    padding: .5rem;
+    font-size: .8rem;
+    font-weight: 700;
+}
+div#datatable1_info {
     padding: .5rem;
     font-size: .8rem;
     font-weight: 700;

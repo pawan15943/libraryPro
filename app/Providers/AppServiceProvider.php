@@ -132,11 +132,10 @@ class AppServiceProvider extends ServiceProvider
                 'Learners List' => route('learners'),
                 'Make Payment' => route('learner.payment', $parameters),
             ],
-            // 'report.expense' => [
-            //     'Dashboard' => route('library.home'),
-            //     'Monthly Revenue Report' => route('report.monthly'),
-            //     'Manage Monthly Expense' => route('report.expense', ['year' => $parameters['year'] ?? null, 'month' => $parameters['month'] ?? null]),
-            // ],
+            'learners.list.view' => [
+                'Dashboard' => route('library.home'),
+                'Library Counts Details' => route('learners.list.view'),
+            ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -177,6 +176,7 @@ class AppServiceProvider extends ServiceProvider
             'learners.reactive' => 'Reactive Learner',
             'learnerHistory' => 'Learner History',
             'learner.payment' => 'Make Payment',
+            'learners.list.view' => 'Library Counts Details',
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

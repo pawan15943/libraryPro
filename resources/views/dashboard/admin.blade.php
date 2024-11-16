@@ -611,7 +611,7 @@
                 </li>
                 @endif
             </ul>
-            <a href="{{route('learners')}}" class="view-full-info opacity-0">View All Availble Seats</a>
+            <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
         </div>
     </div>
     <div class="col-lg-4">
@@ -619,9 +619,10 @@
             <h4 class="mb-3 text-center">Extend Seats</h4>
             <ul class="contents">
                 @if(!$extend_sets->isEmpty())
+                
                 @foreach($extend_sets as $seat)
                 <li>
-                    <div class="d-flex">
+                    <div class="d-flex" >
                         <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded extedned">
                         <div class="seat-content">
                             <h6>Seat No. {{ $seat->seat_no }}</h6>
@@ -646,7 +647,6 @@
                 </li>
                 @endif
             </ul>
-
             <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>
         </div>
     </div>

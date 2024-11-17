@@ -1868,20 +1868,20 @@ ul.revenue-box {
 
 ul.revenue-box li {
     /* background: var(--c5); */
-    width: 400px;
+    width: 430px;
     border-radius: 1.5rem;
     padding: 1.5rem;
     box-shadow: 1px 0 5px #00000021;
 }
 
 ul.revenue-box li .d-flex {
-    width: 352px !important;
+    width: 380px !important;
     justify-content: space-between;
     align-items: center;
 }
 
 .mt-10 {
-    margin-top: 6rem !important;
+    margin-top: 4rem !important;
 }
 
 .booking-count {
@@ -2493,7 +2493,6 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.collapsed {
 ul.list-unstyled.ps-0 {
     padding: 0 1rem !IMPORTANT;
     text-align: center;
-    padding-right: 0 !important;
 }
 
 ul.list-unstyled.ps-0>li {
@@ -3792,20 +3791,7 @@ ul.revenue-box {
     gap: 1.5rem;
 }
 
-ul.revenue-box li {
-    background: var(--c5);
-    width: 400px;
-    border-radius: 1.5rem;
-    padding: 1.5rem;
-    box-shadow: 1px 0 5px #00000021;
-    margin: .2rem;
-}
 
-ul.revenue-box li .d-flex {
-    width: 352px !important;
-    justify-content: space-between;
-    align-items: center;
-}
 
 
 .mt-10 {
@@ -4449,7 +4435,14 @@ p.mb-2.text-dark b {
 .text-success {
     color: rgb(79 194 18) !important;
 }
+.d-flex.mt-10.flex-wrap {
+    row-gap: 1rem;
+}
 
+.value small {
+    font-weight: 700;
+    color: var(--c2);
+}
 @media screen and (max-width:480px) {
     .w-120 {
         width: 0 !important;

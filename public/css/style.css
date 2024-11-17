@@ -1905,7 +1905,9 @@ ul.revenue-box li .d-flex {
     transform: scale(1);
 }
 
-
+.booking-count:hover {
+    transform: scale(1.05);
+}
 
 .booking-count:hover a.viewall {
     opacity: 1;
@@ -2670,27 +2672,26 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 }
 
 /* Seat Assignment */
+
 .seat-booking {
-    /* display: flex;
-    flex-wrap: wrap;
-    row-gap: .8rem;
-    column-gap: 7.6px; */
     display: grid;
-    grid-template-columns: repeat(7, 1fr); /* Adjust the number of columns as needed */
-    gap: 10px; /* Adjust space between seats */
+    grid-template-columns: repeat(8, 1fr); 
+    gap: 10px; 
 }
 
 .seat {
-    flex: 0 0 calc(100% / 9);
     color: white;
     text-align: center;
-    padding: 5px 20px 9px 20px;
     margin: 5px;
     border-radius: 20px;
     position: relative;
     background: var(--c5);
     box-shadow: 1px 0 5px #00000017;
+    transform: scale(1) !important;
+    transition: all .5s;
 }
+
+
 
 .seat small {
     font-weight: 700;
@@ -2700,11 +2701,15 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 }
 
 .seat img {
-    width: 60px;
+    width: 50px;
     display: block;
-    margin: 5px auto;
+    margin: 6px auto;
+    
 }
-
+.seat img:hover{
+    transform: scale(1.1) !important;
+    transition: all .5s;
+}
 .seat ul {
     list-style: none;
     padding: 0;
@@ -4465,3 +4470,4 @@ p.mb-2.text-dark b {
     margin-left: -20px;
     margin-right: -20px;
 }
+

@@ -179,12 +179,30 @@ class DashboardController extends Controller
                 return $booking->planType->name; 
             })->toArray(); 
             $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
-           $dynamicyears=['2024','2025'];
-           $dynamicmonths=['1','2','3','10','11','12'];
+           
+          
+
+            // Get the unique years and month
+            $minStartDate =LearnerDetail::min('plan_start_date');
+            $maxEndDate =LearnerDetail::max('plan_end_date');
+        
+            $start = Carbon::parse($minStartDate)->startOfMonth();
+            $end = Carbon::parse($maxEndDate)->startOfMonth();
+        
+            $months = [];
+            while ($start <= $end) {
+                $year = $start->year;
+                $month = $start->format('F');
+                $months[$year][$start->month] = $month;
+                $start->addMonth();
+            }
+
+
+
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('plans','available_seats','renewSeats','plan','features_count','check','extend_sets','bookingcount','bookinglabels','dynamicyears','dynamicmonths'));
+                return view('dashboard.admin',compact('plans','available_seats','renewSeats','plan','features_count','check','extend_sets','bookingcount','bookinglabels','months'));
             }else{
                 return redirect($redirectUrl);
             }

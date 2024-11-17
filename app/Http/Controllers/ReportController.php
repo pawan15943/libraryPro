@@ -153,13 +153,7 @@ class ReportController extends Controller
    
     
     public function learnerReport(Request $request){
-        $uniqueDates=LearnerDetail::selectRaw('YEAR(plan_start_date) as year, MONTH(plan_start_date) as month')
-        ->distinct()
-        ->orderBy('year', 'desc')
-        ->orderBy('month', 'asc')
-        ->get();
-        $dynamicyears = $uniqueDates->pluck('year')->unique();
-        $dynamicmonths = $uniqueDates->pluck('month')->unique();
+     
 
         $filters = [
             'year' => $request->get('year'),
@@ -172,8 +166,21 @@ class ReportController extends Controller
         $query = LearnerDetail::with(['seat', 'plan', 'planType','learner']);
          
         $learners = $this->fetchlearnerData( $filters,$query);
-       
-        return view('report.learner_report',compact('learners', 'dynamicyears', 'dynamicmonths'));
+       // Get the unique years and month
+       $minStartDate =LearnerDetail::min('plan_start_date');
+       $maxEndDate =LearnerDetail::max('plan_end_date');
+   
+       $start = Carbon::parse($minStartDate)->startOfMonth();
+       $end = Carbon::parse($maxEndDate)->startOfMonth();
+   
+       $months = [];
+       while ($start <= $end) {
+           $year = $start->year;
+           $month = $start->format('F');
+           $months[$year][$start->month] = $month;
+           $start->addMonth();
+       }
+        return view('report.learner_report',compact('learners', 'months'));
     }
 
     public function upcomingPayment(){

@@ -32,10 +32,8 @@ $currentMonth = date('m');
                         <label for="year">Filter By Year</label>
                         <select id="year" class="form-select form-control-sm" name="year">
                             <option value="">Select Year</option>
-                            @foreach($dynamicyears as $year)
-                                <!-- Default to current year if no year is selected, else use selected year -->
-                                <option value="{{ $year }}" 
-                                    {{ (request('year') ?? $currentYear) == $year ? 'selected' : '' }}>
+                            @foreach($months as $year => $monthData)
+                                <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
                                     {{ $year }}
                                 </option>
                             @endforeach
@@ -46,12 +44,13 @@ $currentMonth = date('m');
                         <label for="month">Select Month:</label>
                         <select id="month" class="form-select form-control-sm" name="month">
                             <option value="">Select Month</option>
-                            @foreach($dynamicmonths as $month)
-                                <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" 
-                                    {{ request('month') == str_pad($month, 2, '0', STR_PAD_LEFT) ? 'selected' : '' }}>
-                                    {{ DateTime::createFromFormat('!m', $month)->format('M') }}
-                                </option>
-                            @endforeach
+                            @if(isset($months[$currentYear]))
+                                @foreach($months[$currentYear] as $monthNumber => $monthName)
+                                    <option value="{{ $monthNumber }}" {{ $monthNumber == $currentMonth ? 'selected' : '' }}>
+                                        {{ $monthName }}
+                                    </option>
+                                @endforeach
+                            @endif
                         </select>
                     </div>
                  
@@ -179,7 +178,36 @@ $currentMonth = date('m');
         });
     });
 </script>
+<script>
+    // Year or month dropdown
+  const yearDropdown = document.getElementById('year');
+  const monthDropdown = document.getElementById('month');
 
+  yearDropdown.addEventListener('change', function () {
+      const selectedYear = this.value;
+      const monthsData = @json($months);
+
+      monthDropdown.innerHTML = '<option value="">Select Month</option>'; // Reset
+
+      if (selectedYear && monthsData[selectedYear]) {
+          Object.entries(monthsData[selectedYear]).forEach(([monthNumber, monthName]) => {
+              const option = document.createElement('option');
+              option.value = monthNumber;
+              option.textContent = monthName;
+              monthDropdown.appendChild(option);
+          });
+
+          // Automatically select the current month if it matches
+          if (selectedYear == @json($currentYear)) {
+              monthDropdown.value = @json($currentMonth);
+          }
+
+          monthDropdown.disabled = false;
+      } else {
+          monthDropdown.disabled = true;
+      }
+  });
+</script>
 
 @include('learner.script')
 @endsection

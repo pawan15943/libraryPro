@@ -510,24 +510,29 @@ class DashboardController extends Controller
             ->count();
 
             // // For graph
+           
             $plan_wise_booking = LearnerDetail::where('is_paid', 1)
             ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
                 // Filter by year only
-                return $query->where(function ($query) use ($request) {
-                    $query->whereYear('learner_detail.plan_start_date', $request->year)
-                        ->orWhereYear('learner_detail.plan_end_date', $request->year);
-                });
+                    $year = $request->year;
+                    return $query->where(function ($q) use ($year) {
+                        $q->whereYear('plan_start_date', '<=', $year)
+                        ->whereYear('plan_end_date', '>=', $year);
+                    });
+               
             })
             ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
                
-                return $query->where(function ($query) use ($request) {
-                    $query->whereYear('learner_detail.plan_start_date', $request->year)
-                        ->whereMonth('learner_detail.plan_start_date', $request->month)
-                        ->orWhere(function ($query) use ($request) {
-                            $query->whereYear('learner_detail.plan_end_date', $request->year)
-                                    ->whereMonth('learner_detail.plan_end_date', $request->month);
-                        });
-                });
+                  $year = $request->year;
+                $month = $request->month;
+                $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+            
+                    return $query->where(function ($q) use ($startOfMonth, $endOfMonth) {
+                        $q->where('plan_start_date', '<=', $endOfMonth)
+                        ->where('plan_end_date', '>=', $startOfMonth);
+                    });
+               
             })
             
             ->groupBy('plan_type_id')
@@ -538,22 +543,26 @@ class DashboardController extends Controller
               //plantype wise revenue
             $planTypeWiseRevenue = LearnerDetail::where('is_paid', 1)
             ->when($request->filled('year') && !$request->filled('month'), function ($query) use ($request) {
-                
-                return $query->where(function ($query) use ($request) {
-                    $query->whereYear('learner_detail.plan_start_date', $request->year)
-                        ->orWhereYear('learner_detail.plan_end_date', $request->year);
-                });
+                // Filter by year only
+                    $year = $request->year;
+                    return $query->where(function ($q) use ($year) {
+                        $q->whereYear('plan_start_date', '<=', $year)
+                        ->whereYear('plan_end_date', '>=', $year);
+                    });
+               
             })
             ->when($request->filled('year') && $request->filled('month'), function ($query) use ($request) {
-                // Filter by both year and month
-                return $query->where(function ($query) use ($request) {
-                    $query->whereYear('learner_detail.plan_start_date', $request->year)
-                        ->whereMonth('learner_detail.plan_start_date', $request->month)
-                        ->orWhere(function ($query) use ($request) {
-                            $query->whereYear('learner_detail.plan_end_date', $request->year)
-                                    ->whereMonth('learner_detail.plan_end_date', $request->month);
-                        });
-                });
+               
+                  $year = $request->year;
+                $month = $request->month;
+                $startOfMonth = Carbon::create($year, $month, 1)->startOfMonth()->toDateString();
+                $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+            
+                    return $query->where(function ($q) use ($startOfMonth, $endOfMonth) {
+                        $q->where('plan_start_date', '<=', $endOfMonth)
+                        ->where('plan_end_date', '>=', $startOfMonth);
+                    });
+               
             })
             
             ->groupBy('plan_type_id')

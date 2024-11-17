@@ -1409,7 +1409,7 @@ class LearnerController extends Controller
             'paid_amount' => 'required|numeric',
             'transaction_image' => 'nullable|mimes:webp,png,jpg,jpeg|max:200',
         ]);
-        $data=$request->all();
+        // $data=$request->all();
         $total_amount = 0;
         $pending_amount = 0;
     
@@ -1434,8 +1434,13 @@ class LearnerController extends Controller
     
         $data['total_amount'] = $total_amount;
         $data['pending_amount'] = $pending_amount;
-        $data['learner_detail_id '] = $learnerDetail->id;
-      
+        $data['learner_detail_id'] = $learnerDetail->id;
+        $data['learner_id'] = $request->learner_id;
+        $data['library_id'] = $request->library_id;
+        $data['paid_amount'] = $request->paid_amount;
+        $data['paid_date'] = $request->paid_date;
+        $data['transaction_id'] = $request->transaction_id;
+  
         try {
             $learner_transaction=LearnerTransaction::create($data);
             if($learner_transaction){

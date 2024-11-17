@@ -160,49 +160,8 @@
     <div class="row g-4">
         <div class="col-lg-9">
             <div class="v-content">
-
-                <ul class="revenue-box scroll-x " id="monthlyData">
-                    {{-- @foreach($revenues as $revenue)
-
-                    @php
-
-                    $monthName = Carbon\Carbon::createFromDate($revenue['year'], $revenue['month'])->format('F');
-                    $expense = $expenses->first(function($item) use ($revenue) {
-                    return $item->year == $revenue['year'] && $item->month == $revenue['month'];
-                    });
-                    $total_expense = $expense ? $expense->total_expense : 0;
-                    $net_profit = $revenue->total_revenue - $total_expense;
-
-                    @endphp
-                    <li style="background: #fff url('{{ asset('public/img/revenue.png') }}');background-size: contain; background-position: center;">
-                    <div class="d-flex">
-                        <h4>{{ $monthName }}, {{ $revenue->year }}</h4>
-                        <span class="toggleButton" data-box="{{ $loop->index + 1 }}"><i class="fa fa-eye-slash"></i></span>
-                    </div>
-                    <div class="d-flex mt-10">
-                        <div class="value">
-                            <small>Total Revenue</small>
-                            <h4 class="totalRevenue" data-box="{{ $loop->index + 1 }}">{{ $revenue->total_revenue }}</h4>
-                        </div>
-                        <div class="value">
-                            <small>Monthly Revenue</small>
-                            <h4 class="totalRevenue" data-box=""></h4>
-                        </div>
-                        <div class="value">
-                            <small>Total Expense</small>
-                            <h4 class="totalExpense text-danger" data-box="{{ $loop->index + 1 }}">{{ $total_expense }}</h4>
-                        </div>
-                        <div class="value">
-                            <small>Net Profit</small>
-                            <h4 class="netProfit text-success" data-box="{{ $loop->index + 1 }}">{{ $net_profit }}</h4>
-                        </div>
-                    </div>
-                    </li>
-                    @endforeach --}}
-
-                </ul>
+                <ul class="revenue-box scroll-x " id="monthlyData"></ul>
             </div>
-
         </div>
     </div>
     <!-- End -->
@@ -1022,27 +981,27 @@
             // Loop through each item in the data array and create HTML for each month
             data.forEach(function(item) {
                 let html = `
-                        <li style="background: #fff url('{{ asset('public/img/revenue.png') }}'); background-size: contain; background-position: center;">
+                        <li style="background: #fff ;margin: .5rem .3rem;">
                             <div class="d-flex">
                                 <h4>${item.month}, ${item.year}</h4> 
                                 <span class="toggleButton" data-box=""><i class="fa fa-eye-slash"></i></span>
                             </div>
-                            <div class="d-flex mt-10">
-                                <div class="value">
+                            <div class="d-flex mt-10 flex-wrap ">
+                                <div class="value w-100">
                                     <small>Total Revenue</small>
-                                    <h4 class="totalRevenue" data-box="1">${item.totalRevenue}</h4>
+                                    <h4 class="totalRevenue" data-value="${item.totalRevenue}">******</h4>
                                 </div>
-                                <div class="value">
+                                <div class="value col-4">
                                     <small>Monthly Revenue</small>
-                                    <h4 class="totalRevenue" data-box="2">${item.monthlyRevenue}</h4>
+                                    <h4 class="totalRevenue" data-value="${item.monthlyRevenue}">******</h4>
                                 </div>
-                                <div class="value">
+                                <div class="value col-4">
                                     <small>Total Expense</small>
-                                    <h4 class="totalExpense text-danger" data-box="3">${item.totalExpense}</h4>
+                                    <h4 class="totalExpense text-danger" data-value="${item.totalExpense}">******</h4>
                                 </div>
-                                <div class="value">
+                                <div class="value col-4">
                                     <small>Net Profit</small>
-                                    <h4 class="netProfit text-success" data-box="4">${item.netProfit}</h4>
+                                    <h4 class="netProfit text-success" data-value="${item.netProfit}">******</h4>
                                 </div>
                             </div>
                         </li>`;
@@ -1234,20 +1193,27 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    // Initially hide the values (show as ****)
-    $('.totalRevenue, .monthlyRevenue, .totalExpense, .netProfit').each(function() {
-        $(this).data('originalValue', $(this).text()); // Store the original value in a data attribute
-        $(this).text('****'); // Hide the value initially
+    $(document).on('click', '.toggleButton', function () {
+    const $icon = $(this).find('i'); // Find the <i> icon inside the button
+    const $box = $(this).closest('li'); // Get the parent <li> of the button
+    const isMasked = $icon.hasClass('fa-eye-slash'); // Check the current state (stars)
+
+    // Toggle the text of specific h4 elements
+    $box.find('h4.totalRevenue, h4.totalExpense, h4.netProfit').each(function () {
+        const $element = $(this);
+        if (isMasked) {
+            // Show the actual value
+            $element.text($element.data('value'));
+        } else {
+            // Mask the value as stars
+            $element.text('******');
+        }
     });
 
-    // Toggle button logic
-    $('.toggleButton').on('click', function() {
-        alert('dsfdsf');
-    });
+    // Toggle the eye icon class
+    $icon.toggleClass('fa-eye-slash fa-eye');
+});
 
-    function toggleSupportCard() {
-        $('#supportCard').toggle();
-    }
 </script>
 @include('learner.script')
 

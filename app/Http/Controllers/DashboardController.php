@@ -181,20 +181,26 @@ class DashboardController extends Controller
             $bookingcount = $plan_wise_booking->pluck('booking')->toArray(); 
            
           
+            // for dropdown year and month
+            $dates = LearnerDetail::select('plan_start_date', 'plan_end_date')->get();
 
-            // Get the unique years and month
-            $minStartDate =LearnerDetail::min('plan_start_date');
-            $maxEndDate =LearnerDetail::max('plan_end_date');
-        
-            $start = Carbon::parse($minStartDate)->startOfMonth();
-            $end = Carbon::parse($maxEndDate)->startOfMonth();
-        
             $months = [];
-            while ($start <= $end) {
-                $year = $start->year;
-                $month = $start->format('F');
-                $months[$year][$start->month] = $month;
-                $start->addMonth();
+
+            foreach ($dates as $date) {
+                $start = Carbon::parse($date->plan_start_date)->startOfMonth();
+                $end = Carbon::parse($date->plan_end_date)->startOfMonth();
+        
+                // Loop through the months within the start and end date range
+                while ($start <= $end) {
+                    $year = $start->year;
+                    $monthNumber = $start->month;
+                    $monthName = $start->format('F');
+        
+                    // Add month to the respective year in the months array
+                    $months[$year][$monthNumber] = $monthName;
+        
+                    $start->addMonth();
+                }
             }
 
 

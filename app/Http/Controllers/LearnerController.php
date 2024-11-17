@@ -1439,7 +1439,7 @@ class LearnerController extends Controller
         $data['paid_amount'] = $request->paid_amount;
         $data['paid_date'] = $request->paid_date;
         $data['transaction_id'] = $request->transaction_id;
-   
+  
         try {
             $learner_transaction=LearnerTransaction::create($data);
             

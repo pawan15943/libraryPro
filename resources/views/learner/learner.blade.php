@@ -245,7 +245,7 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learner.expire',$value->id)}}" title="Custom Seat Expire"><i class="fas fa-calendar"></i></a></li>
 
                                 <!-- Make payment -->
-                                <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                                <li><a href="{{route('learner.payment',$value->learner_detail_id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
 
                                 <!-- Swap Seat-->
 

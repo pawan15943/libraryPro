@@ -126,6 +126,7 @@ $currentMonth = date('m');
                     @foreach($learners as $value)
                  
                     @php
+                 
                     $today = Carbon::today();
                     $endDate = Carbon::parse($value->plan_end_date);
                     $diffInDays = $today->diffInDays($endDate, false);
@@ -173,7 +174,7 @@ $currentMonth = date('m');
                         <td>
                             <ul class="actionalbls">
                             <!-- Make payment -->
-                            <li><a href="{{route('learner.payment',$value->learner->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                            <li><a href="{{route('learner.payment',$value->id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
                             </ul>
                         </td>
                         <td>

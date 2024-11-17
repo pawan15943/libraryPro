@@ -1367,8 +1367,24 @@ class LearnerController extends Controller
     }
     
     public function makePayment(Request $request){
-        $customerId = $request->id;
-        $customer = $this->fetchCustomerData($customerId, $isRenew = false, $status=1, $detailStatus=1);
+        
+        $customer_detail_id = $request->id;
+        $customer_detail=LearnerDetail::where('id',$customer_detail_id)->first();
+        $customerId=$customer_detail->learner_id;
+        if($customer_detail->status==0 && $customer_detail->is_paid==0 && $customer_detail->plan_end_date >=date('Y-m-d') ){
+            $isRenew = true;
+           
+        }else{
+            $isRenew = false;
+        }
+        
+        $learner=Learner::where('id',$customerId)->first();
+        $status=$learner->status;
+        $detailStatus=$customer_detail->status;
+      
+       $customer=LearnerDetail::where('id',$customer_detail_id)->with('learner','plan','plantype')->first();
+        // $customer = $this->fetchCustomerData($customerId, $isRenew, $status, $detailStatus);
+        
         $extend_days=Hour::select('extend_days')->first();
         if($extend_days){
             $extendDay=$extend_days->extend_days;
@@ -1382,7 +1398,8 @@ class LearnerController extends Controller
         $diffExtendDay= $today->diffInDays($inextendDate, false);
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
-        return view('learner.payment',compact('customer','diffExtendDay','plans','planTypes'));
+        // dd($customer);
+        return view('learner.payment',compact('customer','diffExtendDay','plans','planTypes','isRenew'));
     }
 
     public function paymentStore(Request $request)

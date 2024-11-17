@@ -103,14 +103,11 @@
                             <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
                 </a>
                 <ul class="dropdown-menu">
-
-
                     <li>
-                        
                         <!-- Dropdown - Alerts -->
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                        <div class="dropdown-menu" aria-labelledby="alertsDropdown">
                             <h6 class="dropdown-header">Alerts Center</h6>
-
+                            
                             @forelse($unreadNotifications as $notification)
                             <a class="dropdown-item d-flex align-items-center" data-notification-id="{{ $notification->id }}" href="{{ $notification->data['link'] ?? '#' }}">
                                 <div class="mr-3">
@@ -124,9 +121,8 @@
                                 </div>
                             </a>
                             @empty
-                            <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
+                                <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
                             @endforelse
-
                             <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                         </div>
                     </li>

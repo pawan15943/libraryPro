@@ -87,17 +87,18 @@
         </div>
         <div class="col-lg-3"></div>
         <div class="col-lg-3">
-            <select id="year" class="form-select form-control-sm">
+            <select id="datayaer" class="form-select form-control-sm">
+                <option value="">Select Year</option>
                 @foreach($months as $year => $monthData)
-                <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
-                    {{ $year }}
-                </option>
+                    <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                        {{ $year }}
+                    </option>
                 @endforeach
             </select>
         </div>
 
         <div class="col-lg-3">
-            <select id="month" name="month">
+            <select id="dataFilter" class="form-select form-control-sm">
                 <option value="">Select Month</option>
                 @if(isset($months[$currentYear]))
                     @foreach($months[$currentYear] as $monthNumber => $monthName)
@@ -818,7 +819,42 @@
         });
     });
 </script>
+<script>
+    document.getElementById('datayaer').addEventListener('change', function () {
+        const selectedYear = this.value; // Get selected year
+        const monthsData = @json($months); // All months data
+        const monthDropdown = document.getElementById('dataFilter');
 
+        // Reset month dropdown
+        monthDropdown.innerHTML = '<option value="">Select Month</option>';
+
+        // Populate months based on the selected year
+        if (selectedYear && monthsData[selectedYear]) {
+            Object.entries(monthsData[selectedYear]).forEach(([monthNumber, monthName]) => {
+                const option = document.createElement('option');
+                option.value = monthNumber;
+                option.textContent = monthName;
+                monthDropdown.appendChild(option);
+            });
+
+            // Automatically select current month if the selected year matches the current year
+            if (selectedYear == @json($currentYear)) {
+                monthDropdown.value = @json($currentMonth);
+            }
+
+            monthDropdown.disabled = false;
+        } else {
+            monthDropdown.disabled = true; // Disable if no year is selected
+        }
+    });
+
+    // Enable or disable the month dropdown based on the initial selection of the year
+    document.addEventListener('DOMContentLoaded', () => {
+        const selectedYear = document.getElementById('datayaer').value;
+        const monthDropdown = document.getElementById('dataFilter');
+        monthDropdown.disabled = !selectedYear;
+    });
+</script>
 <script>
     (function($) {
         $(window).on("load", function() {
@@ -1015,36 +1051,7 @@
 
     });
 </script>
-<script>
-      // Year or month dropdown
-    const yearDropdown = document.getElementById('year');
-    const monthDropdown = document.getElementById('month');
 
-    yearDropdown.addEventListener('change', function () {
-        const selectedYear = this.value;
-        const monthsData = @json($months);
-
-        monthDropdown.innerHTML = '<option value="">Select Month</option>'; // Reset
-
-        if (selectedYear && monthsData[selectedYear]) {
-            Object.entries(monthsData[selectedYear]).forEach(([monthNumber, monthName]) => {
-                const option = document.createElement('option');
-                option.value = monthNumber;
-                option.textContent = monthName;
-                monthDropdown.appendChild(option);
-            });
-
-            // Automatically select the current month if it matches
-            if (selectedYear == @json($currentYear)) {
-                monthDropdown.value = @json($currentMonth);
-            }
-
-            monthDropdown.disabled = false;
-        } else {
-            monthDropdown.disabled = true;
-        }
-    });
-</script>
 <script>
     function renderRevenueChart(labels, data) {
         if (Chart.getChart("revenueChart")) {

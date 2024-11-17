@@ -345,6 +345,7 @@ class DashboardController extends Controller
                 $query = LearnerDetail::where('is_paid', 1);
               
                 if ($request->filled('year') && !$request->filled('month')) {
+                   
                     // If only the year is provided
                     $year = $request->year;
                     $query->where(function ($q) use ($year) {

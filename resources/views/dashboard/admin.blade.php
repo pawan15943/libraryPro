@@ -989,19 +989,19 @@
                             <div class="d-flex mt-10 flex-wrap ">
                                 <div class="value w-100">
                                     <small>Total Revenue</small>
-                                    <h4 class="totalRevenue" data-value="${item.totalRevenue}">******</h4>
+                                    <h4 class="totalRevenue" data-value="${item.totalRevenue}">*****</h4>
                                 </div>
                                 <div class="value col-4">
                                     <small>Monthly Revenue</small>
-                                    <h4 class="totalRevenue" data-value="${item.monthlyRevenue}">******</h4>
+                                    <h4 class="totalRevenue" data-value="${item.monthlyRevenue}">*****</h4>
                                 </div>
                                 <div class="value col-4">
                                     <small>Total Expense</small>
-                                    <h4 class="totalExpense text-danger" data-value="${item.totalExpense}">******</h4>
+                                    <h4 class="totalExpense text-danger" data-value="${item.totalExpense}">*****</h4>
                                 </div>
                                 <div class="value col-4">
                                     <small>Net Profit</small>
-                                    <h4 class="netProfit text-success" data-value="${item.netProfit}">******</h4>
+                                    <h4 class="netProfit text-success" data-value="${item.netProfit}">*****</h4>
                                 </div>
                             </div>
                         </li>`;
@@ -1206,7 +1206,7 @@
             $element.text($element.data('value'));
         } else {
             // Mask the value as stars
-            $element.text('******');
+            $element.text('*****');
         }
     });
 

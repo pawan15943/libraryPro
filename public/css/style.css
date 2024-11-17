@@ -2493,7 +2493,6 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.collapsed {
 ul.list-unstyled.ps-0 {
     padding: 0 1rem !IMPORTANT;
     text-align: center;
-    padding-right: 0 !important;
 }
 
 ul.list-unstyled.ps-0>li {

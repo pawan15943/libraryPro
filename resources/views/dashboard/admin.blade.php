@@ -1251,7 +1251,10 @@
     $icon.toggleClass('fa-eye-slash fa-eye');
 });
 
+
 </script>
+
+
 @include('learner.script')
 
 

@@ -28,7 +28,7 @@ $currentMonth = date('m');
             <form action="{{ route('learner.report') }}" method="GET">
                 <div class="row g-4">
                    
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="year">Filter By Year</label>
                         <select id="year" class="form-select form-control-sm" name="year">
                             <option value="">Select Year</option>
@@ -40,7 +40,7 @@ $currentMonth = date('m');
                         </select>
                     </div>
                     
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="month">Select Month:</label>
                         <select id="month" class="form-select form-control-sm" name="month">
                             <option value="">Select Month</option>
@@ -55,7 +55,7 @@ $currentMonth = date('m');
                     </div>
                  
                     <!-- Filter By Payment Status -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="is_paid">Filter By Payment Status</label>
                         <select name="is_paid" id="is_paid" class="form-select">
                             <option value="">Choose Payment Status</option>

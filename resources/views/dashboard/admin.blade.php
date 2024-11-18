@@ -389,7 +389,7 @@
             <div class="booking-count bg-4">
                 <h6>Full Day</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -398,7 +398,7 @@
             <div class="booking-count bg-4">
                 <h6>First Half</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -407,7 +407,7 @@
             <div class="booking-count bg-4">
                 <h6>Second Half</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -416,7 +416,7 @@
             <div class="booking-count bg-4">
                 <h6>Hourly Slot 1</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -425,7 +425,7 @@
             <div class="booking-count bg-4">
                 <h6>Hourly Slot 2</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -434,7 +434,7 @@
             <div class="booking-count bg-4">
                 <h6>Hourly Slot 3</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -443,7 +443,7 @@
             <div class="booking-count bg-4">
                 <h6>Hourly Slot 4</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -452,7 +452,7 @@
             <div class="booking-count bg-3">
                 <h6>Total Booked Seats</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -461,7 +461,7 @@
             <div class="booking-count bg-3">
                 <h6>Available Seats</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>

@@ -29,7 +29,7 @@ $currentMonth = date('m');
             <form action="{{ route('pending.payment.report') }}" method="GET">
                 <div class="row g-4">
                         <!-- Filter By Payment Status -->
-                        <div class="col-lg-3">
+                        <div class="col-lg-2">
                             <label for="year">Filter By Year</label>
                             <select id="year" class="form-select form-control-sm" name="year">
                                 <option value="">Select Year</option>
@@ -43,8 +43,8 @@ $currentMonth = date('m');
                             </select>
                         </div>
                         
-                        <div class="col-lg-3">
-                            <label for="month" class="form-label">Select Month:</label>
+                        <div class="col-lg-2">
+                            <label for="month">Select Month:</label>
                             <select id="month" class="form-select form-control-sm" name="month">
                                 <option value="">Select Month</option>
                                 @foreach($dynamicmonths as $month)
@@ -57,7 +57,7 @@ $currentMonth = date('m');
                         </div>
                     <!-- Filter By Plan -->
                     
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="plan_id">Filter By Plan</label>
                         <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
@@ -103,7 +103,7 @@ $currentMonth = date('m');
     </div>
 </div>
 
-<div class="row mb-4">
+<div class="row mb-4 mt-4">
    
     <div class="col-lg-12">
         <div class="table-responsive ">
@@ -156,7 +156,7 @@ $currentMonth = date('m');
                             @if ($diffInDays > 0)
                             <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                         @elseif ($diffInDays <= 0 && $diffExtendDay>0)
-                            <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
+                            <small class="text-danger fs-10 d-block">Extension active! {{ abs($diffExtendDay) }} days Left.</small>
                         @elseif ($diffInDays < 0 && $diffExtendDay==0)
                             <small class="text-warning fs-10 d-block">Plan Expires today</small>
                         @else

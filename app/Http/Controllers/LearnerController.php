@@ -1431,7 +1431,6 @@ class LearnerController extends Controller
         } else {
             $data['transaction_image'] = null;
         }
-    
         $data['total_amount'] = $total_amount;
         $data['pending_amount'] = $pending_amount;
         $data['learner_detail_id'] = $learnerDetail->id;
@@ -1443,6 +1442,7 @@ class LearnerController extends Controller
   
         try {
             $learner_transaction=LearnerTransaction::create($data);
+            
             if($learner_transaction){
                 LearnerDetail::where('learner_id',$request->learner_id)->where('plan_price_id',$request->paid_amount)->update([
                     'is_paid'=>1,

@@ -85,20 +85,24 @@ $diffInDays = $today->diffInDays($endDate, false);
                 @method('POST')
                 <div class="action-box">
                     @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
-                    <h4 class="mb-4">Renew <div class="info-container">
+                    <h4 class="mb-4 d-block">Renew your Plan
+                    <p class="mt-2 text-danger"><b>Note:</b> You can easily renew your plan!</p>
                     @else
-                    <h4 class="mb-4">Actionables <div class="info-container">  
-                    @endif
-                 
-                        <i class="fa-solid fa-circle-info info-icon"></i>
-                        <div class="info-card">
-                            <h3 class="info-title">Payment</h3>
-                            <p class="info-details">Learners can request to change their current
+                    <h4 class="mb-4">Actionables 
+                        <div class="info-container">  
+                            <i class="fa-solid fa-circle-info info-icon"></i>
+                            <div class="info-card">
+                                <h3 class="info-title">Payment</h3>
+                                <p class="info-details">Learners can request to change their current
                                 seat to another available seat. If the requested seat is
                                 available, the learner’s current seat will be swapped with the
                                 new one.</p>
-                        </div>
-                    </div>
+                            </div>
+                            </div>
+                    @endif
+                 
+                        
+                    
                     </h4>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->learner->id}}">
                     <input id="user_id" type="hidden" name="user_id" value="{{ $customer->learner->id}}">

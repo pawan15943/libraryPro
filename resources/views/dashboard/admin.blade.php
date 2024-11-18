@@ -90,9 +90,9 @@
             <select id="datayaer" class="form-select form-control-sm">
                 <option value="">Select Year</option>
                 @foreach($months as $year => $monthData)
-                    <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
-                        {{ $year }}
-                    </option>
+                <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
+                    {{ $year }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -101,11 +101,11 @@
             <select id="dataFilter" class="form-select form-control-sm">
                 <option value="">Select Month</option>
                 @if(isset($months[$currentYear]))
-                    @foreach($months[$currentYear] as $monthNumber => $monthName)
-                        <option value="{{ $monthNumber }}" {{ $monthNumber == $currentMonth ? 'selected' : '' }}>
-                            {{ $monthName }}
-                        </option>
-                    @endforeach
+                @foreach($months[$currentYear] as $monthNumber => $monthName)
+                <option value="{{ $monthNumber }}" {{ $monthNumber == $currentMonth ? 'selected' : '' }}>
+                    {{ $monthName }}
+                </option>
+                @endforeach
                 @endif
             </select>
         </div>
@@ -158,12 +158,36 @@
     <!-- End -->
 
     <!-- Library Revenue -->
-    <h4 class="my-4">Monthly Revenues</h4>
     <div class="row g-4">
-        <div class="col-lg-9">
+        <div class="col-lg-8">
+            <h4 class="my-4">Monthly Revenues</h4>
+
             <div class="v-content">
                 <ul class="revenue-box scroll-x " id="monthlyData"></ul>
             </div>
+        </div>
+        <div class="col-lg-4">
+        <h4 class="my-4">Recent Activity</h4>
+        <ul class="activity contents">
+            <li>New User Added on Seat 10
+                <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+            <li>Seat 3 Swaped with Seat 12
+            <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+            <li>Seat No 10 is deleted.
+            <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+            <li>Seat 14 Booked for First Half
+            <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+            <li>Seat 14 Plan Upgrade Houlry Slot 1 to Full Day
+            <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+            <li>Seat 10 Enter in Extnded Mode Today
+            <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
+            </li>
+        </ul>
         </div>
     </div>
     <!-- End -->
@@ -365,7 +389,7 @@
             <div class="booking-count bg-4">
                 <h6>WhatsApp Sended</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
 
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
@@ -375,7 +399,7 @@
             <div class="booking-count bg-4">
                 <h6>Email Sended</h6>
                 <div class="d-flex">
-                    <h4>80</h4>
+                    <h4>0</h4>
                 </div>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -673,7 +697,7 @@
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Plan Price <span>*</span></label>
-                                <input id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 800 Rs" @readonly(true)>
+                                <input id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs" @readonly(true)>
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Plan Starts On <span>*</span></label>
@@ -820,7 +844,7 @@
     });
 </script>
 <script>
-    document.getElementById('datayaer').addEventListener('change', function () {
+    document.getElementById('datayaer').addEventListener('change', function() {
         const selectedYear = this.value; // Get selected year
         const monthsData = @json($months); // All months data
         const monthDropdown = document.getElementById('dataFilter');
@@ -862,9 +886,28 @@
                 theme: "dark",
                 scrollInertia: 300,
                 axis: "x",
-                autoHideScrollbar: false, // Keeps scrollbar visible
+                autoHideScrollbar: false,
             });
         });
+
+        function refreshScrollbar() {
+            const $content = $(".v-content");
+            $content.mCustomScrollbar("update");
+        }
+
+        $(document).on("change", "#dataFilter", function() {
+            refreshScrollbar();
+        });
+
+        const observer = new MutationObserver(() => {
+            refreshScrollbar();
+        });
+
+        observer.observe(document.querySelector(".v-content"), {
+            childList: true,
+            subtree: true
+        });
+
     })(jQuery);
 </script>
 <script>
@@ -1230,28 +1273,26 @@
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).on('click', '.toggleButton', function () {
-    const $icon = $(this).find('i'); // Find the <i> icon inside the button
-    const $box = $(this).closest('li'); // Get the parent <li> of the button
-    const isMasked = $icon.hasClass('fa-eye-slash'); // Check the current state (stars)
+    $(document).on('click', '.toggleButton', function() {
+        const $icon = $(this).find('i'); // Find the <i> icon inside the button
+        const $box = $(this).closest('li'); // Get the parent <li> of the button
+        const isMasked = $icon.hasClass('fa-eye-slash'); // Check the current state (stars)
 
-    // Toggle the text of specific h4 elements
-    $box.find('h4.totalRevenue, h4.totalExpense, h4.netProfit').each(function () {
-        const $element = $(this);
-        if (isMasked) {
-            // Show the actual value
-            $element.text($element.data('value'));
-        } else {
-            // Mask the value as stars
-            $element.text('*****');
-        }
+        // Toggle the text of specific h4 elements
+        $box.find('h4.totalRevenue, h4.totalExpense, h4.netProfit').each(function() {
+            const $element = $(this);
+            if (isMasked) {
+                // Show the actual value
+                $element.text($element.data('value'));
+            } else {
+                // Mask the value as stars
+                $element.text('*****');
+            }
+        });
+
+        // Toggle the eye icon class
+        $icon.toggleClass('fa-eye-slash fa-eye');
     });
-
-    // Toggle the eye icon class
-    $icon.toggleClass('fa-eye-slash fa-eye');
-});
-
-
 </script>
 
 

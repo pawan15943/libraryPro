@@ -1657,8 +1657,10 @@ img.extedned,
     animation: blink 2s infinite;
     color: red !important;
 }
-
-
+img.extedned,
+.expired {
+    color: red ! IMPORTANT;
+}
 
 p.not-found {
     margin: 0;
@@ -2687,8 +2689,6 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
     position: relative;
     background: var(--c5);
     box-shadow: 1px 0 5px #00000017;
-    transform: scale(1) !important;
-    transition: all .5s;
 }
 
 
@@ -2708,7 +2708,6 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 }
 .seat img:hover{
     transform: scale(1.1) !important;
-    transition: all .5s;
 }
 .seat ul {
     list-style: none;
@@ -4447,6 +4446,31 @@ p.mb-2.text-dark b {
 .value small {
     font-weight: 700;
     color: var(--c2);
+}
+
+ul.activity {
+    list-style: none;
+    padding: 0;
+    height: 280px;
+    overflow: auto;
+}
+
+ul.activity li {
+    background: #fff;
+    padding: .5rem 1rem;
+    border: 1px solid #e7e7e7;
+    border-radius: .5rem;
+    font-style: italic;
+    font-weight: 600;
+}
+
+ul.activity li + li {
+    margin-top: .8rem;
+}
+
+ul.activity li span {
+    font-size: .7rem;
+    display: block;
 }
 @media screen and (max-width:480px) {
     .w-120 {

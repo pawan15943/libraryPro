@@ -20,6 +20,7 @@ use App\Traits\LearnerQueryTrait;
 use App\Http\Middleware\LoadMenus;
 use App\Models\Learner;
 use App\Models\LearnerOperationsLog;
+use App\Models\LearnerTransaction;
 use App\Models\PlanType;
 use App\Models\Subscription;
 use Log;
@@ -506,7 +507,6 @@ class DashboardController extends Controller
         }
         
         $learners = $revenue_query->select('plan_start_date', 'plan_end_date', 'plan_price_id', 'plans.plan_id as planId')->get();
-        
         // Calculate Revenue
         $revenues = [];
         foreach ($learners as $learner) {
@@ -534,7 +534,9 @@ class DashboardController extends Controller
                         }
         
                         $revenues[$key]['monthly_revenue'] += $monthly_revenue;
-                        $revenues[$key]['total_revenue'] += $learner->plan_price_id;
+                       
+
+                        // $revenues[$key]['total_revenue'] += $learner->plan_price_id;
                     }
                 } elseif ($request->filled('year') && !$request->filled('month')) {
                     // If only year is selected, filter by year
@@ -551,7 +553,8 @@ class DashboardController extends Controller
                         }
         
                         $revenues[$key]['monthly_revenue'] += $monthly_revenue;
-                        $revenues[$key]['total_revenue'] += $learner->plan_price_id;
+                       
+                        // $revenues[$key]['total_revenue'] += $learner->plan_price_id;
                     }
                 }
                 
@@ -568,7 +571,16 @@ class DashboardController extends Controller
             $totalExpense = $expense ? $expense->total_expense : 0;
         
             $monthlyRevenue = round($revenue['monthly_revenue'], 2);
-            $totalRevenue = round($revenue['total_revenue'], 2);
+            $trans = LearnerTransaction::whereYear('paid_date', $year)
+            ->whereMonth('paid_date', $month)
+            ->selectRaw('SUM(paid_amount) as total_revenue')
+            ->groupByRaw('YEAR(paid_date), MONTH(paid_date)')
+            ->first();
+        
+            $monthly_total_revenue = $trans->total_revenue ?? 0;
+        
+
+            $totalRevenue = round($monthly_total_revenue, 2);
             $netProfit = round($monthlyRevenue - $totalExpense, 2);
         
             $revenu_expense[] = [
@@ -734,8 +746,7 @@ class DashboardController extends Controller
                     $result = $thismonth_booking->get();
                     break;
                 case 'expire_booking_slot':
-                    $expired_query = LearnerDetail::with(['plan', 'planType', 'seat', 'learner']) // Eager load relationships
-                    ->where('is_paid', 1)->where('status',0);
+                    $expired_query = LearnerDetail::where('is_paid', 1)->where('status',0)->with(['plan', 'planType', 'seat', 'learner']); // Eager load relationships;
             
                     if ($request->filled('year') && !$request->filled('month')) {
                         $expired_query->where(function ($expired_query) use ($request) {

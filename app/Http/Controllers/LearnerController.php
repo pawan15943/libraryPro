@@ -1482,6 +1482,7 @@ class LearnerController extends Controller
         $LearnerDetail =LearnerDetail::where('learner_id', $customer->id)->first();
         if($request->input('plan_start_date')){
             $LearnerDetail->plan_start_date =$start_date->toDateString();
+            $LearnerDetail->join_date =$start_date->toDateString();
         }
         
         $LearnerDetail->plan_end_date = $newEndDate->toDateString();

@@ -1223,7 +1223,7 @@ class LearnerController extends Controller
            'plan_price_id' => $request->input('plan_price_id'),
            'plan_start_date' => $start_date->format('Y-m-d'),
            'plan_end_date' => $endDate->format('Y-m-d'),
-           'join_date' => $start_date->format('Y-m-d'),
+           'join_date' => $learner_detail->join_date,
            'hour' =>$learner_detail->hour,
            'seat_id' =>$learner_detail->seat_id,
            'status'=>$status,

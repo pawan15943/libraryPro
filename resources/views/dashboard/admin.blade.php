@@ -259,6 +259,16 @@
             </div>
         </div>
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+            <div class="booking-count bg-4">
+                <h6>Previous Month Booked</h6>
+                <div class="d-flex">
+                    <h4 id="till_previous_book">0</h4>
+                </div>
+                <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                <a href="{{ route('learners.list.view', ['type' => 'till_previous_book']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-1">
                 <h6>This Month Expired</h6>
                 <div class="d-flex">
@@ -1015,6 +1025,7 @@
             console.log('highlights', highlights);
 
             $('#totalBookings').text(highlights.total_booking);
+            $('#till_previous_book').text(highlights.previous_month);
             $('#onlinePaid').text(highlights.online_paid);
             $('#offlinePaid').text(highlights.offline_paid);
             $('#otherPaid').text(highlights.other_paid);

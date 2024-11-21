@@ -335,27 +335,34 @@ class DashboardController extends Controller
         }
         $active_booking=$query_active->where('learner_detail.status', 1)->count();
         // till prevoues month total slots
-        $till_previous_month=$this->getLearnersByLibrary()
-       ->distinct('learner_detail.learner_id');
-                
+        $till_previous_month = $this->getLearnersByLibrary()
+        ->distinct('learner_detail.learner_id');
+    
         if ($request->filled('year') && !$request->filled('month')) {
-           
-            $till_previous_month->where(function ($query) use ($request) {
-                $currentMonth = Carbon::now()->month;
-                $query->whereYear('join_date', $request->year)
-                ->whereMonth('join_date','<', $currentMonth);
-                       
-            });
+            $currentMonth = Carbon::now()->month;
+            $currentYear = Carbon::now()->year;
+        
+            if ($request->year == $currentYear) {
+                $till_previous_month->whereYear('join_date', $request->year)
+                    ->whereMonth('join_date', '<', $currentMonth);
+            } elseif ($request->year < $currentYear) {
+                // Include all join_dates from the requested year
+                $till_previous_month->whereYear('join_date', $request->year);
+            }
         } elseif ($request->filled('year') && $request->filled('month')) {
-            $till_previous_month->where(function ($query) use ($request) {
-                $query->where(function ($subQuery) use ($request) {
-                    $subQuery->whereYear('join_date',$request->year)
-                                ->whereMonth('join_date','<', $request->month);
-                });
-               
-            });
+            // Calculate the end of the previous month
+            $givenYear = $request->year;
+            $givenMonth = $request->month;
+        
+            $previousMonthEnd = Carbon::create($givenYear, $givenMonth, 1)
+                ->subMonth()
+                ->endOfMonth();
+        
+            $till_previous_month->where('join_date', '<=', $previousMonthEnd);
         }
-        $previous_month=$till_previous_month->count();
+        
+        $previous_month = $till_previous_month->count();
+    
         // till today expired slots
        
         $expired_query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')

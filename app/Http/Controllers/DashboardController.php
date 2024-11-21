@@ -261,7 +261,7 @@ class DashboardController extends Controller
         //total seats
         $total_seats=Seat::count();
         //booked total seat
-        $query =$this->getLearnersByLibrary();
+        $query =LearnerDetail::query();
        
         if ($request->filled('year') && !$request->filled('month')) {
             // Check for year only
@@ -282,7 +282,7 @@ class DashboardController extends Controller
                     ->where('plan_end_date', '>=', $startOfGivenMonth);
             });
         }
-        $booked_seats=$query->distinct('learner_detail.seat_id')->count('learner_detail.seat_id');
+        $booked_seats=$query->distinct('seat_id')->count('seat_id');
 
         // available slot
         $availble_seats=$total_seats-$booked_seats; 

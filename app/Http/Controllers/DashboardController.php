@@ -256,7 +256,12 @@ class DashboardController extends Controller
        
 
         
-        $query = LearnerDetail::query();
+        
+       
+        //total seats
+        $total_seats=Seat::count();
+        //booked total seat
+        $query =$this->getLearnersByLibrary();
        
         if ($request->filled('year') && !$request->filled('month')) {
             // Check for year only
@@ -277,20 +282,58 @@ class DashboardController extends Controller
                     ->where('plan_end_date', '>=', $startOfGivenMonth);
             });
         }
-       
-        //total seats
-        $total_seats=Seat::count();
-        //booked total seat
-        $booked_seats=$query->distinct('seat_id')->count('seat_id');
+        $booked_seats=$query->distinct('learner_detail.seat_id')->count('learner_detail.seat_id');
 
         // available slot
         $availble_seats=$total_seats-$booked_seats; 
 
         // till today total slots
-        $total_booking=(clone $query)->count();
+        $query_total =$this->getLearnersByLibrary();
+       
+        if ($request->filled('year') && !$request->filled('month')) {
+            // Check for year only
+            $givenYear = $request->year;
+        
+            $query_total->whereYear('plan_start_date', '<=', $givenYear)
+                ->whereYear('plan_end_date', '>=', $givenYear);
+        } elseif ($request->filled('year') && $request->filled('month')) {
+            // Check for year and month
+            $givenYear = $request->year;
+            $givenMonth = $request->month;
+        
+            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
+        
+            $query_total->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+                $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                    ->where('plan_end_date', '>=', $startOfGivenMonth);
+            });
+        }
+        $total_booking=$query_total->count();
         
          // till today Active slots
-        $active_booking=(clone $query)->where('status', 1)->count();
+         $query_active =$this->getLearnersByLibrary();
+       
+        if ($request->filled('year') && !$request->filled('month')) {
+            // Check for year only
+            $givenYear = $request->year;
+        
+            $query_active->whereYear('plan_start_date', '<=', $givenYear)
+                ->whereYear('plan_end_date', '>=', $givenYear);
+        } elseif ($request->filled('year') && $request->filled('month')) {
+            // Check for year and month
+            $givenYear = $request->year;
+            $givenMonth = $request->month;
+        
+            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
+        
+            $query_active->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+                $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                    ->where('plan_end_date', '>=', $startOfGivenMonth);
+            });
+        }
+        $active_booking=$query_active->where('learner_detail.status', 1)->count();
         // till prevoues month total slots
         $till_previous_month=$this->getLearnersByLibrary()
        ->distinct('learner_detail.learner_id');

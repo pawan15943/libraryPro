@@ -339,26 +339,23 @@ class DashboardController extends Controller
         ->distinct('learner_detail.learner_id');
     
         if ($request->filled('year') && !$request->filled('month')) {
-            $currentMonth = Carbon::now()->month;
-            $currentYear = Carbon::now()->year;
+            // Check for year only
+            $givenYear = $request->year;
         
-            if ($request->year == $currentYear) {
-                $till_previous_month->whereYear('join_date', $request->year)
-                    ->whereMonth('join_date', '<', $currentMonth);
-            } elseif ($request->year < $currentYear) {
-                // Include all join_dates from the requested year
-                $till_previous_month->whereYear('join_date', $request->year);
-            }
+            $till_previous_month->whereYear('plan_start_date', '<', $givenYear)
+                ->whereYear('plan_end_date', '>', $givenYear);
         } elseif ($request->filled('year') && $request->filled('month')) {
-            // Calculate the end of the previous month
+            // Check for year and month
             $givenYear = $request->year;
             $givenMonth = $request->month;
         
-            $previousMonthEnd = Carbon::create($givenYear, $givenMonth, 1)
-                ->subMonth()
-                ->endOfMonth();
+            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
         
-            $till_previous_month->where('join_date', '<=', $previousMonthEnd);
+            $till_previous_month->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+                $subQuery->where('plan_start_date', '<', $endOfGivenMonth)
+                    ->where('plan_end_date', '>', $startOfGivenMonth);
+            });
         }
         
         $previous_month = $till_previous_month->count();
@@ -894,27 +891,32 @@ class DashboardController extends Controller
                     
                     break;
                 case 'till_previous_book':
-                    $till_previous_month=$this->getLearnersByLibrary()
-                        ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
+                    $till_previous_month=  $this->getLearnersByLibrary()
+                    ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
                     
-                    if ($request->filled('year') && !$request->filled('month')) {
-           
-                        $till_previous_month->where(function ($query) use ($request) {
+                        if ($request->filled('year') && !$request->filled('month')) {
                             $currentMonth = Carbon::now()->month;
-                            $query->whereYear('join_date', $request->year)
-                            ->whereMonth('join_date','<', $currentMonth);
-                                   
-                        });
-                    } elseif ($request->filled('year') && $request->filled('month')) {
-                        $till_previous_month->where(function ($query) use ($request) {
-                            $query->where(function ($subQuery) use ($request) {
-                                $subQuery->whereYear('join_date',$request->year)
-                                            ->whereMonth('join_date','<', $request->month);
-                            });
-                           
-                        });
-                    }
-                    $previous_month=$till_previous_month->count();
+                            $currentYear = Carbon::now()->year;
+                        
+                            if ($request->year == $currentYear) {
+                                $till_previous_month->whereYear('join_date', $request->year)
+                                    ->whereMonth('join_date', '<', $currentMonth);
+                            } elseif ($request->year < $currentYear) {
+                                // Include all join_dates from the requested year
+                                $till_previous_month->whereYear('join_date', $request->year);
+                            }
+                        } elseif ($request->filled('year') && $request->filled('month')) {
+                            // Calculate the end of the previous month
+                            $givenYear = $request->year;
+                            $givenMonth = $request->month;
+                        
+                            $previousMonthEnd = Carbon::create($givenYear, $givenMonth, 1)
+                                ->subMonth()
+                                ->endOfMonth();
+                        
+                            $till_previous_month->where('join_date', '<=', $previousMonthEnd);
+                        }
+                    $previous_month=$till_previous_month->get();
                     
                 case 'online_paid':
                     $result = (clone $thismonth_booking)->where('learner_detail.payment_mode', 1)->get();

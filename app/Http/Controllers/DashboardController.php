@@ -915,6 +915,33 @@ class DashboardController extends Controller
                         });
                     }
                     $previous_month=$till_previous_month->count();
+                    $till_previous_month=$this->getLearnersByLibrary()
+                        ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
+
+                    if ($request->filled('year') && !$request->filled('month')) {
+                        $currentMonth = Carbon::now()->month;
+                        $currentYear = Carbon::now()->year;
+
+                        if ($request->year == $currentYear) {
+                            $till_previous_month->whereYear('join_date', $request->year)
+                                ->whereMonth('join_date', '<', $currentMonth);
+                        } elseif ($request->year < $currentYear) {
+                            // Include all join_dates from the requested year
+                            $till_previous_month->whereYear('join_date', $request->year);
+                        }
+                    } elseif ($request->filled('year') && $request->filled('month')) {
+                        // Calculate the end of the previous month
+                        $givenYear = $request->year;
+                        $givenMonth = $request->month;
+
+                        $previousMonthEnd = Carbon::create($givenYear, $givenMonth, 1)
+                            ->subMonth()
+                            ->endOfMonth();
+
+                        $till_previous_month->where('join_date', '<=', $previousMonthEnd);
+                    }
+
+                    $previous_month = $till_previous_month->get();
                     
                 case 'online_paid':
                     $result = (clone $thismonth_booking)->where('learner_detail.payment_mode', 1)->get();

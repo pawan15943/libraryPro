@@ -339,23 +339,26 @@ class DashboardController extends Controller
         ->distinct('learner_detail.learner_id');
     
         if ($request->filled('year') && !$request->filled('month')) {
-            // Check for year only
-            $givenYear = $request->year;
+            $currentMonth = Carbon::now()->month;
+            $currentYear = Carbon::now()->year;
         
-            $till_previous_month->whereYear('plan_start_date', '<', $givenYear)
-                ->whereYear('plan_end_date', '>', $givenYear);
+            if ($request->year == $currentYear) {
+                $till_previous_month->whereYear('join_date', $request->year)
+                    ->whereMonth('join_date', '<', $currentMonth);
+            } elseif ($request->year < $currentYear) {
+                // Include all join_dates from the requested year
+                $till_previous_month->whereYear('join_date', $request->year);
+            }
         } elseif ($request->filled('year') && $request->filled('month')) {
-            // Check for year and month
+            // Calculate the end of the previous month
             $givenYear = $request->year;
             $givenMonth = $request->month;
         
-            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
-            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
+            $previousMonthEnd = Carbon::create($givenYear, $givenMonth, 1)
+                ->subMonth()
+                ->endOfMonth();
         
-            $till_previous_month->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
-                $subQuery->where('plan_start_date', '<', $endOfGivenMonth)
-                    ->where('plan_end_date', '>', $startOfGivenMonth);
-            });
+            $till_previous_month->where('join_date', '<=', $previousMonthEnd);
         }
         
         $previous_month = $till_previous_month->count();

@@ -363,46 +363,51 @@ class DashboardController extends Controller
 
 
         // till prevoues month total slots
-        $till_previous_month = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
-        ->distinct('learner_detail.learner_id');
-        
-        if ($request->filled('year') && !$request->filled('month')) {
-            // If only the year is given
-            $givenYear = $request->year;
-            $currentYear = Carbon::now()->year;
-            $currentMonth = Carbon::now()->month;
-        
-            if ($givenYear == $currentYear) {
-                // For the current year, calculate the start and end of the previous month
-                $startOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->startOfMonth();
-                $endOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->endOfMonth();
-            } else {
-                // For past years, consider December as the "previous month"
-                $startOfPreviousMonth = Carbon::create($givenYear, 12, 1)->startOfMonth();
-                $endOfPreviousMonth = Carbon::create($givenYear, 12, 1)->endOfMonth();
+                $till_previous_month = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                ->where('learners.library_id', auth()->user()->id)
+                ->distinct('learner_detail.learner_id');
+            
+            if ($request->filled('year') && !$request->filled('month')) {
+                // If only the year is provided
+                $givenYear = $request->year;
+                $currentMonth = Carbon::now()->month;
+                $currentYear = Carbon::now()->year;
+            
+                if ($givenYear == $currentYear) {
+                    // For the current year, calculate the start and end of the previous month
+                    $startOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->startOfMonth();
+                    $endOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->endOfMonth();
+                } else {
+                    // For past years, consider December as the "previous month"
+                    $startOfPreviousMonth = Carbon::create($givenYear, 12, 1)->startOfMonth();
+                    $endOfPreviousMonth = Carbon::create($givenYear, 12, 1)->endOfMonth();
+                }
+            
+                $till_previous_month->where(function ($query) use ($startOfPreviousMonth, $endOfPreviousMonth, $givenYear) {
+                    $currentMonth = Carbon::now()->month;
+                    $query->where('plan_start_date', '<=', $endOfPreviousMonth)
+                        ->where('plan_end_date', '>=', $startOfPreviousMonth)
+                        ->whereRaw("DATE_FORMAT(plan_end_date, '%Y-%m') != ?", [sprintf('%04d-%02d', $givenYear, $currentMonth)]);
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+                // If both year and month are provided
+                $givenYear = $request->year;
+                $givenMonth = $request->month;
+            
+                $startOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->startOfMonth();
+                $endOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->endOfMonth();
+            
+                $till_previous_month->where(function ($query) use ($startOfPreviousMonth, $endOfPreviousMonth, $givenYear, $givenMonth) {
+                    $query->where('plan_start_date', '<=', $endOfPreviousMonth)
+                        ->where('plan_end_date', '>=', $startOfPreviousMonth)
+                        ->whereRaw("DATE_FORMAT(plan_end_date, '%Y-%m') != ?", [sprintf('%04d-%02d', $givenYear, $givenMonth)]);
+                });
             }
-        } elseif ($request->filled('year') && $request->filled('month')) {
-            // If both year and month are given, calculate the previous month
-            $givenYear = $request->year;
-            $givenMonth = $request->month;
-        
-            $startOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->startOfMonth();
-            $endOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->endOfMonth();
-        }
-        
-        // Apply the condition to check if the learner was active in the previous month
-        $till_previous_month->where(function ($query) use ($startOfPreviousMonth, $endOfPreviousMonth) {
-            $query->where('plan_start_date', '<=', $endOfPreviousMonth)
-                ->where('plan_end_date', '>=', $startOfPreviousMonth);
-        });
-        
+            
 
-        $previous_month  = $till_previous_month->count();
-
+        $previous_month = $till_previous_month->count();
 
        
-        
         // this month booked slot
 
         $thismonth_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')

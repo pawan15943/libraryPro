@@ -142,23 +142,23 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
                         <div class="col-lg-6">
                             <label for="">Payment Mode</label>
-                            @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
+                            {{-- @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew) --}}
                             <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
                                 <option value="">Select Payment Mode</option>
-                                <option value="1">Online</option>
-                                <option value="2">Offline</option>
-                                <option value="3">Pay Later</option>
+                                <option value="1" {{ $customer->payment_mode == 1 ? 'selected' : '' }}>Online</option>
+                                <option value="2" {{ $customer->payment_mode == 2 ? 'selected' : '' }}>Offline</option>
+                                <option value="3" {{ $customer->payment_mode == 3 ? 'selected' : '' }}>Pay Later</option>
                             </select>
                             @error('payment_mode')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            @else
+                            {{-- @else
                             <input type="text" class="form-control"
                                 value="{{ $customer->payment_mode == 1 ? 'Online' : ($customer->payment_mode == 2 ? 'Offline' : 'Pay Later') }}"
                                 readonly >
-                            @endif
+                            @endif --}}
                             
                         </div>
                         <div class="col-lg-6">
@@ -218,7 +218,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="row mt-3">
                         <div class="col-lg-3">
                             <input type="submit" class="btn btn-primary btn-block button" 
-                            value="@if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew) Renew @else Payment @endif">
+                            value="@if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew) Renew @else Make Payment @endif">
                                              </div>
                     </div>
 

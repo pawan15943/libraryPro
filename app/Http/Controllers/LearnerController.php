@@ -1408,8 +1408,10 @@ class LearnerController extends Controller
             'learner_id' => 'required|exists:learners,id',
             'paid_amount' => 'required|numeric',
             'transaction_image' => 'nullable|mimes:webp,png,jpg,jpeg|max:200',
+            'payment_mode'=>'required'
         ]);
         // $data=$request->all();
+       
         $total_amount = 0;
         $pending_amount = 0;
     
@@ -1431,6 +1433,12 @@ class LearnerController extends Controller
         } else {
             $data['transaction_image'] = null;
         }
+
+        if($pending_amount==0){
+            $data['is_paid'] =1;
+        }else{
+            $data['is_paid'] =0;
+        }
         $data['total_amount'] = $total_amount;
         $data['pending_amount'] = $pending_amount;
         $data['learner_detail_id'] = $learnerDetail->id;
@@ -1439,6 +1447,7 @@ class LearnerController extends Controller
         $data['paid_amount'] = $request->paid_amount;
         $data['paid_date'] = $request->paid_date;
         $data['transaction_id'] = $request->transaction_id;
+        
   
         try {
             $learner_transaction=LearnerTransaction::create($data);
@@ -1446,6 +1455,7 @@ class LearnerController extends Controller
             if($learner_transaction){
                 LearnerDetail::where('learner_id',$request->learner_id)->where('plan_price_id',$request->paid_amount)->update([
                     'is_paid'=>1,
+                    'payment_mode'=>$request->payment_mode,
                 ]);
             }
 

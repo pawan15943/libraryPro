@@ -117,6 +117,7 @@ class LoadMenus
         
             $this->statusInactive();
             $this->updateLibraryStatus();
+            $this->dataUpdate();
             $today_renew = LibraryTransaction::where('library_id', Auth::user()->id)
             ->where('is_paid', 1)
             ->where('status', 0)
@@ -272,6 +273,75 @@ class LoadMenus
                             ->orWhere('end_date','<',$today->format('Y-m-d'))
                             ->update(['status' => 0]);
 
+        }
+    }
+    protected function dataUpdate(){
+       
+        $seats = Seat::get();
+ 
+        foreach($seats as $seat){
+            $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat->seat_no)->sum('hours');
+           
+            $updateseat=Seat::where('library_id',Auth::user()->id)->where('id', $seat->id)->update(['total_hours' => $total_hourse]);
+        
+        }
+    
+       $userUpdates = Learner::where('library_id',Auth::user()->id)->where('status', 1)->get();
+        
+       foreach ($userUpdates as $userUpdate) {
+           $today = date('Y-m-d'); 
+           $customerdatas=LearnerDetail::where('learner_id',$userUpdate->id)->where('status',1)->get();
+          
+           $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+           $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+           foreach($customerdatas as $customerdata){
+                $planEndDateWithExtension = Carbon::parse($customerdata->plan_end_date)->addDays($extend_day);
+                if ($planEndDateWithExtension->lte($today)) {
+                    $userUpdate->update(['status' => 0]);
+                    $customerdata->update(['status' => 0]);
+                }else{
+                    $userUpdate->update(['status' => 1]);
+                    LearnerDetail::where('learner_id', $userUpdate->learner_id)->where('status',0)->where('plan_start_date','<=',$today)->where('plan_end_date','>',$today)->update(['status' => 1]);
+                }
+           }
+           
+       }
+      
+       //seat table update
+        $userS = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)->where('learners.status', 0)->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->select('learners.*','plan_types.day_type_id')->get();
+      
+        foreach ($userS as $user) {
+        
+            $seatNo = $user->seat_no;
+            $seat = Seat::where('library_id', auth()->user()->id)->where('seat_no', $seatNo)->first();
+            
+            $available = 1; 
+            
+            if ($seat->is_available == 5) {
+                $available = 1;
+            } elseif ($seat->is_available == 4 && ($user->day_type_id == 4 || $user->day_type_id==5 || $user->day_type_id==6 || $user->day_type_id==7)) {
+                $available = 1;
+            } elseif ($seat->is_available == 3 && $user->day_type_id == 3) {
+                $available = 1;
+            } elseif ($seat->is_available == 2 && $user->day_type_id == 2) {
+                $available = 1;
+            } elseif ($seat->is_available == 2 && $user->day_type_id == 3) {
+                $available = 2;
+            } elseif ($seat->is_available == 3 && $user->day_type_id == 2) {
+                $available = 3;
+            }elseif ($seat->is_available == 4 && $user->day_type_id == 3) {
+                    $available = 4;
+            } else {
+                $available = 1;
+            }
+            
+            Seat::where('library_id', auth()->user()->id)->where('seat_no', $seatNo)->update(['is_available' => $available]);
+        }
+
+        foreach($seats as $seat){
+            Seat::where('library_id', auth()->user()->id)->where('id',$seat->id)->where('total_hours',0)->where('is_available','!=',1)->update(['is_available' => 1]);
+   
         }
     }
 

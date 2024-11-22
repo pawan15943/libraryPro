@@ -99,6 +99,8 @@
                         // Applying the conditions as per your Laravel blade logic
                         if (daysRemaining > 0) {
                             message = `<h5 class="text-success">Plan Expires in ${daysRemaining} days</h5>`;
+                        }else if(isRenew ==1){
+                            message = `<h5 class="text-success">Your new plan active now . It will become active once your current plan expires.</h5>`;
                         } else if (daysRemaining < 0 && extendDay > 0) {
                             message = `<h5 class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are ${Math.abs(extendDay)} days.</h5>`;
                         } else if (daysRemaining < 0 && extendDay == 0) {

@@ -310,30 +310,58 @@ class DashboardController extends Controller
             });
         }
         $total_booking=$query_total->count();
+         // till today expired slots
+       
+         $expired_query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+         ->where('learners.library_id', auth()->user()->id)
+         ->where('learner_detail.is_paid', 1)
+         ->where('learners.status', 0);
+         
+         if ($request->filled('year') && !$request->filled('month')) {
+             // Filter by year only
+             $expired_query->whereRaw(
+                 "YEAR(DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY)) <= ?", 
+                 [$extend_day, $request->year]
+             );
+         } elseif ($request->filled('year') && $request->filled('month')) {
+             // Filter by year and month
+             $lastDateOfGivenMonth = Carbon::create($request->year, $request->month, 1)->endOfMonth();
+         
+             $expired_query->whereRaw(
+                 "DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) <= ?", 
+                 [$extend_day, $lastDateOfGivenMonth]
+             );
+         }
+         
+         $expired_seats = $expired_query->count();
         
          // till today Active slots
-         $query_active =$this->getLearnersByLibrary();
+         $active_booking=$total_booking-$expired_seats;
+         
+        //  $query_active =$this->getLearnersByLibrary();
        
-        if ($request->filled('year') && !$request->filled('month')) {
-            // Check for year only
-            $givenYear = $request->year;
+        // if ($request->filled('year') && !$request->filled('month')) {
+        //     // Check for year only
+        //     $givenYear = $request->year;
         
-            $query_active->whereYear('plan_start_date', '<=', $givenYear)
-                ->whereYear('plan_end_date', '>=', $givenYear);
-        } elseif ($request->filled('year') && $request->filled('month')) {
-            // Check for year and month
-            $givenYear = $request->year;
-            $givenMonth = $request->month;
+        //     $query_active->whereYear('plan_start_date', '<=', $givenYear)
+        //         ->whereYear('plan_end_date', '>=', $givenYear);
+        // } elseif ($request->filled('year') && $request->filled('month')) {
+        //     // Check for year and month
+        //     $givenYear = $request->year;
+        //     $givenMonth = $request->month;
         
-            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
-            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
+        //     $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+        //     $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
         
-            $query_active->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
-                $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
-                    ->where('plan_end_date', '>=', $startOfGivenMonth);
-            });
-        }
-        $active_booking=$query_active->where('learner_detail.status', 1)->count();
+        //     $query_active->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+        //         $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+        //             ->where('plan_end_date', '>=', $startOfGivenMonth);
+        //     });
+        // }
+        // $active_booking=$query_active->where('learner_detail.status', 1)->count();
+
+
         // till prevoues month total slots
         $till_previous_month = $this->getLearnersByLibrary()
         ->distinct('learner_detail.learner_id');
@@ -363,30 +391,7 @@ class DashboardController extends Controller
 
     $previous_month = $till_previous_month->count();
 
-        // till today expired slots
        
-        $expired_query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
-        ->where('learner_detail.is_paid', 1)
-        ->where('learners.status', 0);
-        
-        if ($request->filled('year') && !$request->filled('month')) {
-            // Filter by year only
-            $expired_query->whereRaw(
-                "YEAR(DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY)) <= ?", 
-                [$extend_day, $request->year]
-            );
-        } elseif ($request->filled('year') && $request->filled('month')) {
-            // Filter by year and month
-            $lastDateOfGivenMonth = Carbon::create($request->year, $request->month, 1)->endOfMonth();
-        
-            $expired_query->whereRaw(
-                "DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) <= ?", 
-                [$extend_day, $lastDateOfGivenMonth]
-            );
-        }
-        
-        $expired_seats = $expired_query->count();
         
         // this month booked slot
 

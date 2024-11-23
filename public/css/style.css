@@ -706,6 +706,7 @@ ul.plan-features {
     max-height: 364px;
     overflow: auto;
 }
+
 span.badge.badge-danger.badge-counter {
     color: #1d7bad;
     position: absolute;
@@ -1657,6 +1658,7 @@ img.extedned,
     animation: blink 2s infinite;
     color: red !important;
 }
+
 img.extedned,
 .expired {
     color: red ! IMPORTANT;
@@ -2677,8 +2679,8 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
 
 .seat-booking {
     display: grid;
-    grid-template-columns: repeat(8, 1fr); 
-    gap: 10px; 
+    grid-template-columns: repeat(8, 1fr);
+    gap: 10px;
 }
 
 .seat {
@@ -2704,11 +2706,13 @@ a.btn.btn-primary.button.box-shadow.disabled.renew {
     width: 50px;
     display: block;
     margin: 6px auto;
-    
+
 }
-.seat img:hover{
+
+.seat img:hover {
     transform: scale(1.1) !important;
 }
+
 .seat ul {
     list-style: none;
     padding: 0;
@@ -4093,6 +4097,7 @@ div#datatable_wrapper select {
     margin: .5rem;
     border-color: #e7e7e7;
 }
+
 div#datatable1_wrapper input,
 div#datatable1_wrapper select {
     height: 35px;
@@ -4114,6 +4119,7 @@ div#datatable_info {
     font-size: .8rem;
     font-weight: 700;
 }
+
 div#datatable1_info {
     padding: .5rem;
     font-size: .8rem;
@@ -4439,6 +4445,7 @@ p.mb-2.text-dark b {
 .text-success {
     color: rgb(79 194 18) !important;
 }
+
 .d-flex.mt-10.flex-wrap {
     row-gap: 1rem;
 }
@@ -4464,7 +4471,7 @@ ul.activity li {
     font-weight: 600;
 }
 
-ul.activity li + li {
+ul.activity li+li {
     margin-top: .8rem;
 }
 
@@ -4472,6 +4479,7 @@ ul.activity li span {
     font-size: .7rem;
     display: block;
 }
+
 @media screen and (max-width:480px) {
     .w-120 {
         width: 0 !important;
@@ -4495,3 +4503,21 @@ ul.activity li span {
     margin-right: -20px;
 }
 
+.latest-notification {
+    background: #d01111;
+    box-shadow: 0px 3px 0 #000000 ! IMPORTANT;
+    color: #fff;
+    position: relative;
+    font-size: .8rem;
+    padding: .3rem 1.5rem;
+    display: flex;
+}
+
+.latest-notification b {
+    width: 142px;
+}
+
+.latest-notification marquee {
+    margin-bottom: -1px;
+    display: inline-block;
+}

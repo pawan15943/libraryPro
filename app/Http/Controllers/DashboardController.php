@@ -254,10 +254,6 @@ class DashboardController extends Controller
         ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
         ->count();       
        
-
-        
-        
-       
         //total seats
         $total_seats=Seat::count();
         //booked total seat
@@ -829,15 +825,15 @@ class DashboardController extends Controller
           
             switch ($type) {
                 case 'total_booking':
-                    
+                    // till total slot
                     $result = $query->get();
                     break;
                 case 'active_booking':
-                
+                    // till active slot
                     $result = (clone $query)->where('status', 1)->get();
                     break;
                 case 'expired_seats':
-            
+                    //till expired slots
                     $expired_query =  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
                     ->where('learners.library_id', auth()->user()->id)
                     ->where('learner_detail.is_paid', 1)
@@ -845,13 +841,13 @@ class DashboardController extends Controller
                     ->with(['plan', 'planType', 'learnerDetails']);
 
                     if ($request->filled('year') && !$request->filled('month')) {
-                        // Filter by year only
+                        
                         $expired_query->whereRaw(
                             "YEAR(DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY)) <= ?", 
                             [$extend_day, $request->year]
                         );
                     } elseif ($request->filled('year') && $request->filled('month')) {
-                        // Filter by year and month
+                       
                         $lastDateOfGivenMonth = Carbon::create($request->year, $request->month, 1)->endOfMonth();
                     
                         $expired_query->whereRaw(
@@ -863,10 +859,11 @@ class DashboardController extends Controller
                     
                     break;
                 case 'booing_slot':
-                    
+                        // this month bookes
                     $result = $thismonth_booking->get();
                     break;
                 case 'expire_booking_slot':
+                    // this month expire
                     $thisexpired_query =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
                     ->where('learners.library_id', auth()->user()->id)
                     ->where('learner_detail.is_paid', 1)
@@ -888,6 +885,7 @@ class DashboardController extends Controller
                     break;
 
                 case 'thisbooking_slot':
+                    // this month total
                     $thismonth_total_booking =  $this->getLearnersByLibrary()
                     ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
 
@@ -914,6 +912,7 @@ class DashboardController extends Controller
                     
                     break;
                 case 'till_previous_book':
+                    // till previous month active
                     $till_previous_month=$this->getLearnersByLibrary()
                         ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
                     
@@ -972,6 +971,7 @@ class DashboardController extends Controller
                     break;
 
                 case 'other_paid':
+                    //pay later
                     $result = (clone $query)->where('learner_detail.payment_mode', 3)->get();
                     break;
                 case 'expired_in_five':

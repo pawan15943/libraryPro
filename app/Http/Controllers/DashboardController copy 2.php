@@ -234,25 +234,6 @@ class DashboardController extends Controller
     {
        
         // Library other highlights
-        if ($request->filled('year') && $request->filled('month')) {
-            $year = $request->year;
-            $month = $request->month;
-        } elseif ($request->filled('year') && !$request->filled('month')) {
-            $year = $request->year;
-            $month = date('m'); // Current month
-        } elseif (!$request->filled('year') && $request->filled('month')) {
-            $year = date('Y'); // Current year
-            $month = $request->month;
-        } else {
-            // Default to current year and month if neither is provided
-            $year = date('Y');
-            $month = date('m');
-        }
-        $startOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
-        $endOfGivenMonth = Carbon::create($year, $month, 1)->endOfMonth();
-       
-        
-        
          $today = Carbon::now()->format('Y-m-d');
         $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
         $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
@@ -303,12 +284,29 @@ class DashboardController extends Controller
         $availble_seats=$total_seats-$booked_seats; 
 
         // till today total slots
-        $query_total = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
-        ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
-            $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
-                ->where('plan_end_date', '>=', $startOfGivenMonth);
-        })  ->distinct('learner_detail.learner_id');
+        $query_total =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id);
+        
+       
+        if ($request->filled('year') && !$request->filled('month')) {
+            // Check for year only
+            $givenYear = $request->year;
+        
+            $query_total->whereYear('plan_start_date', '<=', $givenYear)
+                ->whereYear('plan_end_date', '>=', $givenYear);
+        } elseif ($request->filled('year') && $request->filled('month')) {
+            // Check for year and month
+            $givenYear = $request->year;
+            $givenMonth = $request->month;
+        
+            $startOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+            $endOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->endOfMonth();
+        
+            $query_total->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+                $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                    ->where('plan_end_date', '>=', $startOfGivenMonth);
+            });
+        }
         $total_booking=$query_total->count();
          // till today expired slots
        
@@ -389,26 +387,22 @@ class DashboardController extends Controller
         // this month booked slot
 
         $thismonth_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
-        ->where(function ($subQuery) use ( $startOfGivenMonth, $endOfGivenMonth) {
-            $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
-                ->where('plan_end_date', '>=', $startOfGivenMonth);
-        })
-        ->where(function ($subQuery) use ($month) {
-            $subQuery->whereIn('learner_detail.learner_id', function ($subQuery) {
-                    $subQuery->select('learner_id')
-                        ->from('learner_detail')
-                        ->groupBy('learner_id')
-                        ->havingRaw('COUNT(*) > 1');
-                })
-                ->whereRaw('MONTH(learner_detail.plan_end_date) > ?', [$month])
-                ->orWhereNotIn('learner_detail.learner_id', function ($subQuery) {
-                    $subQuery->select('learner_id')
-                        ->from('learner_detail')
-                        ->groupBy('learner_id')
-                        ->havingRaw('COUNT(*) > 1');
+        ->where('learners.library_id', auth()->user()->id)->distinct('learner_detail.learner_id');
+                
+        if ($request->filled('year') && !$request->filled('month')) {
+            $thismonth_booking->where(function ($query) use ($request) {
+                $query->whereYear('join_date', $request->year);
+                       
+            });
+        } elseif ($request->filled('year') && $request->filled('month')) {
+            $thismonth_booking->where(function ($query) use ($request) {
+                $query->where(function ($subQuery) use ($request) {
+                    $subQuery->whereYear('join_date', $request->year)
+                                ->whereMonth('join_date', $request->month);
                 });
-        });
+               
+            });
+        }
                 
         $month_total_active_book = $thismonth_booking->count();
 

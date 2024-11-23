@@ -288,7 +288,9 @@ class DashboardController extends Controller
         $availble_seats=$total_seats-$booked_seats; 
 
         // till today total slots
-        $query_total =$this->getLearnersByLibrary();
+        $query_total =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)
+        ->distinct('learner_detail.learner_id');
        
         if ($request->filled('year') && !$request->filled('month')) {
             // Check for year only

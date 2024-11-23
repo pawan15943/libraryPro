@@ -1,7 +1,7 @@
 <div id="loader">
     <div class="spinner"></div>
 </div>
-<div class="header">
+<div class="header mb-3">
     <div class="d-flex" style="gap:1rem">
         <div class="conatent flex" style="flex: 1;">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
@@ -212,4 +212,5 @@
 
 
     </div>
+    <div class="latest-notification"><b>Important Update :</b>  <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee></div>
 </div>

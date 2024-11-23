@@ -491,7 +491,7 @@ class DashboardController extends Controller
          // For graph and plan wise count
        
          $plan_wise_booking =(clone $query)->groupBy('plan_type_id')
-         ->selectRaw('COUNT(id) as booking, plan_type_id')
+         ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
          ->with('planType') 
          ->get();
          $data = [];

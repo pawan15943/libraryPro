@@ -39,7 +39,7 @@ class LoggerMiddleware
                 'library_id' => $user->id,
                 'method' => $request->method(),
                 'url' => $request->fullUrl(),
-                'status_code' => $response->status(),
+                'status_code' => method_exists($response, 'getStatusCode') ? $response->getStatusCode() : 1, // Use getStatusCode()
                 'ip_address' => $request->ip(),
                 'created_at' => now(),
                 'action' => 'edit', // Adjust action as necessary
@@ -58,7 +58,7 @@ class LoggerMiddleware
             'user_id' => Auth::id(),
             'method' => $request->method(),
             'url' => $request->fullUrl(),
-            'status_code' => $response->status(),
+            'status_code' => method_exists($response, 'getStatusCode') ? $response->getStatusCode() : 1, // Use getStatusCode()
         ]);
     }
 

@@ -213,6 +213,7 @@ class Controller extends BaseController
         $request->validate([
             'csv_file' => 'required|file|mimes:csv,txt,xlsx,xls',
         ]);
+        
 
         // Get the file and its real path
         $file = $request->file('csv_file');
@@ -454,7 +455,31 @@ class Controller extends BaseController
                     $first_record = Hour::first();
                     $total_hour = $first_record ? $first_record->hour : null;
                     $hours = PlanType::where('id', $planType->id)->value('slot_hours');
-        
+                    $day_type_id=PlanType::where('id', $planType->id)->value('day_type_id');
+
+
+                    $exists_data=Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                    ->where('learners.library_id', auth()->user()->id)
+                    ->where('learners.seat_no', trim($data['seat_no']))
+                    ->where('learners.status', 1)
+                    ->where('learner_detail.status', 1)->with('planType')->get();
+
+                    $planTypeSame=Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                    ->where('learners.library_id', auth()->user()->id)
+                    ->where('learners.seat_no', trim($data['seat_no']))
+                    ->where('learners.status', 1)
+                    ->where('learner_detail.status', 1)->where('learner_detail.plan_type_id',$planType->id)->count();
+                    if($planTypeSame >0){
+                        $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked']);
+                        return; 
+                    }
+
+                    foreach($exists_data as $data_get){
+                        if(($day_type_id==2 && ($data_get->planType->day_type_id=4 || $data_get->planType->day_type_id=5)) || ($day_type_id==3 && ($data_get->planType->day_type_id=6 || $data_get->planType->day_type_id=7)) || (($day_type_id==4 || $day_type_id==5) && ($data_get->planType->day_type_id=2)) || (($day_type_id==6 || $day_type_id==7) && ($data_get->planType->day_type_id=3))){
+                            $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked']);
+                            return; 
+                        }
+                    }
                     // Check if total hours exceed allowed hours
                     if ((Learner::where('seat_no', trim($data['seat_no']))
                          ->where('library_id', Auth::user()->id)
@@ -463,7 +488,7 @@ class Controller extends BaseController
         
                         $invalidRecords[] = array_merge($data, ['error' => 'Your plan type exceeds the library total hours']);
                         return;
-                    } else {
+                    }else {
                         // Create new learner and associated records
                         if (empty($data['name']) || empty($data['email']) || empty($data['mobile']) || empty($hours) || empty($seat) || empty($start_date) || empty($planPrice->price)) {
                             $invalidRecords[] = array_merge($data, ['error' => 'Missing essential data for creating learner']);
@@ -692,7 +717,6 @@ class Controller extends BaseController
             'dob' => $dob,
             'hours' => trim($hours),
             'seat_no' => trim($data['seat_no']),
-            
             'address' => trim($data['address']),
             'status' => $status,
         ]);

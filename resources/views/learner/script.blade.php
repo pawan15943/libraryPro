@@ -804,7 +804,10 @@
             // Log all field changes at once before the form is submitted
             for (const fieldName in changes) {
                 const { oldValue, newValue } = changes[fieldName];
-                logFieldChange(learnerId, formId, fieldName, oldValue, newValue);
+                
+                if (formId === 'reactive' && fieldName === 'seat_id') {
+                    logFieldChange(learnerId, formId, fieldName, oldValue, newValue);
+                }
             }
         });
     }

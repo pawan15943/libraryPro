@@ -208,7 +208,7 @@ $current_route = Route::currentRouteName();
                         <td>{{$value->plan_start_date}}<br>
                             <small>{{$value->plan_name}}</small>
                         </td>
-                        <td>{{$value->plan_end_date}}<br>
+                        <td>{{$value->plan_end_date}}{{$diffInDays}}<br>
 
                             @if ($diffInDays > 0)
                                 <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>

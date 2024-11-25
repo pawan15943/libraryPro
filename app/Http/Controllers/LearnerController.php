@@ -1540,6 +1540,7 @@ class LearnerController extends Controller
             }
            
             // Insert data into the database and log success or errors
+            
             DB::table('learner_operations_log')->insert([
                 'learner_id' => $validatedData['learner_id'],
                 'learner_detail_id' => $learner_detail_id,

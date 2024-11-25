@@ -5,10 +5,49 @@
 @php
     use Carbon\Carbon;
     use App\Helpers\HelperService; 
+    if(request('type') === 'total_booking'){
+        $text='Total Slots Bookings';
+    }elseif(request('type') === 'active_booking'){
+        $text='Active Slots';
+    }elseif(request('type') === 'expired_seats'){
+        $text='Expired Slots';
+    }elseif(request('type') === 'thisbooking_slot'){
+        $text='This month total slots';
+    }elseif(request('type') === 'booing_slot'){
+        $text='This month Booked slots';
+    }elseif(request('type') === 'till_previous_book'){
+        $text='Previous month booked slots';
+    }elseif(request('type') === 'expire_booking_slot'){
+        $text='This month Expired';
+    }elseif(request('type') === 'expired_in_five'){
+        $text='Expired in 5 Days';
+    }elseif(request('type') === 'extended_seat'){
+        $text='Extended Seats';
+    }elseif(request('type') === 'online_paid'){
+        $text='Online Paid';
+    }elseif(request('type') === 'offline_paid'){
+        $text='Offline Paid';
+    }elseif(request('type') === 'other_paid'){
+        $text='Pay Later';
+    }elseif(request('type') === 'swap_seat'){
+        $text='Swap Seats';
+    }elseif(request('type') === 'learnerUpgrade'){
+        $text='Upgrade Seats';
+    }elseif(request('type') === 'reactive_seat'){
+        $text='Reactive Seats';
+    }elseif(request('type') === 'renew_seat'){
+        $text='Renew Seats';
+    }elseif(request('type') === 'close_seat'){
+        $text='Close Seats';
+    }elseif(request('type') === 'delete_seat'){
+        $text='Delete Seats';
+    }else{
+        $text='';
+    }
 @endphp
 <div class="row mb-4">
     <div class="col-lg-12">
-        <b class="d-block pb-3">Active Bookings for November: [{{$result->count()}}]</b>
+        <b class="d-block pb-3">{{$text}} for  {{ request('month') }}/{{ request('year') }}: [{{$result->count()}}]</b>
         <div class="table-responsive">
             <table class="table text-center datatable border-bottom" id="datatable">
                 <thead>

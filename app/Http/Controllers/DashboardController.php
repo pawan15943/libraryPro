@@ -834,23 +834,27 @@ class DashboardController extends Controller
         })
         ->groupBy('learner_id', DB::raw('DATE(created_at)'));
 
-        $thismonth_booking = $this->getLearnersByLibrary()
-        ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
-            
-        if ($request->filled('year') && !$request->filled('month')) {
-            $thismonth_booking->where(function ($query) use ($request) {
-                $query->whereYear('join_date', $request->year);
-                        
-            });
-        } elseif ($request->filled('year') && $request->filled('month')) {
-            $thismonth_booking->where(function ($query) use ($request) {
-                $query->where(function ($subQuery) use ($request) {
-                    $subQuery->whereYear('join_date', $request->year)
-                                ->whereMonth('join_date', $request->month);
+        $thismonth_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)
+        ->where(function ($subQuery) use ( $startOfGivenMonth, $endOfGivenMonth) {
+            $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                ->where('plan_end_date', '>=', $startOfGivenMonth);
+        })
+        ->where(function ($subQuery) use ($month) {
+            $subQuery->whereIn('learner_detail.learner_id', function ($subQuery) {
+                    $subQuery->select('learner_id')
+                        ->from('learner_detail')
+                        ->groupBy('learner_id')
+                        ->havingRaw('COUNT(*) > 1');
+                })
+                ->whereRaw('MONTH(learner_detail.plan_end_date) > ?', [$month])
+                ->orWhereNotIn('learner_detail.learner_id', function ($subQuery) {
+                    $subQuery->select('learner_id')
+                        ->from('learner_detail')
+                        ->groupBy('learner_id')
+                        ->havingRaw('COUNT(*) > 1');
                 });
-                
-            });
-        }
+        });
 
         $thisexpired_query =$this->getLearnersByLibrary()
         ->where('learner_detail.is_paid', 1)
@@ -903,29 +907,7 @@ class DashboardController extends Controller
                 // this month total
                 $thisMonthBooking = $thismonth_booking->get(); // Collection of this month's bookings
                 $thisExpiredQuery = $thisexpired_query->get(); // Collection of this month's expired bookings
-                
-                
-                // $thismonth_total_booking =  $this->getLearnersByLibrary()
-                // ->distinct('learner_detail.learner_id')->with(['plan', 'planType', 'learnerDetails']);
-
-                // // Apply year and month filters based on join learner and expired learner
-                // if ($request->filled('year') && !$request->filled('month')) {
-                //     $thismonth_total_booking->where(function ($query) use ($request) {
-                //         $query->whereYear('join_date', $request->year)
-                //                 ->orWhereYear('plan_end_date', $request->year);
-                //     });
-                // } elseif ($request->filled('year') && $request->filled('month')) {
-                //     $thismonth_total_booking->where(function ($query) use ($request) {
-                //         $query->where(function ($subQuery) use ($request) {
-                //             $subQuery->whereYear('join_date', $request->year)
-                //                         ->whereMonth('join_date', $request->month);
-                //         })
-                //         ->orWhere(function ($subQuery) use ($request) {
-                //             $subQuery->whereYear('plan_end_date', $request->year)
-                //                         ->whereMonth('plan_end_date', $request->month);
-                //         });
-                //     });
-                // }
+      
                 
                 $result = $thisMonthBooking->merge($thisExpiredQuery);
                 
@@ -1022,7 +1004,7 @@ class DashboardController extends Controller
             
         }
        
-      dd($result);
+        
         return view('learner.list-view', compact('result', 'type','extendDay'));
         
     }

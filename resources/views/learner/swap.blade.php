@@ -95,6 +95,7 @@
                                 @foreach($available_seat as $id => $seat_no)
                                 <option value="{{ $id }}"> {{ $seat_no }}</option>
                                 @endforeach
+                              
                             </select>
                             @error('seat_no')
                             <span class="invalid-feedback" role="alert">
@@ -102,6 +103,7 @@
                             </span>
                             @enderror
                         </div>
+                        <input type="hidden" value="{{ $customer->seat_id }}" id="swap_old_value">
 
                     </div>
                     <div class="row mt-3">

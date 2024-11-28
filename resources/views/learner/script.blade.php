@@ -800,12 +800,22 @@
         });
 
         // Add submit event listener to the form
+       
         form.addEventListener('submit', function(event) {
             // Log all field changes at once before the form is submitted
             for (const fieldName in changes) {
                 const { oldValue, newValue } = changes[fieldName];
-                
-                if (formId === 'reactive' && fieldName === 'seat_id') {
+                const swap_old_value=$('#swap_old_value').val();
+               
+                if (formId === 'reactive') {
+                // Log changes only for the "seat_id" field
+                    if (fieldName === 'seat_id') {
+                        logFieldChange(learnerId, formId, fieldName, oldValue, newValue);
+                    }
+                }else if(formId === 'swapseat'){
+                    logFieldChange(learnerId, formId, fieldName, swap_old_value, newValue);
+                } else {
+                    // For other operations, log changes for all fields
                     logFieldChange(learnerId, formId, fieldName, oldValue, newValue);
                 }
             }

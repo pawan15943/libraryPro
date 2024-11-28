@@ -467,7 +467,8 @@ class LearnerController extends Controller
                 'plan_types.image',
                 'learner_detail.is_paid',
                 'learner_detail.payment_mode',
-                'learner_detail.id as learner_detail_id'
+                'learner_detail.id as learner_detail_id',
+                'learner_detail.seat_id'
             );
              //  Apply dynamic filters if provided
          if (!empty($filters)) {
@@ -1057,7 +1058,13 @@ class LearnerController extends Controller
         DB::beginTransaction(); 
 
         try {
+            // for log value
+      
+            $old_value=LearnerDetail::where('id',$request->learner_detail)->first();
+           
+            // for log value
             $customer = Learner::findOrFail($request->user_id);
+            
             $seat_no=Seat::where('id',$request->seat_id)->value('seat_no');
             $existingBookings = $this->getLearnersByLibrary()
                 ->where('seat_no', '=', $seat_no)
@@ -1070,7 +1077,7 @@ class LearnerController extends Controller
             $startTime = $planType->start_time;
             $endTime = $planType->end_time;
             $hours = $planType->slot_hours;
-
+         
             foreach ($existingBookings as $booking) {
                 $bookingPlanType = PlanType::find($booking->plan_type_id);
 
@@ -1078,6 +1085,16 @@ class LearnerController extends Controller
                     $bookingStartTime = $bookingPlanType->start_time;
                     $bookingEndTime = $bookingPlanType->end_time;
 
+                    $overlap = 
+                    ($startTime < $bookingEndTime && $endTime > $bookingStartTime) ||
+                    ($endTime > $bookingStartTime && $startTime < $bookingEndTime);
+                    logger()->info('Debug Booking', [
+                        'startTime' => $startTime,
+                        'endTime' => $endTime,
+                        'bookingStartTime' => $bookingStartTime,
+                        'bookingEndTime' => $bookingEndTime,
+                        'overlap' => $overlap,
+                    ]);
                     if (
                         ($startTime < $bookingEndTime && $endTime > $bookingStartTime) ||
                         ($endTime > $bookingStartTime && $startTime < $bookingEndTime)
@@ -1086,7 +1103,7 @@ class LearnerController extends Controller
                     }
                 }
             }
-
+           
             $first_record = Hour::first();
             $total_hour = $first_record ? $first_record->hour : 0;
 
@@ -1097,9 +1114,10 @@ class LearnerController extends Controller
             $total_cust_hour = Learner::where('library_id',Auth::user()->id)->where('seat_no', $seat_no)->where('status',1)->sum('hours');
 
             if ($hours > ($total_hour - $total_cust_hour)) {
+             
                 return redirect()->back()->with('error', 'You cannot select this plan type as it exceeds the available hours.');
             }
-
+          
             $months = Plan::where('id', $request->plan_id)->value('plan_id');
             $duration = $months ?? 0;
             $start_date = Carbon::parse($request->input('plan_start_date'));
@@ -1149,6 +1167,18 @@ class LearnerController extends Controller
             $updateseat=Seat::where('seat_no', $seat_no)->update(['total_hours' => $total_hourse]);
 
             $this->seat_availablity($request);
+            // learner log table update
+            DB::table('learner_operations_log')->insert([
+                'learner_id' => $customer->id,
+                'learner_detail_id' =>$learner_detail->id,
+                'library_id' =>$customer->library_id,
+                'field_updated' => 'seat_id',
+                'old_value' => $old_value->seat_id,
+                'new_value' => $request->seat_id,
+                'updated_by' => Auth::user()->id,
+                'operation' => 'reactive',
+                'created_at' => now(),
+            ]);
             DB::commit();
 
             return redirect()->route('learnerHistory')->with('success', 'Learner updated successfully.');
@@ -1315,7 +1345,7 @@ class LearnerController extends Controller
                 $status_array[] = 1;
             }
         }
-
+     
         if ($hourCheck->total_hours > 0 && $customer->hours > $new_seat_remaining) {
             $status = 0;
         } elseif ($count == 1) {
@@ -1524,8 +1554,8 @@ class LearnerController extends Controller
             Log::info('Validation Successful:', $validatedData);
     
             $updated_user = $validatedData['updated_by'] ?? Auth::user()->id;
-            $old_value = $validatedData['old_value'] ? $validatedData['old_value'] : $validatedData['operation'];
-            if($validatedData['operation']=='renewSeat' || $validatedData['operation']=='reactive' || $validatedData['operation']=='learnerUpgrade'){
+            $old_value = $validatedData['old_value'] ? $validatedData['old_value'] : $validatedData['operation'];  
+            if($validatedData['operation']=='renewSeat' || $validatedData['operation']=='reactive' || $validatedData['operation']=='learnerUpgrade' || $validatedData['operation']=='swapseat'){
                 $learner_detail_id = LearnerDetail::where('learner_id', $validatedData['learner_id'])
                                     ->orderBy('id', 'DESC')
                                     ->value('id');

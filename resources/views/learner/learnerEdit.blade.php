@@ -271,6 +271,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         </div>
 
                     </div>
+                 
                     <form action="{{ route('learner.reactive.store', $customer->id) }}" method="POST" enctype="multipart/form-data" id="reactive">
                         @csrf
                         @method('PUT')
@@ -279,6 +280,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         <div class="row g-4">
 
                             <input id="user_id" type="hidden" name="user_id" value="{{$customer->id }}">
+                            <input id="learner_detail" type="hidden" name="learner_detail" value="{{$customer->learner_detail_id }}">
 
                             <div class="col-lg-4">
                                 <label for=""> Plan <span>*</span></label>
@@ -354,10 +356,10 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
 
                             <div class="col-lg-4">
                                 <label for="">Select Seat<span>*</span></label>
-                                <select name="seat_id" id="new_seat_id" class="form-select @error('seat_id') is-invalid @enderror">
+                                <select name="seat_id" id="new_seat_id2" class="form-select @error('seat_id') is-invalid @enderror">
                                     <option>Select Seat</option>
                                     @foreach($available_seat as $id => $seat_no)
-                                    <option value="{{ $id }}"> {{ $seat_no }}</option>
+                                    <option value="{{ $id }}" {{ $customer->seat_id == $id ? 'selected' : '' }}>{{ $seat_no }}</option>
                                     @endforeach
                                 </select>
                                 @error('seat_id')
@@ -500,10 +502,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
 
 @endif
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        handleFormChanges('reactive', {{$customer->id}});
-       
-    });
+   
 </script>
 @include('learner.script')
 @endsection

@@ -412,7 +412,7 @@
         </div>
         @endif
         <div class="seat-activity">
-            <h5 class="py-4">All Seat Activity Logs:</h5>
+            <h5 class="py-4">All Activity Logs:</h5>
             <ul class="activity-log">
                 @foreach($learnerlog as $key => $value)
                 <li>

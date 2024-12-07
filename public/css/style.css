@@ -440,7 +440,6 @@ table td {
     align-items: center;
     margin: 0;
     padding: 8px 12px;
-    margin-bottom: 1rem;
     margin-top: .5rem;
 }
 
@@ -2347,8 +2346,8 @@ table td {
     align-items: center;
     margin: 0;
     padding: 8px 12px;
-    margin-bottom: 1rem;
     margin-top: .5rem;
+    margin-bottom: .3rem;
 }
 
 li.breadcrumb-item a {
@@ -4503,9 +4502,15 @@ ul.activity li span {
     margin-right: -20px;
 }
 
+.text-success {
+    color: rgb(79 194 18) !important;
+    font-weight: 600;
+}
+
+
 .latest-notification {
-    background: #d01111;
-    box-shadow: 0px 3px 0 #000000 ! IMPORTANT;
+    background: linear-gradient(293deg, #dc4545, #ea188a);
+    /* box-shadow: 0px 3px 0 #ababab ! IMPORTANT; */
     color: #fff;
     position: relative;
     font-size: .8rem;
@@ -4520,4 +4525,37 @@ ul.activity li span {
 .latest-notification marquee {
     margin-bottom: -1px;
     display: inline-block;
+}
+
+.seat-activity {
+    background: #fff;
+}
+
+.seat-activity {
+    border-radius: .8rem;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    box-shadow: 1px  0 5px #00000021;
+}
+
+.seat-activity ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.seat-activity ul li p {
+    font-weight: 600;
+    font-style: italic;
+}
+
+.seat-activity h5.py-4 {
+    margin: 0;
+    padding: 0 !important;
+    margin-bottom: 1rem;
+}
+
+.seat-activity ul li+li {
+    border-top: 1px solid #d7d7d7;
+    padding-top: .8rem;
 }

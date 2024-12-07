@@ -41,17 +41,17 @@
                             </div>
                             <div class="col-lg-6">
                                 <span>Subscription Start Date</span>
-                                <h4>{{ $month->start_date}}</h4>
+                                <h4>{{ \Carbon\Carbon::parse($month->start_date)->format('d M Y') }}</h4>
                             </div>
                             @if($month->end_date)
                             <div class="col-lg-6">
                                 <span>Subscription End Date</span>
-                                <h4>{{ $month->end_date}}</h4>
+                                <h4>{{ \Carbon\Carbon::parse($month->end_date)->format('d M Y') }}</h4>
                             </div>
                             @endif
                             <div class="col-lg-6">
-                                <span> Status :</span>
-                                @if($month->status ==1)
+                                <span>Current Plan Status :</span>
+                                @if($month->status == 1)
                                 <h4 class="text-white">Active</h4>
                                 @else
                                 <h4 class="text-danger">Inactive</h4>
@@ -59,7 +59,7 @@
                             </div>
                             <div class="col-lg-6">
                                 <span>Next Due Date</span>
-                                <h4>{{ $month->end_date}}</h4>
+                                <h4>{{ \Carbon\Carbon::parse($month->end_date)->format('d M Y') }}</h4>
                             </div>
                         </div>
                     </div>

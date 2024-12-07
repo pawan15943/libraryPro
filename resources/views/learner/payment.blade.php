@@ -104,6 +104,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         
                     
                     </h4>
+                    <p class="text-danger">Note : Here we are displaying the active plan Payment information that has been completed.</p>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->learner->id}}">
                     <input id="user_id" type="hidden" name="user_id" value="{{ $customer->learner->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">

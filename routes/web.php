@@ -128,7 +128,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
       
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
-
+      Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
 
       
     });

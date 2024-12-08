@@ -198,6 +198,7 @@ $hourlyCount = 0;
         </div>
     </div>
 </div>
+@can('has-permission', 'Seat Booking')
 <div class="modal fade" id="seatAllotmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div id="success-message" class="alert alert-success" style="display:none;"></div>
@@ -319,7 +320,9 @@ $hourlyCount = 0;
 
         </div>
     </div>
-</div>
+</div> 
+@endcan
+@can('has-permission', 'View Seat')
 <div class="modal fade" id="seatAllotmentModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -411,6 +414,8 @@ $hourlyCount = 0;
         </div>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Renew Seat')
 <div class="modal fade" id="seatAllotmentModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div id="success-message" class="alert alert-success" style="display:none;"></div>
     <div id="error-message" class="alert alert-danger" style="display:none;"></div>
@@ -477,7 +482,7 @@ $hourlyCount = 0;
         </div>
     </div>
 </div>
-
+@endcan
 
 
 @include('learner.script')

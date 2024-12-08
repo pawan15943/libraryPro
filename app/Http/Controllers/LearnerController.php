@@ -722,6 +722,12 @@ class LearnerController extends Controller
             $LearnerDetail->payment_mode = $request->input('payment_mode');
             $LearnerDetail->save();
         }
+        $learnerTransaction=LearnerTransaction::where('learner_detail_id',$request->learner_detail_id)->first();
+        if($learnerTransaction){
+            $learnerTransaction->total_amount=$request->input('plan_price_id');
+            $learnerTransaction->paid_amount=$request->input('plan_price_id');
+            $learnerTransaction->pending_amount=0;
+        }
         // Update seat availability
         $this->seat_availablity($request);
 
@@ -835,7 +841,8 @@ class LearnerController extends Controller
     }
     //upgrade form view
     public function getLearner(Request $request, $id = null){
-      
+        $routeName = $request->route()->getName();
+        
         $customerId = $request->id ?? $id;
         $is_renew = $this->learnerService->getRenewalStatus($customerId);
         
@@ -857,9 +864,14 @@ class LearnerController extends Controller
         $diffExtendDay= $today->diffInDays($inextendDate, false);
         $customer['diffExtendDay'] = $diffExtendDay;
         $customer['diffInDays'] = $diffInDays;
-
-           
-       return view('learner.learnerUpgrade', compact('customer', 'plans', 'planTypes','available_seat'));
+        $oneWeekLater = Carbon::parse($customer->plan_start_date)->addWeek();
+        $showButton = Carbon::now()->greaterThanOrEqualTo($oneWeekLater);
+        if($routeName=='learners.upgrade.renew'){
+            return view('learner.renewUpgrade', compact('customer', 'plans', 'planTypes','available_seat','showButton'));
+        }else{
+            return view('learner.learnerUpgrade', compact('customer', 'plans', 'planTypes','available_seat','showButton'));
+        }
+      
     }
     public function getSwapUser($id){
        
@@ -1371,9 +1383,19 @@ class LearnerController extends Controller
                 $customer = Learner::findOrFail($id);
                 
                
-                LearnerDetail::where('learner_id', $customer->id)->delete();
-              
-                $customer->delete();
+                $lastLearnerDetail = LearnerDetail::where('learner_id', $customer->id)
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+                if ($lastLearnerDetail) {
+                    // Delete associated LearnerTransaction records
+                    LearnerTransaction::where('learner_detail_id', $lastLearnerDetail->id)->delete();
+
+                    $lastLearnerDetail->delete();
+                } else {
+                    
+                    throw new Exception("No LearnerDetail found for learner ID: {$customer->id}");
+                }
             });
     
            
@@ -1413,6 +1435,10 @@ class LearnerController extends Controller
         $detailStatus=$customer_detail->status;
       
        $customer=LearnerDetail::where('id',$customer_detail_id)->with('learner','plan','plantype')->first();
+       $is_payment_pending = LearnerTransaction::where('learner_detail_id', $customer_detail_id)
+       ->where('pending_amount', '!=', 0)
+       ->exists();
+   
         // $customer = $this->fetchCustomerData($customerId, $isRenew, $status, $detailStatus);
         
         $extend_days=Hour::select('extend_days')->first();
@@ -1428,8 +1454,8 @@ class LearnerController extends Controller
         $diffExtendDay= $today->diffInDays($inextendDate, false);
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
-        // dd($customer);
-        return view('learner.payment',compact('customer','diffExtendDay','plans','planTypes','isRenew'));
+     
+        return view('learner.payment',compact('customer','diffExtendDay','plans','planTypes','isRenew','is_payment_pending'));
     }
 
     public function paymentStore(Request $request)

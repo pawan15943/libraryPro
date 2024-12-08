@@ -66,6 +66,7 @@
     </div>
 
     <!-- Add Operating Hours -->
+    @can('has-permission','Add Operating Hours')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -87,6 +88,8 @@
                 @endif
 
             </div>
+            
+           
             <div class="master-form mt-3">
                 <div class="form-fields">
                     <form id="operating_hour" enctype="multipart/form-data">
@@ -142,10 +145,13 @@
 
                 </ul>
             </div>
+                 
+            
         </div>
     </div>
-
+    @endcan
     <!-- Add Library Seats -->
+    @can('has-permission','Add Library Seats')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -212,8 +218,10 @@
             </div>
         </div>
     </div>
-
+    @endcan
     <!-- Add Extend Days -->
+    
+    @can('has-permission','Add Extend Days')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -283,8 +291,9 @@
             </div>
         </div>
     </div>
-
+    @endcan
     <!-- Add Plan -->
+    @can('has-permission','Add Plan')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -362,8 +371,9 @@
             </div>
         </div>
     </div>
-
+    @endcan
     <!-- Add Plan Type -->
+    @can('has-permission','Add Master Plan Type')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -478,8 +488,9 @@
             </div>
         </div>
     </div>
-
+    @endcan
     <!-- Add Plan price -->
+    @can('has-permission','Add Master Plan Price')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -582,8 +593,9 @@
             </div>
         </div>
     </div>
-
+    @endcan
     <!-- Add Expense -->
+    @can('has-permission','Add Expense')
     <div class="col-lg-4">
         <div class="master-box">
             <div class="d-flex">
@@ -652,7 +664,7 @@
             </div>
         </div>
     </div>
-
+    @endcan
 </div>
 @else
 

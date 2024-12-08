@@ -31,10 +31,11 @@ $readonlyStyle = '';
 @endif
 
 
+
 <form action="{{ route('learners.update.upgrade', $customer->id) }}" method="POST" enctype="multipart/form-data" id="learnerUpgrade">
     @csrf
     @method('PUT')
-
+<input type="hidden" value="{{$customer->learner_detail_id}}" name="learner_detail_id">
     <div class="row">
         <div class="col-lg-9">
             <div class="actions">
@@ -162,10 +163,16 @@ $readonlyStyle = '';
                         </div>
 
                     </div>
+                    @php
+                        $oneWeekLater = \Carbon\Carbon::parse($customer->plan_start_date)->addWeek();
+                        $today = \Carbon\Carbon::now();
+                    @endphp
                     <div class="row mt-4">
+                        @if(!$today->greaterThanOrEqualTo($oneWeekLater))
                         <div class="col-lg-3">
                             <input type="submit" class="btn btn-primary btn-block button" id="submit" value="Update Seat Info">
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>

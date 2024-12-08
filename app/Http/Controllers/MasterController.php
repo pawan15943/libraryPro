@@ -255,9 +255,18 @@ class MasterController extends Controller
         ]);
 
         $id = $request->id;
+        $user=Auth::user();
+        if ($user->can('Extend Seat')) {
+            $extend_day = $request->extend_days;
+        } else {
+            $extend_day = 0;
+        }
+        
+        
         if(DB::table('hour')->where('library_id', $request->library_id)){
+
             $hourData=DB::table('hour')->where('library_id', $request->library_id)->update([
-                'extend_days'=>$request->extend_days
+                'extend_days'=>$extend_day
             ]);
         }else{
             return response()->json([

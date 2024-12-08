@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+{{-- @extends('layouts.admin')
 @section('content')
 
 @php
@@ -6,6 +6,7 @@ use Carbon\Carbon;
 $today = Carbon::today();
 $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
+// dd($customer);
 @endphp
 
 @if (session('error'))
@@ -33,7 +34,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <label for="">Seat Owner Name <span>*</span></label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->learner->name) }}" readonly>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->name) }}" readonly>
                         @error('name')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -42,7 +43,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-6">
                         <label for="">DOB <span>*</span></label>
-                        <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->learner->dob) }}" readonly>
+                        <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}" readonly>
                         @error('dob')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -51,7 +52,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-6">
                         <label for="">Mobile Number <span>*</span></label>
-                        <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->learner->mobile) }}" readonly>
+                        <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}" readonly>
                         @error('mobile')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -60,7 +61,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     </div>
                     <div class="col-lg-6">
                         <label for="">Email Id <span>*</span></label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->learner->email) }}" readonly>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" readonly>
                         @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -70,16 +71,7 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                 </div>
             </div>
-            @php
-               
-                if(($diffInDays <= 5 && $diffExtendDay>0 && !$isRenew)){
-                    $id='renewSeat';
-                    $route=route('learners.renew');
-                }else{
-                    $route=route('learner.payment.store');
-                    $id='payment';
-                }
-            @endphp
+        
             <form action="{{$route}}" method="POST" enctype="multipart/form-data" id="{{$id}}"  class="payment_page">
                 @csrf
                 @method('POST')
@@ -269,4 +261,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @include('learner.script')
 
-@endsection
+@endsection --}}

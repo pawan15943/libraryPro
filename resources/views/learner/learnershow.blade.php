@@ -300,6 +300,8 @@
                                                 @can('has-permission', 'View Seat')
                                                 <li><a href="{{route('learners.show',$firstDetail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
                                                 @endcan
+                                                
+                                                @can('has-permission', 'Receipt Generation')
                                                 <li>
                                                     <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                         @csrf
@@ -308,6 +310,7 @@
                                                         <button type="submit"><i class="fa fa-print"></i></button>
                                                     </form>
                                                 </li>
+                                                @endcan
                                                 {{-- <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li> --}}
                                             </ul>
                                         </td>
@@ -325,7 +328,7 @@
                                                 @can('has-permission', 'View Seat')
                                                 <li><a href="{{route('learners.show',$detail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
                                                 @endcan
-
+                                                @can('has-permission', 'Receipt Generation')
                                                 <li>
                                                     <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
                                                         @csrf
@@ -334,7 +337,11 @@
                                                         <button type="submit"><i class="fa fa-print"></i></button>
                                                     </form>
                                                 </li>
+                                                @endcan
+                                                
+                                                @can('has-permission', 'Download Payment Receipt')
                                                 <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li>
+                                                @endcan
                                             </ul>
                                         </td>
                                     </tr>

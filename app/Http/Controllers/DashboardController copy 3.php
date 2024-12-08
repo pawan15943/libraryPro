@@ -341,39 +341,75 @@ class DashboardController extends Controller
        
 
         // till prevoues month total slots
-        $prevMonth = $month - 1; // Calculate the previous month
-        $prevYear = $year;
-        
-        if ($month == 1) { // Handle January case
-            $prevMonth = 12; // Previous month is December
-            $prevYear = $year - 1; // Move to the previous year
-        }
-        
-        $firstDayOfPrevMonth = Carbon::create($prevYear, $prevMonth, 1)->startOfMonth()->toDateString(); // First day of the previous month
-        $lastDayOfPrevMonth = Carbon::create($prevYear, $prevMonth, 1)->endOfMonth()->toDateString();   // Last day of the previous month
-        
-        $till_previous_month = Learner::selectRaw('learners.id AS learner_id, MAX(ld.plan_start_date) AS plan_start_date, MAX(ld.plan_end_date) AS plan_end_date')
-        ->leftJoin('learner_detail AS ld', 'ld.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
-        ->where(function ($query) use ($firstDayOfPrevMonth, $lastDayOfPrevMonth) {
-            $query->whereDate('ld.plan_start_date', '<=', $lastDayOfPrevMonth)
-                  ->whereDate('ld.plan_end_date', '>=', $firstDayOfPrevMonth);
-        })
-        ->groupBy('learners.id')->get();
-      
+                $till_previous_month = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                ->where('learners.library_id', auth()->user()->id)
+                ->distinct('learner_detail.learner_id');
+            
+            if ($request->filled('year') && !$request->filled('month')) {
+                // If only the year is provided
+                $givenYear = $request->year;
+                $currentMonth = Carbon::now()->month;
+                $currentYear = Carbon::now()->year;
+            
+                if ($givenYear == $currentYear) {
+                    // For the current year, calculate the start and end of the previous month
+                    $startOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->startOfMonth();
+                    $endOfPreviousMonth = Carbon::create($givenYear, $currentMonth, 1)->subMonth()->endOfMonth();
+                } else {
+                    // For past years, consider December as the "previous month"
+                    $startOfPreviousMonth = Carbon::create($givenYear, 12, 1)->startOfMonth();
+                    $endOfPreviousMonth = Carbon::create($givenYear, 12, 1)->endOfMonth();
+                }
+            
+                $till_previous_month->where(function ($query) use ($startOfPreviousMonth, $endOfPreviousMonth, $givenYear) {
+                    $currentMonth = Carbon::now()->month;
+                    $query->where('plan_start_date', '<=', $endOfPreviousMonth)
+                        ->where('plan_end_date', '>=', $startOfPreviousMonth)
+                        ->whereRaw("DATE_FORMAT(plan_end_date, '%Y-%m') != ?", [sprintf('%04d-%02d', $givenYear, $currentMonth)]);
+                });
+            } elseif ($request->filled('year') && $request->filled('month')) {
+                // If both year and month are provided
+                $givenYear = $request->year;
+                $givenMonth = $request->month;
+            
+                $startOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->startOfMonth();
+                $endOfPreviousMonth = Carbon::create($givenYear, $givenMonth, 1)->subMonth()->endOfMonth();
+            
+                $till_previous_month->where(function ($query) use ($startOfPreviousMonth, $endOfPreviousMonth, $givenYear, $givenMonth) {
+                    $query->where('plan_start_date', '<=', $endOfPreviousMonth)
+                        ->where('plan_end_date', '>=', $startOfPreviousMonth)
+                        ->whereRaw("DATE_FORMAT(plan_end_date, '%Y-%m') != ?", [sprintf('%04d-%02d', $givenYear, $givenMonth)]);
+                });
+            }
+            
+
         $previous_month = $till_previous_month->count();
-       
+
        
         // this month booked slot
 
         $thismonth_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
         ->where('learners.library_id', auth()->user()->id)
-        ->where(function ($subQuery) use ( $month , $year) {
-            $subQuery->whereYear('plan_start_date', $year)
-            ->whereMonth('plan_start_date', $month);
-           
+        ->where(function ($subQuery) use ( $startOfGivenMonth, $endOfGivenMonth) {
+            $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                ->orWhere('plan_end_date', '>=', $startOfGivenMonth);
+        })
+        ->where(function ($subQuery) use ($month) {
+            $subQuery->whereIn('learner_detail.learner_id', function ($subQuery) {
+                    $subQuery->select('learner_id')
+                        ->from('learner_detail')
+                        ->groupBy('learner_id')
+                        ->havingRaw('COUNT(*) > 1');
+                })
+                ->whereRaw('MONTH(learner_detail.plan_end_date) > ?', [$month])
+                ->orWhereNotIn('learner_detail.learner_id', function ($subQuery) {
+                    $subQuery->select('learner_id')
+                        ->from('learner_detail')
+                        ->groupBy('learner_id')
+                        ->havingRaw('COUNT(*) > 1');
+                });
         });
-      
+                
         $month_total_active_book = $thismonth_booking->count();
 
 

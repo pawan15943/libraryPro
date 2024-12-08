@@ -95,8 +95,11 @@ $current_route = Route::currentRouteName();
 <div class="row">
     <div class="col-lg-12 text-end">
         <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export"><i class="fa-solid fa-file-export"></i> Export All Data in CSV</a>
+        @can('Import Library Seats')
         <a href="{{ route('library.upload.form') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
+        @endcan
     </div>
+    @can('has-permission', 'Filter')
     <div class="col-lg-12">
         <div class="filter-box">
             <h4 class="mb-3">Filter Box</h4>
@@ -154,6 +157,7 @@ $current_route = Route::currentRouteName();
             </form>
         </div>
     </div>
+    @endcan
 </div>
 
 <div class="row mb-4 mt-4">
@@ -238,6 +242,7 @@ $current_route = Route::currentRouteName();
 
                                 <!-- Edit Seat Info -->
                                 @if($diffExtendDay>0)
+
                                 @can('has-permission', 'Edit Seat')
                                 <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
                                 @endcan
@@ -245,7 +250,10 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learner.expire',$value->id)}}" title="Custom Seat Expire"><i class="fas fa-calendar"></i></a></li>
 
                                 <!-- Make payment -->
+                                @can('has-permission','Renew Seat')
                                 <li><a href="{{route('learner.payment',$value->learner_detail_id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+ 
+                                @endcan
 
                                 <!-- Swap Seat-->
 
@@ -254,10 +262,14 @@ $current_route = Route::currentRouteName();
                                 @endcan
 
 
+                               
+                                <li><a href="{{route('learners.upgrade',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                            
+
                                 <!-- upgrade Seat-->
 
                                 @can('has-permission', 'Upgrade Seat Plan')
-                                <li><a href="{{route('learners.upgrade',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                                 @endcan
 
                                 <!-- Close Seat -->
@@ -270,20 +282,28 @@ $current_route = Route::currentRouteName();
                                 @can('has-permission', 'Delete Seat')
                                 <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
                                 @endcan
+                                @can('has-permission', 'Reactive Seat')
                                 @if($value->status==0)
                                 <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
                                 @endif
+                                @endcan
                                 @if($diffExtendDay>0)
                                 <!-- Sent Mail -->
+                                
+                                @can('has-permission', 'WhatsApp Notification')
                                 <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" 
                                     onclick="incrementMessageCount({{ $value->id }}, 'whatsapp')" 
                                     class="whatsapp" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
-                                <!-- Sent Mail -->
+                                
+                                @endcan
+                                    <!-- Sent Mail -->
+                                @can('has-permission', 'Email Notification')
                                 <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" 
                                     onclick="incrementMessageCount({{ $value->id }}, 'email')" 
                                     class="message"  data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
-
+                                 @endcan
                                 @endif
+                               
                             </ul>
                         </td>
                     </tr>

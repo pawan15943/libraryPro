@@ -123,6 +123,10 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Expired Learners Report' => route('expired.learner.report')
             ],
+            'library.settings' => [
+                'Dashboard' => route('library.home'),
+                'Library Setting' => route('library.settings')
+            ],
             'learnerHistory' => [
                 'Dashboard' => route('library.home'),
                 'Learner History' => route('learnerHistory'),
@@ -177,6 +181,7 @@ class AppServiceProvider extends ServiceProvider
             'learnerHistory' => 'Learner History',
             'learner.payment' => 'Make Payment',
             'learners.list.view' => 'Library Counts Details',
+            'library.settings' => 'Library Setting',
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

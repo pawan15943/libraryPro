@@ -204,8 +204,7 @@ $current_route = Route::currentRouteName();
                             <br> <small>{{$value->dob}}</small>
                         </td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$value->email }}" data-bs-placement="bottom"><i
-                                    class="fa-solid fa-times text-danger"></i></i>
+                                data-bs-title="{{$value->email }}" data-bs-placement="bottom">
                                 {{$value->email }}</span> <br>
                             <small> +91-{{$value->mobile}}</small>
                         </td>

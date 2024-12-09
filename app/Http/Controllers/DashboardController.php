@@ -276,7 +276,7 @@ class DashboardController extends Controller
         //total seats
         $total_seats=Seat::count();
         //booked total seat
-        $query =LearnerDetail::query();
+        $query =LearnerDetail::where('is_paid',1);
        
         if ($request->filled('year') && !$request->filled('month')) {
             // Check for year only
@@ -367,7 +367,7 @@ class DashboardController extends Controller
         // this month booked slot
 
         $thismonth_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-        ->where('learners.library_id', auth()->user()->id)
+        ->where('learners.library_id', auth()->user()->id)->where('learner_detail.is_paid',1)
         ->where(function ($subQuery) use ( $month , $year) {
             $subQuery->whereYear('plan_start_date', $year)
             ->whereMonth('plan_start_date', $month);

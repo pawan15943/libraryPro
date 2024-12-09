@@ -1,4 +1,4 @@
-{{-- @extends('layouts.admin')
+@extends('layouts.admin')
 @section('content')
 
 @php
@@ -72,37 +72,24 @@ $diffInDays = $today->diffInDays($endDate, false);
                 </div>
             </div>
         
-            <form action="{{$route}}" method="POST" enctype="multipart/form-data" id="{{$id}}"  class="payment_page">
+            <form action="{{route('learner.upgrade.renew.store')}}" method="POST" enctype="multipart/form-data" id="renewUpgrade"  class="payment_page">
                 @csrf
                 @method('POST')
                 <div class="action-box">
-                    @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
+                 
                     <h4 class="mb-4 d-block">Renew your Plan
                     <p class="mt-2 text-danger"><b>Note:</b> You can easily renew your plan!</p>
-                    @else
-                    <h4 class="mb-4">Actionables 
-                        <div class="info-container">  
-                            <i class="fa-solid fa-circle-info info-icon"></i>
-                            <div class="info-card">
-                                <h3 class="info-title">Payment</h3>
-                                <p class="info-details">Learners can request to change their current
-                                seat to another available seat. If the requested seat is
-                                available, the learner’s current seat will be swapped with the
-                                new one.</p>
-                            </div>
-                            </div>
-                    @endif
-                 
-                        
+                    
                     
                     </h4>
-                    <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->learner->id}}">
-                    <input id="user_id" type="hidden" name="user_id" value="{{ $customer->learner->id}}">
+                    <input id="learner_detail" type="hidden" name="learner_detail" value="{{$customer->learner_detail_id }}">
+                    <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
+                    <input id="user_id" type="hidden" name="user_id" value="{{ $customer->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <label for="">Plan <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
+                           
                             <select  id="update_plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
                                 <option value="">Select Plan</option>
                                 @foreach($plans as $key => $value)
@@ -114,23 +101,28 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                            @else
-                            <input type="text" class="form-control" value="{{ $customer->plan->name }}" readonly>
-                            @endif
+                           
                         </div>
                         <div class="col-lg-6">
                             <label for="">Plan Type <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
-                            <select  id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" readonly>
+                            
+                            <select  id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" >
                                 
-                                <option value="{{ $customer->plan_type_id }}">{{ $customer->planType->name }}</option>
+                                @foreach($planTypes as $planType)
+                                    <option value="{{ $planType->id }}"
+                                        {{ old('plan_type_id',$customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
+                                        {{ $planType->name }}
+                                    </option>
+                                    @endforeach
                                 
                             </select>
-                            @else
-                            <input type="text" class="form-control" value="{{ $customer->planType->name  }}" readonly >
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Plan Price <span>*</span></label>
+                            
+                            <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id ) }}" @readonly(true)>
 
-                            @endif
-                           
+                            
                         </div>
                         <div class="col-lg-6">
                             <label for="">Payment Mode</label>
@@ -149,23 +141,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                            
                             
                         </div>
-                        <div class="col-lg-6">
-                            <label for="">Payment Status</label>
-                            <input type="text" class="form-control"
-                                value="{{ $customer->is_paid == 1 ? 'Paid' : 'Unpaid' }}"
-                                readonly>
-                        </div>
 
-                        <div class="col-lg-6">
-                            <label for="">Plan Price <span>*</span></label>
-                            @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
-                            <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id ) }}" @readonly(true)>
-
-                            @else
-                            <input type="text" class="form-control " name="paid_amount" id="paid_amount" value="{{ old('paid_amount', $customer->plan_price_id ) }}" readonly>
-
-                            @endif
-                        </div>
+                        
                         <div class="col-lg-6">
                             <label for="">Transaction Date <span>*</span></label>
                             <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="">
@@ -192,7 +169,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         @endif
 
                         <div class="col-lg-6">
-                            <label for="">Upload Payment Proof <span>*</span></label>
+                            <label for="">Upload Payment Proof </label>
                             <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">
                             @error('transaction_image')
                             <span class="invalid-feedback" role="alert">
@@ -205,11 +182,9 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            @if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew)
-                                <input type="submit" class="btn btn-primary btn-block button" value="Renew">
-                            @elseif($is_payment_pending)
-                                <input type="submit" class="btn btn-warning btn-block button" value="Make Payment">
-                            @endif
+                            {{-- @if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew) --}}
+                                <input type="submit" class="btn btn-primary btn-block button" value="Renew Upgrade">
+                            {{-- @endif --}}
                         </div>
                     </div>
                     
@@ -229,7 +204,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     $class='expired';
                 }
             @endphp
-            <span class="d-block">Seat No : {{ $customer->learner->seat_no}}</span>
+            <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
             <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan->name}}</p>
             <button>Booked for <b>{{ $customer->planType->name}}</b></button>
@@ -248,12 +223,12 @@ $diffInDays = $today->diffInDays($endDate, false);
 </div>
 <script>
  
-document.addEventListener('DOMContentLoaded', function() {
+// document.addEventListener('DOMContentLoaded', function() {
   
-    const formId = document.querySelector('form.payment_page').id;
+//     const formId = document.querySelector('form.payment_page').id;
     
-    handleFormChanges(formId, {{$customer->learner->id}});
-});
+//     handleFormChanges(formId, {{$customer->id}});
+// });
 
 
 </script>
@@ -261,4 +236,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 @include('learner.script')
 
-@endsection --}}
+@endsection

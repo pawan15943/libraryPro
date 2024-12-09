@@ -129,7 +129,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
-
+      Route::post('/upgrade/renew/store', [LearnerController::class, 'learnerUpgradeRenew'])->name('learner.upgrade.renew.store');
+      
       
     });
     Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');

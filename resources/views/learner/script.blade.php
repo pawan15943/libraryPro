@@ -230,11 +230,11 @@
             }
         });
 
-        $('#update_plan_id').on('change', function(event) {
+        $('#update_plan_id, #updated_plan_type_id').on('change', function (event) {
           
             event.preventDefault();
             var update_plan_type_id = $('#updated_plan_type_id').val();
-            var update_plan_id =$(this).val();
+            var update_plan_id =$('#update_plan_id').val();
        
             if (update_plan_id && update_plan_type_id) {
                 $.ajax({

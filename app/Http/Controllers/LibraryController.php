@@ -18,6 +18,7 @@ use App\Models\PlanType;
 use App\Models\Seat;
 use App\Models\State;
 use App\Models\Subscription;
+use App\Models\TempOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Notifications\VerifyEmail;
@@ -29,6 +30,9 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+
+use Illuminate\Support\Facades\Http;
+
 
 
 class LibraryController extends Controller
@@ -382,9 +386,48 @@ class LibraryController extends Controller
             ]);
         }
         
-        // elseif($request->payment_method=='1'){
+        elseif($request->payment_method=='1'){
+            $key = 'rzp_test_m67hVSALfSsx0w';
+            $secret = 'nIgv7EaQ3RqyXRe9QAAKf9xD';
+            
+            $amountInPaise = intval($library_transaction_id->paid_amount * 100);
+            \Log::info('Razorpay Order Request Parameters', [
+                'amount' => $amountInPaise,
+                'currency' => 'INR',
+                'receipt' => $request->transaction_id,
+                'payment_capture' => 1
+            ]);
 
-        // }
+            $response = Http::withBasicAuth($key, $secret)
+            ->timeout(30)
+            ->post('https://api.razorpay.com/v1/orders', [
+                'amount' => $amountInPaise,
+                'currency' => 'INR',
+                'receipt' => $request->transaction_id,
+                'payment_capture' => 1,
+            ]);
+           \Log::info('Razorpay API Response', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            if ($response->successful()) {
+                $order = $response->json();
+
+                // Redirect to Razorpay Checkout
+                return view('library.razorpay-checkout', [
+                    'key' => $key,
+                    'order_id' => $order['id'],
+                    'amount' => $order['amount'],
+                    'currency' => $order['currency'],
+                    'library_transaction_id' => $library_transaction_id->id,
+                    'name' => 'Library Payment',
+                    'description' => 'Library Payment',
+                ]);
+            }
+
+            return back()->with('error', 'Unable to create Razorpay order.');
+        }
+
         
 
         if ($library_transaction_id) {
@@ -435,7 +478,120 @@ class LibraryController extends Controller
         return redirect()->back()->with('error', 'Transaction not found.');
     }
 
+    public function handleSuccess(Request $request)
+    {
+        $razorpayPaymentId = $request->input('razorpay_payment_id');
+        $razorpayOrderId = $request->input('razorpay_order_id');
+        $razorpaySignature = $request->input('razorpay_signature');
+        $libraryTransactionId = $request->input('library_transaction_id');
 
+
+        $tempOrder = TempOrder::create([
+            'razorpay_order_id' => $razorpayOrderId,
+            'library_transaction_id' => $libraryTransactionId,
+            'payment_status' => 'pending',
+        ]);
+        // Check if necessary data is available
+        if (!$razorpayPaymentId || !$razorpayOrderId || !$razorpaySignature || !$libraryTransactionId) {
+            $tempOrder->update([
+                'payment_status' => 'fail',
+                'error_message' => 'Invalid payment data.',
+                
+            ]);
+            return response()->json(['success' => false, 'error_url' => route('library.payment.error'),'message' => 'Invalid payment data.']);
+        }
+    
+        // Verify the payment signature
+        $keySecret =  'nIgv7EaQ3RqyXRe9QAAKf9xD';
+        $generatedSignature = hash_hmac('sha256', $razorpayOrderId . "|" . $razorpayPaymentId, $keySecret);
+    
+        if ($generatedSignature !== $razorpaySignature) {
+            $tempOrder->update([
+                'payment_status' => 'fail',
+                'error_message' => 'Payment verification failed.',
+            ]);
+            return response()->json(['success' => false, 'error_url' => route('library.payment.error'), 'message' => 'Payment verification failed.']);
+        }
+    
+        // Update the transactions table
+        $transaction = LibraryTransaction::where('id', $libraryTransactionId)->first();
+     
+        if (!$transaction) {
+            $tempOrder->update([
+                'payment_status' => 'fail',
+                'error_message' => 'Transaction not found.',
+            ]);
+            return response()->json(['success' => false, 'error_url' => route('library.payment.error'),'message' => 'Transaction not found.']);
+        }
+        try {
+            if ($transaction) {
+                
+                $duration = $transaction->month ?? 0;
+
+                if (LibraryTransaction::where('library_id', $transaction->library_id)->where('status', 1)->exists()) {
+                    $library_tra = LibraryTransaction::where('library_id', $transaction->library_id)
+                                                    ->where('status', 1)
+                                                    ->orderBy('id', 'desc')
+                                                    ->first();
+                
+                    $start_date = Carbon::parse($library_tra->end_date)->addDay(1);
+                    $endDate = $start_date->copy()->addMonths($duration);
+                    $status = 0;
+                } else {
+                    $start_date = now(); 
+                    $endDate = $start_date->copy()->addMonths($duration);
+                    $status = 1;
+                }
+                
+            
+                // Update the transaction details
+                LibraryTransaction::where('id', $libraryTransactionId)->update([
+                    'start_date' => $start_date->format('Y-m-d'),
+                    'end_date' => $endDate->format('Y-m-d'),
+                    'transaction_date' => now()->format('Y-m-d'),
+                    'payment_mode'=>1,
+                    'is_paid' => 1,
+                    'status' => $status,
+                    'transaction_id'=>$razorpayOrderId
+                ]);
+
+                // Update the corresponding library's `is_paid` status
+                Library::where('id', $transaction->library_id)->update([
+                    'is_paid' => 1,
+                
+                ]);
+
+                // Update temp_order status
+                $tempOrder->update([
+                    'payment_status' => 'success',
+                ]);
+                $isProfile = Library::where('id', $transaction->library_id)->where('is_profile', 1)->exists();
+                
+                return response()->json(['success' => true, 'redirect_url' => $isProfile ? route('library.home') : route('profile')]);
+            
+            }
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            \Log::error('Transaction Processing Error: ' . $e->getMessage());
+        
+            // Update temp_order status to failed
+            if (isset($tempOrder)) {
+                $tempOrder->update([
+                    'payment_status' => 'failed',
+                    'error_message' => $e->getMessage(),
+                ]);
+            }
+        
+            return response()->json(['success' => false, 'message' => 'An error occurred during payment processing. Please try again.']);
+        }
+    
+       
+        
+    }
+
+    public function handleError(){
+        return view('library.payment-error.blade.php');
+    }
     public function profile()
     {
         

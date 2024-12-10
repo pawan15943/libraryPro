@@ -182,7 +182,7 @@
                 <div class="col-lg-12">
 
                     <input type="hidden" name="library_transaction_id" value="{{$transactionId}}">
-                    <button type="submit" class="btn btn-primary btn-block button"> Make Payment </button>
+                    <button type="submit" class="btn btn-primary btn-block button" id="pay-btn"> Make Payment </button>
 
                 </div>
             </div>
@@ -252,7 +252,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     (function($) {
         $(window).on("load", function() {
@@ -265,5 +265,6 @@
         });
     })(jQuery);
 </script>
+
 
 @endsection

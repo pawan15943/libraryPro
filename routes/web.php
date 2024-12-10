@@ -80,7 +80,11 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
     
       Route::get('/profile', [LibraryController::class, 'profile'])->name('profile');
       Route::post('/profile/update', [LibraryController::class, 'updateProfile'])->name('library.profile.update');
-    
+      Route::post('/payment/success', [LibraryController::class, 'handleSuccess'])->name('library.payment.success');
+      Route::get('/payment/error', [LibraryController::class, 'handleError'])->name('library.payment.error');
+      
+
+
       Route::post('/master/store', [MasterController::class, 'storemaster'])->name('master.store');
       Route::get('/master/edit', [MasterController::class, 'masterEdit'])->name('master.edit');
       Route::post('/seats', [MasterController::class, 'seatsStore'])->name('seats.store');

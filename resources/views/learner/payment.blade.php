@@ -201,7 +201,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         @endif
 
                         <div class="col-lg-6">
-                            <label for="">Upload Payment Proof <span>*</span></label>
+                            <label for="">Upload Payment Proof </label>
                             <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">
                             @error('transaction_image')
                             <span class="invalid-feedback" role="alert">

@@ -128,9 +128,10 @@ class LoadMenus
             $learnerExtendText='Extend Days are Active Now & Remaining Days are';
 
             $total_seats=Seat::count();
-            $availble_seats=Seat::where('total_hours','!=',16)->count(); 
-          
+            // $availble_seats=Seat::where('total_hours','!=',16)->count(); 
+           
             $booked_seats=Seat::where('total_hours','!=',0)->count();
+            $availble_seats=$total_seats-$booked_seats;
             $active_seat_count =  Learner::where('library_id',Auth::user()->id)->where('status', 1) 
             ->distinct() 
             ->count();

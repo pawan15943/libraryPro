@@ -72,7 +72,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                 </div>
             </div>
         
-            <form action="{{route('learner.upgrade.renew.store')}}" method="POST" enctype="multipart/form-data" id="renewUpgrade"  class="payment_page">
+            <form action="{{route('learner.upgrade.renew.store')}}" method="POST" enctype="multipart/form-data" id="learnerUpgrade"  class="payment_page">
                 @csrf
                 @method('POST')
                 <div class="action-box">
@@ -222,16 +222,11 @@ $diffInDays = $today->diffInDays($endDate, false);
     </div>
 </div>
 <script>
- 
-// document.addEventListener('DOMContentLoaded', function() {
-  
-//     const formId = document.querySelector('form.payment_page').id;
-    
-//     handleFormChanges(formId, {{$customer->id}});
-// });
-
-
-</script>
+    // Call the handleFormChanges function for the specific form when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+          handleFormChanges('learnerUpgrade', {{$customer->id}});
+      });
+  </script>
 
 
 @include('learner.script')

@@ -1730,7 +1730,7 @@ class LearnerController extends Controller
     
             $updated_user = $validatedData['updated_by'] ?? Auth::user()->id;
             $old_value = $validatedData['old_value'] ? $validatedData['old_value'] : $validatedData['operation'];  
-            if($validatedData['operation']=='renewSeat' || $validatedData['operation']=='reactive' || $validatedData['operation']=='learnerUpgrade' || $validatedData['operation']=='swapseat'){
+            if($validatedData['operation']=='renewSeat' || $validatedData['operation']=='reactive' || $validatedData['operation']=='learnerUpgrade' || $validatedData['operation']=='swapseat' || $validatedData['operation']=='changePlan'){
                 $learner_detail_id = LearnerDetail::where('learner_id', $validatedData['learner_id'])
                                     ->orderBy('id', 'DESC')
                                     ->value('id');

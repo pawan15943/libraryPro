@@ -33,3 +33,594 @@
 [2024-12-10 15:56:31] local.INFO: Action successfully logged  
 [2024-12-10 15:56:31] local.INFO: Action successful from middleware {"user_id":96,"method":"GET","url":"http://localhost/libraryProject/library/profile","status_code":200} 
 [2024-12-10 15:56:31] local.INFO: Action successful from middleware {"user_id":96,"method":"GET","url":"http://localhost/libraryProject/library/profile","status_code":200} 
+[2024-12-10 17:04:07] local.INFO: Action successful from middleware {"user_id":null,"method":"POST","url":"http://localhost/libraryProject/logout","status_code":302} 
+[2024-12-10 17:04:07] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/library/login","status_code":200} 
+[2024-12-10 17:04:32] local.INFO: Action successful from middleware {"user_id":null,"method":"POST","url":"http://localhost/libraryProject/login/store","status_code":302} 
+[2024-12-10 17:04:33] local.INFO: logAction method triggered  
+[2024-12-10 17:04:33] local.INFO: Action successfully logged  
+[2024-12-10 17:04:33] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-10 17:04:33] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-10 17:04:35] local.INFO: logAction method triggered  
+[2024-12-10 17:04:35] local.INFO: Action successfully logged  
+[2024-12-10 17:04:35] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-10 17:04:35] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-10 17:04:52] local.INFO: logAction method triggered  
+[2024-12-10 17:04:52] local.INFO: Action successfully logged  
+[2024-12-10 17:04:52] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:04:52] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:05:05] local.INFO: logAction method triggered  
+[2024-12-10 17:05:05] local.INFO: Action successfully logged  
+[2024-12-10 17:05:05] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/414","status_code":200} 
+[2024-12-10 17:05:05] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/414","status_code":200} 
+[2024-12-10 17:05:06] local.INFO: logAction method triggered  
+[2024-12-10 17:05:06] local.INFO: Action successfully logged  
+[2024-12-10 17:05:06] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1","status_code":200} 
+[2024-12-10 17:05:06] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1","status_code":200} 
+[2024-12-10 17:05:56] local.INFO: logAction method triggered  
+[2024-12-10 17:05:56] local.INFO: Action successfully logged  
+[2024-12-10 17:05:56] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:05:56] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:07:19] local.INFO: logAction method triggered  
+[2024-12-10 17:07:19] local.INFO: Action successfully logged  
+[2024-12-10 17:07:19] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1087","status_code":200} 
+[2024-12-10 17:07:19] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1087","status_code":200} 
+[2024-12-10 17:07:26] local.INFO: logAction method triggered  
+[2024-12-10 17:07:26] local.INFO: Action successfully logged  
+[2024-12-10 17:07:26] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:07:26] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:07:46] local.INFO: logAction method triggered  
+[2024-12-10 17:07:46] local.INFO: Action successfully logged  
+[2024-12-10 17:07:46] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/428","status_code":200} 
+[2024-12-10 17:07:46] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/428","status_code":200} 
+[2024-12-10 17:07:46] local.INFO: logAction method triggered  
+[2024-12-10 17:07:46] local.INFO: Action successfully logged  
+[2024-12-10 17:07:46] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=17","status_code":200} 
+[2024-12-10 17:07:46] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=17","status_code":200} 
+[2024-12-10 17:08:04] local.INFO: logAction method triggered  
+[2024-12-10 17:08:04] local.INFO: Action successfully logged  
+[2024-12-10 17:08:04] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:08:04] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:08:22] local.INFO: logAction method triggered  
+[2024-12-10 17:08:22] local.INFO: Action successfully logged  
+[2024-12-10 17:08:22] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:08:22] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:09:02] local.INFO: logAction method triggered  
+[2024-12-10 17:09:02] local.INFO: Action successfully logged  
+[2024-12-10 17:09:02] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=148&update_plan_type_id=254","status_code":200} 
+[2024-12-10 17:09:02] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=148&update_plan_type_id=254","status_code":200} 
+[2024-12-10 17:09:13] local.INFO: logAction method triggered  
+[2024-12-10 17:09:13] local.INFO: Action successfully logged  
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:09:13] local.INFO: Incoming Request Data: {"learner_id":428,"field_updated":"plan_type_id","old_value":"253","new_value":"254","operation":"learnerUpgrade","updated_by":92,"created_at":"2024-12-10T17:09:12.465Z"} 
+[2024-12-10 17:09:13] local.INFO: Validation Successful: {"learner_id":428,"field_updated":"plan_type_id","old_value":"253","new_value":"254","updated_by":92,"operation":"learnerUpgrade"} 
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:09:13] local.INFO: Data inserted successfully  
+[2024-12-10 17:09:13] local.INFO: logAction method triggered  
+[2024-12-10 17:09:13] local.INFO: Action successfully logged  
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:09:13] local.INFO: logAction method triggered  
+[2024-12-10 17:09:13] local.INFO: Action successfully logged  
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:09:13] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:09:56] local.INFO: logAction method triggered  
+[2024-12-10 17:09:56] local.INFO: Action successfully logged  
+[2024-12-10 17:09:56] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:09:56] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:09:57] local.INFO: logAction method triggered  
+[2024-12-10 17:09:57] local.INFO: Action successfully logged  
+[2024-12-10 17:09:57] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:09:57] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:10:37] local.INFO: logAction method triggered  
+[2024-12-10 17:10:37] local.INFO: Action successfully logged  
+[2024-12-10 17:10:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=148&update_plan_type_id=256","status_code":200} 
+[2024-12-10 17:10:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=148&update_plan_type_id=256","status_code":200} 
+[2024-12-10 17:10:38] local.INFO: Incoming Request Data: {"learner_id":428,"field_updated":"plan_type_id","old_value":"253","new_value":"256","operation":"learnerUpgrade","updated_by":92,"created_at":"2024-12-10T17:10:37.848Z"} 
+[2024-12-10 17:10:38] local.INFO: Validation Successful: {"learner_id":428,"field_updated":"plan_type_id","old_value":"253","new_value":"256","updated_by":92,"operation":"learnerUpgrade"} 
+[2024-12-10 17:10:38] local.INFO: Data inserted successfully  
+[2024-12-10 17:10:38] local.INFO: logAction method triggered  
+[2024-12-10 17:10:38] local.INFO: Action successfully logged  
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:10:38] local.INFO: logAction method triggered  
+[2024-12-10 17:10:38] local.INFO: Action successfully logged  
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:10:38] local.INFO: logAction method triggered  
+[2024-12-10 17:10:38] local.INFO: Action successfully logged  
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:10:38] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/428","status_code":200} 
+[2024-12-10 17:11:21] local.INFO: logAction method triggered  
+[2024-12-10 17:11:21] local.INFO: Action successfully logged  
+[2024-12-10 17:11:21] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:11:21] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:11:43] local.INFO: logAction method triggered  
+[2024-12-10 17:11:43] local.INFO: Action successfully logged  
+[2024-12-10 17:11:43] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:11:43] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:11:50] local.INFO: logAction method triggered  
+[2024-12-10 17:11:50] local.INFO: Action successfully logged  
+[2024-12-10 17:11:50] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1071","status_code":200} 
+[2024-12-10 17:11:50] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=1071","status_code":200} 
+[2024-12-10 17:12:55] local.INFO: logAction method triggered  
+[2024-12-10 17:12:55] local.INFO: Action successfully logged  
+[2024-12-10 17:12:55] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPrice?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&plan_id=148&plan_type_id=253","status_code":200} 
+[2024-12-10 17:12:55] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPrice?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&plan_id=148&plan_type_id=253","status_code":200} 
+[2024-12-10 17:13:00] local.INFO: logAction method triggered  
+[2024-12-10 17:13:01] local.ERROR: Failed to log action: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'request_body' at row 1 (Connection: mysql, SQL: insert into `library_activity_log` (`library_id`, `method`, `url`, `status_code`, `ip_address`, `created_at`, `action`, `request_body`) values (92, POST, http://localhost/libraryProject/library/learners/store, 201, ::1, 2024-12-10 17:13:01, edit, {"seat_id":"1071","seat_no":"2","name":"twelve dec","dob":"2024-12-27","mobile":"1354654545","email":"changeplan@gmail.com","plan_id":"148","plan_type_id":"253","plan_price_id":"500","plan_start_date":"2024-12-13","payment_mode":"1","_token":"kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv","id_proof_name":null}))  
+[2024-12-10 17:13:01] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/store","status_code":201} 
+[2024-12-10 17:13:01] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/store","status_code":201} 
+[2024-12-10 17:13:03] local.INFO: logAction method triggered  
+[2024-12-10 17:13:03] local.INFO: Action successfully logged  
+[2024-12-10 17:13:03] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:13:03] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-10 17:13:07] local.INFO: logAction method triggered  
+[2024-12-10 17:13:07] local.INFO: Action successfully logged  
+[2024-12-10 17:13:07] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:13:07] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:13:20] local.INFO: logAction method triggered  
+[2024-12-10 17:13:20] local.INFO: Action successfully logged  
+[2024-12-10 17:13:20] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/431","status_code":200} 
+[2024-12-10 17:13:20] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/431","status_code":200} 
+[2024-12-10 17:13:21] local.INFO: logAction method triggered  
+[2024-12-10 17:13:21] local.INFO: Action successfully logged  
+[2024-12-10 17:13:21] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=2","status_code":200} 
+[2024-12-10 17:13:21] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=2","status_code":200} 
+[2024-12-10 17:13:24] local.INFO: logAction method triggered  
+[2024-12-10 17:13:24] local.INFO: Action successfully logged  
+[2024-12-10 17:13:24] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPrice?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&plan_id=148&plan_type_id=254","status_code":200} 
+[2024-12-10 17:13:24] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPrice?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&plan_id=148&plan_type_id=254","status_code":200} 
+[2024-12-10 17:13:27] local.INFO: Incoming Request Data: {"learner_id":431,"field_updated":"plan_type_id","old_value":"253","new_value":"254","operation":"changePlan","updated_by":92,"created_at":"2024-12-10T17:13:26.848Z"} 
+[2024-12-10 17:13:27] local.INFO: Validation Successful: {"learner_id":431,"field_updated":"plan_type_id","old_value":"253","new_value":"254","updated_by":92,"operation":"changePlan"} 
+[2024-12-10 17:13:27] local.INFO: Data inserted successfully  
+[2024-12-10 17:13:27] local.INFO: logAction method triggered  
+[2024-12-10 17:13:27] local.INFO: Action successfully logged  
+[2024-12-10 17:13:27] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:13:27] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:13:27] local.INFO: logAction method triggered  
+[2024-12-10 17:13:27] local.ERROR: Failed to log action: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'request_body' at row 1 (Connection: mysql, SQL: insert into `library_activity_log` (`library_id`, `method`, `url`, `status_code`, `ip_address`, `created_at`, `action`, `request_body`) values (92, PUT, http://localhost/libraryProject/library/learners/upgrade/update/431, 302, ::1, 2024-12-10 17:13:27, edit, {"_token":"kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv","_method":"PUT","learner_detail_id":"461","name":"twelve dec","dob":"2024-12-27","mobile":"1354654545","email":"changeplan@gmail.com","seat_no":"2","user_id":"431","plan_id":"148","plan_type_id":"254","plan_price_id":"500","plan_end_date":"2025-01-13"}))  
+[2024-12-10 17:13:27] local.INFO: Action successful from middleware {"user_id":92,"method":"PUT","url":"http://localhost/libraryProject/library/learners/upgrade/update/431","status_code":302} 
+[2024-12-10 17:13:27] local.INFO: Action successful from middleware {"user_id":92,"method":"PUT","url":"http://localhost/libraryProject/library/learners/upgrade/update/431","status_code":302} 
+[2024-12-10 17:13:29] local.INFO: logAction method triggered  
+[2024-12-10 17:13:29] local.INFO: Action successfully logged  
+[2024-12-10 17:13:29] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:13:29] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:14:37] local.INFO: logAction method triggered  
+[2024-12-10 17:14:37] local.INFO: Action successfully logged  
+[2024-12-10 17:14:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/431","status_code":200} 
+[2024-12-10 17:14:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/431","status_code":200} 
+[2024-12-10 17:14:37] local.INFO: logAction method triggered  
+[2024-12-10 17:14:37] local.INFO: Action successfully logged  
+[2024-12-10 17:14:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=2","status_code":200} 
+[2024-12-10 17:14:37] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPlanTypeSeatWise?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&seatId=2","status_code":200} 
+[2024-12-10 17:14:45] local.INFO: logAction method triggered  
+[2024-12-10 17:14:45] local.INFO: Action successfully logged  
+[2024-12-10 17:14:45] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:14:45] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-10 17:15:04] local.INFO: logAction method triggered  
+[2024-12-10 17:15:04] local.INFO: Action successfully logged  
+[2024-12-10 17:15:04] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/431","status_code":200} 
+[2024-12-10 17:15:04] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/431","status_code":200} 
+[2024-12-10 17:15:13] local.INFO: logAction method triggered  
+[2024-12-10 17:15:13] local.INFO: Action successfully logged  
+[2024-12-10 17:15:13] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=149&update_plan_type_id=254","status_code":200} 
+[2024-12-10 17:15:13] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=149&update_plan_type_id=254","status_code":200} 
+[2024-12-10 17:15:24] local.INFO: logAction method triggered  
+[2024-12-10 17:15:24] local.INFO: Action successfully logged  
+[2024-12-10 17:15:24] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=149&update_plan_type_id=252","status_code":200} 
+[2024-12-10 17:15:24] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/getPricePlanwiseUpgrade?_token=kQl5Z9zQgCiBR7r5lj0y8m0lvqKL9DzKcdhqMZDv&update_plan_id=149&update_plan_type_id=252","status_code":200} 
+[2024-12-10 17:15:43] local.INFO: Incoming Request Data: {"learner_id":431,"field_updated":"plan_type_id","old_value":"254","new_value":"252","operation":"learnerUpgrade","updated_by":92,"created_at":"2024-12-10T17:15:42.877Z"} 
+[2024-12-10 17:15:43] local.INFO: Validation Successful: {"learner_id":431,"field_updated":"plan_type_id","old_value":"254","new_value":"252","updated_by":92,"operation":"learnerUpgrade"} 
+[2024-12-10 17:15:43] local.INFO: Incoming Request Data: {"learner_id":431,"field_updated":"plan_id","old_value":"148","new_value":"149","operation":"learnerUpgrade","updated_by":92,"created_at":"2024-12-10T17:15:42.876Z"} 
+[2024-12-10 17:15:43] local.INFO: Validation Successful: {"learner_id":431,"field_updated":"plan_id","old_value":"148","new_value":"149","updated_by":92,"operation":"learnerUpgrade"} 
+[2024-12-10 17:15:43] local.INFO: Data inserted successfully  
+[2024-12-10 17:15:43] local.INFO: logAction method triggered  
+[2024-12-10 17:15:43] local.INFO: Action successfully logged  
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:15:43] local.INFO: Data inserted successfully  
+[2024-12-10 17:15:43] local.INFO: logAction method triggered  
+[2024-12-10 17:15:43] local.INFO: Action successfully logged  
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/log","status_code":200} 
+[2024-12-10 17:15:43] local.INFO: logAction method triggered  
+[2024-12-10 17:15:43] local.INFO: Action successfully logged  
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:15:43] local.INFO: Action successful from middleware {"user_id":92,"method":"POST","url":"http://localhost/libraryProject/library/learners/upgrade/renew/store","status_code":302} 
+[2024-12-10 17:15:43] local.INFO: logAction method triggered  
+[2024-12-10 17:15:44] local.INFO: Action successfully logged  
+[2024-12-10 17:15:44] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/431","status_code":200} 
+[2024-12-10 17:15:44] local.INFO: Action successful from middleware {"user_id":92,"method":"GET","url":"http://localhost/libraryProject/library/learners/upgrade/renew/431","status_code":200} 
+[2024-12-11 02:55:10] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":302} 
+[2024-12-11 02:55:10] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/library/login","status_code":200} 
+[2024-12-11 02:55:42] local.INFO: Action successful from middleware {"user_id":null,"method":"POST","url":"http://localhost/libraryProject/login/store","status_code":302} 
+[2024-12-11 02:55:43] local.INFO: logAction method triggered  
+[2024-12-11 02:55:43] local.INFO: Action successfully logged  
+[2024-12-11 02:55:43] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-11 02:55:43] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners","status_code":200} 
+[2024-12-11 02:56:06] local.INFO: logAction method triggered  
+[2024-12-11 02:56:06] local.INFO: Action successfully logged  
+[2024-12-11 02:56:06] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-11 02:56:06] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners/list","status_code":200} 
+[2024-12-11 02:56:13] local.INFO: logAction method triggered  
+[2024-12-11 02:56:13] local.INFO: Action successfully logged  
+[2024-12-11 02:56:13] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 02:56:13] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 02:56:14] local.INFO: logAction method triggered  
+[2024-12-11 02:56:14] local.INFO: Action successfully logged  
+[2024-12-11 02:56:14] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 02:56:14] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 02:56:16] local.INFO: logAction method triggered  
+[2024-12-11 02:56:16] local.INFO: Action successfully logged  
+[2024-12-11 02:56:16] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 02:56:16] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:02:54] local.INFO: logAction method triggered  
+[2024-12-11 03:02:54] local.INFO: Action successfully logged  
+[2024-12-11 03:02:54] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:02:54] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:35:36] local.INFO: logAction method triggered  
+[2024-12-11 03:35:36] local.INFO: Action successfully logged  
+[2024-12-11 03:35:36] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:35:36] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:35:37] local.ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' (Connection: mysql, SQL: select count(distinct `learner_detail`.`learner_id`) as aggregate from `learner_detail` where `learners`.`library_id` = 91 and (`plan_start_date` <= 2024-12-31 23:59:59 or `plan_end_date` >= 2024-12-01 00:00:00) and `library_id` = 91) {"userId":91,"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' (Connection: mysql, SQL: select count(distinct `learner_detail`.`learner_id`) as aggregate from `learner_detail` where `learners`.`library_id` = 91 and (`plan_start_date` <= 2024-12-31 23:59:59 or `plan_end_date` >= 2024-12-01 00:00:00) and `library_id` = 91) at C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:829)
+[stacktrace]
+#0 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select count(di...', Array, Object(Closure))
+#1 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select count(di...', Array, Object(Closure))
+#2 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2871): Illuminate\\Database\\Connection->select('select count(di...', Array, true)
+#3 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2860): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3414): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2859): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3341): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3269): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
+#8 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1982): Illuminate\\Database\\Query\\Builder->count()
+#9 C:\\wamp64\\www\\libraryProject\\app\\Http\\Controllers\\DashboardController.php(312): Illuminate\\Database\\Eloquent\\Builder->__call('count', Array)
+#10 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\DashboardController->getData(Object(Illuminate\\Http\\Request))
+#11 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('getData', Array)
+#12 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\DashboardController), 'getData')
+#13 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
+#14 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#15 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#16 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#17 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoadMenus.php(226): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoadMenus->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'library')
+#26 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#28 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#32 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#34 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#39 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#40 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#41 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#42 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#43 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#45 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#46 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\NoCacheMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\NoCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#51 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#52 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#53 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#54 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#55 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#56 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#57 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#58 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#59 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#60 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#61 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#62 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#63 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#64 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#65 C:\\wamp64\\www\\libraryProject\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#66 {main}
+
+[previous exception] [object] (PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' at C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:423)
+[stacktrace]
+#0 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(423): PDO->prepare('select count(di...')
+#1 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(816): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select count(di...', Array)
+#2 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select count(di...', Array, Object(Closure))
+#3 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select count(di...', Array, Object(Closure))
+#4 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2871): Illuminate\\Database\\Connection->select('select count(di...', Array, true)
+#5 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2860): Illuminate\\Database\\Query\\Builder->runSelect()
+#6 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3414): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#7 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2859): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#8 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3341): Illuminate\\Database\\Query\\Builder->get(Array)
+#9 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3269): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
+#10 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1982): Illuminate\\Database\\Query\\Builder->count()
+#11 C:\\wamp64\\www\\libraryProject\\app\\Http\\Controllers\\DashboardController.php(312): Illuminate\\Database\\Eloquent\\Builder->__call('count', Array)
+#12 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\DashboardController->getData(Object(Illuminate\\Http\\Request))
+#13 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('getData', Array)
+#14 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\DashboardController), 'getData')
+#15 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
+#16 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#17 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoadMenus.php(226): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoadMenus->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#26 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'library')
+#28 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#34 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#41 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#42 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#43 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#44 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#45 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\NoCacheMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\NoCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#53 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#54 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#55 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#56 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#57 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#58 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#59 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#60 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#61 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#62 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#63 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#64 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#65 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#66 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#67 C:\\wamp64\\www\\libraryProject\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#68 {main}
+"} 
+[2024-12-11 03:35:37] local.INFO: logAction method triggered  
+[2024-12-11 03:35:37] local.INFO: Action successfully logged  
+[2024-12-11 03:35:37] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":500} 
+[2024-12-11 03:35:37] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":500} 
+[2024-12-11 03:35:40] local.ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' (Connection: mysql, SQL: select count(distinct `learner_detail`.`learner_id`) as aggregate from `learner_detail` where `learners`.`library_id` = 91 and (`plan_start_date` <= 2024-10-31 23:59:59 or `plan_end_date` >= 2024-10-01 00:00:00) and `library_id` = 91) {"userId":91,"exception":"[object] (Illuminate\\Database\\QueryException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' (Connection: mysql, SQL: select count(distinct `learner_detail`.`learner_id`) as aggregate from `learner_detail` where `learners`.`library_id` = 91 and (`plan_start_date` <= 2024-10-31 23:59:59 or `plan_end_date` >= 2024-10-01 00:00:00) and `library_id` = 91) at C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:829)
+[stacktrace]
+#0 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select count(di...', Array, Object(Closure))
+#1 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select count(di...', Array, Object(Closure))
+#2 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2871): Illuminate\\Database\\Connection->select('select count(di...', Array, true)
+#3 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2860): Illuminate\\Database\\Query\\Builder->runSelect()
+#4 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3414): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#5 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2859): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#6 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3341): Illuminate\\Database\\Query\\Builder->get(Array)
+#7 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3269): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
+#8 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1982): Illuminate\\Database\\Query\\Builder->count()
+#9 C:\\wamp64\\www\\libraryProject\\app\\Http\\Controllers\\DashboardController.php(312): Illuminate\\Database\\Eloquent\\Builder->__call('count', Array)
+#10 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\DashboardController->getData(Object(Illuminate\\Http\\Request))
+#11 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('getData', Array)
+#12 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\DashboardController), 'getData')
+#13 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
+#14 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#15 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#16 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#17 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#18 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoadMenus.php(226): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoadMenus->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'library')
+#26 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#28 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#32 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#33 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#34 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#39 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#40 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#41 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#42 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#43 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#44 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#45 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#46 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\NoCacheMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\NoCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#51 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#52 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#53 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#54 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#55 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#56 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#57 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#58 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#59 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#60 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#61 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#62 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#63 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#64 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#65 C:\\wamp64\\www\\libraryProject\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#66 {main}
+
+[previous exception] [object] (PDOException(code: 42S22): SQLSTATE[42S22]: Column not found: 1054 Unknown column 'learners.library_id' in 'where clause' at C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php:423)
+[stacktrace]
+#0 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(423): PDO->prepare('select count(di...')
+#1 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(816): Illuminate\\Database\\Connection->Illuminate\\Database\\{closure}('select count(di...', Array)
+#2 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(783): Illuminate\\Database\\Connection->runQueryCallback('select count(di...', Array, Object(Closure))
+#3 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php(414): Illuminate\\Database\\Connection->run('select count(di...', Array, Object(Closure))
+#4 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2871): Illuminate\\Database\\Connection->select('select count(di...', Array, true)
+#5 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2860): Illuminate\\Database\\Query\\Builder->runSelect()
+#6 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3414): Illuminate\\Database\\Query\\Builder->Illuminate\\Database\\Query\\{closure}()
+#7 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(2859): Illuminate\\Database\\Query\\Builder->onceWithColumns(Array, Object(Closure))
+#8 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3341): Illuminate\\Database\\Query\\Builder->get(Array)
+#9 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Query\\Builder.php(3269): Illuminate\\Database\\Query\\Builder->aggregate('count', Array)
+#10 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Eloquent\\Builder.php(1982): Illuminate\\Database\\Query\\Builder->count()
+#11 C:\\wamp64\\www\\libraryProject\\app\\Http\\Controllers\\DashboardController.php(312): Illuminate\\Database\\Eloquent\\Builder->__call('count', Array)
+#12 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php(54): App\\Http\\Controllers\\DashboardController->getData(Object(Illuminate\\Http\\Request))
+#13 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php(43): Illuminate\\Routing\\Controller->callAction('getData', Array)
+#14 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(259): Illuminate\\Routing\\ControllerDispatcher->dispatch(Object(Illuminate\\Routing\\Route), Object(App\\Http\\Controllers\\DashboardController), 'getData')
+#15 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php(205): Illuminate\\Routing\\Route->runController()
+#16 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(806): Illuminate\\Routing\\Route->run()
+#17 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Routing\\Router->Illuminate\\Routing\\{closure}(Object(Illuminate\\Http\\Request))
+#18 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#19 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#20 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified.php(41): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#21 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\EnsureEmailIsVerified->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#22 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoadMenus.php(226): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#23 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoadMenus->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#24 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php(50): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#25 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Routing\\Middleware\\SubstituteBindings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#26 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Auth\\Middleware\\Authenticate.php(57): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#27 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Auth\\Middleware\\Authenticate->handle(Object(Illuminate\\Http\\Request), Object(Closure), 'library')
+#28 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken.php(78): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#29 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\VerifyCsrfToken->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#30 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\View\\Middleware\\ShareErrorsFromSession.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#31 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\View\\Middleware\\ShareErrorsFromSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#32 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(121): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#33 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Session\\Middleware\\StartSession.php(64): Illuminate\\Session\\Middleware\\StartSession->handleStatefulRequest(Object(Illuminate\\Http\\Request), Object(Illuminate\\Session\\Store), Object(Closure))
+#34 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Session\\Middleware\\StartSession->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#35 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse.php(37): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#36 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\AddQueuedCookiesToResponse->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#37 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Cookie\\Middleware\\EncryptCookies.php(67): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#38 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Cookie\\Middleware\\EncryptCookies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#39 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#40 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(805): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#41 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(784): Illuminate\\Routing\\Router->runRouteWithinStack(Object(Illuminate\\Routing\\Route), Object(Illuminate\\Http\\Request))
+#42 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(748): Illuminate\\Routing\\Router->runRoute(Object(Illuminate\\Http\\Request), Object(Illuminate\\Routing\\Route))
+#43 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php(737): Illuminate\\Routing\\Router->dispatchToRoute(Object(Illuminate\\Http\\Request))
+#44 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(200): Illuminate\\Routing\\Router->dispatch(Object(Illuminate\\Http\\Request))
+#45 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(144): Illuminate\\Foundation\\Http\\Kernel->Illuminate\\Foundation\\Http\\{closure}(Object(Illuminate\\Http\\Request))
+#46 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\LoggerMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#47 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\LoggerMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#48 C:\\wamp64\\www\\libraryProject\\app\\Http\\Middleware\\NoCacheMiddleware.php(18): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#49 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): App\\Http\\Middleware\\NoCacheMiddleware->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#50 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#51 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php(31): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#52 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#53 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php(21): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#54 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php(40): Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#55 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\TrimStrings->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#56 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php(27): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#57 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#58 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php(99): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#59 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#60 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php(49): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#61 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\HandleCors->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#62 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php(39): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#63 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(183): Illuminate\\Http\\Middleware\\TrustProxies->handle(Object(Illuminate\\Http\\Request), Object(Closure))
+#64 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php(119): Illuminate\\Pipeline\\Pipeline->Illuminate\\Pipeline\\{closure}(Object(Illuminate\\Http\\Request))
+#65 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(175): Illuminate\\Pipeline\\Pipeline->then(Object(Closure))
+#66 C:\\wamp64\\www\\libraryProject\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php(144): Illuminate\\Foundation\\Http\\Kernel->sendRequestThroughRouter(Object(Illuminate\\Http\\Request))
+#67 C:\\wamp64\\www\\libraryProject\\index.php(51): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
+#68 {main}
+"} 
+[2024-12-11 03:35:40] local.INFO: logAction method triggered  
+[2024-12-11 03:35:40] local.INFO: Action successfully logged  
+[2024-12-11 03:35:40] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":500} 
+[2024-12-11 03:35:40] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":500} 
+[2024-12-11 03:35:59] local.INFO: logAction method triggered  
+[2024-12-11 03:35:59] local.INFO: Action successfully logged  
+[2024-12-11 03:35:59] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:35:59] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:35:59] local.INFO: logAction method triggered  
+[2024-12-11 03:35:59] local.INFO: Action successfully logged  
+[2024-12-11 03:35:59] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:35:59] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:02] local.INFO: logAction method triggered  
+[2024-12-11 03:36:02] local.INFO: Action successfully logged  
+[2024-12-11 03:36:02] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:02] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:33] local.INFO: logAction method triggered  
+[2024-12-11 03:36:33] local.INFO: Action successfully logged  
+[2024-12-11 03:36:33] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:36:33] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:36:34] local.INFO: logAction method triggered  
+[2024-12-11 03:36:34] local.INFO: Action successfully logged  
+[2024-12-11 03:36:34] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:34] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:36] local.INFO: logAction method triggered  
+[2024-12-11 03:36:36] local.INFO: Action successfully logged  
+[2024-12-11 03:36:36] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:36:36] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:41:48] local.INFO: logAction method triggered  
+[2024-12-11 03:41:48] local.INFO: Action successfully logged  
+[2024-12-11 03:41:48] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:41:48] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/home","status_code":200} 
+[2024-12-11 03:41:49] local.INFO: logAction method triggered  
+[2024-12-11 03:41:49] local.INFO: Action successfully logged  
+[2024-12-11 03:41:49] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:41:49] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:41:51] local.INFO: logAction method triggered  
+[2024-12-11 03:41:51] local.INFO: Action successfully logged  
+[2024-12-11 03:41:51] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:41:51] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/dashboard/data","status_code":200} 
+[2024-12-11 03:43:49] local.INFO: logAction method triggered  
+[2024-12-11 03:43:49] local.INFO: Action successfully logged  
+[2024-12-11 03:43:49] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners/seats/view?month=10&type=total_booking&year=2024","status_code":200} 
+[2024-12-11 03:43:49] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/learners/seats/view?month=10&type=total_booking&year=2024","status_code":200} 
+[2024-12-11 03:44:42] local.INFO: logAction method triggered  
+[2024-12-11 03:44:42] local.INFO: Action successfully logged  
+[2024-12-11 03:44:42] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:44:42] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:47:11] local.INFO: logAction method triggered  
+[2024-12-11 03:47:11] local.INFO: Action successfully logged  
+[2024-12-11 03:47:11] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/library/settings/store","status_code":302} 
+[2024-12-11 03:47:11] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/library/settings/store","status_code":302} 
+[2024-12-11 03:47:11] local.INFO: logAction method triggered  
+[2024-12-11 03:47:11] local.INFO: Action successfully logged  
+[2024-12-11 03:47:11] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:47:11] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:50:21] local.INFO: logAction method triggered  
+[2024-12-11 03:50:21] local.INFO: Action successfully logged  
+[2024-12-11 03:50:21] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:50:21] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:51:18] local.INFO: logAction method triggered  
+[2024-12-11 03:51:18] local.ERROR: Failed to log action: SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'request_body' at row 1 (Connection: mysql, SQL: insert into `library_activity_log` (`library_id`, `method`, `url`, `status_code`, `ip_address`, `created_at`, `action`, `request_body`) values (91, POST, http://localhost/libraryProject/library/settings/store, 302, ::1, 2024-12-11 03:51:18, edit, {"_token":"T4XmsvlgoXSWUOTMJrLg0kXXBWJswzCj9C97B71P","library_title":"Library Seven Setting update","library_meta_description":"my description linbratu seyyokkmool updare","library_primary_color":"#000000","library_language":"English","library_favicon":{}}))  
+[2024-12-11 03:51:18] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/library/settings/store","status_code":302} 
+[2024-12-11 03:51:18] local.INFO: Action successful from middleware {"user_id":91,"method":"POST","url":"http://localhost/libraryProject/library/settings/store","status_code":302} 
+[2024-12-11 03:51:19] local.INFO: logAction method triggered  
+[2024-12-11 03:51:19] local.INFO: Action successfully logged  
+[2024-12-11 03:51:19] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 03:51:19] local.INFO: Action successful from middleware {"user_id":91,"method":"GET","url":"http://localhost/libraryProject/library/settings","status_code":200} 
+[2024-12-11 06:10:50] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/library/login","status_code":200} 
+[2024-12-11 15:50:07] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/library/login","status_code":200} 
+[2024-12-11 15:52:19] local.INFO: Action successful from middleware {"user_id":null,"method":"GET","url":"http://localhost/libraryProject/administrator/login","status_code":200} 
+[2024-12-11 15:53:29] local.INFO: Action successful from middleware {"user_id":1,"method":"POST","url":"http://localhost/libraryProject/login/store","status_code":302} 
+[2024-12-11 15:53:29] local.INFO: Action successful from middleware {"user_id":1,"method":"GET","url":"http://localhost/libraryProject/home","status_code":200} 
+[2024-12-11 15:53:41] local.INFO: Action successful from middleware {"user_id":1,"method":"GET","url":"http://localhost/libraryProject/home","status_code":200} 

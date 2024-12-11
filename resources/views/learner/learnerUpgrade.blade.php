@@ -32,7 +32,7 @@ $readonlyStyle = '';
 
 
 
-<form action="{{ route('learners.update.upgrade', $customer->id) }}" method="POST" enctype="multipart/form-data" id="learnerUpgrade">
+<form action="{{ route('learners.update.upgrade', $customer->id) }}" method="POST" enctype="multipart/form-data" id="changePlan">
     @csrf
     @method('PUT')
 <input type="hidden" value="{{$customer->learner_detail_id}}" name="learner_detail_id">
@@ -212,7 +212,7 @@ $readonlyStyle = '';
 <script>
   // Call the handleFormChanges function for the specific form when the DOM is fully loaded
   document.addEventListener('DOMContentLoaded', function() {
-        handleFormChanges('learnerUpgrade', {{$customer->id}});
+        handleFormChanges('changePlan', {{$customer->id}});
     });
 </script>
 

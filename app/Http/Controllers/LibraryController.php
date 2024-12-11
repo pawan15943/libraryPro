@@ -814,7 +814,8 @@ class LibraryController extends Controller
     // Library Setting
     public function librarySetting()
     {
-        return view('library.settings'); // Adjust the view path as needed
+        $library=LibrarySetting::where('library_id',Auth::user()->id)->first();
+        return view('library.settings',compact('library')); // Adjust the view path as needed
     }
     public function libraryfeedback()
     {

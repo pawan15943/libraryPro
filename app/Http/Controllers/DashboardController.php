@@ -449,11 +449,17 @@ class DashboardController extends Controller
         ->where('operation', 'deleteSeat')
         ->get()
         ->count();
-
+        $paidQuery=Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)->where('learner_detail.is_paid',1)
+        ->where(function ($subQuery) use ( $month , $year) {
+            $subQuery->whereYear('plan_start_date', $year)
+            ->whereMonth('plan_start_date', $month);
+           
+        });
         // Clone the base query for each payment mode count
-        $online_paid = (clone $thismonth_booking)->where('learner_detail.payment_mode', 1)->count();
-        $offline_paid = (clone $thismonth_booking)->where('learner_detail.payment_mode', 2)->count();
-        $other_paid =(clone $query)->where('learner_detail.payment_mode', 3)->count();
+        $online_paid = (clone $paidQuery)->where('learner_detail.payment_mode', 1)->count();
+        $offline_paid = (clone $paidQuery)->where('learner_detail.payment_mode', 2)->count();
+        $other_paid =(clone $paidQuery)->where('learner_detail.payment_mode', 3)->count();
        
          // For graph and plan wise count
        

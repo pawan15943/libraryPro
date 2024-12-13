@@ -24,7 +24,8 @@ class NotificationController extends Controller
         )
         ->groupBy('batch_id', 'guard', 'data', 'created_at')
         ->get();
-        return view('notification.custom_notification',compact('notifications'));
+        $notificat=null;
+        return view('notification.custom_notification',compact('notifications','notificat'));
     }
     public function edit($id){
         

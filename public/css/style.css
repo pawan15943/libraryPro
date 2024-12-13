@@ -4485,12 +4485,12 @@ ul.activity li span {
     padding: 1rem;
     border-radius: .8rem;
     position: relative;
+    z-index: 1;
 }
 
 .adminCounts * {
     color: #fff !IMPORTANT;
-    !I;
-    !;
+   
 }
 
 .adminCounts h4 {
@@ -4516,6 +4516,7 @@ ul.activity li span {
     height: 35px;
     background: #ffffff36;
     width: 100%;
+    z-index: -1;
 }
 
 

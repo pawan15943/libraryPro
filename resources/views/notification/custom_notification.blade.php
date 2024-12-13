@@ -16,11 +16,12 @@
 <!-- Content -->
 <form action="{{ $notificat ? route('notifications.update', $notificat->batch_id) : route('notifications.send') }}" method="POST">
     @csrf
-    {{-- @if($notificat)
-        @method('PUT') 
-    @endif --}}
+    
     @php
-    $data = json_decode($notificat->data, true);
+    if($notificat){
+        $data = json_decode($notificat->data, true);
+    }
+    
     @endphp
     <div class="row mb-4">
         <div class="col-lg-12">

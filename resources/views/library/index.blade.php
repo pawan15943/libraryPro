@@ -83,7 +83,7 @@
                    @endphp
 
                     <tr>
-                        <td>1</td>
+                        <td>{{$key+1}}</td>
                         <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->library_name}}" data-bs-placement="bottom"> {{$value->library_name}}</span>
                             {{-- <small>{{$value->library_owner_contact}}</small> --}}
                         </td>

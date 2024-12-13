@@ -5,3 +5,4 @@
 .htaccess
 /public/uploads
 /public/allpdf
+/storage/logs/laravel.log

@@ -1000,7 +1000,7 @@ class DashboardController extends Controller
             
             break;
             case 'pending_renew':
-                $result=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',1)->where('end_date','<=',date('Y-m-d'))->get();
+                $result=Library::leftJoin('library_transactions','libraries.id','=','library_transactions.library_id')->where('libraries.is_paid',1)->where('end_date','<=',date('Y-m-d'))->get();
 
             break;
         }

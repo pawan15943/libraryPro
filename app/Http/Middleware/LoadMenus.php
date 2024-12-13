@@ -276,7 +276,7 @@ class LoadMenus
 
         }
     }
-    protected function dataUpdate(){
+    public function dataUpdate(){
        
         $seats = Seat::get();
  

@@ -63,252 +63,103 @@
                 </thead>
                 <tbody>
                     
-                    @foreach ($result as $data)
-                    @if($data->operation_date)
-                        @php
-                            $learner=App\Models\Learner::where('id',$data->learner_id)->first();
-                            $learner_detail=App\Models\LearnerDetail::where('id',$data->learner_detail_id)->with(['plan','planType'])->first();
-                           
-                            $operation = DB::table('learner_operations_log')->where('learner_id',$data->learner_id)->where('learner_detail_id',$data->learner_detail_id)->where('operation',$data->operation)->whereDate('created_at',$data->operation_date)->first();
-                            $operationDetails = HelperService::getOperationDetails($operation);
-                           
-                        @endphp
-                         <tr>
-                            <td>{{ $learner->seat_no }}<br>{{$operationDetails['field']}}{{$operationDetails['old']}}-{{$operationDetails['new']}}</td> <!-- Seat No -->
-                           
-                            
-                            <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$learner->name}}" data-bs-placement="bottom">{{$learner->name}}</span>
-                            <br> <small>{{$learner->dob}}</small>
-                            </td>
-                           
-                            <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{ $learner->email }}" data-bs-placement="bottom"><i
-                                    class="fa-solid fa-times text-danger"></i></i>
-                                {{ $learner->email }}</span> <br>
-                                <small> +91-{{$learner->mobile}}</small>
-                            </td>
-                            <td>
-                                {{ $learner_detail->plan_start_date ?? 'N/A' }}<br>
-                                    <small>{{ $learner_detail->plan->name ?? 'N/A' }}</small>
-                            </td>
-                            <td>
-                                {{ $learner_detail->plan_end_date ?? 'N/A' }}<br>
-                                    <small>{{ $learner_detail->planType->name ?? 'N/A' }}</small> 
-                            </td>
-                            <td>
-                                @php
-                                        
-                                        $today = Carbon::today();
-                                        if($learner_detail->plan_end_date){
-                                            $endDate =$learner_detail->plan_end_date;
-                                        }
-                                        $endDate = Carbon::parse($endDate);
-                                        $diffInDays = $today->diffInDays($endDate, false);
-                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
-                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
-                                    @endphp
-                                    
-                                    @if ($learner_detail->status == 1)
-                                        Active <small>{{$learner_detail->is_paid==1 ? 'Paid' : 'Unpaid'}}</small><br>{{$operationDetails['operation_type']}}
-                                    @else
-                                        Inactive <small>{{$learner_detail->is_paid==1 ? 'Paid' : 'Unpaid'}}</small><br>{{$operationDetails['operation_type']}}
-                                    @endif
-                                    <br>
-                                    @if ($diffInDays > 0)
-                                        <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                                    @elseif ($diffInDays <= 0 && $diffExtendDay > 0)
-                                        <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                                    @elseif ($diffInDays < 0 && $diffExtendDay == 0)
-                                        <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                                    @else
-                                        <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                    @endif
-                            </td>
-                            
-                            
-                        </tr>
-                    @elseif($data->learner)
-                    <tr>
-                        <td>{{ $data->learner->seat_no }}</td> <!-- Seat No -->
-                        
-                        <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                            data-bs-title="{{$data->learner->name}}" data-bs-placement="bottom">{{$data->learner->name}}</span>
-                        <br> <small>{{$data->dob}}</small>
-                        </td>
-                       
-                        <td><span class="truncate" data-bs-toggle="tooltip"
-                            data-bs-title="{{ $data->learner->email }}" data-bs-placement="bottom"><i
-                                class="fa-solid fa-times text-danger"></i></i>
-                            {{ $data->learner->email }}</span> <br>
-                            <small> +91-{{$data->learner->mobile}}</small>
-                        </td>
-                        <td>
-                            {{ $data->plan_start_date ?? 'N/A' }}<br>
-                                <small>{{ $data->plan->name ?? 'N/A' }}</small>
-                        </td>
-                        <td>
-                            {{ $data->plan_end_date ?? 'N/A' }}<br>
-                                <small>{{ $data->planType->name ?? 'N/A' }}</small> 
-                        </td>
-                        <td>
-                            @php
-                                    
-                                    $today = Carbon::today();
-                                    if($data->plan_end_date){
-                                        $endDate =$data->plan_end_date;
-                                    }elseif($data->learner->plan_end_date){
-                                        $endDate =$data->learner->plan_end_date;
-                                    }
-                                    $endDate = Carbon::parse($endDate);
-                                    $diffInDays = $today->diffInDays($endDate, false);
-                                    $inextendDate = $endDate->copy()->addDays($extendDay); 
-                                    
-                                    $diffExtendDay= $today->diffInDays($inextendDate, false);
-                                   
-                                @endphp
-                                
-                                @if ($data->status == 1 || $data->learner->status == 1)
-                                    Active
-                                @else
-                                    Inactive
-                                @endif
-                                <br>
-                                @if ($diffInDays > 0)
-                                    <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                                @elseif ($diffInDays <= 0 && $diffExtendDay > 0 && $data->status == 1)
-                                    <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                                @elseif ($diffInDays < 0 && $diffExtendDay == 0)
-                                    <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                                @else
-                                    <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                @endif
-                        </td>
-                        
-                        
-                    </tr>
-                    @elseif($data->max_plan_start_date)
+                    @foreach ($result  as $key => $value)
+                   
                     @php
-                         $learner_detail=App\Models\LearnerDetail::where('learner_id',$data->learner_id)->where('plan_start_date',$data->max_plan_start_date)->first();
-                        $plan=App\Models\Plan::where('id',$learner_detail->plan_id)->first();
-                        $planType=App\Models\planType::where('id',$learner_detail->plan_type_id)->first();
-                    @endphp
-                        <tr>
-                            <td>{{ $data->seat_no }}</td> <!-- Seat No -->
-                            
-                            <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$data->name}}" data-bs-placement="bottom">{{$data->name}}</span>
-                            <br> <small>{{$data->dob}}</small>
-                            </td>
+
+                         $libraryplan=App\Models\Subscription::where('id',$value->library_type)->value('name');
+                         $libraryplanData=DB::table('library_transactions')->where('id',$value->latest_transaction_id)->first();
+
+                         $endDate = ($libraryplanData && $libraryplanData->end_date != null) ? Carbon::parse($libraryplanData->end_date) : null;
+                         $diffInDays = $endDate ? $today->diffInDays($endDate, false) : 0;
+                   @endphp
+
+                    <tr>
+                        <td>{{$key+1}}</td>
+                        <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->library_name}}" data-bs-placement="bottom"> {{$value->library_name}}</span>
+                            {{-- <small>{{$value->library_owner_contact}}</small> --}}
+                        </td>
+                        <td><span class=" d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->email}}" data-bs-placement="bottom">
+                            @if($value->email_verified_at !='')
+                            <i class="fa-solid fa-check text-success"></i>
+                            @else
+                            <i class="fa-solid fa-times text-danger"></i>
+                            @endif
+                           
+                                {{$value->email}}</span>
+                            <small>+91-{{$value->library_mobile}}</small>
+                        </td>
+                        <td>{{$libraryplan}}<br>
+                           
+                            @if($libraryplanData && $libraryplanData->month == 12)
+                                <small>Yearly</small>
+                            @else
+                                <small>Monthly</small>
+                            @endif
                         
-                            <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{ $data->email }}" data-bs-placement="bottom"><i
-                                    class="fa-solid fa-times text-danger"></i></i>
-                                {{ $data->email }}</span> <br>
-                                <small> +91-{{$data->mobile}}</small>
-                            </td>
-                            <td>
-                                {{ $data->max_plan_start_date ?? 'N/A' }}<br>
-                                    <small>{{ $plan->name ?? 'N/A' }}</small>
-                            </td>
-                            <td>
-                                {{ $data->max_plan_end_date ?? 'N/A' }}<br>
-                                    <small>{{ $planType->name ?? 'N/A' }}</small> 
-                            </td>
-                            <td>
-                                @php
-                                        
-                                        $today = Carbon::today();
-                                        if($data->max_plan_end_date){
-                                            $endDate =$data->max_plan_end_date;
-                                        }
-                                        $endDate = Carbon::parse($endDate);
-                                        $diffInDays = $today->diffInDays($endDate, false);
-                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
-                                        
-                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
-                                    
-                                    @endphp
-                                    
-                                    @if ($learner_detail->status == 1)
-                                        Active
-                                    @else
-                                        Inactive
-                                    @endif
-                                    <br>
-                                    @if ($diffInDays > 0)
-                                        <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                                    @elseif ($diffInDays <= 0 && $diffExtendDay > 0 && $learner_detail->status == 1)
-                                        <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                                   
-                                    @else
-                                        <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                    @endif
-                            </td>
                             
-                            
-                        </tr>
-                    @else
-                        <tr>
-                            <td>{{ $data->seat_no }}</td> <!-- Seat No -->
-                            
-                            <td><span class="uppercase truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$data->name}}" data-bs-placement="bottom">{{$data->name}}</span>
-                            <br> <small>{{$data->dob}}</small>
-                            </td>
+                        </td>
+                        <td>
+                            @if($libraryplanData && $libraryplanData->start_date != null)
+                            <span class="d-block m-auto">
+                                {{ \Carbon\Carbon::parse($libraryplanData->start_date)->toFormattedDateString() }}
+                            </span>
+                             @endif
                         
-                            <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{ $data->email }}" data-bs-placement="bottom"><i
-                                    class="fa-solid fa-times text-danger"></i></i>
-                                {{ $data->email }}</span> <br>
-                                <small> +91-{{$data->mobile}}</small>
-                            </td>
-                            <td>
-                                {{ $data->plan_start_date ?? 'N/A' }}<br>
-                                    <small>{{ $data->plan->name ?? 'N/A' }}</small>
-                            </td>
-                            <td>
-                                {{ $data->plan_end_date ?? 'N/A' }}<br>
-                                    <small>{{ $data->planType->name ?? 'N/A' }}</small> 
-                            </td>
-                            <td>
-                                @php
-                                        
-                                        $today = Carbon::today();
-                                        if($data->plan_end_date){
-                                            $endDate =$data->plan_end_date;
-                                        }elseif($data->learner->plan_end_date){
-                                            $endDate =$data->learner->plan_end_date;
-                                        }
-                                        $endDate = Carbon::parse($endDate);
-                                        $diffInDays = $today->diffInDays($endDate, false);
-                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
-                                        
-                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
-                                    
-                                    @endphp
-                                    
-                                    @if ($data->status == 1)
-                                        Active
-                                    @else
-                                        Inactive
-                                    @endif
-                                    <br>
-                                    @if ($diffInDays > 0)
-                                        <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                                    @elseif ($diffInDays <= 0 && $diffExtendDay > 0 && $data->status == 1)
-                                        <small class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</small>
-                                    @elseif ($diffInDays < 0 && $diffExtendDay == 0)
-                                        <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                                    @else
-                                        <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                    @endif
-                            </td>
+                            @if($value->status==1)
+                            <small class="text-success">Active</small>
+                            @else
+                            <small class="text-danger">Expired</small>
+                            @endif
+                           
+                        </td>
+                        <td>
+                            {{ $endDate ? $endDate->toFormattedDateString() : 'N/A' }}
+                           
+                           
+                            <br>
+                            @if ($diffInDays > 0)
+                            <small class="text-success ">{{ $diffInDays }} Days Pending</small>
+                            @elseif ($diffInDays < 0)
+                                <small class="text-danger ">Expired {{ abs($diffInDays) }} Days ago</small>
+                                
+                            @else
+                                <small class="text-warning ">Expires today</small>
+                            @endif
                             
+                        </td>
+
+                        <td>
                             
-                        </tr>
-                    @endif
-                    
+                            <ul class="actionalbls">
+                                <!-- View Library Info -->
+                                <li><a href="{{route('library.show',$value->id)}}" data-bs-toggle="tooltip" data-bs-title="View Library Details" data-bs-placement="bottom"><i class="fas fa-eye"></i></a>
+                                </li>
+
+                                <!-- Edit Library Info -->
+                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-title="Edit Library Info"><i class="fas fa-edit"></i></a></li>
+
+                                <!-- Upgrde Plan-->
+                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+
+                                <!-- Close Seat -->
+                                <li><a href="#;" class="link-close-plan" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Close Seat"><i class="fas fa-times"></i></a></li>
+
+                                <!-- Deletr learners -->
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Lerners" class="delete-learners" data-original-title="Delete Lerners"><i class="fas fa-trash"></i></a></li>
+                                <!-- Delete masters -->
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete masters" class="delete-masters" data-original-title="Delete masters"><i class="fas fa-trash"></i></a></li>
+                                <!-- Make Payment -->
+                                <li><a href="{{ route('library.payment', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Make Payment"> <i class="fas fa-credit-card"></i> </a></li>
+
+                                <!-- Sent Mail -->
+                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
+                                <!-- Sent Mail -->
+                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                <li><a href="{{ route('configration.upload', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="upload library configration" class="configration" data-original-title="upload library configration"> <i class="fas fa-upload"></i> </a></li>
+                            </ul>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

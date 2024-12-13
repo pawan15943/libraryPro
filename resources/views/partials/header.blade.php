@@ -105,7 +105,7 @@
                 <ul class="dropdown-menu">
                     <li>
                         <!-- Dropdown - Alerts -->
-                        <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                        <div class="dropdown-menu-1" aria-labelledby="alertsDropdown">
                             <h6 class="dropdown-header">Alerts Center</h6>
                             
                             @forelse($unreadNotifications as $notification)
@@ -117,13 +117,13 @@
                                 </div>
                                 <div>
                                     <div class="small text-gray-500">{{ $notification->data['title'] ?? 'No Title' }}</div>
-                                    <span class="font-weight-bold">{{ $notification->data['description'] ?? 'No Description' }}</span>
+                                    {{-- <span class="font-weight-bold">{{ $notification->data['description'] ?? 'No Description' }}</span> --}}
                                 </div>
                             </a>
                             @empty
                                 <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
                             @endforelse
-                            <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                            <a class="dropdown-item text-center small text-gray-500" href="{{route('list.notification')}}">Show All Alerts</a>
                         </div>
                     </li>
 
@@ -214,3 +214,29 @@
     </div>
     <div class="latest-notification"><b>Important Update :</b>  <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee></div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.dropdown-item').forEach(function (notificationItem) {
+            notificationItem.addEventListener('click', function (e) {
+                const notificationId = this.getAttribute('data-notification-id');
+
+                if (notificationId) {
+                    fetch('{{ route("notifications.markAsRead") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ notification_id: notificationId })
+                    }).then(response => response.json())
+                      .then(data => {
+                          if (data.success) {
+                              console.log('Notification marked as read.');
+                          }
+                      }).catch(error => console.error('Error:', error));
+                }
+            });
+        });
+    });
+</script>

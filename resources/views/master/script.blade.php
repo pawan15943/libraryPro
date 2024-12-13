@@ -215,7 +215,7 @@
             var dataTable=$(this).data('table');
         
             var $row = $(this).closest('tr'); // Get the closest table row to update it later
-        
+            console.log(dataTable);
             // Show a confirmation dialog
             if (confirm('Are you sure you want to change the status?')) {
                 $.ajax({

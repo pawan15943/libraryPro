@@ -71,11 +71,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
                     @foreach($libraries as $key => $value)
                     @php
-                   
+
                          $libraryplan=App\Models\Subscription::where('id',$value->library_type)->value('name');
-                         $libraryplanData=App\Models\LibraryTransaction::where('id',$value->latest_transaction_id)->first();
+                         $libraryplanData=DB::table('library_transactions')->where('id',$value->latest_transaction_id)->first();
 
                          $endDate = ($libraryplanData && $libraryplanData->end_date != null) ? Carbon::parse($libraryplanData->end_date) : null;
                          $diffInDays = $endDate ? $today->diffInDays($endDate, false) : 0;
@@ -84,9 +85,15 @@
                     <tr>
                         <td>1</td>
                         <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->library_name}}" data-bs-placement="bottom"> {{$value->library_name}}</span>
-                            <small>{{$value->library_owner_contact}}</small>
+                            {{-- <small>{{$value->library_owner_contact}}</small> --}}
                         </td>
-                        <td><span class="truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->email}}" data-bs-placement="bottom"><i class="fa-solid fa-times text-danger"></i>
+                        <td><span class=" d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->email}}" data-bs-placement="bottom">
+                            @if($value->email_verified_at !='')
+                            <i class="fa-solid fa-check text-success"></i>
+                            @else
+                            <i class="fa-solid fa-times text-danger"></i>
+                            @endif
+                           
                                 {{$value->email}}</span>
                             <small>+91-{{$value->library_mobile}}</small>
                         </td>
@@ -110,7 +117,7 @@
                             @if($value->status==1)
                             <small class="text-success">Active</small>
                             @else
-                            <small class="text-success">InActive</small>
+                            <small class="text-danger">Expired</small>
                             @endif
                            
                         </td>

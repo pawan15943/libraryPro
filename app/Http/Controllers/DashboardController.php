@@ -44,9 +44,11 @@ class DashboardController extends Controller
         $user=Auth::user();
      
         if ($user->hasRole('superadmin')) {
-           
-        
-            return view('dashboard.administrator');
+           $totalregistration=Library::count();
+           $paidregistration=Library::where('is_paid',1)->count();
+           $unpaidregistration=Library::where('is_paid',0)->count();
+           $renewCount=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',1)->where('end_date','<=',date('Y-m-d'))->count();
+            return view('dashboard.administrator',compact('totalregistration','paidregistration','unpaidregistration','renewCount'));
         }if ($user->hasRole('admin')) {
            
             return view('dashboard.admin');
@@ -979,6 +981,30 @@ class DashboardController extends Controller
         
         return view('learner.list-view', compact('result', 'type','extendDay'));
         
+    }
+
+    public function libraryView(Request $request){
+        $type = $request->get('type');
+        switch ($type) {
+            case 'total':
+               
+                $result=Library::get();
+
+            break;
+            case 'paid_registration':
+                $result=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',1)->get();
+             
+            break;
+            case 'unpaid_registration':
+                $result=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',0)->get();
+            
+            break;
+            case 'pending_renew':
+                $result=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',1)->where('end_date','<=',date('Y-m-d'))->get();
+
+            break;
+        }
+        return view('library.count-list', compact('result', 'type'));
     }
 
     

@@ -107,7 +107,9 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::post('settings/store', [LibraryController::class, 'SettingStore'])->name('library.settings.store');
       Route::get('feedback', [LibraryController::class, 'libraryFeedback'])->name('library.feedback');
       Route::post('feedback/store', [LibraryController::class, 'feedbackStore'])->name('library.feedback.store');
-     
+      Route::get('list/notification', [NotificationController::class, 'show'])->name('list.notification'); 
+      Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+
   
    
     });
@@ -157,7 +159,7 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
-     
+      Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
         Route::get('/csv/web/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
        
         Route::get('/export-invalid-records/web', [Controller::class, 'exportCsv'])->name('web.export.invalid.records');
@@ -168,9 +170,13 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('subscriptions/store', [MasterController::class, 'storeSubscription'])->name('subscriptions.store');
         Route::post('subscriptions/assign-permissions', [MasterController::class, 'assignPermissionsToSubscription'])->name('subscriptions.assignPermissions');
         Route::get('/subscriptions/{id}/permissions', [MasterController::class, 'getPermissions'])->name('subscriptions.getPermissions');
-
+        
        
         Route::get('subscriptions-permissions', [MasterController::class, 'index'])->name('subscriptions.permissions');
+        Route::get('planwise/permissions/{id}', [MasterController::class, 'showPlanwisePermission'])->name('planwise.permissions');
+        Route::get('subscription/master', [MasterController::class, 'subscriptionMaster'])->name('subscription.master');
+        Route::get('/subscription/master/{id}', [MasterController::class, 'subscriptionMasterEdit'])->name('subscriptions.edit');
+        Route::put('/subscriptions/update/{id}', [MasterController::class, 'subscriptionMasterUpdate'])->name('subscriptions.update');
         Route::get('permissions/{permissionId?}', [MasterController::class, 'managePermissions'])->name('permissions');
 
         Route::put('permissions/{permissionId?}', [MasterController::class, 'storeOrUpdatePermission'])->name('permissions.storeOrUpdate');
@@ -182,11 +188,17 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('library/learners/delete/{id?}', [LibraryController::class, 'destroyLearners'])->name('library.learners.destroy');
         Route::delete('library/masters/delete/{id?}', [LibraryController::class, 'destroyAllMasters'])->name('library.masters.destroy');
         Route::get('create/notification', [NotificationController::class, 'create'])->name('create.notification'); 
+        Route::get('edit/notification/{id?}', [NotificationController::class, 'edit'])->name('notifications.edit'); 
         Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send'); 
+        Route::put('/notifications/update', [NotificationController::class, 'update'])->name('notifications.update');
+        Route::get('/library/count/view', [DashboardController::class, 'libraryView'])->name('library.count.view');
+        
+
     });
 });
 
 Route::middleware(['auth:learner','no-cache'])->group(function () {
+  // Route::get('list/notification', [NotificationController::class, 'show'])->name('list.notification');
   Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');
 });
 

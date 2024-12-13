@@ -4479,6 +4479,46 @@ ul.activity li span {
     display: block;
 }
 
+/* ==================================== Administrator Panel =============================*/
+.adminCounts {
+    background: linear-gradient(49deg, #22707a, #00BCD4);
+    padding: 1rem;
+    border-radius: .8rem;
+    position: relative;
+}
+
+.adminCounts * {
+    color: #fff !IMPORTANT;
+    !I;
+    !;
+}
+
+.adminCounts h4 {
+    font-size: 1rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.adminCounts a {
+    font-size: .9rem;
+    text-decoration: none;
+    display: block;
+    margin-top: 1.5rem;
+    text-align: center;
+    margin-bottom: -.5rem;
+}
+
+.adminCounts::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 35px;
+    background: #ffffff36;
+    width: 100%;
+}
+
+
 @media screen and (max-width:480px) {
     .w-120 {
         width: 0 !important;
@@ -4535,7 +4575,7 @@ ul.activity li span {
     border-radius: .8rem;
     padding: 1rem;
     margin-top: 1.5rem;
-    box-shadow: 1px  0 5px #00000021;
+    box-shadow: 1px 0 5px #00000021;
 }
 
 .seat-activity ul {

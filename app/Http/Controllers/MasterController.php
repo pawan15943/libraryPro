@@ -41,7 +41,71 @@ class MasterController extends Controller
 
         return view('master.subscriptionPermission', compact('subscriptions', 'permissions', 'users'));
     }
+
+    public function showPlanwisePermission($id){
+       
+        // $subscriptions = Subscription::all();
+        $subscriptions = Subscription::where('id',$id)->get();
+        $permissions = Permission::where('guard_name','library')->get();
+        $users = User::all();
+        return view('master.showPlanwisePermissions', compact('subscriptions', 'permissions', 'users'));
+    }
+    public function subscriptionMaster(){
+        $subscriptions = Subscription::withTrashed()->get();
+        $permissions = Permission::where('guard_name','library')->get();
+        $subscription=null;
+        $users = User::all();
+        return view('master.subscriptionMaster', compact('subscriptions', 'permissions', 'users','subscription'));
+    }
+    public function storeSubscription(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'monthly_fees' => 'required|numeric|min:0',
+            'yearly_fees' => 'nullable|numeric|min:0',
+        ]);
+        Subscription::create($request->all());
+        return redirect()->back()->with('success', 'Subscription created successfully');
+    }
+    public function subscriptionMasterUpdate(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'monthly_fees' => 'required|numeric|min:0',
+            'yearly_fees' => 'nullable|numeric|min:0',
+        ]);
+
+        $subscription = Subscription::findOrFail($id);
+        $subscription->update($validated);
+
+        return redirect()->route('subscription.master')->with('success', 'Subscription updated successfully.');
+    }
+    public function subscriptionMasterEdit($id = null){
+        $subscription = $id ? Subscription::withTrashed()->find($id) : null;
+        $subscriptions = Subscription::withTrashed()->get();
+        $permissions = Permission::where('guard_name','library')->get();
+       
+        $users = User::all();
+        return view('master.subscriptionMaster', compact('subscriptions', 'permissions', 'users','subscription'));
+    }
+    public function deactiveSubscription($id)
+    {
+        
+        try {
+            DB::transaction(function () use ($id) {
+                
+                Subscription::where('id', $id)->delete();
+            });
     
+           
+            return response()->json(['success' => 'Subscriptions successfully.']);
+        } catch (\Exception $e) {
+           
+            return response()->json(['error' => 'An error occurred while deleting the customer: ' . $e->getMessage()], 500);
+        }
+    
+        return response()->json(['success' => 'Learner deleted successfully.']);
+    }
     public function managePermissions($permissionId = null,$categoryId = null)
     {
         
@@ -129,11 +193,7 @@ class MasterController extends Controller
     }
 
 
-    public function storeSubscription(Request $request)
-    {
-        Subscription::create($request->all());
-        return redirect()->back()->with('success', 'Subscription created successfully');
-    }
+    
 
     public function assignPermissionsToSubscription(Request $request)
     {
@@ -361,6 +421,7 @@ class MasterController extends Controller
 
     public function activeDeactive(Request $request, $id)
     {
+       
         $modelClass = 'App\\Models\\' . $request->dataTable;
 
         if (!class_exists($modelClass)) {

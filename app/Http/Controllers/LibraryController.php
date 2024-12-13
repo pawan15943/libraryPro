@@ -47,7 +47,7 @@ class LibraryController extends Controller
     {
         $query = Library::leftJoin('library_transactions', 'libraries.id', '=', 'library_transactions.library_id')
             ->where('library_transactions.is_paid', 1)
-            ->select('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
+            ->select('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email','libraries.*', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
             ->groupBy('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email');
     
         // Filter by Plan
@@ -807,7 +807,13 @@ class LibraryController extends Controller
 
     function generateLibraryCode() {
         $prefix = "LB";
-        $randomNumber = rand(100000, 999999); // Generates a 6-digit random number
+        $lastlubraryNo=Library::orderBy('id','DESC')->first();
+        if($lastlubraryNo){
+            $randomNumber=+1 ;
+        }else{
+            $randomNumber='LB000001';
+        }
+        // $randomNumber = rand(100000, 999999); 
         return $prefix . $randomNumber;
     }
 

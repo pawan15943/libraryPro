@@ -2,37 +2,11 @@
 
 @section('content')
 
-<!-- Add Library Plan -->
-<div class="card">
-    @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
-
-    <!-- Create Subscription -->
-    <h4 class="mb-3">Create New Subscription</h4>
-    <form action="{{ route('subscriptions.store') }}" class="validateForm" method="POST">
-        @csrf
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <label for="subscription">Subscription Name <span>*</span></label>
-                <input type="text" class="form-control char-only" name="name">
-            </div>
-            <div class="col-lg-4">
-                <label for="subscription">Monthly Plan Price <span>*</span></label>
-                <input type="text" class="form-control digit-only" name="monthly_fees">
-            </div>
-            <div class="col-lg-4">
-                <label for="subscription">Yearly Plan Price</label>
-                <input type="text" class="form-control digit-only" name="yearly_fees">
-            </div>
-            <div class="col-lg-3">
-                <button type="submit" class="btn btn-primary button">Create Subscription</button>
-            </div>
-        </div>
-    </form>
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
 </div>
+@endif
 
 <!-- Assign Permissions -->
 <div class="card mt-4">
@@ -92,43 +66,7 @@
     </form>
 </div>
 
-<div>
-@foreach($subscriptions as $subscription)
-    <h4 class="py-4">Permissions for Subscription: {{ $subscription->name }}</h4>
 
-    @php
-        // Group permissions by category
-        $groupedPermissions = $subscription->permissions->groupBy('permission_category_id');
-    @endphp
-
-    @if($groupedPermissions->isEmpty())
-        <p>No permissions available.</p>
-    @else
-        <div class="table-responsive">
-            @foreach($groupedPermissions as $categoryId => $permissions)
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h6 class='role-category-heading'>
-                                {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
-                            </h6>
-                        </div>
-                    </div>
-
-                    <div class="row contain_permissions_check">
-                        @foreach($permissions as $permission)
-                            <div class="col-sm-3">
-                                <p><i class="fa-solid fa-check text-success me-2"></i>{{ $permission->name }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    @endif
-@endforeach
-
-</div>
 
 <script>
     $(document).ready(function() {

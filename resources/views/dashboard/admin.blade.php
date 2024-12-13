@@ -3,18 +3,12 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <!-- New Design Dahsbard Library -->
 <div class="support-container">
     <div class="support-icon" onclick="toggleSupportCard()">
         <i class="fa-solid fa-phone-volume"></i>
     </div>
     <div class="support-card" id="supportCard">
-
         <p><strong><i class="fa-solid fa-phone-volume"></i> Contact Us:</strong></p>
         <p>Phone: 123-456-7890</p>
         <p>Email: support@library.com</p>

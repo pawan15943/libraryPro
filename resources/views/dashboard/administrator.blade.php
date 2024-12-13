@@ -10,28 +10,28 @@
         <div class="adminCounts">
             <h4>Total Registration</h4>
             <h1>{{$totalregistration}}</h1>
-            <a href="{{route('library.list.view', ['type' => 'total'])}}">View Details</a>
+            <a href="{{route('library.count.view', ['type' => 'total'])}}">View Details</a>
         </div>
     </div>
     <div class="col-lg-3">
         <div class="adminCounts">
             <h4>Total Paid</h4>
             <h1>{{$paidregistration}}</h1>
-            <a href="{{route('library.list.view', ['type' => 'paid_registration'])}}">View Details</a>
+            <a href="{{route('library.count.view', ['type' => 'paid_registration'])}}">View Details</a>
         </div>
     </div>
     <div class="col-lg-3">
         <div class="adminCounts">
             <h4>Total Unpaid</h4>
             <h1>{{$unpaidregistration}}</h1>
-            <a href="{{route('library.list.view', ['type' => 'unpaid_registration'])}}">View Details</a>
+            <a href="{{route('library.count.view', ['type' => 'unpaid_registration'])}}">View Details</a>
         </div>
     </div>
     <div class="col-lg-3">
         <div class="adminCounts">
             <h4>Pending for Renew</h4>
             <h1>{{$renewCount}}</h1>
-            <a href="{{route('library.list.view', ['type' => 'pending_renew'])}}">View Details</a>
+            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
         </div>
     </div>
 </div>

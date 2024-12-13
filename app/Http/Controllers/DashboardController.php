@@ -47,7 +47,7 @@ class DashboardController extends Controller
            $totalregistration=Library::count();
            $paidregistration=Library::where('is_paid',1)->count();
            $unpaidregistration=Library::where('is_paid',0)->count();
-           $renewCount=Library::leftJoin('library_transactions','library.id','=','library_transactions.library_id')->where('library.is_paid',1)->where('end_date','<=',date('Y-m-d'))->count();
+           $renewCount=Library::leftJoin('library_transactions','libraries.id','=','library_transactions.library_id')->where('libraries.is_paid',1)->where('end_date','<=',date('Y-m-d'))->count();
             return view('dashboard.administrator',compact('totalregistration','paidregistration','unpaidregistration','renewCount'));
         }if ($user->hasRole('admin')) {
            

@@ -35,6 +35,55 @@
         </div>
     </div>
 </div>
+<div class="row align-items-center mt-4">
+    <div class="col-lg-3">
+        <h4>Filter Dashboard Data</h4>
+    </div>
+    <div class="col-lg-3"></div>
+    <div class="col-lg-3">
+        <select id="datayaer" class="form-select form-control-sm">
+            <option value="">Select Year</option>
+        </select>
+    </div>
+
+    <div class="col-lg-3">
+        <select id="dataFilter" class="form-select form-control-sm">
+            <option value="">Select Month</option>
+        </select>
+    </div>
+
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-3">
+        <div class="adminCounts">
+            <h4>Total Revenue (A + B + C)</h4>
+            <h1>20,200</h1>
+            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="adminCounts basic">
+            <h4>Basic Plan Booked (A)</h4>
+            <h1>{{$renewCount}}</h1>
+            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="adminCounts standard">
+            <h4>Standard Plan Booked (B)</h4>
+            <h1>{{$renewCount}}</h1>
+            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="adminCounts premium">
+            <h4>Premium Plan Booked (C)</h4>
+            <h1>{{$renewCount}}</h1>
+            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
+        </div>
+    </div>
+</div>
 <div class="dashboard">
 
 

@@ -4628,6 +4628,7 @@ ul.notification-list li {
     box-shadow: 1px 0 5px #00000021;
     padding: 1rem 1.5rem;
     border-radius: .8rem;
+    position: relative;
 }
 
 ul.notification-list li h4 {
@@ -4654,4 +4655,18 @@ ul.notification-list li a.btn.btn-primary.view-info {
 ul.notification-list li .d-flex {
     justify-content: space-between;
     align-items: center;
+}
+
+.unread {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    background: linear-gradient(45deg, #fc9473, #e9447c);
+    position: absolute;
+    right: 3%;
+    top: 9%;
+}
+
+.unread-bg{
+    background: #f5f5f5 !important;
 }

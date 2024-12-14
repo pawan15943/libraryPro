@@ -4615,3 +4615,43 @@ h4.permission-heading {
     letter-spacing: 1px;
     text-transform: uppercase;
 }
+
+/* Notification List */
+ul.notification-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.notification-list li {
+    background: #fff;
+    box-shadow: 1px 0 5px #00000021;
+    padding: 1rem 1.5rem;
+    border-radius: .8rem;
+}
+
+ul.notification-list li h4 {
+    margin-bottom: .7rem;
+    text-transform: none;
+}
+
+ul.notification-list li+li {
+    margin-bottom: 1rem;
+}
+
+ul.notification-list li span {
+    font-weight: 700;
+    color: #000;
+}
+
+ul.notification-list li a.btn.btn-primary.view-info {
+    height: auto !important;
+    border-radius: 100px;
+    background: #151f38;
+    padding: .3rem 1.5rem;
+}
+
+ul.notification-list li .d-flex {
+    justify-content: space-between;
+    align-items: center;
+}

@@ -36,6 +36,12 @@
     </div>
 </div>
 <div class="row align-items-center mt-4">
+    @php
+    $currentYear = date('Y');
+    $currentMonth = date('m');
+    $year=['0'=>'2024','1'=>'2025','2'=>'2026','3'=>'2027'];
+    $month=['0'=>'01','1'=>'02','2'=>'03','3'=>'04','4'=>'05','5'=>'06','6'=>'07','7'=>'08','8'=>'09','9'=>'10','10'=>'11','11'=>'12'];
+    @endphp
     <div class="col-lg-3">
         <h4>Filter Dashboard Data</h4>
     </div>
@@ -43,12 +49,20 @@
     <div class="col-lg-3">
         <select id="datayaer" class="form-select form-control-sm">
             <option value="">Select Year</option>
+            @foreach($year as $key => $value)
+                <option value="{{ $value }}" {{ $value == $currentYear ? 'selected' : '' }}>{{$value}}</option>   
+            @endforeach
+            
+           
         </select>
     </div>
 
     <div class="col-lg-3">
         <select id="dataFilter" class="form-select form-control-sm">
             <option value="">Select Month</option>
+            @foreach($month as $key => $value)
+                <option value="{{ $value }}" {{ $value == $currentMonth ? 'selected' : '' }}>{{$value}}</option>   
+            @endforeach
         </select>
     </div>
 

@@ -7,43 +7,41 @@
     {{ session('success') }}
 </div>
 @endif
-
-
 <div>
-@foreach($subscriptions as $subscription)
-    <h4 class="py-4">Permissions for Subscription: {{ $subscription->name }}</h4>
-
+    @foreach($subscriptions as $subscription)
+    <h4 class="py-4">Permissions for {{ $subscription->name }}</h4>
     @php
-        // Group permissions by category
-        $groupedPermissions = $subscription->permissions->groupBy('permission_category_id');
+    // Group permissions by category
+    $groupedPermissions = $subscription->permissions->groupBy('permission_category_id');
     @endphp
 
     @if($groupedPermissions->isEmpty())
-        <p>No permissions available.</p>
+    <p>No permissions available.</p>
     @else
-        <div class="table-responsive">
-            @foreach($groupedPermissions as $categoryId => $permissions)
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h6 class='role-category-heading'>
-                                {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
-                            </h6>
-                        </div>
-                    </div>
+    <div class="card">
 
-                    <div class="row contain_permissions_check">
-                        @foreach($permissions as $permission)
-                            <div class="col-sm-3">
-                                <p><i class="fa-solid fa-check text-success me-2"></i>{{ $permission->name }}</p>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+        @foreach($groupedPermissions as $categoryId => $permissions)
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 class="permission-heading">
+                    {{ $categoryId ? \App\Models\PermissionCategory::find($categoryId)->name : 'No Category' }}
+                </h4>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach($permissions as $permission)
+            <div class="col-lg-3">
+                <p><i class="fa-solid fa-check text-success me-2"></i>{{ $permission->name }}</p>
+            </div>
             @endforeach
         </div>
+        <div class="py-1"></div>
+        @endforeach
+
+    </div>
     @endif
-@endforeach
+    @endforeach
 
 </div>
 
@@ -73,7 +71,7 @@
                     type: 'GET',
                     success: function(data) {
                         console.log(data);
-                        
+
                         // Uncheck all checkboxes first
                         $('input[type="checkbox"]').prop('checked', false);
 

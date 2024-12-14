@@ -105,10 +105,10 @@
         </div>
         @if(isset($librarydiffInDays) && $librarydiffInDays <= 5)
         <div class="col-lg-2">
-            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow disabled">Upgrade Plan</a>
+            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow">Upgrade Plan</a>
         </div>
         <div class="col-lg-2">
-            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow disabled renew">Renew your Plan</a>
+            <a href="{{route('subscriptions.choosePlan')}}" class="btn btn-primary button box-shadow renew">Renew your Plan</a>
         </div>
         @endif
     </div>

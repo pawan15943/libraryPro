@@ -1429,7 +1429,8 @@ a.btn.btn-toggle.d-inline-flex.align-items-center.rounded.border-0.flex-start {
     border-radius: 1rem;
     background-color: red !important;
     text-transform: uppercase;
-}}
+}
+}
 
 .conatent.flex {
     gap: 0.8rem !important;
@@ -4492,7 +4493,7 @@ ul.activity li span {
 
 .adminCounts * {
     color: #fff !IMPORTANT;
-   
+
 }
 
 .adminCounts h4 {
@@ -4601,4 +4602,16 @@ ul.activity li span {
 .seat-activity ul li+li {
     border-top: 1px solid #d7d7d7;
     padding-top: .8rem;
+}
+
+h4.permission-heading {
+    font-weight: 400;
+    font-size: .7rem;
+    background: #151f38;
+    margin-bottom: 1rem;
+    padding: .5rem 1rem;
+    border-radius: .3rem;
+    color: #fff ! IMPORTANT;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }

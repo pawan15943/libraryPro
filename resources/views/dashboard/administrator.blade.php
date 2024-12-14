@@ -68,8 +68,7 @@
             <h1>{{$renewCount}}</h1>
             <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
         </div>
-    </div>
-    <div class="col-lg-3">
+    </div>[]    <div class="col-lg-3">
         <div class="adminCounts standard">
             <h4>Standard Plan Booked (B)</h4>
             <h1>{{$renewCount}}</h1>

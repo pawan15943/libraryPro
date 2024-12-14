@@ -305,14 +305,19 @@ class DashboardController extends Controller
         $availble_seats=$total_seats-$booked_seats; 
         
         // till today total slots
+        
+       
         $query_total = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
         ->where('learners.library_id', auth()->user()->id)
         ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
             $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
                 ->Where('plan_end_date', '>=', $startOfGivenMonth);
-        }) ;
-
-        $total_booking=$query_total->count();                                             
+        }) ->groupBy('learner_detail.learner_id')
+        ->selectRaw('COUNT(*) as total_count')
+        ->get();
+       
+        $total_booking=$query_total->count(); 
+                                                    
          // till today expired slots
         
          $expired_query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
@@ -869,7 +874,14 @@ class DashboardController extends Controller
                 break;
             case 'active_booking':
                 // till active slot
-                $totalLearners = $query_total->get(); // Total bookings
+                $totalLearners =  $query_total->groupBy('learner_detail.learner_id')
+                ->selectRaw('
+                    learner_detail.learner_id,
+                    learners.*,
+                    MAX(plan_start_date) as max_plan_start_date,
+                    MAX(plan_end_date) as max_plan_end_date
+                ')
+                ->orderBy('max_plan_start_date', 'asc')->get(); // Total bookings
                 $expiredLearners = $expired_query->get(); // Expired bookings
                 $result =$totalLearners->diff($expiredLearners);
                 break;
@@ -949,10 +961,26 @@ class DashboardController extends Controller
                 $result = (clone $query)->where('learner_detail.payment_mode', 3)->get();
                 break;
             case 'expired_in_five':
-                $result = $this->getAllLearnersByLibrary()
-                ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
+               
+                // $result = $this->getAllLearnersByLibrary()
+                // ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
+                //     $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
+                // })->with(['plan', 'planType', 'learnerDetails']);
+                $result = Learner::join('learner_detail', 'learner_detail.learner_id', '=', 'learners.id') // Join the learner_detail table
+                ->whereHas('learnerDetails', function ($query) use ($today, $fiveDaysLater) {
                     $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
-                })->with(['plan', 'planType', 'learnerDetails']);
+                })
+                
+                ->selectRaw('
+                    learner_detail.learner_id,
+                    learners.*,
+                    MAX(plan_start_date) as max_plan_start_date,
+                    MAX(plan_end_date) as max_plan_end_date
+                ')
+                ->groupBy('learner_detail.learner_id', 'learners.id') 
+                ->orderBy('max_plan_start_date', 'asc')
+                ->get();
+
                 break;
             case 'extended_seat':
                 $result = $this->getLearnersByLibrary()

@@ -108,8 +108,7 @@
                         
                         <td>
                             <ul class="actionalbls">
-                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Subscription" title="Delete"><i class="fa fa-trash"></i></a></li>
-                              
+                                <li><a href="#" class="active-deactive" data-id="{{ $value->id }}" data-table="Subscription" title="Delete"><i class="fa fa-check"></i></a></li>
                                 <li>
                                     <a href="{{ route('subscriptions.edit',$value->id) }}"><i class="fa fa-edit"></i></a>
                                 </li>

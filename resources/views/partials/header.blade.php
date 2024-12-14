@@ -44,22 +44,23 @@
         </div>
         <!-- Modal Popup for Expiry Warning -->
         <div class="modal fade" id="planExpiryModal" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-sm">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <!-- <div class="modal-header">
                         <h5 class="modal-title" id="planExpiryLabel">Plan Expiry Warning</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
+                        
+                    </div> -->
                     <div class="modal-body">
+                        <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
                         @if($librarydiffInDays < 0)
-                            <h4>Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</h4>
+                            <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
                             @elseif($librarydiffInDays > 0)
-                            <h4>Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</h4>
+                            <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
                             @else
-                            <h4>Your library plan expires today. Please consider renewing your plan!</h4>
+                            <p class="text-danger text-center text-bold">Your library plan expires today. Please consider renewing your plan!</p>
                             @endif
 
-
+                            <button type="button" class="btn btn-primary button m-auto w-100" data-bs-dismiss="modal" aria-label="Close">Renew your Subscription</button>
                     </div>
                 </div>
             </div>

@@ -962,10 +962,7 @@ class DashboardController extends Controller
                 break;
             case 'expired_in_five':
                
-                // $result = $this->getAllLearnersByLibrary()
-                // ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
-                //     $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
-                // })->with(['plan', 'planType', 'learnerDetails']);
+           
                 $result = Learner::join('learner_detail', 'learner_detail.learner_id', '=', 'learners.id') // Join the learner_detail table
                 ->whereHas('learnerDetails', function ($query) use ($today, $fiveDaysLater) {
                     $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);

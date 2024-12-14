@@ -74,7 +74,7 @@
                     
                     @foreach($libraries as $key => $value)
                     @php
-
+                        $today = Carbon::today();
                          $libraryplan=App\Models\Subscription::where('id',$value->library_type)->value('name');
                          $libraryplanData=DB::table('library_transactions')->where('id',$value->latest_transaction_id)->first();
 

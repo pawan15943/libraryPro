@@ -25,6 +25,7 @@ use App\Models\PlanType;
 use App\Models\Subscription;
 use Log;
 
+
 class DashboardController extends Controller
 {
     use LearnerQueryTrait;
@@ -48,7 +49,18 @@ class DashboardController extends Controller
            $paidregistration=Library::where('is_paid',1)->count();
            $unpaidregistration=Library::where('is_paid',0)->count();
            $renewCount=Library::leftJoin('library_transactions','libraries.id','=','library_transactions.library_id')->where('libraries.is_paid',1)->where('end_date','<=',date('Y-m-d'))->count();
-            return view('dashboard.administrator',compact('totalregistration','paidregistration','unpaidregistration','renewCount'));
+           $plansWithCount = Subscription::withCount([
+            'libraries' => function ($query) {
+                $query->where('status', 1); // Filter active libraries
+                }
+            ])->get();
+            $today = Carbon::now()->format('Y-m-d');
+            $tenDaysLater = Carbon::now()->addDays(10)->format('Y-m-d');
+            $upcoming_registration=Library::with(['library_transactions', 'subscription'])
+            ->whereHas('library_transactions', function($query) use ($today, $tenDaysLater) {
+                $query->whereBetween('end_date', [$today, $tenDaysLater]);
+            })->get();
+            return view('dashboard.administrator',compact('totalregistration','paidregistration','unpaidregistration','renewCount','plansWithCount','upcoming_registration'));
         }if ($user->hasRole('admin')) {
            
             return view('dashboard.admin');
@@ -1038,7 +1050,56 @@ class DashboardController extends Controller
         return view('library.count-list', compact('result', 'type'));
     }
 
-    
+    public function libraryGetData(Request $request){
+        if ($request->filled('year') && $request->filled('month')) {
+            $year = $request->year;
+            $month = $request->month;
+        } elseif ($request->filled('year') && !$request->filled('month')) {
+            $year = $request->year;
+            $month = date('m'); 
+        } elseif (!$request->filled('year') && $request->filled('month')) {
+            $year = date('Y');
+            $month = $request->month;
+        } else {
+            $year = date('Y');
+            $month = date('m');
+        }
+        $startOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
+        $endOfGivenMonth = Carbon::create($year, $month, 1)->endOfMonth();
+        $total_revenue=DB::table('library_transactions') ->where('is_paid', 1)
+        ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+            $subQuery->where('start_date', '<=', $endOfGivenMonth)
+                ->Where('end_date', '>=', $startOfGivenMonth);
+        })->selectRaw('SUM(paid_amount / month) as total_revenue')->value('total_revenue');
+      
+        $new_registration = DB::table('libraries')
+    ->leftJoin('subscriptions', 'libraries.library_type', '=', 'subscriptions.id') // Join subscriptions table
+    ->select('libraries.*', 'subscriptions.name as subscription_name') // Select library fields and subscription name
+    ->whereExists(function ($query) use ($month, $year) {
+        $query->select(DB::raw(1))
+              ->from('library_transactions')
+              ->whereRaw('library_transactions.library_id = libraries.id')
+              ->where('is_paid', 1)
+              ->whereMonth('start_date', $month)
+              ->whereYear('start_date', $year);
+    })
+    ->groupBy('libraries.id')
+    ->get();
+
+        
+
+        return response()->json([
+            'highlights' => [
+              
+                'total_revenue' => $total_revenue,
+                'new_registration' => $new_registration,
+               
+             
+            ],
+        
+      
+        ]);
+    }
     
     
 

@@ -20,7 +20,7 @@ $current_route = Route::currentRouteName();
                             <i class="fa-solid fa-angle-right ms-auto"></i>
                         @endif
                     </a>
-                    
+                   
                     {{-- If menu has children (submenu) --}}
                     @if($menu->children->count())
                         <div class="collapse" id="menu_{{ $menu->id }}">
@@ -36,8 +36,9 @@ $current_route = Route::currentRouteName();
                                                 {{ $submenu->name }}
                                             </a>
                                         </li>
+                                       
                                         {{-- Show submenu for library guard only if conditions are met --}}
-                                        @elseif(Auth::guard('library')->check() && $checkSub && $ispaid && $isProfile && $iscomp)
+                                        @elseif(Auth::guard('library')->check() && $checkSub && $ispaid && $isProfile && $iscomp && $is_renew_comp)
                                             <li>
                                                 <a href="{{ route($submenu->url) }}" 
                                                 class="{{ $current_route == $submenu->url ? 'active' : '' }}">

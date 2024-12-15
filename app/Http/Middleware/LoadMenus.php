@@ -77,7 +77,10 @@ class LoadMenus
             $today = date('Y-m-d');
            
         $value = LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid',1)->orderBy('id','desc')->first();
-        
+        $is_renew_comp=LibraryTransaction::where('library_id',Auth::user()->id) 
+        ->where('is_paid', 1)
+        ->where('status', 1)
+        ->where('start_date','>=', date('Y-m-d')) ->exists();
         $is_renew=LibraryTransaction::where('library_id',Auth::user()->id) 
                 ->where('is_paid', 1)
                 ->where('status', 0)
@@ -195,6 +198,7 @@ class LoadMenus
             View::share('iscomp', $iscomp);
             View::share('librarydiffInDays', $librarydiffInDays); 
             View::share('is_renew', $is_renew); 
+            View::share('is_renew_comp', $is_renew_comp); 
             View::share('is_expire', $is_expire); 
             View::share('today_renew', $today_renew); 
             View::share('upcomingdiffInDays', $upcomingdiffInDays); 

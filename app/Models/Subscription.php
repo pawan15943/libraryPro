@@ -21,6 +21,11 @@ class Subscription extends Model
     {
         return $this->belongsToMany(Permission::class, 'subscription_permission', 'subscription_id', 'permission_id');
     }
+
+    public function libraries()
+    {
+        return $this->hasMany(Library::class, 'library_type');
+    }
     
     
     

@@ -72,31 +72,22 @@
     <div class="col-lg-3">
         <div class="adminCounts">
             <h4>Total Revenue (A + B + C)</h4>
-            <h1>20,200</h1>
+            <h1 id="total_revenue">20,200</h1>
             <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
         </div>
     </div>
+    @foreach($plansWithCount as $key => $value)
     <div class="col-lg-3">
         <div class="adminCounts basic">
-            <h4>Basic Plan Booked (A)</h4>
-            <h1>{{$renewCount}}</h1>
-            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
+            <h4>{{$value->name}} Booked (A)</h4>
+            <h1 id="plan-{{$value->id}}">{{$value->libraries_count}}</h1>
+            <a href="{{ route('library.count.view', ['type' => $value->name]) }}">View Details</a>
+
         </div>
     </div>
-    <div class="col-lg-3">
-        <div class="adminCounts standard">
-            <h4>Standard Plan Booked (B)</h4>
-            <h1>{{$renewCount}}</h1>
-            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
-        </div>
-    </div>
-    <div class="col-lg-3">
-        <div class="adminCounts premium">
-            <h4>Premium Plan Booked (C)</h4>
-            <h1>{{$renewCount}}</h1>
-            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
-        </div>
-    </div>
+    @endforeach
+  
+  
 </div>
 <div class="dashboard">
 
@@ -105,7 +96,7 @@
         <div class="col-lg-6">
             <h4 class="mb-4">New Registrations</h4>
             <div class="table-responsive">
-                <table class="table text-center datatable border-bottom">
+                <table class="table text-center datatable border-bottom" id="registration-table">
                     <thead>
                         <tr>
                             <th>S.No.</th>
@@ -116,72 +107,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-
+                       
                     </tbody>
                 </table>
             </div>
@@ -200,11 +126,18 @@
                         </tr>
                     </thead>
                     <tbody>
+                    
+                        @foreach($upcoming_registration as $key => $value)
                         <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
+                            <td>{{$key+1}}</td>
+                            <td>{{$value->name}}</td>
+                            <td>{{$value->subscription->name}}</td>
+                            @if($value->is_paid==1)
                             <td>Paid</td>
+                            @else
+                            <td>UnPaid</td>
+                            @endif
+                           
                             <td>
                                 <ul class="actionalbls">
                                     <li>
@@ -213,58 +146,9 @@
                                 </ul>
                             </td>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>ABC Library</td>
-                            <td>Basic Plan</td>
-                            <td>Paid</td>
-                            <td>
-                                <ul class="actionalbls">
-                                    <li>
-                                        <a href=""><i class="fa fa-eye"></i></a>
-                                    </li>
-                                </ul>
-                            </td>
-                        </tr>
+                        @endforeach
+                   
+                       
 
                     </tbody>
                 </table>
@@ -272,6 +156,161 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".v-content").mCustomScrollbar({
+                theme: "dark",
+                scrollInertia: 300,
+                axis: "x",
+                autoHideScrollbar: false,
+            });
+        });
+
+        function refreshScrollbar() {
+            const $content = $(".v-content");
+            $content.mCustomScrollbar("update");
+        }
+
+        $(document).on("change", "#dataFilter", function() {
+            refreshScrollbar();
+        });
+
+        const observer = new MutationObserver(() => {
+            refreshScrollbar();
+        });
+
+        observer.observe(document.querySelector(".v-content"), {
+            childList: true,
+            subtree: true
+        });
+
+    })(jQuery);
+</script>
+<script>
+    (function($) {
+        $(window).on("load", function() {
+            $(".contents").mCustomScrollbar({
+                theme: "dark",
+                scrollInertia: 300,
+                axis: "y",
+                autoHideScrollbar: false, // Keeps scrollbar visible
+            });
+        });
+    })(jQuery);
+</script>
+<script>
+    $(document).ready(function() {
+        var initialYear = $('#datayaer').val();
+        var initialMonth = $('#dataFilter').val();
+        fetchLibraryData(initialYear, initialMonth, null);
+        // updateAllViewLinks(initialYear, initialMonth, null);
+
+        // Event listener for year filter
+        $('#datayaer').on('change', function() {
+            var selectedYear = $(this).val();
+            var selectedMonth = $('#dataFilter').val();
+           
+            fetchLibraryData(selectedYear, selectedMonth, null);
+            // updateAllViewLinks(selectedYear, selectedMonth, null);
+        });
+
+        // Event listener for month filter
+        $('#dataFilter').on('change', function() {
+            var selectedYear = $('#datayaer').val();
+            var selectedMonth = $(this).val();
+            console.log(selectedYear,'and',selectedMonth);
+            fetchLibraryData(selectedYear, selectedMonth, null);
+            // updateAllViewLinks(selectedYear, selectedMonth, null);
+        });
+
+        // Event listener for date range picker
+        $('#dateRange').on('change', function() {
+            var selectedYear = $('#datayaer').val();
+            var selectedMonth = $('#dataFilter').val();
+            var dateRange = $(this).val(); 
+            fetchLibraryData(selectedYear, selectedMonth, dateRange);
+            // updateAllViewLinks(selectedYear, selectedMonth, dateRange);
+        });
+        function fetchLibraryData(year, month, dateRange) {
+            $.ajax({
+                url: '{{ route("library.dashboard.data.get") }}',
+                method: 'POST',
+                data: {
+                    year: year,
+                    month: month,
+                    date_range: dateRange,
+                    _token: '{{ csrf_token() }}' 
+                },
+                success: function(response) {
+                    
+                    
+                    console.log('Full response:', response);
+                    const highlights = response.highlights;
+                    const newRegistrations = highlights.new_registration;
+                    $('#total_revenue').text(highlights.total_revenue);
+                  
+                    let tableBody = '';
+                    newRegistrations.forEach((registration, index) => {
+                        tableBody += `
+                            <tr>
+                                <td>${index + 1}</td>
+                                <td>${registration.library_name}</td>
+                                <td>${registration.subscription_name || 'N/A'}</td>
+                                <td>${registration.status == 1 ? 'Active' : 'Deactive'}</td>
+                                 <td>
+                                    <a href="/library/view/${registration.id}" class="btn btn-primary btn-sm">View</a>
+                                </td>
+                            </tr>
+                        `;
+                    });
+
+                
+                    $('#registration-table tbody').html(tableBody);
+                    // var planWiseBookings = response.plan_wise_booking;
+                    // $('.row.g-4.planwisecount').empty(); // Clear existing data
+
+                    // planWiseBookings.forEach(function(booking) {
+                    //     var html = `
+                    //         <div class="col-lg-2">
+                    //             <div class="booking-count bg-4">
+                    //                 <h6>${booking.plan_type_name}</h6>
+                    //                 <div class="d-flex">
+                    //                     <h4>${booking.booking}</h4>
+                    //                 </div>
+                    //                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
+                    //             </div>
+                    //         </div>`;
+                    //     $('.row.g-4.planwisecount').append(html);
+                    // });
+
+                    // // Render charts for Revenue and Booking Count
+                    // if (response.planTypeWiseRevenue && Array.isArray(response.planTypeWiseRevenue.labels) && Array.isArray(response.planTypeWiseRevenue.data)) {
+                    //     renderRevenueChart(response.planTypeWiseRevenue.labels, response.planTypeWiseRevenue.data);
+                    // } else {
+                    //     console.error('Invalid data format for planTypeWiseRevenue:', response.planTypeWiseRevenue);
+                    // }
+
+                    // if (response.planTypeWiseCount && Array.isArray(response.planTypeWiseCount.labels) && Array.isArray(response.planTypeWiseCount.data)) {
+                    //     renderBookingCountChart(response.planTypeWiseCount.labels, response.planTypeWiseCount.data);
+                    // } else {
+                    //     console.error('Invalid data format for planTypeWiseCount:', response.planTypeWiseCount);
+                    // }
 
 
+                },
+                error: function(xhr) {
+                    console.error(xhr);
+                }
+            });
+        }
+        
+
+       
+    });
+</script>
 @endsection

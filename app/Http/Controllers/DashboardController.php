@@ -334,12 +334,14 @@ class DashboardController extends Controller
         ->get();
        
         $total_booking=$query_total->count(); 
+       
                                                     
          // till today expired slots
-        
+         $startDateOfGivenMonth = Carbon::create($request->year, $request->month, 1)->startOfMonth();
          $expired_query = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
          ->where('learners.library_id', auth()->user()->id)
          ->where('learner_detail.is_paid', 1)
+         ->where('learner_detail.plan_end_date', '>=', $startDateOfGivenMonth)
          ->where('learners.status', 0);
          
          if ($request->filled('year') && !$request->filled('month')) {
@@ -351,15 +353,17 @@ class DashboardController extends Controller
          } elseif ($request->filled('year') && $request->filled('month')) {
              // Filter by year and month
              $lastDateOfGivenMonth = Carbon::create($request->year, $request->month, 1)->endOfMonth();
-         
+            
+           
              $expired_query->whereRaw(
                  "DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) <= ?", 
-                 [$extend_day, $lastDateOfGivenMonth]
+                 [$extend_day, $lastDateOfGivenMonth->toDateString()]
              );
          }
-         
-         $expired_seats = $expired_query->count();
         
+         $expired_seats = $expired_query->count();
+         
+
          // till today Active slots
          if($total_booking!=0){
             $active_booking=$total_booking-$expired_seats;
@@ -808,10 +812,11 @@ class DashboardController extends Controller
                     ->where('plan_end_date', '>=', $startOfGivenMonth);
             });
         }
-
+        $startDateOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
         $expired_query = $this->getLearnersByLibrary()
         ->where('learner_detail.is_paid', 1)
         ->where('learners.status', 0)
+        ->where('learner_detail.plan_end_date', '>=', $startDateOfGivenMonth)
         ->with(['plan', 'planType', 'learnerDetails']);
         
         if ($request->filled('year') && !$request->filled('month')) {
@@ -859,6 +864,7 @@ class DashboardController extends Controller
         $thisexpired_query =$this->getLearnersByLibrary()
         ->where('learner_detail.is_paid', 1)
         ->where('learners.status', 0)
+        ->where('learner_detail.plan_end_date', '>=', $startDateOfGivenMonth)
         ->with(['plan', 'planType', 'learnerDetails']);
 
         if ($request->filled('year') && !$request->filled('month')) {

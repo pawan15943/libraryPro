@@ -314,7 +314,12 @@ class DashboardController extends Controller
         $booked_seats=$query->distinct('seat_id')->count('seat_id');
 
         // available slot
-        $availble_seats=$total_seats-$booked_seats; 
+        if($total_seats!=0){
+            $availble_seats=$total_seats-$booked_seats; 
+        }else{
+            $availble_seats=0;
+        }
+       
         
         // till today total slots
         
@@ -356,7 +361,12 @@ class DashboardController extends Controller
          $expired_seats = $expired_query->count();
         
          // till today Active slots
-         $active_booking=$total_booking-$expired_seats;
+         if($total_booking!=0){
+            $active_booking=$total_booking-$expired_seats;
+         }else{
+            $active_booking=0;
+         }
+        
 
        
 

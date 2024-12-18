@@ -128,7 +128,7 @@
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2 id="booked_seat">0</h2>
-                <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
+                <a href="{{ route('seats.history') }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>

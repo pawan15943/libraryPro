@@ -1359,8 +1359,7 @@ class Controller extends BaseController
         ]);
         LibraryTransaction::where('library_id', Auth::user()->id)
             ->where('is_paid', 1)
-            ->where('status', 0)
-            ->where('start_date', '>=', $today)->update([
+            ->where('end_date', '>=', $today)->update([
               
                 'status'=>1,
                 'is_paid'=>1

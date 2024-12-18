@@ -67,25 +67,16 @@
     </div>
 
 </div>
-
-<div class="row mt-4">
-    <div class="col-lg-3">
-        <div class="adminCounts">
-            <h4>Total Revenue (A + B + C)</h4>
-            <h1 id="total_revenue">20,200</h1>
-            <a href="{{route('library.count.view', ['type' => 'pending_renew'])}}">View Details</a>
-        </div>
+<div class="col-lg-3">
+    <div class="adminCounts">
+        <h4>Total Revenue (A + B + C)</h4>
+        <h1 id="total_revenue">20,200</h1>
+        <a href="{{route('library.count.view', ['type' => 'total_revenue'])}}">View Details</a>
     </div>
-    @foreach($plansWithCount as $key => $value)
-    <div class="col-lg-3">
-        <div class="adminCounts basic">
-            <h4>{{$value->name}} Booked (A)</h4>
-            <h1 id="plan-{{$value->id}}">{{$value->libraries_count}}</h1>
-            <a href="{{ route('library.count.view', ['type' => $value->name]) }}">View Details</a>
-
-        </div>
-    </div>
-    @endforeach
+</div>
+<div class="row mt-4 planwisecount">
+   
+   
   
   
 </div>
@@ -271,22 +262,23 @@
 
                 
                     $('#registration-table tbody').html(tableBody);
-                    // var planWiseBookings = response.plan_wise_booking;
-                    // $('.row.g-4.planwisecount').empty(); // Clear existing data
 
-                    // planWiseBookings.forEach(function(booking) {
-                    //     var html = `
-                    //         <div class="col-lg-2">
-                    //             <div class="booking-count bg-4">
-                    //                 <h6>${booking.plan_type_name}</h6>
-                    //                 <div class="d-flex">
-                    //                     <h4>${booking.booking}</h4>
-                    //                 </div>
-                    //                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
-                    //             </div>
-                    //         </div>`;
-                    //     $('.row.g-4.planwisecount').append(html);
-                    // });
+                    
+                    var planWiseBookings = response.plan_wise_booking;
+                    $('.row.mt-4.planwisecount').empty(); // Clear existing data
+
+                    planWiseBookings.forEach(function(booking) {
+                        var html=` <div class="col-lg-3">
+                                        <div class="adminCounts basic">
+                                            <h4>${booking.subscription_name} Booked (A)</h4>
+                                            <h1 id="${booking.subscription_id}">${booking.booking}</h1>
+                                            <a href="{{ route('library.count.view') }}">View Details</a>
+
+                                        </div>
+                                    </div>`;
+                                    $('.row.mt-4.planwisecount').append(html);
+                                    
+                    });
 
                     // // Render charts for Revenue and Booking Count
                     // if (response.planTypeWiseRevenue && Array.isArray(response.planTypeWiseRevenue.labels) && Array.isArray(response.planTypeWiseRevenue.data)) {

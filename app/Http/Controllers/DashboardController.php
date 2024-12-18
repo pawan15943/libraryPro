@@ -812,7 +812,7 @@ class DashboardController extends Controller
                     ->where('plan_end_date', '>=', $startOfGivenMonth);
             });
         }
-        $startDateOfGivenMonth = Carbon::create($givenYear, $givenMonth, 1)->startOfMonth();
+        $startDateOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
         $expired_query = $this->getLearnersByLibrary()
         ->where('learner_detail.is_paid', 1)
         ->where('learners.status', 0)
@@ -1089,30 +1089,45 @@ class DashboardController extends Controller
         })->selectRaw('SUM(paid_amount / month) as total_revenue')->value('total_revenue');
       
         $new_registration = DB::table('libraries')
-    ->leftJoin('subscriptions', 'libraries.library_type', '=', 'subscriptions.id') // Join subscriptions table
-    ->select('libraries.*', 'subscriptions.name as subscription_name') // Select library fields and subscription name
-    ->whereExists(function ($query) use ($month, $year) {
-        $query->select(DB::raw(1))
-              ->from('library_transactions')
-              ->whereRaw('library_transactions.library_id = libraries.id')
-              ->where('is_paid', 1)
-              ->whereMonth('start_date', $month)
-              ->whereYear('start_date', $year);
-    })
-    ->groupBy('libraries.id')
-    ->get();
-
-        
+        ->leftJoin('subscriptions', 'libraries.library_type', '=', 'subscriptions.id') // Join subscriptions table
+        ->select('libraries.*', 'subscriptions.name as subscription_name') // Select library fields and subscription name
+        ->whereExists(function ($query) use ($month, $year) {
+            $query->select(DB::raw(1))
+                ->from('library_transactions')
+                ->whereRaw('library_transactions.library_id = libraries.id')
+                ->where('is_paid', 1)
+                ->whereMonth('start_date', $month)
+                ->whereYear('start_date', $year);
+        })
+        ->groupBy('libraries.id')
+        ->get();
+     
+    
+        $plan_wise_booking =Library::leftJoin('library_transactions','libraries.id','=','library_transactions.library_id')->groupBy('library_type')
+        ->selectRaw('COUNT(DISTINCT library_id) as booking, library_type')
+        ->whereNotNull('library_type')
+        ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+            $subQuery->where('start_date', '<=', $endOfGivenMonth)
+                ->Where('end_date', '>=', $startOfGivenMonth);
+        })
+        ->with('subscription') 
+        ->get();
+        $data = [];
+        foreach ($plan_wise_booking as $booking) {
+            $data[] = [
+                'subscription_id' => $booking->library_type,
+                'booking' => $booking->booking,
+                'subscription_name' => $booking->library_type ? $booking->subscription->name : 'Unknown' // Get the plan type name
+            ];
+        }  
 
         return response()->json([
             'highlights' => [
-              
                 'total_revenue' => $total_revenue,
-                'new_registration' => $new_registration,
-               
+                'new_registration' => $new_registration, 
              
             ],
-        
+            'plan_wise_booking' => $data,
       
         ]);
     }

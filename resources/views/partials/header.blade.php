@@ -1,7 +1,7 @@
 <div id="loader">
     <div class="spinner"></div>
 </div>
-<div class="header mb-3">
+<div class="header">
     <div class="d-flex" style="gap:1rem">
         <div class="conatent flex" style="flex: 1;">
             <i class="fa fa-bars mr-2" id="sidebar"></i>

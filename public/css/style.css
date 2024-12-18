@@ -500,6 +500,7 @@ nav ol {
     flex: 1;
     padding: .5rem;
     background: linear-gradient(180deg, #eafdff, transparent);
+    margin-top: 1rem;
 }
 
 .content .card {

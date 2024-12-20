@@ -60,31 +60,70 @@ class LearnerController extends Controller
         return Validator::make($request->all(), $rules);
     }
     protected function dataUpdate(){
-       
+        Log::info('Starting dataUpdate function');
         $seats = Seat::get();
  
         foreach($seats as $seat){
             $total_hourse=Learner::where('library_id',Auth::user()->id)->where('status', 1)->where('seat_no',$seat->seat_no)->sum('hours');
            
             $updateseat=Seat::where('library_id',Auth::user()->id)->where('id', $seat->id)->update(['total_hours' => $total_hourse]);
-        
+            if ($updateseat) {
+                Log::info('Seat updated successfully', ['seat_id' => $seat->id, 'total_hours' => $total_hourse]);
+            } else {
+                Log::warning('Seat update failed', ['seat_id' => $seat->id]);
+            }
         }
     
        $userUpdates = Learner::where('library_id',Auth::user()->id)->where('status', 1)->get();
   
        foreach ($userUpdates as $userUpdate) {
            $today = date('Y-m-d'); 
+
+           \Log::info("Processing Learner ID: {$userUpdate->id} for status update.");
+
            $customerdatas=LearnerDetail::where('learner_id',$userUpdate->id)->where('status',1)->get();
+          
+           \Log::info("Customer Details for Learner ID {$userUpdate->id}: ", $customerdatas->toArray());
+
            $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
            $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+           \Log::info("Extend days: {$extend_day} for Library ID: " . Auth::user()->id);
+           
+
            foreach($customerdatas as $customerdata){
                 $planEndDateWithExtension = Carbon::parse($customerdata->plan_end_date)->addDays($extend_day);
+                \Log::info("Learner ID {$userUpdate->id} Plan End Date with Extension: {$planEndDateWithExtension}. Today's Date: {$today}");
+
+                // Check if learner has a future plan_end_date and a past plan_end_date
+                $hasFuturePlan = LearnerDetail::where('learner_id', $userUpdate->id)
+                ->where('plan_end_date', '>', $today)
+                ->exists();
+
+                $hasPastPlan = LearnerDetail::where('learner_id', $userUpdate->id)
+                    ->where('plan_end_date', '<', $today)
+                    ->exists();
+
+                $isRenewed = $hasFuturePlan && $hasPastPlan;
+
+                // Log the renewal status
+                \Log::info("Renewal Status for Learner ID {$userUpdate->id}: " . ($isRenewed ? 'Renewed' : 'Not Renewed'));
+
+
                 if ($planEndDateWithExtension->lte($today)) {
                     $userUpdate->update(['status' => 0]);
                     $customerdata->update(['status' => 0]);
-                }else{
+                    \Log::info("Updated Learner ID {$userUpdate->id} and Customer Data ID {$customerdata->id} to status 0.");
+                }elseif($isRenewed){
+                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '>', $today)->update(['status'=>1]);
+                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '<', $today)->update(['status'=>0]);
+                } else {
                     $userUpdate->update(['status' => 1]);
-                    LearnerDetail::where('learner_id', $userUpdate->learner_id)->where('status',0)->where('plan_start_date','<=',$today)->where('plan_end_date','>',$today)->update(['status' => 1]);
+                    LearnerDetail::where('learner_id', $userUpdate->learner_id)
+                        ->where('status', 0)
+                        ->where('plan_start_date', '<=', $today)
+                        ->where('plan_end_date', '>', $today)
+                        ->update(['status' => 1]);
+                    \Log::info("Updated Learner ID {$userUpdate->id} to status 1.");
                 }
            }
            
@@ -762,6 +801,10 @@ class LearnerController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+        if (!Auth::user()->can('has-permission', 'Renew Seat')) {
+            return redirect()->back()->with('error', 'You do not have permission to renew the seat.');
+        }
+        
         $currentDate = date('Y-m-d'); 
         // Find the customer by user_id
         $customer = Learner::findOrFail($request->user_id);
@@ -862,7 +905,7 @@ class LearnerController extends Controller
            'plan_start_date' => $start_date->format('Y-m-d'),
            'plan_end_date' => $endDate->format('Y-m-d'),
            'join_date' => $learner_detail->join_date,
-           'hour' =>$learner_detail->hour,
+           'hour' =>$hours,
            'seat_id' =>$learner_detail->seat_id,
            'status'=>$status,
            'is_paid' => $is_paid,
@@ -888,7 +931,8 @@ class LearnerController extends Controller
                 'transaction_image' => $transaction_image ,
             ]);
         }
-       
+        $customer->hours=$hours;
+        $customer->save();
 
         return redirect()->back()->with('success', 'Learner updated successfully!');
     
@@ -1002,12 +1046,7 @@ class LearnerController extends Controller
        
         $customer = $this->fetchCustomerData($customerId, $is_renew, $status=1, $detailStatus=1);
         $customer_detail=LearnerDetail::where('learner_id',$customerId)->orderBy('id','Desc')->first();
-        // if($customer_detail->is_paid==1 && $customer_detail->plan_end_date >=date('Y-m-d') ){
-        //     $isRenew = true;
-           
-        // }else{
-        //     $isRenew = false;
-        // }
+        
         $extend_days=Hour::select('extend_days')->first();
         if($extend_days){
             $extendDay=$extend_days->extend_days;

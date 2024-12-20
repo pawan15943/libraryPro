@@ -179,12 +179,14 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </div>
 
                     </div>
-
+                 
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            {{-- @if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew) --}}
+                            @if($diffInDays <= 5 && $diffExtendDay > 0 && !$is_renew && $diffExtendDay<6)
+                            
                                 <input type="submit" class="btn btn-primary btn-block button" value="Renew Upgrade">
-                            {{-- @endif --}}
+                          
+                            @endif
                         </div>
                     </div>
                     

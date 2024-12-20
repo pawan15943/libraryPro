@@ -18,10 +18,18 @@ class LearnerService
     {
         $today = Carbon::today()->format('Y-m-d');
         $futureDate = Carbon::today()->addDays(6)->format('Y-m-d');
-        
-        return LearnerDetail::where('library_id', auth()->user()->id)->where('learner_id', $customerId)
-            ->whereBetween('plan_start_date', [$today, $futureDate])
-            ->exists() ? 1 : 0;
+        $hasFuturePlan = LearnerDetail::where('learner_id', $customerId)
+        ->where('plan_end_date', '>', $today)
+        ->exists();
+        $hasPastPlan = LearnerDetail::where('learner_id', $customerId)
+            ->where('plan_end_date', '<', $today)
+            ->exists();
+
+        $isRenewed = $hasFuturePlan && $hasPastPlan;
+        return $isRenewed ;
+        // return LearnerDetail::where('library_id', auth()->user()->id)->where('learner_id', $customerId)
+        //     ->whereBetween('plan_start_date', [$today, $futureDate])
+        //     ->exists() ? 1 : 0;
     }
 
     public function getAvailableSeats()

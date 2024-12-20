@@ -175,6 +175,18 @@ class LibraryController extends Controller
         }
     }
 
+    public function libraryStore(Request $request){
+        dd($request);
+        $validatedData = $this->libraryValidation($request);
+        $validated['password'] = bcrypt('12345678');
+        if ($validatedData->fails()) {
+            return redirect()->back()->withErrors($validatedData)->withInput();
+        }
+        $otp = Str::random(6);
+        $validated['password'] =$otp;
+        $library = Library::create($validated);
+    }
+
     public function sendVerificationEmail($library)
     {
         // Prepare the data to send to the email view

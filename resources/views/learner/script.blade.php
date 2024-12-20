@@ -104,9 +104,11 @@
                         } else if (daysRemaining < 0 && extendDay > 0) {
                             message = `<h5 class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are ${Math.abs(extendDay)} days.</h5>`;
                         } else if (daysRemaining < 0 && extendDay == 0) {
-                            message = `<h5 class="text-warning fs-10 d-block">Plan Expires today</h5>`;
-                        } else {
-                            message = `<h5 class="text-danger fs-10 d-block">Plan Expired ${Math.abs(daysRemaining)} days ago</h5>`;
+                            message = `<h5 class="text-danger extedned fs-10 d-block">Seat Expire Today</h5>`;
+                        } else if (daysRemaining == 0 && extendDay > 0) {
+                            message = `<h5 class="text-danger extedned fs-10 d-block">Plan Expires Today. Extend Days Starts Today</h5>`;
+                        }else {
+                            message = `<h5 class="text-warning fs-10 d-block">Plan Expired ${Math.abs(daysRemaining)} days ago</h5>`;
                         }
 
                         $('#extendday').html(message);

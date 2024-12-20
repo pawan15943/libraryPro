@@ -266,11 +266,13 @@ $current_route = Route::currentRouteName();
                             
 
                                 <!-- upgrade Seat-->
-
+                                @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5) 
+                             
                                 @can('has-permission', 'Upgrade Seat Plan')
                                 <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                                 @endcan
 
+                                @endif
                                 <!-- Close Seat -->
 
                                 @can('has-permission', 'Close Seat')

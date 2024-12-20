@@ -17,7 +17,7 @@
 
 <div class="card">
     <div class="row">
-        <form action="{{ route('library.store') }}" class="validateForm" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('library.storedata') }}" class="validateForm" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-4">
                 <!-- Library Name -->
@@ -37,7 +37,7 @@
                 <!-- Library Email -->
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label>Library Email Id</label>
+                        <label>Library Email Id<sup class="text-danger">*</sup></label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                             value="{{ old('email') }}">
                         @error('email')
@@ -51,7 +51,7 @@
                 <!-- Library Mobile -->
                 <div class="col-lg-6">
                     <div class="form-group">
-                        <label>Library Contact No.</label>
+                        <label>Library Contact No.<sup class="text-danger">*</sup></label>
                         <input type="text" class="form-control digit-only @error('library_mobile') is-invalid @enderror" name="library_mobile" maxlength="10"
                             value="{{ old('library_mobile') }}">
                         @error('library_mobile')
@@ -78,60 +78,12 @@
                 </div>
 
                 <!-- State -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>State</label>
-                        <select name="state_id" id="stateid" class="form-control @error('state_id') is-invalid @enderror">
-                            <option value="">Select State</option>
-                            @foreach($states as $value)
-                            <option value="{{ $value->id }}" {{ old('state_id') == $value->id ? 'selected' : '' }}>
-                                {{ $value->state_name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('state_id')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <!-- City -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>City</label>
-                        <select name="city_id" id="cityid" class="form-control char-only @error('city_id') is-invalid @enderror">
-                            <option value="">Select City</option>
-                        </select>
-                        @error('city_id')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-
                 
-
-                <!-- ZIP Code -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>ZIP Code</label>
-                        <input type="text" class="form-control digit-only @error('library_zip') is-invalid @enderror" name="library_zip" maxlength="6"
-                            value="{{ old('library_zip') }}">
-                        @error('library_zip')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
                 <h6 class="mt-5">Library Owner Info :</h6>
                 <div class="row g-4">
         
                     <div class="col-lg-12">
-                        <label for="">Owner Name <span>*</span></label>
+                        <label for="">Owner Name </label>
                         <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner') }}">
                         @error('library_owner')
                         <span class="invalid-feedback" role="alert">
@@ -140,7 +92,7 @@
                         @enderror
                     </div>
                     <div class="col-lg-6">
-                        <label for="">Owner Email Id <span>*</span></label>
+                        <label for="">Owner Email Id </label>
                         <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email') }}">
                         @error('library_owner_email')
                         <span class="invalid-feedback" role="alert">
@@ -149,7 +101,7 @@
                         @enderror
                     </div>
                     <div class="col-lg-6">
-                        <label for="">Owner Contact Number (WhatsApp) <span>*</span></label>
+                        <label for="">Owner Contact Number (WhatsApp) </label>
                         <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" value="{{ old('library_owner_contact') }}">
                         @error('library_owner_contact')
                         <span class="invalid-feedback" role="alert">
@@ -157,33 +109,7 @@
                         </span>
                         @enderror
                     </div>
-              
-                <!-- Library Type -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>Library Type</label>
-                        <input type="text" class="form-control @error('library_type') is-invalid @enderror" name="library_type"
-                            value="{{ old('library_type') }}">
-                        @error('library_type')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- Profile Image -->
-                <div class="col-lg-6">
-                    <div class="form-group">
-                        <label>Library Logo</label>
-                        <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" accept="image/*">
-                        @error('library_logo')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
-                </div>
-
+  
                
             </div>
 

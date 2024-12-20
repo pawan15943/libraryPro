@@ -156,7 +156,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
 });
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {
-
+  Route::post('library/storedata', [LibraryController::class, 'libraryStore'])->name('library.storedata');
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {

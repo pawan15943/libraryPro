@@ -95,7 +95,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::get('monthly/create', [ReportController::class, 'monthlyReport'])->name('report.monthly');
       Route::get('report/expense/{year}/{month}', [ReportController::class, 'monthlyExpenseCreate'])->name('report.expense');
       Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
-      
+      Route::get('library/video-training', [LibraryController::class, 'videoTraining'])->name('library.video-training');
+
       // Other Pages Routes
      
       Route::get('pending/payment', [ReportController::class, 'pendingPayment'])->name('pending.payment.report');

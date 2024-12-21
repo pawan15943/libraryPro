@@ -71,16 +71,16 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                 </div>
             </div>
-        
-            <form action="{{route('learner.upgrade.renew.store')}}" method="POST" enctype="multipart/form-data" id="learnerUpgrade"  class="payment_page">
+
+            <form action="{{route('learner.upgrade.renew.store')}}" method="POST" enctype="multipart/form-data" id="learnerUpgrade" class="payment_page">
                 @csrf
                 @method('POST')
                 <div class="action-box">
-                 
-                    <h4 class="mb-4 d-block">Renew your Plan
-                    <p class="mt-2 text-danger"><b>Note:</b> You can easily renew your plan!</p>
-                    
-                    
+
+                    <h4 class="mb-4 d-block">Upgrade Plan
+                        <p class="mt-2 text-danger"><b>Note:</b> Any learner can upgrade their plan only renewing seat in their extend period.</p>
+
+
                     </h4>
                     <input id="learner_detail" type="hidden" name="learner_detail" value="{{$customer->learner_detail_id }}">
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
@@ -89,8 +89,8 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <div class="row g-4">
                         <div class="col-lg-6">
                             <label for="">Plan <span>*</span></label>
-                           
-                            <select  id="update_plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
+
+                            <select id="update_plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id">
                                 <option value="">Select Plan</option>
                                 @foreach($plans as $key => $value)
                                 <option value="{{ $value->id }}" {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
@@ -101,32 +101,32 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                           
+
                         </div>
                         <div class="col-lg-6">
                             <label for="">Plan Type <span>*</span></label>
-                            
-                            <select  id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id" >
-                                
+
+                            <select id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id">
+
                                 @foreach($planTypes as $planType)
-                                    <option value="{{ $planType->id }}"
-                                        {{ old('plan_type_id',$customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
-                                        {{ $planType->name }}
-                                    </option>
-                                    @endforeach
-                                
+                                <option value="{{ $planType->id }}"
+                                    {{ old('plan_type_id',$customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
+                                    {{ $planType->name }}
+                                </option>
+                                @endforeach
+
                             </select>
                         </div>
                         <div class="col-lg-6">
                             <label for="">Plan Price <span>*</span></label>
-                            
+
                             <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id ) }}" @readonly(true)>
 
-                            
+
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Payment Mode</label>
-                           
+                            <label for="">Payment Mode<span>*</span></label>
+
                             <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
                                 <option value="">Select Payment Mode</option>
                                 <option value="1" {{ $customer->payment_mode == 1 ? 'selected' : '' }}>Online</option>
@@ -138,11 +138,11 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                           
-                            
+
+
                         </div>
 
-                        
+
                         <div class="col-lg-6">
                             <label for="">Transaction Date <span>*</span></label>
                             <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="">
@@ -152,10 +152,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-                    </div>
-                    <div class="row mt-3">
                         @if($customer->payment_mode==3)
-
                         <div class="col-lg-6">
                             <label for="">Transaction Number <span>*</span></label>
                             <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
@@ -165,7 +162,6 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-
                         @endif
 
                         <div class="col-lg-6">
@@ -177,19 +173,18 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-
                     </div>
-                 
+               
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            @if($diffInDays <= 5 && $diffExtendDay > 0 && !$is_renew && $diffExtendDay<6)
-                            
+                            @if($diffInDays <= 0 && $diffExtendDay > 0 && !$is_renew )
+
                                 <input type="submit" class="btn btn-primary btn-block button" value="Renew Upgrade">
-                          
+
                             @endif
                         </div>
                     </div>
-                    
+
 
                 </div>
             </form>
@@ -197,37 +192,37 @@ $diffInDays = $today->diffInDays($endDate, false);
     </div>
     <div class="col-lg-3">
         <div class="seat--info">
-            @php 
-            $class='';  
-           
-                if($diffInDays <= 5 && $diffExtendDay>0){
-                    $class='extedned';
+            @php
+            $class='';
+
+            if($diffInDays <= 5 && $diffExtendDay>0){
+                $class='extedned';
                 }elseif($diffInDays < 0 ){
-                    $class='expired';
-                }
-            @endphp
-            <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-            <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
-            <p>{{ $customer->plan->name}}</p>
-            <button>Booked for <b>{{ $customer->planType->name}}</b></button>
-           
-            @if ($diffInDays > 0)
-                <span class="text-success">Plan Expires in {{ $diffInDays }} days</span>
-            @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
-            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                <span class="text-warning fs-10 d-block">Plan Expires today</span>
-            @else
-                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
-            @endif
+                    $class='expired' ;
+                    }
+                    @endphp
+                    <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
+                    <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+                    <p>{{ $customer->plan->name}}</p>
+                    <button>Booked for <b>{{ $customer->planType->name}}</b></button>
+
+                    @if ($diffInDays > 0)
+                    <span class="text-success">Plan Expires in {{ $diffInDays }} days</span>
+                    @elseif ($diffInDays < 0 && $diffExtendDay>0)
+                        <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
+                        @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                            <span class="text-warning fs-10 d-block">Plan Expires today</span>
+                            @else
+                            <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
+                            @endif
         </div>
     </div>
 </div>
 <script>
     // Call the handleFormChanges function for the specific form when the DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
-          handleFormChanges('learnerUpgrade', {{$customer->id}});
-      });
+          handleFormChanges('learnerUpgrade', {{ $customer->id }} );
+    });
   </script>
 
 

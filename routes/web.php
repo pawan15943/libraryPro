@@ -126,7 +126,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       
       Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
       Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
-      Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
+      Route::get('/change/plan/{id?}', [LearnerController::class, 'getLearner'])->name('learner.change.plan');
       Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
       Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
       Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');

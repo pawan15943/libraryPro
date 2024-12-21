@@ -262,7 +262,7 @@ $current_route = Route::currentRouteName();
 
 
                                
-                                <li><a href="{{route('learners.upgrade',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                <li><a href="{{route('learner.change.plan',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                             
 
                                 <!-- upgrade Seat-->

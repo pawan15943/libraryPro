@@ -48,7 +48,8 @@
                     },
                     dataType: 'json',
                     success: function(html) {
-                          
+                          console.log('learner_detail_id',html.learner_detail_id);
+                        $('#learner_detail_id').val(html.learner_detail_id);
                         $('#owner').text(html.name);
                         $('#learner_dob').text(html.dob);
                         $('#learner_email').text(html.email);
@@ -123,6 +124,7 @@
             $("#update_plan_id").trigger('change');
            
             var user_id = $('#user_id').val();
+            var learner_detail_id = $('#learner_detail_id').val();
            
             var seat_no = $('#seat_name').text().trim();
          
@@ -142,7 +144,7 @@
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
            
-            fetchPlanTypes(seat_no, user_id);
+            fetchPlanTypes(seat_no,user_id,learner_detail_id);
         });
 
         $('.renew_extend').on('click', function(){
@@ -156,7 +158,7 @@
             $('#update_plan_end_date').val(end_date);
             fetchPlanTypes(seat_no, user_id);
         });
-        function fetchPlanTypes(seat_no, user_id) {
+        function fetchPlanTypes(seat_no, user_id,learner_detail_id) {
            
             if (seat_no && user_id) {
                 $.ajax({
@@ -169,6 +171,7 @@
                         "_token": "{{ csrf_token() }}",
                         "seat_no": seat_no,
                         "user_id": user_id,
+                        "learner_detail_id": learner_detail_id,
                     },
                     dataType: 'json',
                     success: function (html) {

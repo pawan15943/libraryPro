@@ -380,10 +380,20 @@ class LearnerController extends Controller
        
         $seatNo = $request->seat_no;
         $seatId=Seat::where('seat_no',$seatNo)->value('id');
+       
+        if($request->learner_detail_id){
+            $customer_plan=LearnerDetail::where('id', $request->learner_detail_id)
+            ->pluck('plan_type_id');
+            $selectedPlan=LearnerDetail::where('id', $request->learner_detail_id)
+            ->pluck('plan_id');
+        }else{
+            $customer_plan=LearnerDetail::where('seat_id', $seatId)->where('learner_id',$request->user_id)
+            ->pluck('plan_type_id');
+            $selectedPlan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
+            ->pluck('plan_id');
+        }
       
-        $customer_plan=LearnerDetail::where('seat_id', $seatId)->where('learner_id',$request->user_id)
-        ->pluck('plan_type_id');
-      
+       
         // Step 1: Retrieve the plan_type_ids from learners for the given seat
         $filteredPlanTypes=PlanType::where('id',$customer_plan)->pluck('name', 'id');
 
@@ -404,10 +414,10 @@ class LearnerController extends Controller
                 });
             }
 
-        $selectedPlan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
-        ->pluck('plan_id');
+      
+        
         $selectedPlanName=Plan::where('id',$selectedPlan)->pluck('name','id');
-       
+     
         // Return the filtered plan types as JSON
         return response()->json([$filteredPlanTypes,$selectedPlanName]);
     }
@@ -1469,6 +1479,7 @@ class LearnerController extends Controller
            'is_paid' => $is_paid,
            'payment_mode' => $payment_mode,
        ]);
+       Log::info('LearnerDetail created', ['data' => $learner_detail]);
        if($payment_mode==1 || $payment_mode==2){
             LearnerTransaction::create([
                 'learner_id' =>$customer->id, 
@@ -1486,16 +1497,22 @@ class LearnerController extends Controller
         ->where('plan_end_date', '<', $currentDate) // Corrected comparison syntax
         ->where('status', 1)
         ->get();
-    
-        foreach ($learnerStatus as $data) {
-            if ($data->plan_end_date < $currentDate) {
-                $data->status = 0;  // Expired
-            } elseif ($data->plan_end_date > $currentDate) {
-                $data->status = 1;  // Active
+       
+        if(!$learnerStatus->isEmpty()){
+           
+            foreach ($learnerStatus as $data) {
+                if ($data->plan_end_date < $currentDate) {
+                    
+                    $data->status = 0;  // Expired
+                } elseif ($data->plan_end_date > $currentDate) {
+                
+                    $data->status = 1;  // Active
+                }
+                
+                $data->save();
             }
-            
-            $data->save();
         }
+       
 
 
 

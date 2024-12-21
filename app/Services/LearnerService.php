@@ -26,10 +26,10 @@ class LearnerService
             ->exists();
 
         $isRenewed = $hasFuturePlan && $hasPastPlan;
-        return $isRenewed ;
-        // return LearnerDetail::where('library_id', auth()->user()->id)->where('learner_id', $customerId)
-        //     ->whereBetween('plan_start_date', [$today, $futureDate])
-        //     ->exists() ? 1 : 0;
+        // return $isRenewed ;
+        return LearnerDetail::where('library_id', auth()->user()->id)->where('learner_id', $customerId)
+            ->whereBetween('plan_start_date', [$today, $futureDate])
+            ->exists() ? 1 : 0;
     }
 
     public function getAvailableSeats()

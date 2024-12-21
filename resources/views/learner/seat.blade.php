@@ -405,6 +405,7 @@ $hourlyCount = 0;
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 <input type="hidden" value="" id="user_id">
+                                <input type="hidden" value="" id="learner_detail_id">
                                 <a id="upgrade" class="btn btn-primary btn-block mt-2 button" style="height : auto;">Renew Library Membership</a>
                             </div>
                         </div>

@@ -71,7 +71,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
                     @foreach($libraries as $key => $value)
                     @php
                         $today = Carbon::today();
@@ -108,31 +107,36 @@
                             
                         </td>
                         <td>
-                            @if($libraryplanData && $libraryplanData->start_date != null)
                             <span class="d-block m-auto">
+                            @if($libraryplanData && $libraryplanData->start_date != null)
+                            
                                 {{ \Carbon\Carbon::parse($libraryplanData->start_date)->toFormattedDateString() }}
-                            </span>
-                             @endif
-                        
+                            @else
+                            Start Date : NA
+                            @endif
+                             </span>
                             @if($value->status==1)
                             <small class="text-success">Active</small>
-                            @else
+                            @elseif($value->status==2)
                             <small class="text-danger">Expired</small>
+                            @else
+                            <small>Not Paid</small>
                             @endif
                            
                         </td>
                         <td>
-                            {{ $endDate ? $endDate->toFormattedDateString() : 'N/A' }}
-                           
+                            {{ $endDate ? $endDate->toFormattedDateString() : 'End Date : NA' }}
                            
                             <br>
+                            
                             @if ($diffInDays > 0)
-                            <small class="text-success ">{{ $diffInDays }} Days Pending</small>
+                            <small class="text-success ">{{ $diffInDays }} Days Left</small>
                             @elseif ($diffInDays < 0)
                                 <small class="text-danger ">Expired {{ abs($diffInDays) }} Days ago</small>
-                                
-                            @else
+                            @elseif($diffInDays == 0 && ($value->status > 0))
                                 <small class="text-warning ">Expires today</small>
+                            @else
+                            <small>Not Paid</small>
                             @endif
                             
                         </td>

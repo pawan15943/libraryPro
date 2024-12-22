@@ -301,19 +301,22 @@ class LoadMenus
            $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
            foreach($customerdatas as $customerdata){
                 $planEndDateWithExtension = Carbon::parse($customerdata->plan_end_date)->addDays($extend_day);
+               
+                $current_date = Carbon::today();
                 $hasFuturePlan = LearnerDetail::where('learner_id', $userUpdate->id)
-                ->where('plan_end_date', '>', $today)
+                ->where('plan_end_date', '>', $current_date->copy()->addDays(5))->where('status',0)
                 ->exists();
                 $hasPastPlan = LearnerDetail::where('learner_id', $userUpdate->id)
-                    ->where('plan_end_date', '<', $today)
+                    ->where('plan_end_date', '<', $current_date->copy()->addDays(5))
                     ->exists();
+            
 
                 $isRenewed = $hasFuturePlan && $hasPastPlan;
                 if ($planEndDateWithExtension->lte($today)) {
                     $userUpdate->update(['status' => 0]);
                     $customerdata->update(['status' => 0]);
                 }elseif($isRenewed){
-                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '>', $today)->update(['status'=>1]);
+                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_start_date', '<=', $today)->where('plan_end_date', '>', $current_date->copy()->addDays(5))->update(['status'=>1]);
                     LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '<', $today)->update(['status'=>0]);
                 }else{
                     $userUpdate->update(['status' => 1]);

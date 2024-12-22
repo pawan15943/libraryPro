@@ -46,10 +46,28 @@ class LibraryController extends Controller
     public function index(Request $request)
     {
         $query = Library::leftJoin('library_transactions', 'libraries.id', '=', 'library_transactions.library_id')
-            ->where('library_transactions.is_paid', 1)
-            ->select('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email','libraries.*', DB::raw('MAX(library_transactions.id) as latest_transaction_id'))
-            ->groupBy('libraries.id', 'libraries.library_type', 'libraries.status', 'libraries.library_name', 'libraries.library_mobile', 'libraries.email');
+           
+            ->select(
+                'libraries.id', 
+                'libraries.library_type', 
+                'libraries.status', 
+                'libraries.library_name', 
+                'libraries.library_mobile', 
+                'libraries.email',
+                DB::raw('MAX(library_transactions.id) as latest_transaction_id')
+            )
+            ->groupBy(
+                'libraries.id', 
+                'libraries.library_type', 
+                'libraries.status', 
+                'libraries.library_name', 
+                'libraries.library_mobile', 
+                'libraries.email'
+            );
     
+          
+
+
         // Filter by Plan
         if ($request->filled('plan_id')) {
             $query->where('libraries.library_type', $request->plan_id);
@@ -57,7 +75,7 @@ class LibraryController extends Controller
     
         // Filter by Payment Status
         if ($request->filled('is_paid')) {
-            $query->where('is_paid', $request->is_paid);
+            $query->where('library_transactions.is_paid', $request->is_paid);
         }
     
         // Filter by Active/Expired
@@ -78,7 +96,7 @@ class LibraryController extends Controller
                   ->orWhere('libraries.email', 'LIKE', "%{$search}%");
             });
         }
-    
+        // dd($query->get());
         $libraries = $query->get();
         $plans = Subscription::get();
     
@@ -901,6 +919,10 @@ class LibraryController extends Controller
         );
 
         return redirect()->back()->with('success', 'Library settings saved successfully.');
+    }
+
+    public function videoTraining(){
+        return view('library.video-recording');
     }
 
 

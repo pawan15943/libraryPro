@@ -82,6 +82,7 @@
                         $('#seat_details_info').text('Booking Details of Seat No. : ' + html.seat_no);
                         var planEndDateStr = html.plan_end_date;
                         var isRenew=html.is_renew;
+                        var is_renew_update=html.renew_update;
                         var today = new Date();
                         var planEndDate = new Date(planEndDateStr);
                         var timeDiff = planEndDate - today;
@@ -96,12 +97,12 @@
 
                         var extendDay=html.diffExtendDay;
                         var message = '';
-
+                        console.log('is_renew_update',is_renew_update);
                         // Applying the conditions as per your Laravel blade logic
-                        if (daysRemaining > 0) {
+                        if(is_renew_update == 1){
+                            message = `<h5 class="text-success">Plan will Expires in ${daysRemaining} days.</h5><p class="text-info">Notice : You have a new plan in the queue. Once your current plan expires, your new plan will automatically activate.</p>`;
+                        }else if (daysRemaining > 0) {
                             message = `<h5 class="text-success">Plan Expires in ${daysRemaining} days</h5>`;
-                        }else if(isRenew ==1){
-                            message = `<h5 class="text-success">Your new plan active now . It will become active once your current plan expires.</h5>`;
                         } else if (daysRemaining < 0 && extendDay > 0) {
                             message = `<h5 class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are ${Math.abs(extendDay)} days.</h5>`;
                         } else if (daysRemaining < 0 && extendDay == 0) {

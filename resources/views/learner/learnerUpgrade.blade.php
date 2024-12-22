@@ -7,7 +7,7 @@ $today = Carbon::today();
 $endDate = Carbon::parse($customer->plan_end_date);
 $diffInDays = $today->diffInDays($endDate, false);
 
-if (Route::currentRouteName() == 'learners.upgrade') {
+if (Route::currentRouteName() == 'learner.change.plan') {
 $displayNone = 'style="display: none;"';
 
 $readonlyStyle = 'pointer-events: none; background-color: #e9ecef;';
@@ -86,16 +86,16 @@ $readonlyStyle = '';
                     </div>
                 </div>
                 <div class="action-box">
-                    <h4 class="mb-4">Actionables
+                    <h4 class="mb-4">Change Plan
                         <div class="info-container">
                             <i class="fa-solid fa-circle-info info-icon"></i>
                             <div class="info-card">
-                                <h3 class="info-title">Upgrade Seat</h3>
-                                <p class="info-details">In a seat upgrade, the learner selects a higher plan, checks seat availability, and pays the difference. The system allocates the upgraded seat, adjusts the remaining time from the current plan, and closes the old reservation. The learner then uses the upgraded seat for the new duration.</p>
+                                <h3 class="info-title">Change Plan</h3>
+                                <p class="info-details">The Change Plan option lets you upgrade to a higher plan by checking seat availability, paying the difference, and allocating a new seat. Your remaining time adjusts to the new plan, and the old reservation is closed seamlessly.</p>
                             </div>
                         </div>
                     </h4>
-                    <p class="text-danger"><b>important Note:</b> Seat plan upgrades are work only when the learner's seat is about to expire or during plan renewal.</p>
+                    <p class="text-danger"><b>important Note:</b> Seat Change Plan are allowed only if the learner's seat is newly booked, and the option is available only within 7 days of starting the current plan.</p>
                     <div class="row g-4">
                         <input id="edit_seat" type="hidden" name="seat_no" value="{{ old('seat_no', $customer->seat_no) }}">
                         <input type="hidden" name="user_id" value="{{ old('user_id', $customer->id) }}">

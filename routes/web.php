@@ -95,7 +95,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::get('monthly/create', [ReportController::class, 'monthlyReport'])->name('report.monthly');
       Route::get('report/expense/{year}/{month}', [ReportController::class, 'monthlyExpenseCreate'])->name('report.expense');
       Route::post('report/expense/store', [ReportController::class, 'monthlyExpenseStore'])->name('report.expense.store');
-      
+      Route::get('library/video-training', [LibraryController::class, 'videoTraining'])->name('library.video-training');
+
       // Other Pages Routes
      
       Route::get('pending/payment', [ReportController::class, 'pendingPayment'])->name('pending.payment.report');
@@ -125,7 +126,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       
       Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
       Route::put('/swap-seat', [LearnerController::class, 'swapSeat'])->name('learners.swap-seat');
-      Route::get('/upgrade/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade');
+      Route::get('/change/plan/{id?}', [LearnerController::class, 'getLearner'])->name('learner.change.plan');
       Route::post('/close', [LearnerController::class, 'userclose'])->name('learners.close');
       Route::delete('/{Learner}', [LearnerController::class, 'destroy'])->name('learners.destroy');
       Route::get('/reactive/{id?}', [LearnerController::class, 'reactiveUser'])->name('learners.reactive');

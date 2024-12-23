@@ -493,11 +493,21 @@ class DashboardController extends Controller
         $other_paid =(clone $paidQuery)->where('learner_detail.payment_mode', 3)->count();
        
          // For graph and plan wise count
-       
-         $plan_wise_booking =(clone $query)->groupBy('plan_type_id')
+         $plan_wise_booking =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+         ->where('learners.library_id', auth()->user()->id)->where('learner_detail.is_paid',1)
+         ->where(function ($subQuery) use ( $month , $year) {
+             $subQuery->whereYear('plan_start_date', $year)
+             ->whereMonth('plan_start_date', $month);
+            
+         })->groupBy('plan_type_id')
          ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
          ->with('planType') 
-         ->get();
+         ->get();;
+        //  $plan_wise_booking =(clone $query)->groupBy('plan_type_id')
+        //  ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
+        //  ->with('planType') 
+        //  ->get();
+        //  dd($plan_wise_booking);
          $data = [];
          foreach ($plan_wise_booking as $booking) {
              $data[] = [

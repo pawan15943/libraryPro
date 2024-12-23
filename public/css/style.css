@@ -4716,3 +4716,19 @@ ul.notification-list li .d-flex {
     text-align: left !important;
     padding: .8rem 1.5rem;
 }
+
+
+.not-data {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+}
+
+.record-not-found img {
+    width: 150px;
+    margin-bottom: -2rem;
+    margin-top: -1rem;
+}

@@ -365,6 +365,7 @@ class Controller extends BaseController
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
+            'plan' => 'required|int',
         ]);
 
         if ($validator->fails()) {
@@ -385,9 +386,10 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Invalid date of birth format']);
             return;
         }
+      
 
         $plan = Plan::where('plan_id', trim($data['plan']))->first();
-        $planType = PlanType::where('name', 'LIKE', trim($data['plan_type']))->first();
+        $planType = PlanType::where('name', '=', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
@@ -416,11 +418,8 @@ class Controller extends BaseController
         $hours = $planType->slot_hours;
         $duration = trim($data['plan']) ?? 0;
         $joinDate = isset($data['join_date']) ? $this->parseDate(trim($data['join_date'])) : $start_date;
-        if (isset($data['end_date'])) {
-            $endDate = $this->parseDate(trim($data['end_date']));
-        } else {
-            $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
-        }
+        // Here we manage end date how it calculated.
+        $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
         
 
         $pending_amount = $planPrice->price - trim($data['paid_amount']);
@@ -469,14 +468,21 @@ class Controller extends BaseController
                     ->where('learners.seat_no', trim($data['seat_no']))
                     ->where('learners.status', 1)
                     ->where('learner_detail.status', 1)->where('learner_detail.plan_type_id',$planType->id)->count();
-                    if($planTypeSame >0){
-                        $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked']);
+                    if($planTypeSame > 0){
+                        $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked 1']);
                         return; 
                     }
 
+                    // Day Type 1 : FD | 2 : FH | 3 : SH | 4 : H1 | 5: H2 | 6 : H3 | 7 : H4
+                    // Here we check if FH is booked then H1 & H2 is Not booked and so on.
                     foreach($exists_data as $data_get){
-                        if(($day_type_id==2 && ($data_get->planType->day_type_id=4 || $data_get->planType->day_type_id=5)) || ($day_type_id==3 && ($data_get->planType->day_type_id=6 || $data_get->planType->day_type_id=7)) || (($day_type_id==4 || $day_type_id==5) && ($data_get->planType->day_type_id=2)) || (($day_type_id==6 || $day_type_id==7) && ($data_get->planType->day_type_id=3))){
-                            $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked']);
+                        if(($day_type_id==2 && ($data_get->planType->day_type_id==4 || $data_get->planType->day_type_id==5))
+                         || ($day_type_id==3 && ($data_get->planType->day_type_id==6 || $data_get->planType->day_type_id==7)) 
+                         || (($day_type_id==4 || $day_type_id==5) && ($data_get->planType->day_type_id==2)) 
+                         || (($day_type_id==6 || $day_type_id==7) && ($data_get->planType->day_type_id==3))
+                         || (($day_type_id==1 ) && ($data_get->planType->day_type_id==1 || $data_get->planType->day_type_id==2 || $data_get->planType->day_type_id==3 || $data_get->planType->day_type_id==4 ||$data_get->planType->day_type_id==5 ||$data_get->planType->day_type_id==6 ||$data_get->planType->day_type_id==7)))
+                        {
+                            $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked 2']);
                             return; 
                         }
                     }

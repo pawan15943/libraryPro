@@ -94,8 +94,10 @@ $current_route = Route::currentRouteName();
 
 <div class="row">
     <div class="col-lg-12 text-end">
+        @can('has-permission', 'Export Library Seats')
         <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export"><i class="fa-solid fa-file-export"></i> Export All Data in CSV</a>
-        @can('Import Library Seats')
+        @endcan
+        @can('has-permission', 'Import Library Seats')
         <a href="{{ route('library.upload.form') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
         @endcan
     </div>
@@ -214,14 +216,14 @@ $current_route = Route::currentRouteName();
                         <td>{{$value->plan_end_date}}<br>
 
                             @if ($diffInDays > 0)
-                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
+                            <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays <= 0 && $diffExtendDay>0)
                                 <small class="text-danger fs-10 d-block">Extension active! {{ abs($diffExtendDay) }} days left.</small>
-                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                            @else
-                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                            @endif
+                                @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                                    <small class="text-warning fs-10 d-block">Plan Expires today</small>
+                                    @else
+                                    <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
+                                    @endif
                         </td>
                         <td>
                             @if($value->status==1)
@@ -251,7 +253,7 @@ $current_route = Route::currentRouteName();
                                 <!-- Make payment -->
                                 @can('has-permission','Renew Seat')
                                 <li><a href="{{route('learner.payment',$value->learner_detail_id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
- 
+
                                 @endcan
 
                                 <!-- Swap Seat-->
@@ -261,50 +263,50 @@ $current_route = Route::currentRouteName();
                                 @endcan
 
 
-                               
+
                                 <li><a href="{{route('learner.change.plan',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-                            
+
 
                                 <!-- upgrade Seat-->
-                                @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5) 
-                             
-                                @can('has-permission', 'Upgrade Seat Plan')
-                                <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-                                @endcan
+                                @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5)
 
-                                @endif
-                                <!-- Close Seat -->
+                                    @can('has-permission', 'Upgrade Seat Plan')
+                                    <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                    @endcan
 
-                                @can('has-permission', 'Close Seat')
-                                <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close" data-plan_end_date="{{$value->plan_end_date}}"><i class="fas fa-times"></i></a></li>
-                                @endcan
-                                @endif
-                                <!-- Deletr Seat -->
-                                @can('has-permission', 'Delete Seat')
-                                <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
-                                @endcan
-                                @can('has-permission', 'Reactive Seat')
-                                @if($value->status==0)
-                                <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
-                                @endif
-                                @endcan
-                                @if($diffExtendDay>0)
-                                <!-- Sent Mail -->
-                                
-                                @can('has-permission', 'WhatsApp Notification')
-                                <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" 
-                                    onclick="incrementMessageCount({{ $value->id }}, 'whatsapp')" 
-                                    class="whatsapp" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
-                                
-                                @endcan
+                                    @endif
+                                    <!-- Close Seat -->
+
+                                    @can('has-permission', 'Close Seat')
+                                    <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close" data-plan_end_date="{{$value->plan_end_date}}"><i class="fas fa-times"></i></a></li>
+                                    @endcan
+                                    @endif
+                                    <!-- Deletr Seat -->
+                                    @can('has-permission', 'Delete Seat')
+                                    <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>
+                                    @endcan
+                                    @can('has-permission', 'Reactive Seat')
+                                    @if($value->status==0)
+                                    <li><a href="{{route('learners.reactive',$value->id)}}" title="Reactivate Learner"><i class="fa-solid fa-arrows-rotate"></i></a></li>
+                                    @endif
+                                    @endcan
+                                    @if($diffExtendDay>0)
                                     <!-- Sent Mail -->
-                                @can('has-permission', 'Email Notification')
-                                <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11" 
-                                    onclick="incrementMessageCount({{ $value->id }}, 'email')" 
-                                    class="message"  data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
-                                 @endcan
-                                @endif
-                               
+
+                                    @can('has-permission', 'WhatsApp Notification')
+                                    <li><a href="https://web.whatsapp.com/send?phone=91{{$value->mobile}}&text=Hey!%20🌟%0A%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0A%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11"
+                                            onclick="incrementMessageCount({{ $value->id }}, 'whatsapp')"
+                                            class="whatsapp" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Send WhatsApp Reminder"><i class="fa-brands fa-whatsapp"></i></a></li>
+
+                                    @endcan
+                                    <!-- Sent Mail -->
+                                    @can('has-permission', 'Email Notification')
+                                    <li><a href="mailto:RECIPIENT_EMAIL?subject=Library Seat Renewal Reminder&body=Hey!%20🌟%0D%0A%0D%0AJust%20a%20friendly%20reminder:%20Your%20library%20seat%20plan%20will%20expire%20in%205%20days!%20📚✨%0D%0A%0D%0ADon%E2%80%99t%20miss%20out%20on%20the%20chance%20to%20keep%20enjoying%20your%20favorite%20books%20and%20resources.%20Plus,%20renewing%20now%20means%20you%20can%20unlock%20exciting%20rewards!%20🎁" target="_blank" data-id="11"
+                                            onclick="incrementMessageCount({{ $value->id }}, 'email')"
+                                            class="message" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Send Email Reminders"><i class="fas fa-envelope"></i></a></li>
+                                    @endcan
+                                    @endif
+
                             </ul>
                         </td>
                     </tr>
@@ -318,11 +320,11 @@ $current_route = Route::currentRouteName();
             {{-- <div class="d-flex justify-content-center">
                 <div class="pagination-container">
                     {{ $learners->links('vendor.pagination.default') }}
-                </div>
-            </div> --}}
-
         </div>
-    </div>
+    </div> --}}
+
+</div>
+</div>
 </div>
 
 

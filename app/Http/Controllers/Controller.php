@@ -369,8 +369,7 @@ class Controller extends BaseController
         ]);
 
         if ($validator->fails()) {
-            $errors = $validator->errors()->all(); 
-            $invalidRecords[] = array_merge($data, ['error' => $errors]); 
+            $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
             return;
         }
         $user = Auth::user();

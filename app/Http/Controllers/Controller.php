@@ -551,11 +551,14 @@ class Controller extends BaseController
                 $learnerData = Learner::where('library_id', Auth::user()->id)
                     ->where('email', trim($data['email']))
                     ->first();
-        
                 if ($already_data) {
-                    \Log::info('Check if learner detaill exists with status 0 then update the details');
+                
                     // Update existing learner and learner detail
                     $this->updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid);
+                }
+                if ($learnerData) {
+                    \Log::info('Check if learner detaill exists with status 0 then update the details');
+                    // Update existing learner and learner detail
                     $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date,$payment_mode);
                 } 
             } else {

@@ -545,7 +545,7 @@ class DashboardController extends Controller
          })
          
          ->groupBy('plan_type_id')
-         ->selectRaw('SUM(learner_detail.plan_price_id / plans.plan_id) as revenue, learner_detail.plan_type_id')
+         ->selectRaw('ROUND(SUM(learner_detail.plan_price_id / plans.plan_id), 2) as revenue, learner_detail.plan_type_id')
          ->with('planType')
          ->get();
        

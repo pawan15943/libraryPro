@@ -433,17 +433,12 @@ class Controller extends BaseController
 
         $is_paid = $pending_amount <= 0 ? 1 : 0;
         if ($status == 1) {
-            \Log::info('Learner for updated', [ 'status1' => $status]);
             // Check if the learner already exists with active status
             $alreadyLearner = Learner::where('library_id', Auth::user()->id)
                 ->where('email', trim($data['email']))
                 ->where('status', 1)
                 ->exists();
-            $exist_check = Learner::where('library_id', Auth::user()->id)
-            ->where('email', trim($data['email']))
-            ->where('status', 0)
-            ->exists();
-
+        
             if ($alreadyLearner) {
               
                 $invalidRecords[] = array_merge($data, ['error' => 'This data already exists']);
@@ -455,7 +450,7 @@ class Controller extends BaseController
                     ->where('seat_no', trim($data['seat_no']))
                     ->where('status', 1)
                     ->exists()) {
-                        \Log::info('Learner occupide', [ 'status1' => $status]);
+                   
                     $first_record = Hour::first();
                     $total_hour = $first_record ? $first_record->hour : null;
                     $hours = PlanType::where('id', $planType->id)->value('slot_hours');
@@ -496,7 +491,7 @@ class Controller extends BaseController
                          ->where('library_id', Auth::user()->id)
                         ->where('learners.status', 1)
                         ->sum('hours') + $hours) > $total_hour) {
-                            \Log::info('plan type exceed');
+        
                         $invalidRecords[] = array_merge($data, ['error' => 'Your plan type exceeds the library total hours']);
                         return;
                     }else {
@@ -505,34 +500,15 @@ class Controller extends BaseController
                             $invalidRecords[] = array_merge($data, ['error' => 'Missing essential data for creating learner']);
                             return;
                         }
-                       
-                        \Log::info('last else in Learner craete', [ 'status2' => $status]);
                         $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
                     }
-                } elseif($exist_check){
-                    \Log::info('for renew data create learner detail and update learner DB', [ 'status1' => $status]);
-                    $learnerData = Learner::where('library_id', Auth::user()->id)
-                    ->where('email', trim($data['email']))
-                    ->where('status', 0)
-                    ->first();
+                } else {
                    
-                    $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date,$payment_mode);
-                    \Log::info('Learner detail created', [
-                        'learner_id' => $learnerData->id,
-                        'plan' => $plan,
-                        'status' => $status,
-                        'plan_type' => $planType,
-                        'seat' => $seat,
-                    ]);
-                   
-                }else {
-                    \Log::info('seat is not occupied Learner create', [ 'status1' => $status]);
                     // If seat is not occupied, directly create learner
                     $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
                 }
             }
         } else {
-            \Log::info('When Status : 0 Previously Paid Seat info : Leaner', [ 'status0' => $status]);
             // Handling non-active status (status != 1)
             $exist_check = Learner::where('library_id', Auth::user()->id)
                 ->where('email', trim($data['email']))
@@ -542,7 +518,7 @@ class Controller extends BaseController
                 ->where('email', trim($data['email']))
                 ->where('status', 1)
                 ->exists()) {
-                \Log::info('You are already active');
+                
                 $invalidRecords[] = array_merge($data, ['error' => 'You are already active']);
                 return;
             } elseif ($exist_check) {
@@ -553,18 +529,19 @@ class Controller extends BaseController
                     ->first();
         
                 if ($already_data) {
-                    \Log::info('Check if learner detaill exists with status 0 then update the details');
+                   
                     // Update existing learner and learner detail
                     $this->updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid);
+                } else {
+                    // Create learner details for the existing learner
                     $this->createLearnerDetail($learnerData->id, $plan,$status, $planType, $seat, $data, $start_date, $endDate, $joinDate, $hours, $is_paid, $planPrice, $pending_amount, $paid_date,$payment_mode);
-                } 
+                }
             } else {
                 if (empty($data['name']) || empty($data['email']) || empty($data['mobile']) || empty($hours) || empty($seat) || empty($start_date) || empty($planPrice->price)) {
                     $invalidRecords[] = array_merge($data, ['error' => 'Missing essential data for creating learner']);
                     return;
                 }
-                \Log::info('Insert New Learner Info if Learner is not exists in DB Previously');
-                // Create a new learner if they dont exist
+                // Create a new learner if they don't exist
                 $learner = $this->createLearner($data, $hours, $dob, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid, $planPrice, $pending_amount, $paid_date);
             }
         }
@@ -694,14 +671,6 @@ class Controller extends BaseController
         DB::beginTransaction();
 
         try {
-             // update learner  entry
-            Learner::where('id', $learner_id)->update([
-                'mobile' => trim($data['mobile']),
-                'hours' => trim($hours),
-                'seat_no' => trim($data['seat_no']),
-                'address' => trim($data['address']),
-                'status' => $status,
-            ]);
             // Create learner detail entry
             $learner_detail = LearnerDetail::create([
                 'learner_id' => $learner_id,
@@ -838,21 +807,9 @@ class Controller extends BaseController
            $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
            foreach($customerdatas as $customerdata){
                 $planEndDateWithExtension = Carbon::parse($customerdata->plan_end_date)->addDays($extend_day);
-                $current_date = Carbon::today();
-                $hasFuturePlan = LearnerDetail::where('learner_id', $userUpdate->id)
-                ->where('plan_end_date', '>', $current_date->copy()->addDays(5))->where('status',0)
-                ->exists();
-                $hasPastPlan = LearnerDetail::where('learner_id', $userUpdate->id)
-                    ->where('plan_end_date', '<', $current_date->copy()->addDays(5))
-                    ->exists();
-
-                $isRenewed = $hasFuturePlan && $hasPastPlan;
                 if ($planEndDateWithExtension->lte($today)) {
                     $userUpdate->update(['status' => 0]);
                     $customerdata->update(['status' => 0]);
-                }elseif ($isRenewed) {
-                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_start_date', '<=', $today)->where('plan_end_date', '>', $current_date->copy()->addDays(5))->update(['status'=>1]);
-                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '<', $today)->update(['status'=>0]);
                 }else{
                     $userUpdate->update(['status' => 1]);
                     LearnerDetail::where('learner_id', $userUpdate->learner_id)->where('status',0)->where('plan_start_date','<=',$today)->where('plan_end_date','>',$today)->update(['status' => 1]);

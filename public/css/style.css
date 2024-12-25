@@ -3800,6 +3800,7 @@ ul.revenue-box {
     margin: 0;
     display: flex;
     gap: 1.5rem;
+    margin: .5rem .2rem ! IMPORTANT;
 }
 
 
@@ -4731,4 +4732,14 @@ ul.notification-list li .d-flex {
     width: 150px;
     margin-bottom: -2rem;
     margin-top: -1rem;
+}
+
+li#no-data img {
+    width: 143px;
+    background: #fff;
+    margin-bottom: -2rem;
+}
+
+li#no-data {
+    background: #fff;
 }

@@ -161,7 +161,7 @@
             <div class="v-content">
                 <ul class="revenue-box scroll-x " id="monthlyData">
                    
-                    <div class="not-data" style="display: none; " id="no-data">
+                    <li class="not-data" style="display: none; " id="no-data">
                         <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record" alt="record-not-found">
                         <span>No Data Available</span>
                     </li>
@@ -516,7 +516,7 @@
                
                 <canvas id="revenueChart" style="max-height:340px;"></canvas>
               
-                <div class="not-data" style="display: none; " id="no-data2">
+                <div class="not-data" style="display: none;" id="no-data2">
                     <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record" alt="record-not-found">
                     <span>No Data Available</span>
                 </div>
@@ -530,6 +530,7 @@
             <div class="record-not-found">
                
                 <canvas id="bookingCountChart"></canvas>
+                
                 <div class="not-data" style="display: none; " id="no-data3">
                     <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record" alt="record-not-found">
                     <span>No Data Available</span>

@@ -91,7 +91,7 @@ $hourlyCount = 0;
                     if($diffInDays < 0 && $diffExtendDay>0){
                         $class='extedned';
                         }
-                        if($diffInDays <=5 && $diffInDays>0){
+                        if($diffInDays <=5 && $diffInDays>=0){
                             $class='expired';
                             }
                             @endphp

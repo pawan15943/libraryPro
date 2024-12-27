@@ -264,7 +264,7 @@ class DashboardController extends Controller
         }
         $startOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
         $endOfGivenMonth = Carbon::create($year, $month, 1)->endOfMonth();
-       
+        $lastDateOfGivenMonth = Carbon::create($year, $month, 1)->endOfMonth();
         
         
          $today = Carbon::now()->format('Y-m-d');
@@ -493,21 +493,42 @@ class DashboardController extends Controller
         $other_paid =(clone $paidQuery)->where('learner_detail.payment_mode', 3)->count();
        
          // For graph and plan wise count
-         $plan_wise_booking =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-         ->where('learners.library_id', auth()->user()->id)->where('learner_detail.is_paid',1)
-         ->where(function ($subQuery) use ( $month , $year) {
-             $subQuery->whereYear('plan_start_date', $year)
-             ->whereMonth('plan_start_date', $month);
+        //  $plan_wise_booking =Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        //  ->where('learners.library_id', auth()->user()->id)->where('learner_detail.is_paid',1)
+        //  ->where(function ($subQuery) use ( $month , $year) {
+        //      $subQuery->whereYear('plan_start_date', $year)
+        //      ->whereMonth('plan_start_date', $month);
             
-         })->groupBy('plan_type_id')
-         ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
-         ->with('planType') 
-         ->get();;
+        //  })->groupBy('plan_type_id')
+        //  ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
+        //  ->with('planType') 
+        //  ->get();
         //  $plan_wise_booking =(clone $query)->groupBy('plan_type_id')
         //  ->selectRaw('COUNT(DISTINCT learner_id) as booking, plan_type_id')
         //  ->with('planType') 
         //  ->get();
         //  dd($plan_wise_booking);
+        $plan_wise_booking = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+        ->where('learners.library_id', auth()->user()->id)
+        ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+            $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                ->where('plan_end_date', '>=', $startOfGivenMonth);
+        })
+        ->whereRaw(
+            "NOT DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) <= ?", 
+            [$extend_day, $lastDateOfGivenMonth->toDateString()]
+        )
+        ->selectRaw('
+            learner_detail.plan_type_id,
+            COUNT(DISTINCT learner_detail.learner_id) as booking,
+            MAX(plan_start_date) as max_plan_start_date,
+            MAX(plan_end_date) as max_plan_end_date
+        ')
+        ->groupBy('learner_detail.plan_type_id')
+        ->orderBy('max_plan_start_date', 'asc')
+        ->with('planType') 
+        ->get();
+
          $data = [];
          foreach ($plan_wise_booking as $booking) {
              $data[] = [
@@ -516,6 +537,8 @@ class DashboardController extends Controller
                  'plan_type_name' => $booking->planType ? $booking->planType->name : 'Unknown' // Get the plan type name
              ];
          }
+
+     
            //plantype wise revenue
          $planTypeWiseRevenue = LearnerDetail::withoutGlobalScopes()
          ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id')

@@ -916,16 +916,39 @@ class DashboardController extends Controller
         switch ($type) {
             case 'total_booking':
                 // till total slot
-                $query_total->groupBy('learner_detail.learner_id')
+                // $query_total->groupBy('learner_detail.learner_id')
+                // ->selectRaw('
+                //     learner_detail.learner_id,
+                //     learners.*,
+                //     MAX(plan_start_date) as max_plan_start_date,
+                //     MAX(plan_end_date) as max_plan_end_date
+                // ')
+                // ->orderBy('max_plan_start_date', 'asc');
+                // $result=$query_total->get();
+                $query_total = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+                ->with(['plan', 'planType', 'learnerDetails'])
+                ->where('learners.library_id', auth()->user()->id)
+                ->where(function ($subQuery) use ($startOfGivenMonth, $endOfGivenMonth) {
+                    $subQuery->where('plan_start_date', '<=', $endOfGivenMonth)
+                             ->where('plan_end_date', '>=', $startOfGivenMonth);
+                })
                 ->selectRaw('
                     learner_detail.learner_id,
-                    learners.*,
+                    learners.id,
+                    learners.name,
+                    learners.email,
+                    learners.seat_no,
+                    learners.dob,
+                    learners.mobile,
                     MAX(plan_start_date) as max_plan_start_date,
                     MAX(plan_end_date) as max_plan_end_date
                 ')
+               
+                ->groupBy('learner_detail.learner_id', 'learners.id', 'learners.name', 'learners.email','learners.seat_no','learners.dob','learners.mobile') // Add all required columns here
                 ->orderBy('max_plan_start_date', 'asc');
-                $result=$query_total->get();
-
+               
+               $result=$query_total->get();
+            
                 break;
             
             case 'expired_seats':
@@ -935,10 +958,16 @@ class DashboardController extends Controller
                 break;
             case 'active_booking':
                 // till active slot
-                $totalLearners =  $query_total->groupBy('learner_detail.learner_id')
+                $totalLearners =  $query_total
+                ->groupBy('learner_detail.learner_id', 'learners.id', 'learners.name', 'learners.email','learners.seat_no','learners.dob','learners.mobile') 
                 ->selectRaw('
                     learner_detail.learner_id,
-                    learners.*,
+                    learners.id,
+                    learners.name,
+                    learners.email,
+                    learners.seat_no,
+                    learners.dob,
+                    learners.mobile,
                     MAX(plan_start_date) as max_plan_start_date,
                     MAX(plan_end_date) as max_plan_end_date
                 ')
@@ -1030,12 +1059,18 @@ class DashboardController extends Controller
                 })
                 
                 ->selectRaw('
-                    learner_detail.learner_id,
-                    learners.*,
-                    MAX(plan_start_date) as max_plan_start_date,
-                    MAX(plan_end_date) as max_plan_end_date
-                ')
-                ->groupBy('learner_detail.learner_id', 'learners.id') 
+                learner_detail.learner_id,
+                learners.id,
+                learners.name,
+                learners.email,
+                learners.seat_no,
+                learners.dob,
+                learners.mobile,
+                MAX(plan_start_date) as max_plan_start_date,
+                MAX(plan_end_date) as max_plan_end_date
+            ')
+           
+            ->groupBy('learner_detail.learner_id', 'learners.id', 'learners.name', 'learners.email','learners.seat_no','learners.dob','learners.mobile') 
                 ->orderBy('max_plan_start_date', 'asc')
                 ->get();
 

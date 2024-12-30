@@ -13,6 +13,8 @@
                         <th>Total Revenue (A)</th>
                         <th>Total Expenses (B)</th>
                         <th>Net Profit (A-B)</th>
+                        <th>Monthly Revenue (C)</th>
+                        <th>Monthly Net Profit (C-B)</th>
                         <th>Manage Expanse</th>
                     </tr>
                 </thead>
@@ -30,6 +32,8 @@
                         <td><i class="fa fa-inr"></i> {{ number_format($value['total_revenue'], 2) }}</td>
                         <td class="text-danger"><i class="fa fa-inr"></i> {{ number_format($value['total_expenses'], 2) }}</td>
                         <td class="text-success bold"><i class="fa fa-inr"></i> {{ number_format($value['total_revenue'] - $value['total_expenses'], 2) }}</td>
+                        <td><i class="fa fa-inr"></i> {{ number_format($value['monthly_revenue'], 2) }}</td>
+                        <td class="text-success bold"><i class="fa fa-inr"></i> {{ number_format($value['monthly_revenue'] - $value['total_expenses'], 2) }}</td>
                         <td>
                             <ul class="actionalbls">
                                 <li>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CustomerDetail;
 use App\Models\Customers;
 use App\Models\Expense;
+use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
 use Illuminate\Http\Request;
@@ -25,32 +26,43 @@ class ReportController extends Controller
     }
     public function monthlyReport()
     {
-        // Fetch monthly revenues
-        $monthlyRevenues = LearnerDetail::selectRaw('YEAR(join_date) as year, MONTH(join_date) as month, SUM(plan_price_id) as total_revenue')
+        $monthlyRevenues = LearnerDetail::withoutGlobalScopes()
+    ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id')
+    ->where('learner_detail.is_paid', 1)
+    ->where('learner_detail.library_id', Auth::user()->id)
+    ->selectRaw('
+        YEAR(join_date) as year,
+        MONTH(join_date) as month,
+        SUM(plan_price_id) as total_revenue,
+        SUM(plan_price_id / plans.plan_id) as monthly_revenue
+    ')
+        ->groupBy('year', 'month')
+        ->get();
+
+    // Initialize an array to hold the final report data
+    $reportData = [];
+
+    foreach ($monthlyRevenues as $monthlyRevenue) {
+        // Fetch corresponding monthly expenses with MIN(id)
+        $monthlyExpenses = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
+            ->selectRaw('MIN(id) as expense_id, year, month, SUM(amount) as total_expenses')
+            ->where('year', $monthlyRevenue->year)
+            ->where('month', $monthlyRevenue->month)
             ->groupBy('year', 'month')
-            ->get();
+            ->first();
 
-        // Initialize an array to hold the final report data
-        $reportData = [];
+        // Prepare the report data
+        $reportData[] = [
+            'year' => $monthlyRevenue->year,
+            'month' => $monthlyRevenue->month,
+            'total_revenue' => $monthlyRevenue->total_revenue,
+            'id' => $monthlyExpenses->expense_id ?? null, 
+            'total_expenses' => $monthlyExpenses->total_expenses ?? 0, 
+            'monthly_revenue' => $monthlyRevenue->monthly_revenue, 
+            
+        ];
+    }
 
-        foreach ($monthlyRevenues as $monthlyRevenue) {
-            // Fetch corresponding monthly expenses with MIN(id)
-            $monthlyExpenses = DB::table('monthly_expense')->where('library_id', Auth::user()->id)
-                ->selectRaw('MIN(id) as expense_id, year, month, SUM(amount) as total_expenses')
-                ->where('year', $monthlyRevenue->year)
-                ->where('month', $monthlyRevenue->month)
-                ->groupBy('year', 'month')
-                ->first();
-
-            // Prepare the report data
-            $reportData[] = [
-                'year' => $monthlyRevenue->year,
-                'month' => $monthlyRevenue->month,
-                'total_revenue' => $monthlyRevenue->total_revenue,
-                'id' => $monthlyExpenses->expense_id ?? null, // Using null if no record is found
-                'total_expenses' => $monthlyExpenses->total_expenses ?? 0, // Using 0 if no record is found
-            ];
-        }
 
         return view('report.monthly_report', ['reportData' => $reportData]);
     }
@@ -142,7 +154,11 @@ class ReportController extends Controller
             'plan_type'  => $request->get('plan_type'),
             'search'  => $request->get('search'),
         ];
-        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->where('is_paid', 0);
+        $today = Carbon::now()->format('Y-m-d');
+        $fiveDaysBefore = Carbon::now()->subDays(5)->format('Y-m-d');
+       
+        $query  = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->whereBetween('plan_end_date', [$fiveDaysBefore,$today]);
+      
        
         $learners = $this->fetchlearnerData( $filters,$query);
     
@@ -186,7 +202,7 @@ class ReportController extends Controller
     public function upcomingPayment(){
         $today = Carbon::now()->format('Y-m-d');
         $fiveDaysLater = Carbon::now()->addDays(5)->format('Y-m-d');
-
+       
         $learners = $this->getAllLearnersByLibrary()
             ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
                 $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
@@ -208,7 +224,10 @@ class ReportController extends Controller
             'expiredyear' => $request->get('expiredyear'),
             'expiredmonth' => $request->get('expiredmonth'),
         ];
-        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->where('status', 0);
+        $query = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->where('status', 0)
+        ->whereHas('learner', function($query) {
+            $query->where('status', 0);
+        });
        
         $learners = $this->fetchlearnerData( $filters,$query);
   

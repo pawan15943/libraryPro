@@ -1,6 +1,12 @@
 <div id="loader">
     <div class="spinner"></div>
 </div>
+<!-- <style>
+        @php  if(!empty($primary_color)) @endphp
+        :root {
+            --c1: {{ $primary_color ? $primary_color : '#151F38'  }};
+        }
+        </style> -->
 <div class="header">
     <div class="d-flex" style="gap:1rem">
         <div class="conatent flex" style="flex: 1;">
@@ -103,7 +109,7 @@
                             <!-- Counter - Alerts -->
                             <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu notificcation">
                     <li>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-menu-1" aria-labelledby="alertsDropdown">
@@ -214,7 +220,10 @@
 
 
     </div>
-    <div class="latest-notification"><b>Important Update :</b>  <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee></div>
+    <div class="latest-notification">
+        <b>Important Update :</b>  <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee>
+        <button onclick="closeNotification()" class="close" >&times;</button>
+    </div>
 </div>
 
 <script>
@@ -241,4 +250,6 @@
             });
         });
     });
+
+    
 </script>

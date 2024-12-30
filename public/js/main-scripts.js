@@ -1,6 +1,15 @@
 /*===================================================================
 Portal Navigation
 ===========================================================*/
+function closeNotification() {
+  var notification = document.querySelector('.latest-notification');
+  notification.style.display = 'none';
+}
+
+
+
+
+
 
 $(document).ready(function () {
   // Attach event listeners for collapse events once
@@ -103,26 +112,26 @@ $(document).ready(function () {
 });
 
 
-$(document).ready(function() {
-  $('.typing-text').each(function() {
-      let element = $(this);
-      let cursor = element.next('.typing-cursor'); // Get the cursor element
-      let fullText = element.text();
-      let index = 0;
-      let speed = 100; // Typing speed in milliseconds
-      element.text(''); // Clear the text content to start typing effect
+$(document).ready(function () {
+  $('.typing-text').each(function () {
+    let element = $(this);
+    let cursor = element.next('.typing-cursor'); // Get the cursor element
+    let fullText = element.text();
+    let index = 0;
+    let speed = 100; // Typing speed in milliseconds
+    element.text(''); // Clear the text content to start typing effect
 
-      function typeText() {
-          if (index < fullText.length) {
-              element.append(fullText.charAt(index));
-              index++;
-              setTimeout(typeText, speed);
-          } else {
-              cursor.css('animation', 'none'); // Stop cursor blinking when typing is done
-          }
+    function typeText() {
+      if (index < fullText.length) {
+        element.append(fullText.charAt(index));
+        index++;
+        setTimeout(typeText, speed);
+      } else {
+        cursor.css('animation', 'none'); // Stop cursor blinking when typing is done
       }
+    }
 
-      typeText(); // Call the function to start typing for each element
+    typeText(); // Call the function to start typing for each element
   });
 });
 

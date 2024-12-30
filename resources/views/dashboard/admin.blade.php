@@ -77,7 +77,7 @@
     $currentYear = date('Y');
     $currentMonth = date('m');
     @endphp
-    <div class="row align-items-center mt-4">
+    <div class="row align-items-center mt-4" id="filter">
         <div class="col-lg-3">
             <h4>Filter Dashboard Data</h4>
         </div>
@@ -119,7 +119,7 @@
         <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
-                <h2 id="total_seat">0</h2>
+                <h2 id="total_seat" >0</h2>
                 <small>As Today {{date('d-m-Y')}}</small>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -127,7 +127,7 @@
         <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
-                <h2 id="booked_seat">0</h2>
+                <h2 id="booked_seat" class="count">0</h2>
                 <a href="{{ route('seats.history') }}" class="text-white text-decoration-none">View All <i class="fa fa-long-arrow-right ms-2"></i></a>
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
@@ -540,7 +540,6 @@
         </div>
     </div>
 </div>
-<!-- End -->
 
 
 <!-- Available Seats -->
@@ -670,6 +669,13 @@
 
 
 <!-- Charts -->
+<!-- End -->
+<div class="row">
+    <div class="col-lg-12">
+        <h2 class="made-inindia"><i class="fa fa-heart "></i> Proud to be Indian, driven by the spirit of 'Digital India'.</h2>
+    </div>
+</div>
+
 
 </div>
 <!-- End -->

@@ -97,7 +97,7 @@
 
                         var extendDay=html.diffExtendDay;
                         var message = '';
-                        console.log('is_renew_update',is_renew_update);
+                       
                         // Applying the conditions as per your Laravel blade logic
                         if(is_renew_update == 1){
                             message = `<h5 class="text-success">Plan will Expires in ${daysRemaining} days.</h5><p class="text-info">Notice : You have a new plan in the queue. Once your current plan expires, your new plan will automatically activate.</p>`;
@@ -152,12 +152,13 @@
             var user_id = $(this).data('user');
             var seat_no = $(this).data('seat_no');
             var end_date = $(this).data('end_date');
+            var learner_detail_id = $(this).data('learner_detail');
             
             $('#seatAllotmentModal3').modal('show');
             $('#update_seat_no').val(seat_no);
             $('#update_user_id').val(user_id);
             $('#update_plan_end_date').val(end_date);
-            fetchPlanTypes(seat_no, user_id);
+            fetchPlanTypes(seat_no, user_id,learner_detail_id);
         });
         function fetchPlanTypes(seat_no, user_id,learner_detail_id) {
            

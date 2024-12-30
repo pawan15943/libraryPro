@@ -646,7 +646,7 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
-                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}">Renew Plan</a></small>
+                            <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}" data-learner_detail="{{$seat->id}}">Renew Plan</a></small>
                         </div>
 
                         <ul class="d-flex inner">
@@ -658,7 +658,7 @@
                 @endforeach
                 @else
                 <li class="record-not-found">
-                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record" alt=" record-not-found">
                     <span>No Extended Seats Available.</span>
                 </li>
                 @endif

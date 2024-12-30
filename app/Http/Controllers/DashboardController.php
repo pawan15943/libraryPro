@@ -156,7 +156,7 @@ class DashboardController extends Controller
             })
             ->with('planType') // Eager load related planType
             ->get();
-            
+          
             $threeMonthsAgo = $today->copy()->subMonths(2)->startOfMonth(); // Start of 3 months ago
             $endOfLastMonth = $today->copy()->subMonth()->endOfMonth(); // End of last month
            

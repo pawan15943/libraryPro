@@ -218,12 +218,13 @@ class DashboardController extends Controller
                 }
             }
 
+            $recent_activitys=DB::table('learner_operations_log')->where('library_id',Auth::user()->id)->where('created_at', '>=', Carbon::now()->subDays(5))->get();
 
 
             if($is_expire){
                 return redirect()->route('library.myplan');
             }elseif($iscomp){
-                return view('dashboard.admin',compact('plans','available_seats','renewSeats','plan','features_count','check','extend_sets','bookingcount','bookinglabels','months'));
+                return view('dashboard.admin',compact('plans','available_seats','renewSeats','plan','features_count','check','extend_sets','bookingcount','bookinglabels','months','recent_activitys'));
             }else{
                 return redirect($redirectUrl);
             }

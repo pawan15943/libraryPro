@@ -3,7 +3,9 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-
+@php
+    use App\Helpers\HelperService; 
+@endphp
 
 <!-- New Design Dahsbard Library -->
 <div class="support-container">
@@ -172,7 +174,18 @@
         <div class="col-lg-4">
             <h4 class="my-4">Recent Activity</h4>
             <ul class="activity contents">
-                <li>New User Added on Seat 10
+                @foreach($recent_activitys as $key => $value)
+                    @php
+                        $seat_no=App\Models\Learner::where('id',$value->learner_id)->value('seat_no');
+                        $operationDetails = HelperService::getOperationDetails($value);
+                        
+                    @endphp
+                    
+                    <li>Seat {{$seat_no ?? ''}} {{$operationDetails['operation_type']}} {{$operationDetails['field']}} {{$operationDetails['old']}} to {{$operationDetails['new']}}
+                        <span class="mt-1"><i class="fa fa-clock"></i> {{$value->created_at}}</span>
+                    </li>
+                @endforeach
+                {{-- <li>New User Added on Seat 10
                     <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
                 </li>
                 <li>Seat 3 Swaped with Seat 12
@@ -189,7 +202,7 @@
                 </li>
                 <li>Seat 10 Enter in Extnded Mode Today
                     <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
+                </li> --}}
             </ul>
         </div>
     </div>

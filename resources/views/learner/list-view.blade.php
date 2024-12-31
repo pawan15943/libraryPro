@@ -97,22 +97,29 @@
                                     <small>{{ $learner_detail->planType->name ?? 'N/A' }}</small> 
                             </td>
                             <td>
-                                @php
+                                    @php
                                         
                                         $today = Carbon::today();
-                                        if($learner_detail->plan_end_date){
-                                            $endDate =$learner_detail->plan_end_date;
-                                        }
-                                        $endDate = Carbon::parse($endDate);
-                                        $diffInDays = $today->diffInDays($endDate, false);
-                                        $inextendDate = $endDate->copy()->addDays($extendDay); 
-                                        $diffExtendDay= $today->diffInDays($inextendDate, false);
-                                    @endphp
                                     
-                                    @if ($learner_detail->status == 1)
+                                        if (isset($learner_detail) && $learner_detail->plan_end_date) {
+                                            $endDate = Carbon::parse($learner_detail->plan_end_date);
+                                            $diffInDays = $today->diffInDays($endDate, false);
+                                    
+                                            $inextendDate = $endDate->copy()->addDays($extendDay ?? 0); 
+                                            $diffExtendDay = $today->diffInDays($inextendDate, false);
+                                        } else {
+                                            $endDate = null;
+                                            $diffInDays = null;
+                                            $inextendDate = null;
+                                            $diffExtendDay = null;
+                                        }
+                                   @endphp
+                                
+                                    
+                                    @if (isset($learner_detail) && $learner_detail->status == 1)
                                         Active <small>{{$learner_detail->is_paid==1 ? 'Paid' : 'Unpaid'}}</small><br>{{$operationDetails['operation_type']}}
                                     @else
-                                        Inactive <small>{{$learner_detail->is_paid==1 ? 'Paid' : 'Unpaid'}}</small><br>{{$operationDetails['operation_type']}}
+                                        Inactive <small>{{isset($learner_detail) && $learner_detail->is_paid==1 ? 'Paid' : 'Unpaid'}}</small><br>{{$operationDetails['operation_type']}}
                                     @endif
                                     <br>
                                     @if ($diffInDays > 0)

@@ -553,6 +553,9 @@ class MasterController extends Controller
         
     }
 
+    public function featureCreate(){
+        return view('master.features');
+    }
    
     
 

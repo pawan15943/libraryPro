@@ -629,8 +629,8 @@ class LibraryController extends Controller
         
         $states=State::where('is_active',1)->get();
         $citis=City::where('is_active',1)->get();
-        
-        return view('library.profile', compact('library', 'states','citis'));
+        $features=DB::table('features')->whereNull('deleted_at')->get();
+        return view('library.profile', compact('library', 'states','citis','features'));
     }
 
     public function updateProfile(Request $request)
@@ -648,6 +648,8 @@ class LibraryController extends Controller
             'library_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'library_owner_email' => 'required|email',
             'library_owner_contact' => 'required|string|max:10',
+            'features' => 'nullable|array', 
+            'features.*' => 'integer',
         ]);
 
       
@@ -657,7 +659,7 @@ class LibraryController extends Controller
             $library_logo->move(public_path('uploads'), $library_logoNewName);
             $validated['library_logo'] = 'uploads/' . $library_logoNewName;
         }
-
+        $featuresJson = $validated['features'] ? json_encode($validated['features']) : null;
       
         $library = Library::where('id', auth()->user()->id)->first();
         $libraryCode = $this->generateLibraryCode();

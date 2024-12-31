@@ -200,6 +200,20 @@
                 </div>
             </div>
         </div>
+        <div  class="col-lg-12">
+            @php
+                $selectedFeatures = $library->features ? json_decode($library->features, true) : [];
+            @endphp
+            @foreach ($features as $feature)
+                <div class="col-lg-3">
+                    <label class="permission">
+                        <input type="checkbox" name="features[]" value="{{ $feature->id }}"  {{ in_array($feature->id, $selectedFeatures ?? []) ? 'checked' : '' }}>
+                          
+                        {{ $feature->name }}
+                    </label>
+                </div>
+            @endforeach
+        </div>
     </div>
 
 

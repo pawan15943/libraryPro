@@ -140,6 +140,29 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Library Counts Details' => route('learners.list.view'),
             ],
+            'library.feedback' => [
+                'Dashboard' => route('library.home'),
+                'Library Feedback' => route('library.feedback'),
+            ],
+            'library.video-training' => [
+                'Dashboard' => route('library.home'),
+                'Video Tutorials' => route('library.video-training'),
+            ],
+            'library.upload.form' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Import Learners' => route('library.upload.form'),
+            ],
+
+            'report.expense' => [
+                'Dashboard' => route('library.home'),
+                'Monthly Revenue Reports' => route('report.monthly'),
+                'Manage Expense' => route('report.expense', [
+                    'year' => request()->year ?? now()->year, // Default to current year if not found
+                    'month' => request()->month ?? now()->month, // Default to current month if not found
+                ]),
+            ],
+
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -182,6 +205,10 @@ class AppServiceProvider extends ServiceProvider
             'learner.payment' => 'Make Payment',
             'learners.list.view' => 'Library Counts Details',
             'library.settings' => 'Library Setting',
+            'library.upload.form' => 'Import Learners',
+            'report.expense' => 'Manage Expanse',
+            'library.feedback' => 'Library Feedback',
+            'library.video-training' => 'Video Tutorials',
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

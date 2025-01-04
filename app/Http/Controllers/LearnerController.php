@@ -522,7 +522,7 @@ class LearnerController extends Controller
                 'learner_detail.payment_mode',
                 'learner_detail.id as learner_detail_id',
                 'learner_detail.seat_id'
-            );
+            ) ->orderBy('seats.seat_no', 'ASC');
             
         //  Apply dynamic filters if provided
         if (!empty($filters)) {
@@ -596,10 +596,10 @@ class LearnerController extends Controller
 
             return $customer;
         }
-
+      
         // return $query->paginate(perPage: 10);
 
-        return $query->orderBy('learners.seat_no', 'ASC')->get();
+        return $query->get();
     }
 
 

@@ -348,7 +348,8 @@ $current_route = Route::currentRouteName();
 <script>
     $(document).ready(function() {
         let table = new DataTable('#datatable', {
-            searching: false // This option hides the search bar
+            searching: false ,// This option hides the search bar
+            ordering: false
         });
         var url = window.location.href;
 

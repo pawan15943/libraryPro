@@ -9,7 +9,7 @@
             <h4>Current Month Revenue for {{ $dt->format('F') }}, {{ $year }}</h4>
         </div>
         <div class="col-lg-6">
-            <h4><i class="fa fa-inr"></i> {{ number_format($library_revenue, 2) }}</h4>
+            <h4><i class="fa fa-inr"></i> {{ number_format($library_revenue->monthly_revenue, 2) }}</h4>
         </div>
     </div>
     <form id="expense-form" action="{{ route('report.expense.store') }}" method="POST">
@@ -40,7 +40,7 @@
         @foreach($monthlyExpenses as $key => $expense)
         <div class="row mt-3">
             <div class="col-lg-6">
-                <select class="form-control" name="expense_id[]">
+                <select class="form-select" name="expense_id[]">
                     <option value="">Select Expense</option>
                     @foreach($expenses as $exp)
                     <option value="{{ $exp->id }}" {{ $exp->id == $expense->expense_id ? 'selected' : '' }}>
@@ -55,7 +55,7 @@
             <div class="col-lg-1 d-inline">
                 @if($key == count($monthlyExpenses) - 1)
                 <!-- Plus button on the last row -->
-                <button id="add_row" class="btn btn-primary" type="button"><i class="fa fa-plus"></i></button>
+                <button id="add_row" class="btn btn-primary button" type="button"><i class="fa fa-plus"></i></button>
                 @else
                 <!-- Delete button on all other rows -->
                 <button class="btn btn-danger delete-row" type="button"><i class="fa fa-trash text-white"></i></button>
@@ -74,11 +74,11 @@
         </div>
     </form>
 
-    <div class="row mt-3">
+    <div class="row">
         <div class="col-lg-12">
-            <h4 class="mb-4 mt-4">Monthly Expense</h4>
-            <div class="table-responsive tableRemove_scroll mt-2">
-                <table class="table text-center datatable" id="datatable" style="display: table !important;">
+            <h5 class="mb-4 mt-4">Monthly Expenses List</h5>
+            <div class="table-responsive">
+                <table class="table text-center datatable" id="datatable">
                     <thead>
                         <tr>
                             <th>S.No.</th>
@@ -96,10 +96,10 @@
                         $dt = DateTime::createFromFormat('!m', $month);
                         @endphp
                         <tr>
-                            <td>{{$x++}}</td>
-                            <td>{{ $dt->format('F') }}, {{$year }} </td>
-                            <td>{{ $expense->name }}</td>
-                            <td>{{ $expense->amount }}</td>
+                            <td class="text-center">{{$x++}}</td>
+                            <td class="text-center">{{ $dt->format('F') }}, {{$year }} </td>
+                            <td class="text-center">{{ $expense->name }}</td>
+                            <td class="text-center"><i class="fa fa-inr"></i> {{ $expense->amount }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -123,7 +123,7 @@
             var newRow = `
         <div class="row mt-3">
             <div class="col-lg-6">
-                <select class="form-control" name="expense_id[]">
+                <select class="form-select" name="expense_id[]">
                     <option value="">Select Expense</option>
                     ${expenseOptions}
                 </select>
@@ -144,6 +144,12 @@
         $(document).on('click', '.delete-row', function() {
             $(this).closest('.row').remove();
         });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        let table = new DataTable('#datatable');
+       
     });
 </script>
 @endsection

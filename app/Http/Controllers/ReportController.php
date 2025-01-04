@@ -71,13 +71,28 @@ class ReportController extends Controller
     public function monthlyExpenseCreate($year, $month)
     {
         $monthlyExpenses = DB::table('monthly_expense')->leftJoin('expenses','monthly_expense.expense_id','=','expenses.id')->where('monthly_expense.library_id', Auth::user()->id)
-            ->where('monthly_expense.year', $year)
+            ->where('monthly_expense.year',  $year)
             ->where('monthly_expense.month', $month)
             ->get();
-       
-        $library_revenue =  LearnerDetail::whereMonth('join_date', date('m'))
-            ->whereYear('join_date', date('Y'))
-            ->sum('plan_price_id');
+        $library_revenue = LearnerDetail::withoutGlobalScopes()
+        ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id')
+        ->where('learner_detail.is_paid', 1)
+        ->where('learner_detail.library_id', Auth::user()->id)
+        ->whereYear('join_date', $year)
+        ->whereMonth('join_date',$month)
+        ->selectRaw('
+            YEAR(join_date) as year,
+            MONTH(join_date) as month,
+            SUM(plan_price_id) as total_revenue,
+            SUM(plan_price_id / plans.plan_id) as monthly_revenue
+        ')
+            ->groupBy('year', 'month')
+            ->first();
+           
+        // $library_revenue =  LearnerDetail::whereMonth('join_date', date('m'))
+        //     ->whereYear('join_date', $year)
+        //     ->whereMonth
+        //     ->sum('plan_price_id');
         $expenses = Expense::get();
         $revenue_expense = DB::table('monthly_expense')
             ->join('expenses', 'monthly_expense.expense_id', '=', 'expenses.id')

@@ -109,7 +109,7 @@ $current_route = Route::currentRouteName();
             <form action="{{ route('learners') }}" method="GET">
                 <div class="row">
                     <!-- Filter By Plan -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="plan_id">Filter By Plan</label>
                         <select name="plan_id" id="plan_id" class="form-select">
                             <option value="">Choose Plan</option>
@@ -122,7 +122,7 @@ $current_route = Route::currentRouteName();
                     </div>
 
                     <!-- Filter By Payment Status -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="is_paid">Filter By Payment Status</label>
                         <select name="is_paid" id="is_paid" class="form-select">
                             <option value="">Choose Payment Status</option>
@@ -131,8 +131,9 @@ $current_route = Route::currentRouteName();
                         </select>
                     </div>
 
+
                     <!-- Filter By Active/Expired Status -->
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <label for="status">Filter By Active / Expired</label>
                         <select name="status" id="status" class="form-select">
                             <option value="">Choose Status</option>
@@ -140,10 +141,22 @@ $current_route = Route::currentRouteName();
                             <option value="expired" {{ request()->get('status') == 'expired' ? 'selected' : '' }}>Expired</option>
                         </select>
                     </div>
+                    <!-- Filter By Active/Expired Status -->
+                    <div class="col-lg-2">
+                        <label for="status">Seat No.</label>
+                        <select name="seat_no" id="seat_no" class="form-select">
+                            <option value="">Sear No</option>
 
+                            @foreach($seats as $seat)
+                            <option value="{{ $seat->id }}" {{ request()->get('seat_no') == $seat->id ? 'selected' : '' }}>
+                                {{ $seat->seat_no }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
                     <!-- Search By Name, Mobile & Email -->
-                    <div class="col-lg-3">
-                        <label for="search">Search By Name, Mobile & Email</label>
+                    <div class="col-lg-4">
+                        <label for="search">Search By</label>
                         <input type="text" class="form-control" name="search" placeholder="Enter Name, Mobile or Email"
                             value="{{ request()->get('search') }}">
                     </div>

@@ -98,8 +98,8 @@ class LearnerController extends Controller
                 // Check if learner has a future plan_end_date and a past plan_end_date
                 $current_date = Carbon::today();
                 $hasFuturePlan = LearnerDetail::where('learner_id', $userUpdate->id)
-                ->where('plan_end_date', '>', $current_date->copy()->addDays(5))->where('status',0)
-                ->exists();
+                    ->where('plan_end_date', '>', $current_date->copy()->addDays(5))->where('status', 0)
+                    ->exists();
                 $hasPastPlan = LearnerDetail::where('learner_id', $userUpdate->id)
                     ->where('plan_end_date', '<', $current_date->copy()->addDays(5))
                     ->exists();
@@ -115,8 +115,8 @@ class LearnerController extends Controller
                     $customerdata->update(['status' => 0]);
                     \Log::info("Updated Learner ID {$userUpdate->id} and Customer Data ID {$customerdata->id} to status 0.");
                 } elseif ($isRenewed) {
-                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_start_date', '<=', $today)->where('plan_end_date', '>', $current_date->copy()->addDays(5))->update(['status'=>1]);
-                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '<', $today)->update(['status'=>0]);
+                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_start_date', '<=', $today)->where('plan_end_date', '>', $current_date->copy()->addDays(5))->update(['status' => 1]);
+                    LearnerDetail::where('learner_id', $userUpdate->id)->where('plan_end_date', '<', $today)->update(['status' => 0]);
                 } else {
                     $userUpdate->update(['status' => 1]);
                     LearnerDetail::where('learner_id', $userUpdate->learner_id)
@@ -378,21 +378,21 @@ class LearnerController extends Controller
     {
 
         $seatNo = $request->seat_no;
-        $seatId=Seat::where('seat_no',$seatNo)->value('id');
-       
-        if($request->learner_detail_id){
-            $customer_plan=LearnerDetail::where('id', $request->learner_detail_id)
-            ->pluck('plan_type_id');
-            $selectedPlan=LearnerDetail::where('id', $request->learner_detail_id)
-            ->pluck('plan_id');
-        }else{
-            $customer_plan=LearnerDetail::where('seat_id', $seatId)->where('learner_id',$request->user_id)
-            ->pluck('plan_type_id');
-            $selectedPlan=$this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id',$request->user_id)
-            ->pluck('plan_id');
+        $seatId = Seat::where('seat_no', $seatNo)->value('id');
+
+        if ($request->learner_detail_id) {
+            $customer_plan = LearnerDetail::where('id', $request->learner_detail_id)
+                ->pluck('plan_type_id');
+            $selectedPlan = LearnerDetail::where('id', $request->learner_detail_id)
+                ->pluck('plan_id');
+        } else {
+            $customer_plan = LearnerDetail::where('seat_id', $seatId)->where('learner_id', $request->user_id)
+                ->pluck('plan_type_id');
+            $selectedPlan = $this->getLearnersByLibrary()->where('learner_detail.seat_id', $seatId)->where('learners.id', $request->user_id)
+                ->pluck('plan_id');
         }
-      
-       
+
+
         // Step 1: Retrieve the plan_type_ids from learners for the given seat
         $filteredPlanTypes = PlanType::where('id', $customer_plan)->pluck('name', 'id');
 
@@ -413,7 +413,7 @@ class LearnerController extends Controller
             });
         }
 
-       
+
         $selectedPlanName = Plan::where('id', $selectedPlan)->pluck('name', 'id');
 
         // Return the filtered plan types as JSON
@@ -503,6 +503,7 @@ class LearnerController extends Controller
             ->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
             ->where('learners.library_id', Auth::user()->id)
             ->where('learner_detail.library_id', Auth::user()->id)
+
             ->select(
                 'plan_types.name as plan_type_name',
                 'plans.name as plan_name',
@@ -522,6 +523,7 @@ class LearnerController extends Controller
                 'learner_detail.id as learner_detail_id',
                 'learner_detail.seat_id'
             );
+            
         //  Apply dynamic filters if provided
         if (!empty($filters)) {
             // Filter by Plan ID
@@ -552,13 +554,16 @@ class LearnerController extends Controller
                 $query->where('learners.status', $status)
                     ->where('learner_detail.status', $detailStatus);
             }
-
+            if (!empty($filters['seat_no'])) {
+                $query->where('learners.seat_no', $filters['seat_no']);
+            }
             // Search by Name, Mobile, or Email
             if (!empty($filters['search'])) {
                 $search = $filters['search'];
                 $query->where(function ($q) use ($search) {
                     $q->where('learners.name', 'LIKE', "%{$search}%")
                         ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
+                        ->orWhere('learners.seat_no', 'LIKE', "%{$search}%")
                         ->orWhere('learners.email', 'LIKE', "%{$search}%");
                 });
             }
@@ -594,7 +599,7 @@ class LearnerController extends Controller
 
         // return $query->paginate(perPage: 10);
 
-        return $query->get();
+        return $query->orderBy('learners.seat_no', 'ASC')->get();
     }
 
 
@@ -605,6 +610,7 @@ class LearnerController extends Controller
             'is_paid' => $request->get('is_paid'),
             'status'  => $request->get('status'),
             'search'  => $request->get('search'),
+            'seat_no'  => $request->get('seat_no'),
         ];
 
         $learners = $this->fetchCustomerData(null, false, 1, 1, $filters);
@@ -616,7 +622,8 @@ class LearnerController extends Controller
         }
 
         $plans = $this->learnerService->getPlans();
-        return view('learner.learner', compact('learners', 'plans', 'extendDay'));
+        $seats = Seat::get();
+        return view('learner.learner', compact('learners', 'plans', 'extendDay', 'seats'));
     }
     public function learnerHistory(Request $request)
     {
@@ -976,20 +983,20 @@ class LearnerController extends Controller
     }
     public function showLearner(Request $request, $id = null)
     {
-        
+
         $customerId = $request->id ?? $id;
         $is_renew = $this->learnerService->getRenewalStatus($customerId);
 
         $today = Carbon::today();
         $hasFuturePlan = LearnerDetail::where('learner_id', $customerId)
-        ->where('plan_end_date', '>', $today->copy()->addDays(5))->where('status',0)
-        ->exists();
+            ->where('plan_end_date', '>', $today->copy()->addDays(5))->where('status', 0)
+            ->exists();
         $hasPastPlan = LearnerDetail::where('learner_id', $customerId)
             ->where('plan_end_date', '<', $today->copy()->addDays(5))
             ->exists();
 
         $is_renew_update = $hasFuturePlan && $hasPastPlan;
-       
+
 
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
@@ -1506,26 +1513,26 @@ class LearnerController extends Controller
             ]);
         }
         $learnerStatus = LearnerDetail::where('learner_id', $customer->id)
-        ->where('is_paid', 1)
-        ->where('plan_end_date', '<', $currentDate) // Corrected comparison syntax
-        ->where('status', 1)
-        ->get();
-       
-        if(!$learnerStatus->isEmpty()){
-           
+            ->where('is_paid', 1)
+            ->where('plan_end_date', '<', $currentDate) // Corrected comparison syntax
+            ->where('status', 1)
+            ->get();
+
+        if (!$learnerStatus->isEmpty()) {
+
             foreach ($learnerStatus as $data) {
                 if ($data->plan_end_date < $currentDate) {
-                    
+
                     $data->status = 0;  // Expired
                 } elseif ($data->plan_end_date > $currentDate) {
-                
+
                     $data->status = 1;  // Active
                 }
-                
+
                 $data->save();
             }
         }
-       
+
 
 
 

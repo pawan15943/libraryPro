@@ -27,15 +27,15 @@ class ReportController extends Controller
     public function monthlyReport()
     {
         $monthlyRevenues = LearnerDetail::withoutGlobalScopes()
-    ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id')
-    ->where('learner_detail.is_paid', 1)
-    ->where('learner_detail.library_id', Auth::user()->id)
-    ->selectRaw('
-        YEAR(join_date) as year,
-        MONTH(join_date) as month,
-        SUM(plan_price_id) as total_revenue,
-        SUM(plan_price_id / plans.plan_id) as monthly_revenue
-    ')
+        ->leftJoin('plans', 'plans.id', '=', 'learner_detail.plan_id')
+        ->where('learner_detail.is_paid', 1)
+        ->where('learner_detail.library_id', Auth::user()->id)
+        ->selectRaw('
+            YEAR(join_date) as year,
+            MONTH(join_date) as month,
+            SUM(plan_price_id) as total_revenue,
+            SUM(plan_price_id / plans.plan_id) as monthly_revenue
+        ')
         ->groupBy('year', 'month')
         ->get();
 
@@ -154,11 +154,24 @@ class ReportController extends Controller
             'plan_type'  => $request->get('plan_type'),
             'search'  => $request->get('search'),
         ];
-        $today = Carbon::now()->format('Y-m-d');
-        $fiveDaysBefore = Carbon::now()->subDays(5)->format('Y-m-d');
-       
-        $query  = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->whereBetween('plan_end_date', [$fiveDaysBefore,$today]);
-      
+        $today = Carbon::today();
+        $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
+        $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
+        // $fiveDaysBefore = Carbon::now()->subDays(5)->format('Y-m-d');
+        // $query  = LearnerDetail::with(['seat', 'plan', 'planType','learner'])->whereBetween('plan_end_date', [$fiveDaysBefore,$today]);
+        $fiveDaysbetween = $today->copy()->addDays(5);
+        $query = LearnerDetail::with(['seat', 'plan', 'planType', 'learner'])
+            ->where('is_paid', 1)
+            ->where('status', 1)
+            ->where('plan_end_date', '<', $today->format('Y-m-d'))
+            ->whereRaw("DATE_ADD(plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day])
+            ->whereNotExists(function ($subQuery) use ($fiveDaysbetween) {
+                $subQuery->select(DB::raw(1))
+                    ->from('learner_detail as ld2')
+                    ->whereColumn('ld2.learner_id', 'learner_detail.learner_id') // Fully qualify `learner_detail.learner_id`
+                    ->where('ld2.plan_end_date', '>', $fiveDaysbetween->format('Y-m-d'));
+            });
+           
        
         $learners = $this->fetchlearnerData( $filters,$query);
     
@@ -204,9 +217,18 @@ class ReportController extends Controller
         $fiveDaysLater = Carbon::now()->addDays(5)->format('Y-m-d');
        
         $learners = $this->getAllLearnersByLibrary()
-            ->whereHas('learnerDetails', function($query) use ($today, $fiveDaysLater) {
-                $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
-            })->get();
+        ->whereHas('learnerDetails', function ($query) use ($today, $fiveDaysLater) {
+            $query->whereBetween('plan_end_date', [$today, $fiveDaysLater]);
+        })
+        ->whereNotExists(function ($subQuery) use ($fiveDaysLater) {
+            $subQuery->select(DB::raw(1))
+                ->from('learner_detail as ld2') 
+                ->whereColumn('ld2.learner_id', 'learners.id') 
+                ->where('ld2.plan_end_date', '>', $fiveDaysLater);
+        })
+        ->get();
+    
+
 
         return view('report.upcoming_payment',compact('learners'));
     }

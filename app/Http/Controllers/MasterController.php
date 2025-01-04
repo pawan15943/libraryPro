@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\City;
 use App\Models\Expense;
+use App\Models\Feature;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\Library;
@@ -553,11 +554,68 @@ class MasterController extends Controller
         
     }
 
-    public function featureCreate(){
-        return view('master.features');
+    public function featureCreate(Request $request, $id = null){
+        $feature = null;
+        $features=Feature::get();
+        return view('master.features',compact('features','feature'));
+    }
+    public function featureEdit($id)
+    {
+        $feature = Feature::findOrFail($id);
+        $features = Feature::all();
+        return view('master.features', compact('feature', 'features'));
+    }
+
+    public function destroy($id)
+    {
+        $feature = Feature::findOrFail($id);
+        $feature->delete();
+
+        return redirect()->route('feature.create')->with('success', 'Feature deleted successfully!');
     }
    
+    public function storeFeature(Request $request, $id = null)
+    {
+       
+        $rules = [
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+        ];
     
+        $request->validate($rules);
+    
+        $data = $request->only('name');
+
+        if ($request->hasFile('image') ) {
+           
+           $image = $request->file('image');
+            $imageName = "icon" . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/icon/'), $imageName);
+            $data['image'] = 'uploads/icon/' . $imageName;
+            if ($id) {
+                $feature = Feature::findOrFail($id);
+                if ($feature->image && file_exists(public_path($feature->image))) {
+                    unlink(public_path($feature->image));
+                }
+            }
+        } elseif ($id) {
+            $feature = Feature::findOrFail($id);
+            $data['image'] = $feature->image;
+        }
+
+        if ($id) {
+            $feature = Feature::findOrFail($id);
+            $feature->update($data);
+            $message = 'Feature updated successfully!';
+        } else {
+          
+            Feature::create($data);
+            $message = 'Feature added successfully!';
+        }
+
+        return redirect()->route('feature.create')->with('success', $message);
+    }
+
 
 
     

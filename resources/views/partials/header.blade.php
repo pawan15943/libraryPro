@@ -143,7 +143,9 @@
             <div class="dropdown">
                 Welcome
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{Auth::user()->name}}{{Auth::user()->library_name}}
+                  
+                    {{Auth::user()->name}}
+                    {{ strtoupper(substr(Auth::user()->library_name, 0, 2)) }}
                 </a>
                 <ul class="dropdown-menu">
 

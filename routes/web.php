@@ -194,7 +194,10 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send'); 
         Route::put('/notifications/update', [NotificationController::class, 'update'])->name('notifications.update');
         Route::get('/library/count/view', [DashboardController::class, 'libraryView'])->name('library.count.view');
-        
+        Route::get('/features', [MasterController::class, 'featureCreate'])->name('feature.create');
+        Route::post('/features/store/{id?}', [MasterController::class, 'storeFeature'])->name('feature.storeFeature');
+        Route::get('/features/edit/{id}', [MasterController::class, 'featureEdit'])->name('feature.edit');
+        Route::delete('/features/delete/{id}', [MasterController::class, 'destroy'])->name('feature.destroy');
 
     });
 });

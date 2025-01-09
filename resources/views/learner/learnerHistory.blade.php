@@ -91,6 +91,7 @@ $current_route = Route::currentRouteName();
         {{ session('success') }}
     </div>
 @endif
+@can('has-permission', 'Filter')
 <div class="row d-none">
     <div class="col-lg-12">
         <div class="filter-box">
@@ -150,7 +151,7 @@ $current_route = Route::currentRouteName();
         </div>
     </div>
 </div>
-
+@endcan
 <div class="row">
     <div class="col-lg-12">
     <p class="info-message">

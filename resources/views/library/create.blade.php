@@ -21,6 +21,7 @@
             @csrf
             <div class="row g-4">
                 <!-- Library Name -->
+                <input type="hidden" value="12345678" name="password">
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Library Name<sup class="text-danger">*</sup></label>

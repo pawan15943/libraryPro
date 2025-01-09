@@ -21,6 +21,7 @@ use Exception;
 use App\Traits\LearnerQueryTrait;
 use Illuminate\Support\Facades\Auth;
 use Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class LearnerController extends Controller
 {
@@ -1945,4 +1946,21 @@ class LearnerController extends Controller
         $customer->save();
         return redirect()->route('learners')->with('success', 'Learner updated successfully.');
     }
+
+    public function generateIdCard(Request $request)
+    {
+        
+       $learner_detail=LearnerDetail::where('id',$request->detail_id)->with(['seat', 'plan', 'planType', 'learner'])->first();
+        $learner=Learner::where('id',$request->learner_id)->first();
+        // Generate the ID Card PDF
+        $pdf = PDF::loadView('learner.id_card_template', compact('learner_detail','learner'));
+        $filePath = storage_path('app/public/id_cards/' . $learner_detail->id . '_id_card.pdf');
+        $pdf->save($filePath);
+
+        // Send via WhatsApp
+        // $whatsappService = new WhatsAppService();
+        // $whatsappService->sendMessageWithAttachment($user->phone, $filePath);
+        return redirect()->back()->with('success', 'Learner Id Card Generate successfully!');
+    }
+
 }

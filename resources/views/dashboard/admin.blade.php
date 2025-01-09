@@ -118,6 +118,7 @@
 
     <!-- Library Main Counts -->
     <div class="row  g-4 mt-1 mb-4">
+        @can('has-permission', 'Total Seats')
         <div class="col-lg-3">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
@@ -126,6 +127,8 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
+        @endcan
+        @can('has-permission', 'Booked Seats')
         <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
@@ -134,6 +137,8 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
+        @endcan
+        @can('has-permission', 'Available Seats')
         <div class="col-lg-3">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
@@ -143,6 +148,7 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
+       @endcan
         <div class="col-lg-3">
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
@@ -152,11 +158,13 @@
                 <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
             </div>
         </div>
+       
     </div>
     <!-- End -->
 
     <!-- Library Revenue -->
     <div class="row g-4">
+        @can('has-permission', 'Monthly Revenues')
         <div class="col-lg-8">
             <h4 class="my-4">Monthly Revenues</h4>
 
@@ -171,6 +179,7 @@
                 </ul>
             </div>
         </div>
+        @endcan
         <div class="col-lg-4">
             <h4 class="my-4">Recent Activity</h4>
             <ul class="activity contents">
@@ -218,6 +227,8 @@
 
 
     <div class="row g-4">
+        
+        @can('has-permission', 'Total Bookings')
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Total Slots Bookings</h6>
@@ -228,6 +239,7 @@
                 <a href="{{ route('learners.list.view', ['type' => 'total_booking']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
+        @endcan
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Active Slots</h6>
@@ -254,6 +266,7 @@
         <p class="text-danger m-0 mt-1">Note : Expired and Extended seat counts are always based on the Past and Current Month, as the system operates on a monthly subscription model.</p>
     </div>
     <div class="row g-4">
+        @can('has-permission', 'Total Booked Seats Count')
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>This Month Total</h6>
@@ -264,6 +277,7 @@
                 <a href="{{ route('learners.list.view', ['type' => 'thisbooking_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
+        @endcan
         <div class="col-lg-2 col-md-3 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>This Month Booked</h6>
@@ -284,6 +298,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'till_previous_book']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div> --}}
+@can('has-permission', 'Expired Seats')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-1">
         <h6>This Month Expired</h6>
@@ -294,6 +309,8 @@
         <a href="{{ route('learners.list.view', ['type' => 'expire_booking_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Expired in 5 Days')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-1">
         <h6>Expired in 5 Days</h6>
@@ -304,6 +321,8 @@
         <a href="{{ route('learners.list.view', ['type' => 'expired_in_five']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Extended Seats')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-4">
         <h6>Extended Seats</h6>
@@ -315,6 +334,9 @@
         <a href="{{ route('learners.list.view', ['type' => 'extended_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Online Paid')
+
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Online Paid</h6>
@@ -325,6 +347,8 @@
         <a href="{{ route('learners.list.view', ['type' => 'online_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Offline Paid')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Offline Paid</h6>
@@ -335,6 +359,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'offline_paid']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Pay Later</h6>
@@ -346,7 +371,7 @@
     </div>
 </div>
 
-
+@can('has-permission', 'Swap Seats')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Swap Seats</h6>
@@ -358,6 +383,8 @@
         <a href="{{ route('learners.list.view', ['type' => 'swap_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Upgrade Seats')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Upgrade Seats</h6>
@@ -368,6 +395,8 @@
         <a href="{{ route('learners.list.view', ['type' => 'learnerUpgrade']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
+@can('has-permission', 'Reactive Seats')
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Reactive Seats</h6>
@@ -379,6 +408,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'reactive_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
+@endcan
 <div class="col-lg-2 col-md-3 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Renew Seats</h6>
@@ -432,9 +462,11 @@
 </div>
 </div>
 <!-- End -->
+@can('has-permission', 'Plan wise count')
 <h4 class="my-4">Plan Wise Count</h4>
 <!-- Plan Wise Booking Counts -->
 <div class="row g-4 planwisecount">
+   
     <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Full Day</h6>
@@ -444,6 +476,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
+   
     <div class="col-lg-2 col-md-3 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>First Half</h6>
@@ -519,8 +552,10 @@
 
 </div>
 <!-- End -->
-
+@endcan
 <!-- Dahboard Charts -->
+
+@can('has-permission', 'Library Analytics')
 <div class="row mt-4">
     <div class="col-lg-8">
         <div class="card chart">
@@ -553,14 +588,16 @@
         </div>
     </div>
 </div>
-
+@endcan
 
 <!-- Available Seats -->
 
 <div class="row g-4 mt-2 mb-4">
+    @can('has-permission', 'Avaialble Seats List')
     <div class="col-lg-4">
 
         <!-- Show 10 availble Seats -->
+       
         <div class="seat-statistics ">
             <h4 class="mb-3 text-center">Avaialble Seats</h4>
             <ul class="contents">
@@ -604,8 +641,10 @@
             </ul>
             <a href="{{route('seats')}}" class="view-full-info">View All Available Seats</a>
         </div>
+        
     </div>
-
+    @endcan
+    @can('has-permission', 'Seat About to Expire List')
     <div class="col-lg-4">
         <div class="seat-statistics">
             <h4 class="mb-3 text-center">Seat About to Expire</h4>
@@ -622,7 +661,9 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>
+                            @can('has-permission', 'Plan Renews')
                             <small><a class="renew_extend" data-seat_no="{{$value->seat_no}}" data-user="{{$value ->learner_id}}" data-end_date="{{$value->plan_end_date}}">Renew Plan</a></small>
+                            @endcan
                         </div>
 
                         <ul class="d-flex inner">
@@ -634,7 +675,7 @@
                 @endforeach
                 @else
                 <li class="record-not-found">
-                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record"" alt=" record-not-found">
+                    <img src="{{ asset('public/img/record-not-found.png') }}" class="no-record" alt=" record-not-found">
                     <span>No Expired Seats Available.</span>
                 </li>
                 @endif
@@ -642,6 +683,8 @@
             <a href="{{route('learners')}}" class="view-full-info">View All Availble Seats</a>
         </div>
     </div>
+    @endcan
+    @can('has-permission', 'Extend Seats list')
     <div class="col-lg-4">
         <div class="seat-statistics">
             <h4 class="mb-3 text-center">Extend Seats</h4>
@@ -658,7 +701,9 @@
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($seat->plan_end_date) }} Days</p>
+                            @can('has-permission', 'Plan Renews')
                             <small><a class="renew_extend" data-seat_no="{{$seat->seat_no}}" data-seat_id="{{$seat->seat_id}}" data-user="{{$seat->learner_id}}" data-end_date="{{$seat->plan_end_date}}" data-learner_detail="{{$seat->id}}">Renew Plan</a></small>
+                             @endcan
                         </div>
 
                         <ul class="d-flex inner">
@@ -678,6 +723,7 @@
             <a href="{{route('learners')}}" class="view-full-info ">View All Availble Seats</a>
         </div>
     </div>
+    @endcan
 </div>
 
 

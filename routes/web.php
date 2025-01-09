@@ -152,6 +152,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
     Route::get('getPlanTypeSeatWise', [LearnerController::class, 'getPlanTypeSeatWise'])->name('gettypeSeatwise');
     Route::get('getPrice', [LearnerController::class, 'getPrice'])->name('getPricePlanwise');
     Route::get('getPricePlanwiseUpgrade', [LearnerController::class, 'getPricePlanwiseUpgrade'])->name('getPricePlanwiseUpgrade');
+    Route::post('generateIdCard', [LearnerController::class, 'generateIdCard'])->name('generateIdCard');
     
 });
 // Routes for superadmin and admin users

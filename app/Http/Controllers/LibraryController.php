@@ -30,7 +30,7 @@ use Auth;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 
@@ -175,17 +175,47 @@ class LibraryController extends Controller
         }
     }
 
-    public function libraryStore(Request $request){
-        dd($request);
-        $validatedData = $this->libraryValidation($request);
-        $validated['password'] = bcrypt('12345678');
+    public function libraryStore(Request $request)
+    {
+        // Define validation rules
+        $rules = [
+            'library_name'       => 'required|string|max:255',
+            'email'              => 'required|email|max:255|unique:libraries,email',
+            'library_mobile'     => 'required|digits:10',
+            'state_id'           => 'nullable|exists:states,id',
+            'city_id'            => 'nullable|exists:cities,id',
+            'library_address'    => 'nullable|string|max:500',
+            'library_zip'        => 'nullable|digits:6',
+            'library_type'       => 'nullable|string|max:255',
+            'library_owner'      => 'nullable|string|max:255',
+            'library_logo'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'password'           => 'required|string|min:8',
+            'library_owner_email'=> 'nullable|email|max:255',
+            'library_owner_contact' => 'nullable|digits:10',
+        ];
+
+        // Perform validation
+        $validatedData = Validator::make($request->all(), $rules);
+
+        // Check if validation fails
         if ($validatedData->fails()) {
+            // Redirect back with validation errors
             return redirect()->back()->withErrors($validatedData)->withInput();
         }
-        $otp = Str::random(6);
-        $validated['password'] =$otp;
+
+        // Access validated data
+        $validated = $validatedData->validated();
+
+        // Hash the password
+        $validated['password'] = Hash::make($validated['password']);
+
+        // Store the validated data in the Library model
         $library = Library::create($validated);
+
+        // Redirect with success message
+        return redirect()->route('library')->with('success', 'Library Created successfully processed.');
     }
+
 
     public function sendVerificationEmail($library)
     {
@@ -704,7 +734,7 @@ class LibraryController extends Controller
     public function showLibrary($id){
         $library=Library::findOrFail($id);
         $plan=Subscription::where('id',$library->library_type)->with('permissions')->first();
-        $library_transaction=LibraryTransaction::where('library_id',$library->library_id)->where('is_paid',1)->orderBy('DESC')->first();
+        $library_transaction=LibraryTransaction::where('library_id',$library->library_id)->where('is_paid',1) ->orderBy('created_at', 'DESC')->first();
         $library_all_transaction=LibraryTransaction::where('library_id',$library->library_id)->get();
         
         return view('library.view',compact('library','plan','library_transaction','library_all_transaction'));

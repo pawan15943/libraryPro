@@ -35,7 +35,7 @@
                 <div class="row g-4">
                     <div class="col-lg-4">
                         <span>Plan</span>
-                        <h5>{{$library_transaction->month}} MONTHS</h5>
+                        <h5>{{$library_transaction->month ?? ''}} MONTHS</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Type</span>
@@ -43,19 +43,19 @@
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Price</span>
-                        <h5>{{$library_transaction->amount}}</h5>
+                        <h5>{{$library_transaction->amount ?? ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Seat Booked On</span>
-                        <h5>{{$library_transaction->transaction_date}}</h5>
+                        <h5>{{$library_transaction->transaction_date ?? ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Starts On</span>
-                        <h5>{{$library_transaction->start_date}}</h5>
+                        <h5>{{$library_transaction->start_date ?? ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Ends On</span>
-                        <h5>{{$library_transaction->end_date}}</h5>
+                        <h5>{{$library_transaction->end_date ?? ''}}</h5>
                     </div>
                  
                     <div class="col-lg-4">
@@ -109,16 +109,16 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <span>Library Owner Name</span>
-                        <h5 class="uppercase">{{$library_transaction->library_owner}}</h5>
+                        <h5 class="uppercase">{{$library_transaction->library_owner ?? ''}}</h5>
                     </div>
                     
                     <div class="col-lg-6">
                         <span>Library Number</span>
-                        <h5>+91-{{$library_transaction->library_owner_contact}}</h5>
+                        <h5>+91-{{$library_transaction->library_owner_contact ?? ''}}</h5>
                     </div>
                     <div class="col-lg-6">
                         <span>Library Email Id</span>
-                        <h5>{{$library_transaction->library_owner_email}}</h5>
+                        <h5>{{$library_transaction->library_owner_email ?? ''}}</h5>
                     </div>
                 </div>
                 <h4 class="mt-4"> Library Payment Info :</h4>

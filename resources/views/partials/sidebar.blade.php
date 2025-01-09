@@ -10,6 +10,7 @@ $current_route = Route::currentRouteName();
         {{-- Check if it's a parent menu and the guard matches --}}
         @if(is_null($menu->parent_id) && ($menu->guard === null || Auth::guard($menu->guard)->check()))
         {{-- Parent menu logic --}}
+        @can('has-permission', [$menu->has_permissions])
         <li class="mb-1 {{ $current_route == $menu->url ? 'active' : '' }}">
             <a class="btn btn-toggle d-inline-flex align-items-center rounded border-0 {{ $menu->children->count() ? '' : 'flex-start' }}"
                 href="{{ route($menu->url) ?? '#' }}"
@@ -31,23 +32,27 @@ $current_route = Route::currentRouteName();
                     @if($submenu->guard === null || Auth::guard($submenu->guard)->check())
 
                     @if($submenu->guard !== 'library')
+                    @can('has-permission', [$menu->has_permissions])
                     <li>
                         <a href="{{ route($submenu->url) }}"
                             class="{{ $current_route == $submenu->url ? 'active' : '' }}">
                             {{ $submenu->name }}
                         </a>
                     </li>
-
+                    @endcan
+                    
                     {{-- Show submenu for library guard only if conditions are met --}}
                     @elseif(Auth::guard('library')->check() && (($checkSub && $ispaid && $isProfile && $iscomp) || $is_renew_comp))
+                    @can('has-permission', [$menu->has_permissions])
                     <li>
                         <a href="{{ route($submenu->url) }}"
                             class="{{ $current_route == $submenu->url ? 'active' : '' }}">
                             {{ $submenu->name }}
                         </a>
                     </li>
+                    @endcan
                     @endif
-
+                   
 
                     @endif
                     @endforeach
@@ -55,6 +60,7 @@ $current_route = Route::currentRouteName();
             </div>
             @endif
         </li>
+        @endcan
         @endif
         @endforeach
     </ul>

@@ -403,13 +403,27 @@
                                 <label for="">Plan Type Name <span>*</span></label>
                                 <select class="form-select @error('day_type_id') is-invalid @enderror" name="day_type_id" id="plantype_name">
                                     <option value="">Select Plan Type</option>
+                                    @can('has-permission', 'Full Day')
                                     <option value="1" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 1 ? 'selected' : '' }}>Full Day</option>
+                                    @endcan
+                                    @can('has-permission', 'First Half')
                                     <option value="2" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 2 ? 'selected' : '' }}>First Half</option>
+                                    @endcan
+                                    @can('has-permission', 'Second Half')
                                     <option value="3" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 3 ? 'selected' : '' }}>Second Half</option>
+                                    @endcan
+                                    @can('has-permission', 'Hourly Slot 1')
                                     <option value="4" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 4 ? 'selected' : '' }}>Hourly Slot 1</option>
+                                    @endcan
+                                    @can('has-permission', 'Hourly Slot 2')
                                     <option value="5" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 5 ? 'selected' : '' }}>Hourly Slot 2</option>
+                                    @endcan
+                                    @can('has-permission', 'Hourly Slot 3')
                                     <option value="6" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 6 ? 'selected' : '' }}>Hourly Slot 3</option>
+                                    @endcan
+                                    @can('has-permission', 'Hourly Slot 4')
                                     <option value="7" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 7 ? 'selected' : '' }}>Hourly Slot 4</option>
+                                    @endcan
                                 </select>
                                 {{-- <input type="text" name="name" id="plantype_name" class="form-control char-only @error('name') is-invalid @enderror" placeholder="Enter Plan Type" value="{{ old('name', isset($planType) ? $planType->name : '') }}"> --}}
                                 @error('day_type_id')

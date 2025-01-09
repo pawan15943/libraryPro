@@ -43,6 +43,7 @@
                             <span class="text-danger">Failed</span>
                             @endif
                         </td>
+                        @can('has-permission', 'Download Payment Receipt')
                         <td>
                             <ul class="actionalbls">
                                 <li>
@@ -60,6 +61,7 @@
                                 </li>
                             </ul>
                         </td>
+                        @endcan
                     </tr>
 
 

@@ -275,11 +275,19 @@ $current_route = Route::currentRouteName();
                                 <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
                                 @endcan
 
-
-
+                                
+                                @can('has-permission', 'Change Plan')
                                 <li><a href="{{route('learner.change.plan',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-
-
+                                @endcan
+                                <!---ID Card generate-->
+                                <li>
+                                    <form action="{{ route('generateIdCard') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" id="custId" name="detail_id" value="{{ $value->learner_detail_id }}">
+                                        <input type="hidden" name="learner_id" value="{{ $value->id }}">
+                                        <button type="submit"><i class="fa fa-print"></i></button>
+                                    </form>
+                                </li>
                                 <!-- upgrade Seat-->
                                 @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5)
 

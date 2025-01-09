@@ -22,6 +22,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('has-permission', function ($user, $permissionName) {
+            if (empty($permissionName)) {
+                return true; // Allow access if no specific permission is required
+            }
             return $user->subscription && 
                    $user->subscription->permissions()->where('name', $permissionName)->exists();
         });

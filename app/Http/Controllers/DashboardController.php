@@ -771,8 +771,6 @@ class DashboardController extends Controller
     public function viewSeats(Request $request)
     {
         $type = $request->get('type');
-        // $year = $request->get('year');
-        // $month = $request->get('month');
         $dateRange = $request->get('date_range');
 
         $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
@@ -847,6 +845,7 @@ class DashboardController extends Controller
             });
         }
         $startDateOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
+        $startOfGivenMonth = Carbon::create($year, $month, 1)->startOfMonth();
         $expired_query = $this->getLearnersByLibrary()
         ->where('learner_detail.is_paid', 1)
         ->where('learners.status', 0)

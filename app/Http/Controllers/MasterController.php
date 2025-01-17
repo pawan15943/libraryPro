@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Expense;
 use App\Models\Feature;
+use App\Models\Feedback;
 use App\Models\Hour;
+use App\Models\Inquiry;
 use App\Models\Learner;
 use App\Models\Library;
 use App\Models\PermissionCategory;
@@ -615,6 +617,66 @@ class MasterController extends Controller
 
         return redirect()->route('feature.create')->with('success', $message);
     }
+
+    public function searchLibrary(){
+        $cities = City::pluck('city_name', 'id');
+        $topLibraries = Library::take(5)->get();
+        $library_count=Library::count();
+        $learner_count=Learner::count();
+        $city_count=City::count();
+        $feedback_count=Feedback::count();
+        $happy_customer=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
+       
+        return view('library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customer','feedback_count'));
+    }
+
+    public function getLibraries(Request $request)
+    {
+        $query = $request->input('query'); 
+        $suggestion = $request->input('suggestion'); 
+        $city = $request->input('city'); 
+     
+        // If a suggestion is selected (library name or location or city)
+        if ($suggestion) {
+         
+            // Search libraries based on the selected suggestion (name, location, or city)
+            $libraries = Library::where('library_name', 'like', '%' . $suggestion . '%')
+                                ->orWhere('library_address', 'like', '%' . $suggestion . '%')
+                               
+                                ->get();
+        } elseif ($query) {
+            
+            // Search libraries based on the query input (name, location, or city)
+            $libraries = Library::where('library_name', 'like', '%' . $query . '%')
+                                ->orWhere('library_address', 'like', '%' . $query . '%')
+                               
+                                ->get();
+        } elseif($city){
+            $libraries = Library::where('city_id', '=', $city)
+            
+            ->get();
+        }else {
+            // Return top 5 libraries by default (e.g., by rating or popularity)
+            $libraries = Library::take(5)->get();
+        }
+       
+        return response()->json($libraries);
+    }
+    public function Inquerystore(Request $request)
+    {
+        $data=$request->validate([
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|string|max:15',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string|max:1000',
+        ]);
+    
+       
+        Inquiry::create($data);
+
+        return back()->with('success', 'Inquiry submitted successfully!');
+    }
+
 
 
 

@@ -869,15 +869,22 @@ class LibraryController extends Controller
 
     function generateLibraryCode() {
         $prefix = "LB";
-        $lastlubraryNo=Library::orderBy('id','DESC')->first();
-        if($lastlubraryNo){
-            $randomNumber=+1 ;
-        }else{
-            $randomNumber='LB000001';
+        $lastLibrary = Library::orderBy('id', 'DESC')
+                              ->whereNotNull('library_no')
+                              ->first();
+                              
+        if ($lastLibrary) {
+            
+            $lastNumber = intval(substr($lastLibrary->library_no, 2)); 
+            $newNumber = $lastNumber + 1;
+            $randomNumber = str_pad($newNumber, 6, '0', STR_PAD_LEFT); 
+        } else {
+            $randomNumber = '000001';
         }
-        // $randomNumber = rand(100000, 999999); 
+    
         return $prefix . $randomNumber;
     }
+    
 
     // Library Setting
     public function librarySetting()

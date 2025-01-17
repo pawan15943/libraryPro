@@ -699,7 +699,8 @@
                         </span>
                         @enderror
 
-                        <a href="{{ asset('public/sample/master.csv') }}"><small>Download Sample library master CSV File</small></a>
+                        <a href="{{ url('public/sample/master.csv') }}" download="master.csv"><small>Download Sample library master CSV File</small></a>
+                        
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>

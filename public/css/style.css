@@ -178,12 +178,7 @@ a.go-back {
     --bs-modal-width: 700px;
 }
 
-html,
-body {
-    height: 100%;
-    overflow: hidden;
-    font-family: "Mulish", sans-serif;
-}
+
 
 /* Login Page */
 
@@ -2000,7 +1995,6 @@ a.go-back {
 html,
 body {
     height: 100%;
-    overflow: hidden;
     font-family: "Mulish", sans-serif;
 }
 
@@ -4684,4 +4678,389 @@ li#no-data img {
 
 li#no-data {
     background: #fff;
+}
+/* Library Directory */
+@keyframes backgroundAnimate {
+    0% {
+      background-size: 110%;
+      background-position: 0% 50%;
+    }
+    50% {
+      background-size: 120%;
+      background-position: 100% 50%;
+    }
+    100% {
+      background-size: 110%;
+      background-position: 0% 50%;
+    }
+  }
+
+.hero_Section {
+    background: url('../img/directory/bg-head.png') no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 0;
+    min-height: 100vh;
+    animation: backgroundAnimate 35s ease-in-out infinite;
+}
+
+.hero_Section .h-100 {
+    min-height: 80vh;
+}
+
+
+.hero_Section::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #00000087;
+    z-index: -1;
+}
+
+section.hero_Section h2 {
+    color: #fff;
+}
+
+.hero_Section h1 {
+    color: #fff !important;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.hero_Section .search input {
+    height: 55px !important;
+    padding: 1.5rem;
+    font-size: 1.1rem !important;
+}
+
+.logo {
+    margin: 1.5rem 0;
+}
+
+.hero_Section .search {
+    position: relative;
+}
+
+.hero_Section .search .fa {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.hero_Section .search .fa {
+    position: absolute;
+    right: 2%;
+    top: 28%;
+    font-size: 1.5rem;
+    color: #ababab;
+}
+
+.hero_Section ul {
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    gap: 2rem;
+    padding: 0;
+    margin: 0;
+}
+
+section.hero_Section h4.text-white {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-white-rgb), var(--bs-text-opacity)) !important;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+section.hero_Section ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+
+ul.locations {
+    list-style: fle;
+    justify-content: center !important;
+}
+
+ul.locations li {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.location-box {
+    background: #fff;
+    width: 120px;
+    height: 120px;
+    border-radius: .8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.location-box * {
+    color: #000 !important;
+}
+
+.location-box .fa {
+    font-size: 2rem;
+    color: #000 !important;
+}
+
+.location-box p {
+    margin: 0;
+    color: #000 !important;
+    font-weight: 700 !important;
+}
+
+.image {
+    position: relative;
+    z-index: 0;
+}
+
+.image::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(360deg, black, transparent);
+    border-radius: 1.5rem;
+}
+
+.image ul {
+    list-style: none;
+    display: flex;
+    gap: .5rem;
+    position: absolute;
+    bottom: 2%;
+}
+
+.image ul li {
+    color: #e4bf13;
+    z-index: 1;
+    font-size: 1.2rem;
+}
+
+.image .verified {
+    list-style: none;
+    display: flex !important;
+    gap: .5rem;
+    position: absolute;
+    bottom: 7%;
+    z-index: 1;
+    width: auto !important;
+    right: 5%;
+}
+
+.why-choose-us {
+    background: #113140;
+    padding: 3.5rem 0;
+}
+
+.why-choose-us h2 {
+    color: #fff !IMPORTANT;
+}
+
+.benefits {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 10rem;
+    padding: 3rem 2rem;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 2rem;
+}
+
+.benefits p {
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-align: center;
+    color: #000;
+}
+
+.benefits .fa {
+    width: 50px;
+    background: #246685;
+    height: 50px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.border-thick {
+    display: block;
+    width: 80px;
+    height: 14px;
+    background: #113140;
+    margin: 0 auto;
+    border-radius: 5rem;
+    margin-top: 2rem;
+}
+
+.customer-experience {
+    padding: 3.5rem 0;
+}
+
+
+
+.about-main{
+    position: relative;
+    z-index: 1;
+}
+
+.about-main .upper{
+    position: absolute;
+    right: 0;
+    bottom: 5%;
+}
+
+.important-counts {
+    padding: 3.5rem 0;
+    background: linear-gradient(180deg, #246685, #2C7FA6);
+}
+
+.important-counts * {
+    color: #fff !important;
+    text-align: center;
+}
+
+.customer-feedback {
+    padding: 3.5rem 0;
+}
+
+.feedback-box {
+    background: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+}
+
+.feedback-box .icon {
+    width: 60px;
+    margin-bottom: 1.5rem;
+}
+
+.feedback-box .heading {
+    margin-bottom: 3.5rem;
+}
+
+.product-features-box h4 {
+    color: #fff !important;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 27px;
+}
+
+.feedback-box .customer-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.feedback-box .customer-info ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: .5rem;
+    flex: 1;
+    justify-content: end;
+}
+
+.feedback-box .customer-info h4 {
+    font-size: 1.2rem;
+}
+
+.feedback-box .customer-info .profile {
+    width: 45px !important;
+}
+
+.feedback-box .message {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 7rem;
+}
+
+/* Inquiry */
+.inquiry {
+    padding: 3.5rem;
+
+}
+
+.inquiry .form-control:not(textarea),
+.button {
+    height: 50px !important;
+}
+
+
+.main-box {
+    position: relative;
+    z-index: 1;
+}
+
+.main-box .support {
+    position: absolute;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    box-shadow: 1px 0 23px #00000045;
+    left: 2%;
+    width: 228px;
+    bottom: 10%;
+}
+
+.main-box>img {
+    padding-left: 5rem;
+}
+
+footer {
+    background: #113140;
+    padding-top: 2.5rem;
+}
+
+footer h4 {
+    color: #fff !IMPORTANT;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+    font-weight: 400;
+}
+
+footer ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer ul li+li {
+    margin-top: 1rem;
+}
+
+footer ul li a {
+    color: #c7c7c7;
+    text-decoration: none;
+}
+
+ul.social {
+    display: flex;
+    margin: 0 !IMPORTANT;
+    padding: 0 !IMPORTANT;
+    gap: 1rem;
+}
+
+ul.social li {
+    margin: 0;
+}
+
+ul.social li a .fab {
+    font-size: 1.6rem;
 }

@@ -18,6 +18,15 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
+
+Route::get('/search/my-library', function () {
+  return view('welcome');
+});
+
+Route::get('/', [MasterController::class, 'searchLibrary']);
+Route::get('/get-libraries', [MasterController::class, 'getLibraries'])->name('get-libraries');
+Route::post('/store/inquiry', [MasterController::class, 'Inquerystore'])->name('submit.inquiry');
+
 Route::get('administrator/login', [LoginController::class, 'showLoginForm'])->name('login.administrator');
 Route::get('library/login', [LoginController::class, 'showAdminLoginForm'])->name('login.library');
 Route::get('learner/login', [LoginController::class, 'showLearnerLoginForm'])->name('login.learner');

@@ -34,30 +34,28 @@
             </tr>
             <tr>
                 <td style="padding: 0px 15px;">
-                    <p style="margin: 0; margin-top: 15px; font-weight: 500; line-height: 24px;">Dear Student,</p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">In order to proceed with the
-                        password reset process, kindly make use of the provided One-Time Password (OTP):</p>
+                    <p style="margin: 0; margin-top: 15px; font-weight: 500; line-height: 24px;">Dear {{$name}},</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Thank you for signing up with <b>Library Manager!</b> To verify your email address, please use the following OTP (One-Time Password):</p>
                     <h2 style="margin: 0; font-weight: 600; padding: 1rem 0;">{{$otp}}</h2>
                   
                 </td>
             </tr>
             <tr>
                 <td style="padding: 0px 15px;">
-                    <p style="margin: 0; font-weight: 500; line-height: 24px;">Should you have any questions or
-                        require further assistance, please do not hesitate to contact our technical support team using the following
-                        details:</p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Technical Support Email ID:</b>
-                        <a href="mailto:support@allenoverseas.com">support@allenoverseas.com</a></p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Technical Support Mobile
-                            Number:</b> <a href="tel:+971 45461696">+971 45461696</a></p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">We wish you the best of luck in
-                        your endeavors.</p>
+                    <p style="margin: 0; font-weight: 500; line-height: 24px;">This OTP is valid for the next 10 minutes.</p>
+                    <p style="margin: 0; font-weight: 500; line-height: 24px;">Need Assistance?</p>
+                    <p style="margin: 0; font-weight: 500; line-height: 24px;">If you have any questions or encounter any issues, feel free to contact our support team.</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Email:</b>
+                        <a href="mailto:info@librarymanager.in">info@librarymanager.in</a></p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Phone Number:</b> <a href="tel:+918114479678">+91-8114479678</a>, 
+                        <a href="tel:+917737918848">+91-7737918848</a></p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Thank you for choosing Library Manager!</p>
                 </td>
             </tr>
             <tr>
                 <td style="padding: 0px 15px; margin-top: 16px;">
-                    <p style="margin: 0; margin-top: 10px; font-weight: 700; line-height: 24px;"><b>Best Regards,</b></p>
-                    <p style="margin: 0; margin-bottom: 15px; font-weight: 500; line-height: 24px;">-Team Libraro</p>
+                    <p style="margin: 0; margin-top: 10px; font-weight: 700; line-height: 24px;"><b>Team,</b></p>
+                    <p style="margin: 0; margin-bottom: 15px; font-weight: 500; line-height: 24px;">Libraro- A product by Techito</p>
                 </td>
             </tr>
             <tr>

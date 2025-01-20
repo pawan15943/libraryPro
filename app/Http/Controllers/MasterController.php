@@ -678,7 +678,10 @@ class MasterController extends Controller
     }
 
 
-
+    public function maindirectory(){
+        $subscriptions = Subscription::with('permissions')->get();
+        return view('welcome',compact('subscriptions'));
+    }
 
     
 }

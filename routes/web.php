@@ -27,7 +27,7 @@ Route::post('/store/inquiry', [MasterController::class, 'Inquerystore'])->name('
 
 Route::get('administrator/login', [LoginController::class, 'showLoginForm'])->name('login.administrator');
 Route::get('library/login', [LoginController::class, 'showAdminLoginForm'])->name('login.library');
-Route::get('library', [LoginController::class, 'showAdminLoginForm'])->name('login.library');
+
 Route::get('learner/login', [LoginController::class, 'showLearnerLoginForm'])->name('login.learner');
 Route::post('login/store', [LoginController::class, 'login'])->name('login.store');
 Route::get('library/register', [RegisterController::class, 'showRegistrationForm'])->name('register');

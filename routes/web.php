@@ -36,7 +36,6 @@ Auth::routes(['register' => false, 'login' => false,'verify' => false]);
 Route::post('logout', [LoginController::class, 'logout'])->name('logout')->withoutMiddleware('auth');
 
 
-
 Route::group(['prefix' => 'library'], function () {
   Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request.library');
   Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email.library');

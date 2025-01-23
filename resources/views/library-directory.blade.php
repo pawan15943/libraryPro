@@ -504,7 +504,7 @@
                 fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
             });
 
-            // Fetch libraries based on the query or selected suggestion
+            // Show Library Default Data
             function fetchLibraries(query) {
                 $.ajax({
                     url: '{{ route("get-libraries") }}', // Laravel route to get libraries
@@ -515,11 +515,19 @@
                     },
                     success: function(data) {
                         $('#library-list').empty(); // Clear the previous library results
+
                         if (data.length > 0) {
+                            // Initialize Owl Carousel (destroy if already initialized)
+                            if ($('#library-list').hasClass('owl-carousel')) {
+                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+                                $('#library-list').find('.owl-stage-outer').children().unwrap();
+                            }
 
-                            // Loop through each library and display it
+                            // Add Owl Carousel class
+                            $('#library-list').addClass('owl-carousel');
+
+                            // Loop through each library and append it as a carousel item
                             $.each(data, function(index, library) {
-
                                 let libraryHTML = `
                                 <div class="item">
                                     <div class="library-box">
@@ -539,9 +547,30 @@
                                         </div>
                                     </div>
                                 </div>
-                                
-                            `;
+                                `;
                                 $('#library-list').append(libraryHTML);
+                            });
+
+                            // Re-initialize Owl Carousel after appending items
+                            $('#library-list').owlCarousel({
+                                loop: true,
+                                margin: 30,
+                                nav: true,
+                                dots: true,
+                                autoplay: true,
+                                autoplayTimeout: 3000,
+                                autoplayHoverPause: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 2
+                                    },
+                                    1000: {
+                                        items: 3
+                                    }
+                                }
                             });
                         } else {
                             $('#library-list').append('<p>No libraries found.</p>');
@@ -550,12 +579,16 @@
                 });
             }
 
+
+
             $(document).on('click', '.city-item', function() {
                 let selectedCity = $(this).data('city'); // Get the city from the data attribute
                 console.log("city", selectedCity)
                 // Fetch libraries based on the selected city
                 fetchLibrariesByCity(selectedCity);
             });
+
+            // Show Library Data According to City
 
             function fetchLibrariesByCity(city) {
                 $.ajax({
@@ -570,29 +603,28 @@
 
                         if (data.length > 0) {
                             console.log("bycity", data);
-
                             // Append items
                             $.each(data, function(index, library) {
                                 let libraryHTML = `
-                        <div class="item">
-                            <div class="library-box">
-                                <div class="image">
-                                    <img src="{{ asset('img/directory/02.png') }}" alt="library">
-                                    <ul class="d-flex g-2">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                                <div class="content p-3">
-                                    <h4 class="mb-3">${library.library_name}</h4>
-                                    <p>${library.library_address}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                                            <div class="item">
+                                                <div class="library-box">
+                                                    <div class="image">
+                                                        <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
+                                                        <ul class="d-flex g-2">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="content p-3">
+                                                        <h4 class="mb-3">${library.library_name}</h4>
+                                                        <p>${library.library_address}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
                                 $('#library-list').append(libraryHTML);
                             });
 
@@ -600,7 +632,7 @@
                             $('#library-list').owlCarousel({
                                 items: 3,
                                 loop: true,
-                                margin: 10,
+                                margin: 30,
                                 nav: true,
                                 responsive: {
                                     0: {

@@ -14,8 +14,38 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
         body {
             overflow: auto;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Outfit", serif;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        p,
+        th,
+        th,
+        span,
+        small,
+        li,
+        a,
+        input,
+        select,
+        textarea {
+            font-family: "Mulish", serif;
+            font-weight: 600;
+            margin: 0;
+            color: var(--c9);
+            font-size: 1rem;
         }
 
         .head-text-1 {
@@ -197,6 +227,75 @@
         .benefits img {
             transition: all .5s;
         }
+
+        .benefits .contents {
+            height: auto !important;
+        }
+
+        .col-lg-4.payment-mode {
+            text-align: center;
+        }
+
+        .col-lg-4.payment-mode select {
+            height: 55px;
+        }
+
+        .plan-box h1,
+        .plan-box h4 {
+            text-align: center;
+        }
+
+        .plan-box h4 {
+            margin-bottom: 2rem;
+        }
+
+        .our-plan {
+            padding: 3.5rem 0;
+            background: #f5f5f5;
+        }
+
+        .col-lg-3:nth-child(1) .plan-box,
+        .active-plan-box.basic,
+        .basic {
+            background: var(--gredient-4) !important;
+        }
+
+        .col-lg-3:nth-child(2) .plan-box,
+        .active-plan-box.standard,
+        .standard {
+            background: var(--gredient-5) !important;
+        }
+
+        .col-lg-3:nth-child(3) .plan-box,
+        .active-plan-box.premium,
+        .premium {
+            background: var(--gredient-6) !important;
+        }
+
+        .plan-box {
+            padding: 1rem;
+            border: 1px solid #c9c9c9;
+            border-radius: 1rem;
+
+        }
+
+        .plan-box ul.plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .plan-box ul li {
+            padding: .6rem 1rem;
+            font-size: .9rem;
+            color: #3b3b3b;
+        }
+
+        .plan-box ul li+li {
+            border-top: 1px dotted #c9c9c9;
+        }
     </style>
 </head>
 
@@ -251,7 +350,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="owl-carousel" id="features">
-                        
+
                         <div class="item">
                             <div class="product-features-box">
                                 <h4>Interactive Dashboard with <br>
@@ -350,43 +449,48 @@
             </div>
         </div>
     </section>
-    <!-- Dynamic 3 -->
-    <div class="row g-4 justify-content-center">
-        <div class="col-lg-4 payment-mode">
-            <label for="" class="m-auto d-block">Select Plan Mode <span>*</span></label>
-            <select name="plan_mode" id="plan_mode" class="form-select">
-                <option value="1">MONTHLY</option>
-                <option value="2">YEARLY</option>
-            </select>
-        </div>
-    </div>
-    
-    
-    <div class="row mt-4 justify-content-center mb-4">
-        @foreach($subscriptions as $subscription)
-        <div class="col-lg-3">
-            <div class="plan-box">
-                <h1 id="subscription_fees_{{$subscription->id}}"></h1> 
-                <h4>{{$subscription->name}}</h4>
-                <ul class="plan-features contents">
-                    @foreach($subscription->permissions as $permission)
-                    <li>
-                        <div class="d-flex">
-                            <i class="fa-solid fa-check"></i>
-                            {{$permission->name}}
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-              
-                
-            </div>
-        </div>
-    
-        @endforeach
-    </div>
-    <!-- Dynamic 3 -->
 
+    <div class="our-plan">
+        <div class="container">
+            <!-- Dynamic 3 -->
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 payment-mode">
+                    <label for="" class="m-auto d-block">Select Plan Mode <span>*</span></label>
+                    <select name="plan_mode" id="plan_mode" class="form-select">
+                        <option value="1">MONTHLY</option>
+                        <option value="2">YEARLY</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row mt-4 justify-content-center mb-4">
+                @foreach($subscriptions as $subscription)
+                <div class="col-lg-3">
+                    <div class="plan-box">
+                        <h1 id="subscription_fees_{{$subscription->id}}"></h1>
+                        <h4>{{$subscription->name}}</h4>
+                        <ul class="plan-features contents">
+                            @foreach($subscription->permissions as $permission)
+                            <li>
+                                <div class="d-flex">
+                                    <i class="fa-solid fa-check"></i>
+                                    {{$permission->name}}
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+
+
+                    </div>
+                </div>
+
+                @endforeach
+            </div>
+            <!-- Dynamic 3 -->
+        </div>
+
+    </div>
 
     <!-- Customer's Feedback -->
     <section class="customer-feedback">
@@ -570,10 +674,10 @@
     <script>
         $(document).on('click', '.showmore', function() {
             var $planFeatures = $(this).closest('.plan-box').find('.plan-features');
-            
+
             // Toggle the overflow-auto class
             $planFeatures.toggleClass('overflow-auto');
-    
+
             // Change the button text between "Show More" and "Show Less"
             if ($planFeatures.hasClass('overflow-auto')) {
                 $(this).text('Show Less');
@@ -581,20 +685,21 @@
                 $(this).text('Show More');
             }
         });
-    
-    
-    
+
+
+
         $(document).ready(function() {
-            
+
             var plan_mode = $('#plan_mode').find(":selected").val();
             subscription_price(plan_mode);
-            
+
             $('#plan_mode').on('change', function() {
                 var plan_mode = $(this).val();
                 subscription_price(plan_mode);
-               
+
             });
-            function subscription_price(plan_mode){
+
+            function subscription_price(plan_mode) {
                 if (plan_mode) {
                     $.ajax({
                         url: '{{ route('subscriptions.getSubscriptionPrice') }}',
@@ -609,7 +714,7 @@
                         success: function(response) {
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
-                                $('#subscription_fees_' + subscription.id).text(subscription.fees); 
+                                $('#subscription_fees_' + subscription.id).text(subscription.fees);
                                 $('#plan_mode_' + subscription.id).val(plan_mode)
                                 $('#price_' + subscription.id).val(subscription.fees)
                             });
@@ -619,9 +724,10 @@
                         }
                     });
                 }
-            }   
+            }
         });
     </script>
+    
 </body>
 
 </html>

@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 
 * {
     margin: 0;
@@ -388,10 +388,7 @@ table td {
     font-weight: 700;
 }
 
-/* Sidebar */
-.sidebar {
-    transition: width 0.4s ease;
-}
+
 
 /* .sidemenu {
     height: 93vh;
@@ -471,7 +468,7 @@ nav ol {
     height: 100vh;
 }
 
-.sidebar::after {
+/* .sidebar::after {
     content: '';
     position: absolute;
     width: 200px;
@@ -482,7 +479,7 @@ nav ol {
     background: #ffffff20;
     z-index: -1;
     transform: translateX(-50%);
-}
+} */
 
 
 
@@ -775,10 +772,6 @@ ul.actionalbls li i:hover {
     box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.15);
 }
 
-/* Colors */
-.booked {
-    color: var(--c1);
-}
 
 .available {
     color: var(--heading-2);
@@ -1994,7 +1987,6 @@ a.go-back {
 
 html,
 body {
-    height: 100%;
     font-family: "Mulish", sans-serif;
 }
 
@@ -2207,9 +2199,7 @@ table td {
 }
 
 /* Sidebar */
-.sidebar {
-    transition: width 0.4s ease;
-}
+
 
 .sidebar h4 {
     height: 60px;
@@ -2416,7 +2406,7 @@ ul.list-unstyled.ps-0 {
 }
 
 ul.list-unstyled.ps-0>li {
-    padding: 0 1rem;
+    /* padding: 0 1rem; */
     border-radius: 1.6rem;
     position: relative;
 }
@@ -2672,6 +2662,14 @@ ul.actionalbls li i {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+}
+
 ul.actionalbls li i:hover {
     transform: translateY(-2px);
     box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.4), -6px -6px 12px rgba(255, 255, 255, 0.15);
@@ -2679,7 +2677,7 @@ ul.actionalbls li i:hover {
 
 /* Colors */
 .booked {
-    color: var(--c1);
+    color: #0591a3;
 }
 
 .available {
@@ -3199,8 +3197,37 @@ ul.dropdown-menu.show li+li a .fas {
     width: 30px;
 }
 
+ul.libraryFeatures {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2rem;
+}
+
+ul.libraryFeatures li {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: .5rem;
+    padding: 1.5rem;
+    align-items: center;
+    gap: 1rem;
+    width: calc(100% / 5 - 2rem);
+    width: 100%;
+}
 
 /* Library Steps */
+
+.profile .text-info {
+    --bs-text-opacity: 1;
+    color: #00BCD4 !important;
+    font-weight: 600;
+    font-size: .8rem;
+}
+
 .steps {
     background: #e0e0e0;
     margin-bottom: 1.5rem;
@@ -4679,24 +4706,27 @@ li#no-data img {
 li#no-data {
     background: #fff;
 }
+
 /* Library Directory */
 @keyframes backgroundAnimate {
     0% {
-      background-size: 110%;
-      background-position: 0% 50%;
+        background-size: 110%;
+        background-position: 0% 50%;
     }
+
     50% {
-      background-size: 120%;
-      background-position: 100% 50%;
+        background-size: 120%;
+        background-position: 100% 50%;
     }
+
     100% {
-      background-size: 110%;
-      background-position: 0% 50%;
+        background-size: 110%;
+        background-position: 0% 50%;
     }
-  }
+}
 
 .hero_Section {
-    background: url('../img/directory/bg-head.png') no-repeat;
+
     background-size: cover;
     background-position: center;
     position: relative;
@@ -4745,21 +4775,16 @@ section.hero_Section h2 {
     position: relative;
 }
 
-.hero_Section .search .fa {
-    position: absolute;
-    right: 0;
-    top: 0;
-}
 
 .hero_Section .search .fa {
     position: absolute;
-    right: 2%;
-    top: 28%;
+    right: 20px;
+    top: 18px;
     font-size: 1.5rem;
     color: #ababab;
 }
 
-.hero_Section ul {
+.hero_Section ul:not(.list-group) {
     list-style: none;
     display: flex;
     justify-content: right;
@@ -4878,13 +4903,15 @@ ul.locations li {
     align-items: center;
     justify-content: space-between;
     border-radius: 2rem;
+    margin: 1rem;
 }
 
 .benefits p {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
     color: #000;
+    font-family: 'Outfit', sans-serif;
 }
 
 .benefits .fa {
@@ -4915,12 +4942,12 @@ ul.locations li {
 
 
 
-.about-main{
+.about-main {
     position: relative;
     z-index: 1;
 }
 
-.about-main .upper{
+.about-main .upper {
     position: absolute;
     right: 0;
     bottom: 5%;
@@ -4993,7 +5020,7 @@ ul.locations li {
 
 /* Inquiry */
 .inquiry {
-    padding: 3.5rem;
+    padding: 3.5rem 0;
 
 }
 

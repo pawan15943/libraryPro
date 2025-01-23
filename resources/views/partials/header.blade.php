@@ -48,7 +48,8 @@
             @endif
 
         </div>
-        <!-- Modal Popup for Expiry Warning -->
+
+        <!-- Expiry Warning -->
         <div class="modal fade" id="planExpiryModal" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
@@ -71,7 +72,8 @@
                 </div>
             </div>
         </div>
-        <!-- Modal Popup end for Expiry Warning -->
+        <!-- Expiry Warning Ends-->
+
         <!-- Modal Popup for Configration -->
         <div class="modal fade" id="todayrenew" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">

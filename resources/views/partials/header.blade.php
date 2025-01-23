@@ -227,7 +227,7 @@
         <button onclick="closeNotification()" class="close" >&times;</button>
     </div>
 </div>
-@if (session('error'))
+{{-- @if (session('error'))
 <div class="alert alert-danger">
     {{ session('error') }}
 </div>
@@ -236,7 +236,7 @@
 <div class="alert alert-success">
     {{ session('success') }}
 </div>
-@endif
+@endif --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.dropdown-item').forEach(function (notificationItem) {

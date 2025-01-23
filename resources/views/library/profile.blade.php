@@ -12,7 +12,7 @@
                 <li>
                     <a href="{{ ($checkSub) ? '#' : route('subscriptions.choosePlan')  }}">Pick Your Perfect Plan</a>
                 </li>
-    
+
                 <li>
                     <a href="{{ ($ispaid) ? route('subscriptions.payment')  : '#' }}">Make Payment</a>
                 </li>
@@ -38,11 +38,11 @@
 
 
 
-<form action="{{ route('library.profile.update') }}" class="validateForm" method="POST" enctype="multipart/form-data">
+<form action="{{ route('library.profile.update') }}" class="validateForm profile" method="POST" enctype="multipart/form-data">
     @csrf
 
     <div class="row mb-4">
-        <div class="col-lg-9">
+        <div class="col-lg-12">
             <div class="card">
                 <h4 class="mb-4">Library Profile Details</h4>
                 <div class="row g-4">
@@ -141,6 +141,21 @@
                 </div>
                 <h4 class="py-4">Library Owner Info</h4>
                 <div class="row g-4">
+                    <div class="col-lg-8">
+                        <label for="">Library Logo (jpg, jpeg, png, svg, webp)<span>*</span></label>
+                        <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
+                        @error('library_logo')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+
+
+                        <small class="text-info d-block">Logo Size must be in 200px (width) & 80px (Height)</small>
+                    </div>
+                    <div class="col-lg-4">
+                        <img id="imageDisplay" src="#" alt="Selected Image" style="display: none; max-width: 100%; height: auto;">
+                    </div>
                     <div class="col-lg-12">
                         <label for="">Owner Name <span>*</span></label>
                         <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner', $library->library_owner ?? '') }}">
@@ -171,48 +186,35 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
-            <div class="boxes mb-4">
-                <img src="{{url('public/img/library.jpg')}}" alt="library" class="img-fluid rounded">
-                <div class="content---">
-                    <h4>LibraryPro</h4>
-                    <span>Best Place to Study</span>
-                </div>
-            </div>
-            <div class="card">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <label for="">Library Logo <span>*</span></label>
-                        <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
-                        @error('library_logo')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                    </div>
 
-                    <img id="imageDisplay" src="#" alt="Selected Image" style="display: none; max-width: 100%; height: auto;">
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-lg-12">
-                    <button type="submit" value="Login" placeholder="Email Id" class="btn btn-primary button">Update and Next</button>
-                </div>
-            </div>
-        </div>
-        <div  class="col-lg-12">
+        <div class="col-lg-12 mt-4">
+            <h4 class="mb-4">Add Library Features</h4>
             @php
-                $selectedFeatures = $library->features ? json_decode($library->features, true) : [];
+            $selectedFeatures = $library->features ? json_decode($library->features, true) : [];
             @endphp
-            @foreach ($features as $feature)
-                <div class="col-lg-3">
+            <ul class="libraryFeatures">
+                @foreach ($features as $feature)
+                <li>
+                    <img src="{{ asset('public/'.$feature->image) }}" alt="Image" width="50">
                     <label class="permission">
-                        <input type="checkbox" name="features[]" value="{{ $feature->id }}"  {{ in_array($feature->id, $selectedFeatures ?? []) ? 'checked' : '' }}>
-                          
+                        <input
+                            type="checkbox"
+                            name="features[]"
+                            value="{{ $feature->id }}"
+                            {{ in_array($feature->id, old('features', $selectedFeatures ?? [])) ? 'checked' : '' }}>
                         {{ $feature->name }}
                     </label>
-                </div>
-            @endforeach
+                </li>
+                @endforeach
+            </ul>
+
+        </div>
+
+
+    </div>
+    <div class="row mt-4 justify-content-center">
+        <div class="col-lg-4">
+            <button type="submit" value="Login" placeholder="Email Id" class="btn btn-primary button">Update and Next</button>
         </div>
     </div>
 

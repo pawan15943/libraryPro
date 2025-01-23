@@ -675,13 +675,13 @@ class LibraryController extends Controller
             'library_owner' => 'required|string|max:255',
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
-            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024|dimensions:width=200,height=80',
             'library_owner_email' => 'required|email',
             'library_owner_contact' => 'required|string|max:10',
             'features' => 'nullable|array', 
             'features.*' => 'integer',
         ]);
-
+        
       
         if ($request->hasFile('library_logo')) {
             $library_logo = $request->file('library_logo');

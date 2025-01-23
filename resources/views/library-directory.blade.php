@@ -22,7 +22,7 @@
 
 
     <!-- Section 1 -->
-    <section class="hero_Section">
+    <section class="hero_Section" style="background: url('{{ asset('/public/img/direcotry/bg-head.png') }}') no-repeat; background-size:cover;">
         <div class="container">
             <div class="row align-items-center mb-5">
                 <div class="col-lg-6">
@@ -62,7 +62,7 @@
                         <div class="col-lg-6">
                             <h4 class="text-white text-center py-3">Search Direct by City</h4>
                             <ul class="locations" id="city-list">
-                              
+
                                 @foreach($cities as $key => $value)
                                 <li class="city-item" data-city="{{ $key }}">
                                     <div class="location-box">
@@ -71,7 +71,7 @@
                                     </div>
                                 </li>
                                 @endforeach
-                             
+
                             </ul>
                         </div>
                     </div>
@@ -89,9 +89,6 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="owl-carousel" id="library-list">
-                       
-                      
-
                     </div>
                 </div>
 
@@ -111,7 +108,7 @@
                 <div class="col-lg-4">
                     <div class="benefits">
                         <i class="fa fa-check"></i>
-                        <div class="contents">
+                        <div class="content">
                             <p>Check what you
                                 need to
                                 achieve your goals.</p>
@@ -122,7 +119,7 @@
                 <div class="col-lg-4">
                     <div class="benefits">
                         <i class="fa fa-check"></i>
-                        <div class="contents">
+                        <div class="content">
                             <p>Check what you
                                 need to
                                 achieve your goals.</p>
@@ -133,7 +130,7 @@
                 <div class="col-lg-4">
                     <div class="benefits">
                         <i class="fa fa-check"></i>
-                        <div class="contents">
+                        <div class="content">
                             <p>Check what you
                                 need to
                                 achieve your goals.</p>
@@ -184,20 +181,20 @@
     <section class="important-counts">
         <div class="container">
             <h2 class="mb-5">Important Factors That Make Us the Right Choice</h2>
-            <div class="row">
-                <div class="col-lg-3">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6 col-6">
                     <h1>{{$library_count}}+</h1>
                     <p>Library Enrolled</p>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-6 col-6">
                     <h1>{{$learner_count}}+</h1>
                     <p>Learner Enrolled</p>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-6 col-6">
                     <h1>{{$city_count}}+</h1>
                     <p>Total Cities
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-3 col-md-6 col-6">
                     <h1>{{$feedback_count}}+</h1>
                     <p>Customers trusts</p>
                 </div>
@@ -221,17 +218,17 @@
                         <div class="item">
                             <div class="feedback-box">
                                 <div class="message">
-                                   {{$value->description}}
+                                    {{$value->description}}
                                 </div>
                                 <div class="customer-info">
                                     <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                     <div class="customer-details">
                                         <h4>{{$value->library_address}}, {{$value->city_name}}</h4>
                                         @php
-                                            $createdYear = \Carbon\Carbon::parse($value->created_at)->year;
-                                            $currentYear = \Carbon\Carbon::now()->year;
+                                        $createdYear = \Carbon\Carbon::parse($value->created_at)->year;
+                                        $currentYear = \Carbon\Carbon::now()->year;
                                         @endphp
-                                    
+
                                         <span>
                                             Working from {{ $createdYear == $currentYear ? 'This' : $createdYear }} year{{ $createdYear == $currentYear ? '' : 's' }}
                                         </span>
@@ -255,80 +252,80 @@
     </section>
 
     <section class="inquiry">
-       
+
 
         <div class="container">
-            <div class="row align-items-center">
+            <div class="row g-4 align-items-center">
                 @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
                 @endif
                 <div class="col-lg-6">
-                <h2>Have Any Query ? <br>
-                    Request a Callback</h2>
-                <form action="{{ route('submit.inquiry') }}" method="POST">
-                    @csrf
-                    <div class="form-box">
-                        <div class="row g-4">
-                            <div class="col-lg-12">
-                                <label for="name">Full Name</label>
-                                <input type="text" 
-                                        name="full_name" 
-                                        class="form-control @error('full_name') is-invalid @enderror char-only" 
+                    <h2 class="mb-4">Have Any Query ? <br>
+                        Request a Callback</h2>
+                    <form action="{{ route('submit.inquiry') }}" method="POST">
+                        @csrf
+                        <div class="form-box">
+                            <div class="row g-4">
+                                <div class="col-lg-12">
+                                    <label for="name">Full Name</label>
+                                    <input type="text"
+                                        name="full_name"
+                                        class="form-control @error('full_name') is-invalid @enderror char-only"
                                         placeholder="Enter your Name"
                                         value="{{ old('full_name') }}">
-                                @error('full_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="mobile_number">Mobile Number</label>
-                                <input type="text" 
-                                        name="mobile_number" 
-                                        class="form-control @error('mobile_number') is-invalid @enderror digit-only" 
+                                    @error('full_name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="mobile_number">Mobile Number</label>
+                                    <input type="text"
+                                        name="mobile_number"
+                                        class="form-control @error('mobile_number') is-invalid @enderror digit-only"
                                         placeholder="Enter Mobile Number"
                                         value="{{ old('mobile_number') }}">
-                                @error('mobile_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="email">Email Id</label>
-                                <input type="email" 
-                                        name="email" 
-                                        class="form-control @error('email') is-invalid @enderror" 
+                                    @error('mobile_number')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="email">Email Id</label>
+                                    <input type="email"
+                                        name="email"
+                                        class="form-control @error('email') is-invalid @enderror"
                                         placeholder="Enter Email Address"
                                         value="{{ old('email') }}">
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="message">Message</label>
-                                <textarea rows="5" 
-                                            name="message" 
-                                            class="form-control @error('message') is-invalid @enderror" 
-                                            placeholder="Enter Message">{{ old('message') }}</textarea>
-                                @error('message')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                <button class="btn btn-primary button" type="submit">Submit Details</button>
+                                    @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12">
+                                    <label for="message">Message</label>
+                                    <textarea rows="5"
+                                        name="message"
+                                        class="form-control @error('message') is-invalid @enderror"
+                                        placeholder="Enter Message">{{ old('message') }}</textarea>
+                                    @error('message')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-12">
+                                    <button class="btn btn-primary button" type="submit">Submit Details</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-                        
+                    </form>
+
                 </div>
                 <div class="col-lg-6">
                     <div class="main-box">
@@ -348,9 +345,9 @@
 
     <footer>
         <div class="container">
-            <div class="row">
+            <div class="row g-4">
                 <div class="col-lg-3">
-                    <img src="{{ asset('public/img/direcotry/logo.png') }}" alt="">
+                    <img src="{{ asset('public/img/direcotry/logo.png') }}" alt="logo" class="">
                 </div>
                 <div class="col-lg-3">
                     <h4>IMPORTANT LINKS</h4>
@@ -410,8 +407,8 @@
         $('.digit-only').on('keyup', function(e) {
             $(this).val($(this).val().replace(/\s/g, ''));
         });
-    
-    
+
+
         $('.char-only').keydown(function(e) {
             if (e.ctrlKey || e.altKey) {
                 e.preventDefault();
@@ -455,8 +452,213 @@
             }
         });
     </script>
+
+
+
     <script>
-        $('#features').owlCarousel({
+        $(document).ready(function() {
+            let selectedSuggestion = ''; // Global variable to store selected suggestion
+
+            // Trigger search when user types in the search field
+            $('#library-search').on('keyup', function() {
+                let query = $(this).val();
+
+                // If the query length is more than 2 characters, show suggestions and fetch libraries
+                if (query.length > 2) {
+                    showSuggestions(query);
+                    fetchLibraries(query);
+                } else {
+                    // If query length is less than 2, show the default libraries
+                    fetchLibraries(selectedSuggestion);
+                    $('#suggestions').empty(); // Clear suggestions
+                }
+            });
+
+            // Show suggestions based on the query input
+            function showSuggestions(query) {
+                $.ajax({
+                    url: '{{ route("get-libraries") }}', // Laravel route for library search
+                    method: 'GET',
+                    data: {
+                        query: query
+                    },
+                    success: function(data) {
+                        $('#suggestions').empty(); // Clear previous suggestions
+                        if (data.length > 0) {
+                            // Append the suggestions to the suggestion list
+                            $.each(data, function(index, library) {
+                                $('#suggestions').append('<li class="list-group-item suggestion-item" data-suggestion="' + library.library_name + '">' + library.library_name + ' - ' + library.library_address + '</li>');
+                            });
+                        } else {
+                            $('#suggestions').append('<li class="list-group-item">No suggestions found</li>');
+                        }
+                    }
+                });
+            }
+
+            // When a suggestion is selected, update the search field and fetch the libraries
+            $(document).on('click', '.suggestion-item', function() {
+                selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
+                $('#library-search').val($(this).text()); // Update search field with selected suggestion
+                $('#suggestions').empty(); // Clear suggestions list
+                fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
+            });
+
+            // Show Library Default Data
+            function fetchLibraries(query) {
+                $.ajax({
+                    url: '{{ route("get-libraries") }}', // Laravel route to get libraries
+                    method: 'GET',
+                    data: {
+                        query: query,
+                        suggestion: selectedSuggestion
+                    },
+                    success: function(data) {
+                        $('#library-list').empty(); // Clear the previous library results
+
+                        if (data.length > 0) {
+                            // Initialize Owl Carousel (destroy if already initialized)
+                            if ($('#library-list').hasClass('owl-carousel')) {
+                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+                                $('#library-list').find('.owl-stage-outer').children().unwrap();
+                            }
+
+                            // Add Owl Carousel class
+                            $('#library-list').addClass('owl-carousel');
+
+                            // Loop through each library and append it as a carousel item
+                            $.each(data, function(index, library) {
+                                let libraryHTML = `
+                                <div class="item">
+                                    <div class="library-box">
+                                        <div class="image">
+                                            <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
+                                            <ul class="d-flex g-2">
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+                                        </div>
+                                        <div class="content p-3">
+                                            <h4 class="mb-3">${library.library_name}</h4>
+                                            <p>${library.library_address}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                                $('#library-list').append(libraryHTML);
+                            });
+
+                            // Re-initialize Owl Carousel after appending items
+                            $('#library-list').owlCarousel({
+                                loop: true,
+                                margin: 30,
+                                nav: true,
+                                dots: true,
+                                autoplay: true,
+                                autoplayTimeout: 3000,
+                                autoplayHoverPause: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 2
+                                    },
+                                    1000: {
+                                        items: 3
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#library-list').append('<p>No libraries found.</p>');
+                        }
+                    }
+                });
+            }
+
+
+
+            $(document).on('click', '.city-item', function() {
+                let selectedCity = $(this).data('city'); // Get the city from the data attribute
+                console.log("city", selectedCity)
+                // Fetch libraries based on the selected city
+                fetchLibrariesByCity(selectedCity);
+            });
+
+            // Show Library Data According to City
+
+            function fetchLibrariesByCity(city) {
+                $.ajax({
+                    url: '{{ route("get-libraries") }}', // Laravel route to get libraries
+                    method: 'GET',
+                    data: {
+                        city: city
+                    },
+                    success: function(data) {
+                        $('#library-list').trigger('destroy.owl.carousel'); // Destroy the existing instance
+                        $('#library-list').empty(); // Clear the previous library results
+
+                        if (data.length > 0) {
+                            console.log("bycity", data);
+                            // Append items
+                            $.each(data, function(index, library) {
+                                let libraryHTML = `
+                                            <div class="item">
+                                                <div class="library-box">
+                                                    <div class="image">
+                                                        <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
+                                                        <ul class="d-flex g-2">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="content p-3">
+                                                        <h4 class="mb-3">${library.library_name}</h4>
+                                                        <p>${library.library_address}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                $('#library-list').append(libraryHTML);
+                            });
+
+                            // Reinitialize the Owl Carousel
+                            $('#library-list').owlCarousel({
+                                items: 3,
+                                loop: true,
+                                margin: 30,
+                                nav: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 2
+                                    },
+                                    1000: {
+                                        items: 3
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#library-list').append('<p>No libraries found.</p>');
+                        }
+                    }
+                });
+            }
+            // Initial load of libraries (if no search/query)
+            fetchLibraries('');
+        });
+    </script>
+    <script>
+        $('.owl-carousel').trigger('destroy.owl.carousel');
+        $('#library-list').owlCarousel({
             loop: true,
             nav: true,
             dots: true,
@@ -489,158 +691,6 @@
             }
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            // Handle click event on city list items
-           
-        });
-    </script>
-    
-
-<script>
-    $(document).ready(function() {
-        let selectedSuggestion = ''; // Global variable to store selected suggestion
-
-        // Trigger search when user types in the search field
-        $('#library-search').on('keyup', function() {
-            let query = $(this).val();
-            
-            // If the query length is more than 2 characters, show suggestions and fetch libraries
-            if (query.length > 2) {
-                showSuggestions(query);
-                fetchLibraries(query);
-            } else {
-                // If query length is less than 2, show the default libraries
-                fetchLibraries(selectedSuggestion);
-                $('#suggestions').empty(); // Clear suggestions
-            }
-        });
-
-        // Show suggestions based on the query input
-        function showSuggestions(query) {
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route for library search
-                method: 'GET',
-                data: { query: query },
-                success: function(data) {
-                    $('#suggestions').empty(); // Clear previous suggestions
-                    if (data.length > 0) {
-                        // Append the suggestions to the suggestion list
-                        $.each(data, function(index, library) {
-                            $('#suggestions').append('<li class="list-group-item suggestion-item" data-suggestion="' + library.library_name + '">' + library.library_name + ' - ' + library.library_address + '</li>');
-                        });
-                    } else {
-                        $('#suggestions').append('<li class="list-group-item">No suggestions found</li>');
-                    }
-                }
-            });
-        }
-
-        // When a suggestion is selected, update the search field and fetch the libraries
-        $(document).on('click', '.suggestion-item', function() {
-            selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
-            $('#library-search').val($(this).text()); // Update search field with selected suggestion
-            $('#suggestions').empty(); // Clear suggestions list
-            fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
-        });
-
-        // Fetch libraries based on the query or selected suggestion
-        function fetchLibraries(query) {
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                method: 'GET',
-                data: { query: query, suggestion: selectedSuggestion },
-                success: function(data) {
-                    $('#library-list').empty(); // Clear the previous library results
-                    if (data.length > 0) {
-                       
-                        // Loop through each library and display it
-                        $.each(data, function(index, library) {
-                           
-                            let libraryHTML = `
-                                <div class="item">
-                                    <div class="library-box">
-                                        <div class="image">
-                                            <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
-                                            <ul class="d-flex g-2">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content p-3">
-                                            <h4 class="mb-3">${library.library_name}</h4>
-                                            <p>${library.library_address}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            `;
-                            $('#library-list').append(libraryHTML);
-                        });
-                    } else {
-                        $('#library-list').append('<p>No libraries found.</p>');
-                    }
-                }
-            });
-        }
-
-        $(document).on('click', '.city-item', function() {
-            let selectedCity = $(this).data('city'); // Get the city from the data attribute
-            console.log("city",selectedCity)
-            // Fetch libraries based on the selected city
-            fetchLibrariesByCity(selectedCity);
-        });
-    
-        // Function to fetch libraries based on the selected city
-        function fetchLibrariesByCity(city) {
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                method: 'GET',
-                data: {  city: city},
-             
-                success: function(data) {
-                    $('#library-list').empty(); // Clear the previous library results
-                    if (data.length > 0) {
-                        console.log("bycity",data);
-                        // Loop through each library and display it
-                        $.each(data, function(index, library) {
-                            let libraryHTML = `
-                                <div class="item">
-                                    <div class="library-box">
-                                        <div class="image">
-                                            <img src="{{ asset('img/directory/02.png') }}" alt="library">
-                                            <ul class="d-flex g-2">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content p-3">
-                                            <h4 class="mb-3">${library.library_name}</h4>
-                                            <p>${library.library_address}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            $('#library-list').append(libraryHTML);
-                        });
-                    } else {
-                        $('#library-list').append('<p>No libraries found.</p>');
-                    }
-                }
-            });
-        }
-
-        // Initial load of libraries (if no search/query)
-        fetchLibraries('');
-    });
-</script>
-
 
 </body>
 

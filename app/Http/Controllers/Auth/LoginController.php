@@ -49,6 +49,7 @@ class LoginController extends Controller
     
         $credentials = $request->only('email', 'password');
         $remember = $request->has('remember');
+     
         switch ($request->input('user_type')) {
             case 'superadmin':
                 if (Auth::guard('web')->attempt($credentials, $remember)) {
@@ -77,20 +78,27 @@ class LoginController extends Controller
                 break;
     
             case 'learner':
+                
+               
                 if (Auth::guard('learner')->attempt($credentials, $remember)) {
+                   
                     $user = Auth::guard('learner')->user();
+                  
                     if (!$user->hasRole('learner')) {
                         $user->assignRole('learner');
                     }
+                    
                     return redirect()->intended(route('learner.home'));
                 } else {
                     return redirect()->back()->withErrors(['error' => 'Invalid email or password for Learner.']);
                 }
-                break;
+            break;
     
             default:
                 return back()->withErrors(['error' => 'Invalid user type selected.']);
         }
+
+       
     }
     
     

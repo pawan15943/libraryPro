@@ -1,0 +1,539 @@
+@import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&family=Outfit:wght@100..900&family=Philosopher:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            transition: all .5s;
+        }
+
+
+        body {
+            overflow: auto;
+        }
+
+        :root {
+            --gredient-4: linear-gradient(2deg, #3F51B5, #081350);
+            --gredient-5: linear-gradient(3deg, #673AB7, #370099);
+            --gredient-6: linear-gradient(0deg, #c3a81d, #ab8d15);
+
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Outfit", 'sans-sarif';
+            font-weight: 700;
+            margin: 0;
+        }
+
+        p,
+        th,
+        th,
+        span,
+        small,
+        li,
+        a,
+        input,
+        select,
+        textarea {
+            font-family: "Mulish", 'sans-sarif';
+            font-weight: 600;
+            margin: 0;
+            color: var(--c9);
+            font-size: 1rem;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            box-shadow: 1px 0 5px #00000045;
+            background: #fff;
+            z-index: 100;
+        }
+
+        header ul.navbar-nav.ms-auto.mb-lg-0>li+li {
+            margin-left: 2rem;
+        }
+
+        header a.nav-link {
+            font-size: 1rem;
+            font-weight: 500;
+            font-family: 'Outfit', 'sans-sarif';
+        }
+
+        .head-text-1 {
+            color: #34939F !important;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        a.nav-link.button {
+            height: auto ! IMPORTANT;
+            background: #18225f;
+            padding: .5rem 1.5rem ! IMPORTANT;
+            border-radius: .5rem;
+            color: #fff;
+            box-shadow: 1px 4px 0 #ababab;
+        }
+
+        a.nav-link.button:hover {
+            background: #038b9c;
+            box-shadow: 1px 1px 0 #ababab;
+
+        }
+
+        .head-text-2 {
+            color: #18225F !important;
+            font-weight: 700 !important;
+            font-size: 2.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .head-text-3 {
+            color: #585858 !important;
+            font-weight: 600 !important;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-family: 'outfit', 'sans-sarif';
+        }
+
+
+        .cta {
+            padding: .8rem 3.5rem;
+            background: #18225f;
+            border-radius: .5rem;
+            box-shadow: 1px 4px 0 #ababab;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.2rem;
+        }
+
+        a.cta:hover {
+            background: #038b9c;
+            box-shadow: 1px 1px 0 #ababab;
+
+        }
+
+        .heading h2 {
+            color: #293ba4 !important;
+            font-weight: 600 !important;
+            font-size: 2.2rem;
+            line-height: 2.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .heading span {
+            color: #34939F !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .logo {
+            width: 180px;
+            padding: .5rem 0;
+        }
+
+        .hero_Section,
+        .product-benefits {
+            padding: 3.5rem 0;
+            background: linear-gradient(0deg, #cffff4, #fff5e9);
+        }
+
+        .hero_Section ul {
+            display: flex;
+            column-gap: 3.5rem;
+            justify-content: right;
+            list-style: none;
+        }
+
+        .hero_Section ul li a {
+            text-decoration: none;
+        }
+
+        .hero_Section ul li a.active {
+            font-weight: 700;
+        }
+
+        .product-features-box {
+            background: #369a8e;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            min-height: 500px;
+            margin: 0 .5rem;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .product-features-box img {
+            position: absolute;
+            right: -3px;
+            bottom: -3px;
+            width: 312px !important;
+        }
+
+
+        #features .owl-item:nth-child(odd) .product-features-box {
+            background: #bc770d;
+        }
+
+        .product-features {
+            padding: 3.5rem 0;
+        }
+
+        .plan-features .d-flex {
+            display: flex !important;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 400;
+            font-family: 'Mulish';
+            font-size: .8rem ! IMPORTANT;
+        }
+
+        .product-benefits {
+            padding: 3.5rem 0;
+            background: linear-gradient(45deg, #00BCD4, #046571);
+        }
+
+        .product-benefits .heading span {
+            color: #0ae4ff !important;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .product-benefits .heading h2 {
+            color: #fff !important;
+        }
+
+
+        .basic {
+            background: var(--gredient-4) !important;
+        }
+
+
+        .standard {
+            background: var(--gredient-5) !important;
+        }
+
+
+        .premium {
+            background: var(--gredient-6) !important;
+        }
+
+        .benefits {
+            background: #fff;
+            border: 1px solid #e7e7e7;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            /* box-shadow: 1px 0px 20px #00000026; */
+            height: 100%;
+            transition: all .5s;
+        }
+
+        .benefits h4 {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            color: #068291;
+        }
+
+        .benefits span {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #212121;
+        }
+
+        .customer-feedback {
+            padding: 3.5rem 0;
+            background: #fffbe5;
+        }
+
+        .feedback-box {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            height: 100%;
+            box-shadow: 1px 0 5px #00000024;
+            margin: 1rem .3rem;
+        }
+
+        .customer-details span {
+            font-size: .9rem;
+            display: block;
+            line-height: 18px;
+        }
+
+        .customer-info h4 {
+            font-size: 1.2rem;
+            color: #05acc1;
+            font-weight: 400;
+        }
+
+        .icon {
+            width: 40px;
+            margin-bottom: 1.5rem;
+        }
+
+        .heading {
+            margin-bottom: 3.5rem;
+        }
+
+        .product-features-box h4 {
+            color: #fff !important;
+            font-size: 1.2rem;
+            font-weight: 600;
+            line-height: 27px;
+        }
+
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .customer-info ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: .5rem;
+            flex: 1;
+            justify-content: end;
+        }
+
+        .customer-info h4 {
+            font-size: 1.2rem;
+        }
+
+        .customer-info .profile {
+            width: 45px !important;
+        }
+
+        .message {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+            color: #616161;
+            font-family: 'Mulish', 'sans-sarif';
+        }
+
+        .benefits:hover {
+            box-shadow: 1px 0 5px #00000021;
+            transform: scale(1.02);
+            transition: .5s all;
+        }
+
+        .benefits:hover img {
+            transform: rotate(15deg);
+            transition: all .5s ease-in-out;
+        }
+
+        .benefits img {
+            transition: all .5s;
+        }
+
+        .benefits .contents {
+            height: auto !important;
+        }
+
+        .col-lg-4.payment-mode {
+            text-align: center;
+        }
+
+        .col-lg-4.payment-mode select {
+            height: 55px;
+        }
+
+        .plan-box h1,
+        .plan-box h4 {
+            text-align: center;
+        }
+
+        .plan-box h4 {
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        button.btn.btn-primary {
+            background: linear-gradient(45deg, #1b2458, #232d6a);
+            border: none;
+            width: 100%;
+            margin-top: 1rem;
+            height: 45px;
+            font-family: 'Outfit', 'sans-sarif';
+            font-weight: 600;
+            transition: all .5s;
+        }
+
+        button.btn.btn-primary:hover {
+            background: linear-gradient(45deg, #00BCD4, #00BCD4);
+            transition: all .5s;
+        }
+
+        .our-plan {
+            padding: 3.5rem 0;
+        }
+
+        .col-lg-4:nth-child(1) .plan-box,
+        .active-plan-box.basic,
+        .basic {
+            background: var(--gredient-4) !important;
+        }
+
+        .col-lg-4:nth-child(2) .plan-box,
+        .active-plan-box.standard,
+        .standard {
+            background: var(--gredient-5) !important;
+        }
+
+        .col-lg-4:nth-child(3) .plan-box,
+        .active-plan-box.premium,
+        .premium {
+            background: var(--gredient-6) !important;
+        }
+
+        .plan-box {
+            border-radius: 1rem;
+        }
+
+        .plan-box h1 {
+            padding-top: 2rem !important;
+        }
+
+        .plan-box * {
+            color: #fff;
+        }
+
+        .plan-box ul.plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .plan-box ul li {
+            padding: .6rem 1rem;
+            font-size: .9rem;
+            color: #3b3b3b;
+        }
+
+        .plan-box ul li+li {
+            border-top: 1px dotted #c9c9c9;
+        }
+
+        /* For modern browsers */
+        ::-webkit-scrollbar {
+            width: 5px;
+            /* Width of the scrollbar */
+            height: 5px;
+            /* Height of the horizontal scrollbar */
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f121;
+            /* Background of the scrollbar track */
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #028b9d, #028b9d);
+            /* Gradient for the scrollbar thumb */
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #028b9d;
+            /* Darker shade on hover */
+        }
+
+        .comma {
+            width: 60px ! IMPORTANT;
+            display: block;
+            margin-bottom: 1.5rem;
+        }
+
+
+        /* Inquiry */
+        .inquiry {
+            padding: 3.5rem 0;
+
+        }
+
+        .inquiry .form-control:not(textarea),
+        .button {
+            height: 50px !important;
+        }
+
+
+        .main-box {
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-box .support {
+            position: absolute;
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 1px 0 23px #00000045;
+            left: 2%;
+            width: 228px;
+            bottom: 10%;
+        }
+
+        .main-box>img {
+            padding-left: 5rem;
+        }
+
+        footer {
+            background: #113140;
+            padding-top: 2.5rem;
+        }
+
+        footer h4 {
+            color: #fff !IMPORTANT;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 400;
+        }
+
+        footer ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        footer ul li+li {
+            margin-top: 1rem;
+        }
+
+        footer ul li a {
+            color: #c7c7c7;
+            text-decoration: none;
+        }
+
+        ul.social {
+            display: flex;
+            margin: 0 !IMPORTANT;
+            padding: 0 !IMPORTANT;
+            gap: 1rem;
+        }
+
+        ul.social li {
+            margin: 0;
+        }
+
+        ul.social li a .fab {
+            font-size: 1.6rem;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #ffedb9 !important;
+            font-weight: 700;
+        }
+
+        button.accordion-button.collapsed {
+            font-weight: 700;
+        }

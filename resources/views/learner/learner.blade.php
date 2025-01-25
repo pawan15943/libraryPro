@@ -107,7 +107,7 @@ $current_route = Route::currentRouteName();
             <h4 class="mb-3">Filter Box</h4>
 
             <form action="{{ route('learners') }}" method="GET">
-                <div class="row">
+                <div class="row g-4">
                     <!-- Filter By Plan -->
                     <div class="col-lg-2">
                         <label for="plan_id">Filter By Plan</label>

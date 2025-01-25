@@ -23,29 +23,29 @@
             @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew && $isProfile)
 
 
-                @if($librarydiffInDays > 0)
-                <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$librarydiffInDays}} days!</small>
+            @if($librarydiffInDays > 0)
+            <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$librarydiffInDays}} days!</small>
 
-                @elseif($librarydiffInDays < 0)
-                    <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($librarydiffInDays) }} days ago </small>
+            @elseif($librarydiffInDays < 0)
+                <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($librarydiffInDays) }} days ago </small>
 
                 @else
-                    <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
+                <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
                 @endif
 
                 @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
-                        <script>
-                        window.onload = function() {
-                        setTimeout(function() {
-                        var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
-                        modal.show();
-                        }, 1000);
-                        };
-                        </script>
+                    <script>
+                    window.onload = function() {
+                    setTimeout(function() {
+                    var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
+                    modal.show();
+                    }, 1000);
+                    };
+                    </script>
 
-                        <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
-                @endif
-            @endif
+                    <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
+                    @endif
+                    @endif
 
         </div>
 
@@ -59,7 +59,7 @@
                     </div> -->
                     <div class="modal-body">
                         <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
-                            @if($librarydiffInDays < 0)
+                        @if($librarydiffInDays < 0)
                             <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
                             @elseif($librarydiffInDays > 0)
                             <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
@@ -111,16 +111,16 @@
                 dd($unreadNotifications);
                 @endphp
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     <i class="fas fa-bell fa-fw"></i>
-                            <!-- Counter - Alerts -->
-                            <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
+                    <i class="fas fa-bell fa-fw"></i>
+                    <!-- Counter - Alerts -->
+                    <span class="badge badge-danger badge-counter">{{ $unreadNotifications->count() }}</span>
                 </a>
                 <ul class="dropdown-menu notificcation">
                     <li>
                         <!-- Dropdown - Alerts -->
                         <div class="dropdown-menu-1" aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">Alerts Center</h6>
-                            
+                            <h6 class="dropdown-header">Notification Center</h6>
+
                             @forelse($unreadNotifications as $notification)
                             <a class="dropdown-item d-flex align-items-center" data-notification-id="{{ $notification->id }}" href="{{ $notification->data['link'] ?? '#' }}">
                                 <div class="mr-3">
@@ -130,11 +130,10 @@
                                 </div>
                                 <div>
                                     <div class="small text-gray-500">{{ $notification->data['title'] ?? 'No Title' }}</div>
-                                    {{-- <span class="font-weight-bold">{{ $notification->data['description'] ?? 'No Description' }}</span> --}}
                                 </div>
                             </a>
                             @empty
-                                <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
+                            <a class="dropdown-item text-center small text-gray-500">No new notifications</a>
                             @endforelse
                             <a class="dropdown-item text-center small text-gray-500" href="{{route('list.notification')}}">Show All Alerts</a>
                         </div>
@@ -149,11 +148,12 @@
         @endif
         <div class="profile">
             <div class="dropdown">
+                {{Auth::user()->name}}
+                <span class="icon">{{ strtoupper(substr(Auth::user()->library_name, 0, 2)) }}</span>
                 Welcome
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  
-                    {{Auth::user()->name}}
-                    {{ strtoupper(substr(Auth::user()->library_name, 0, 2)) }}
+                {{Auth::user()->library_name}}
+
                 </a>
                 <ul class="dropdown-menu">
 
@@ -231,8 +231,9 @@
 
     </div>
     <div class="latest-notification">
-        <b>Important Update :</b>  <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee>
-        <button onclick="closeNotification()" class="close" >&times;</button>
+        <b>Updates :</b>
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form wndtime hurdal</marquee>
+        <button onclick="closeNotification()" class="close">&times;</button>
     </div>
 </div>
 {{-- @if (session('error'))
@@ -246,29 +247,29 @@
 </div>
 @endif --}}
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('.dropdown-item').forEach(function (notificationItem) {
-            notificationItem.addEventListener('click', function (e) {
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.dropdown-item').forEach(function(notificationItem) {
+            notificationItem.addEventListener('click', function(e) {
                 const notificationId = this.getAttribute('data-notification-id');
 
                 if (notificationId) {
                     fetch('{{ route("notifications.markAsRead") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({ notification_id: notificationId })
-                    }).then(response => response.json())
-                      .then(data => {
-                          if (data.success) {
-                              console.log('Notification marked as read.');
-                          }
-                      }).catch(error => console.error('Error:', error));
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            body: JSON.stringify({
+                                notification_id: notificationId
+                            })
+                        }).then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                console.log('Notification marked as read.');
+                            }
+                        }).catch(error => console.error('Error:', error));
                 }
             });
         });
     });
-
-    
 </script>

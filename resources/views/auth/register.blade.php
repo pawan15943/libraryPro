@@ -15,20 +15,24 @@
 <body>
     <div class="adminstrator-login">
         <div class="left">
-            <h2>Empower Learning,<br>
-                Shape Futures: <br>
-                Your Library, Your Legacy.</h2>
+            <div class="top">
+                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+            </div>
+            <div class="content">
+                <h2>Empower Learning,<br>
+                    Shape Futures: <br>
+                    Your Library, Your Legacy.</h2>
+            </div>
+
         </div>
         <div class="right">
-            <div class="top">
-                <img src="" alt="">
-            </div>
+
             <div class="middle">
                 <h2>Get Started with Us!</h2>
-                <small>Register and Unlock Exciting Opportunities!</small>
+                <small>Register Now and Unlock Exciting Opportunities!</small>
                 <form action="{{ route('library.store') }}" method="POST" class="validateForm" enctype="multipart/form-data">
                     @csrf
-                    <div class="row g-3 mt-1">
+                    <div class="row g-2 mt-1">
                         <div class="col-lg-12">
                             <label>Library Name<span>*</span></label>
                             <input type="text" class="form-control char-only @error('library_name') is-invalid @enderror" name="library_name"
@@ -44,6 +48,7 @@
                             <label for="">Email Id <span>*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                                 value="{{ old('email') }}">
+                            <span class="text-secondary">Please provide a correct email ID for future communications.</span>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -51,17 +56,19 @@
                             @enderror
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Contact No. <span>*</span></label>
+                            <label for="">Contact No. (WhatsApp Number) <span>*</span></label>
                             <input type="text" class="form-control digit-only @error('library_mobile') is-invalid @enderror" name="library_mobile" maxlength="10"
                                 value="{{ old('library_mobile') }}">
+                            <span class="text-secondary">Provide a correct WhatsApp number for future communications and reminders.</span>
                             @error('library_mobile')
+
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Create Password <span>*</span></label>
+                            <label for="">Password <span>*</span></label>
                             <input type="password" class="form-control @error('password') is-invalid @enderror" name="password">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
@@ -79,16 +86,17 @@
                         @enderror
                     </div> --}}
                     <div class="col-lg-12 form-group">
-                        <input type="checkbox" class="form-check-input @error('terms') is-invalid @enderror" name="terms" id="terms">
-                        <label class="form-check-label" for="terms">
-                            I agree to the <a href="#">Terms and Conditions</a><sup class="text-danger">*</sup>
+                        <input type="checkbox" class="me-2 form-check-input @error('terms') is-invalid @enderror" name="terms" id="terms">
+                        <label class="form-check-label" for="terms" style="margin-top:.25rem;">
+                            I agree to the Library Manager <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
                         </label>
-                        <div class="error-msg"></div>
+
                         @error('terms')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
+                        <div class="error-msg"></div>
                     </div>
 
                     <div class="col-lg-12">
@@ -102,7 +110,7 @@
             </div>
             </form>
         </div>
-        <div class="bottom"></div>
+
     </div>
     </div>
 

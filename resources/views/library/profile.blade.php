@@ -78,10 +78,8 @@
                         @enderror
                     </div>
 
-
-
                     <div class="col-lg-12">
-                        <label for="">Library Address <span>*</span></label>
+                        <label for="">Library Address (Library Full Address with Landmark)<span>*</span></label>
                         <textarea rows="5" class="form-control @error('library_address') is-invalid @enderror" name="library_address"
                             style="height:auto !important; ">{{ old('library_address', $library->library_address ?? '') }}</textarea>
                         @error('library_address')
@@ -90,6 +88,7 @@
                         </span>
                         @enderror
                     </div>
+
                     <div class="col-lg-4">
                         <label for="">State <span>*</span></label>
                         <select name="state_id" id="stateid" class="form-select @error('state_id') is-invalid @enderror">
@@ -137,12 +136,17 @@
                         </span>
                         @enderror
                     </div>
+                    <div class="col-lg-12">
+                        <label for="">Your Address on Google Map <span>(Optional)</span></label>
+                        <input type="text" class="form-control">
+                        <span class="text-danger">Your provided library address will shown to visiters on your listing so mention it Correctly (Put Map Embed Code)</span>
 
+                    </div>
                 </div>
                 <h4 class="py-4">Library Owner Info</h4>
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <label for="">Library Logo (jpg, jpeg, png, svg, webp)<span>*</span></label>
+                        <label for="">Library Logo <span>*</span></label>
                         <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
                         @error('library_logo')
                         <span class="invalid-feedback" role="alert">
@@ -151,9 +155,10 @@
                         @enderror
 
 
-                        <small class="text-info d-block">Logo Size must be in 200px (width) & 80px (Height)</small>
+                        <small class="text-info d-block">The logo should be 200px wide and 80px high and must be in one of the following formats: JPG, JPEG, PNG, SVG, or WEBP.</small>
                     </div>
                     <div class="col-lg-4">
+                        <label for="">Logo Image <span>*</span></label>
                         <img id="imageDisplay" src="#" alt="Selected Image" style="display: none; max-width: 100%; height: auto;">
                     </div>
                     <div class="col-lg-12">
@@ -212,7 +217,7 @@
 
 
     </div>
-    <div class="row mt-4 justify-content-center">
+    <div class="row mt-4 mb-4 justify-content-center">
         <div class="col-lg-4">
             <button type="submit" value="Login" placeholder="Email Id" class="btn btn-primary button">Update and Next</button>
         </div>

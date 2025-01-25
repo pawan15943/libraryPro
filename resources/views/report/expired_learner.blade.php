@@ -27,7 +27,7 @@ $currentMonth = date('m');
             <h4 class="mb-3">Filter Box</h4>
 
             <form action="{{ route('expired.learner.report') }}" method="GET">
-                <div class="row">
+                <div class="row g-4">
                     
                     <div class="col-lg-4">
                         <label for="expiredyear">Filter By Year</label>

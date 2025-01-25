@@ -12,8 +12,8 @@
 </div>
 @endif
 <!-- View Customer Information -->
-<div class="row">
-    <div class="col-lg-9">
+<div class="row g-4">
+    <div class="col-lg-9 order-2 order-md-1">
         <div class="actions">
             <div class="upper-box">
                 <div class="d-flex">
@@ -23,19 +23,19 @@
                         Back <i class="fa-solid fa-backward pl-2"></i></a>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Seat Owner Name</span>
                         <h5 class="uppercase">{{ $customer->name }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Date Of Birth </span>
                         <h5>{{ $customer->dob }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Mobile Number</span>
                         <h5>+91-{{ $customer->mobile }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Email Id</span>
                         <h5>{{ $customer->email }}</h5>
                     </div>
@@ -44,36 +44,36 @@
             <div class="action-box">
                 <h4>Seat Plan Info</h4>
                 <div class="row g-4">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan</span>
                         <h5>{{ $customer->plan_name }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan Type</span>
                         <h5>{{ $customer->plan_type_name }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan Price</span>
                         <h5>{{ $customer->plan_price_id }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Seat Booked On</span>
                         <h5>{{ $customer->join_date }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan Starts On</span>
                         <h5>{{ $customer->plan_start_date }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan Ends On</span>
 
                         <h5>{{ $customer->plan_end_date }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Seat Timings</span>
                         <h5>{{$customer->hours}} Hours ({{ $customer->start_time }} to {{ $customer->end_time }})</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Plan Expired In</span>
                         @if ($customer->diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $customer->diffInDays }} days</h5>
@@ -86,7 +86,7 @@
                                 @endif
 
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Current Plan Status</span>
                         <h5>
                             @if($customer->status==1)
@@ -102,7 +102,7 @@
                 <h4 class="mt-4"> Seat Other Info :</h4>
                 <div class="row g-4">
 
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Id Proof</span>
                         <h5>
                             @if($customer->id_proof_name==1)
@@ -120,28 +120,28 @@
                             @endif
                         </h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Id Proof Document</span>
                         <h5>
                             NA
                         </h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Seat Created At</span>
                         <h5>{{ $customer->created_at }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Seat Modified At</span>
                         <h5>{{ $customer->updated_at }}</h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Seat Deleted At</span>
                         <h5> {{ $customer->deleted_at ? $customer->deleted_at : 'NA'}}</h5>
                     </div>
                 </div>
                 <h4 class="mt-4"> Seat Payment Info :</h4>
                 <div class="row g-4">
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Payment Mode</span>
                         @if($customer->payment_mode == 1)
                         <h5>{{ 'Online' }}</h5>
@@ -152,7 +152,7 @@
 
                         @endif
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Payment Status</span>
                         <h5>
                             @if(isset($transaction->is_paid) && $transaction->is_paid==1)
@@ -164,7 +164,7 @@
 
                         </h5>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Transaction Id</span>
                         @if(isset($transaction->transaction_id) && $transaction->transaction_id)
                         <h5>{{$transaction->transaction_id}}</h5>
@@ -173,7 +173,7 @@
                         @endif
 
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Payment Date</span>
                         @if(isset($transaction->paid_date) && $transaction->paid_date)
                         <h5>{{$transaction->paid_date}}</h5>
@@ -362,7 +362,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
             @php
             $class='';

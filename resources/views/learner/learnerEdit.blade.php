@@ -40,8 +40,8 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
     <input name="plan_type_id" type="hidden" value="{{$customer->plan_type_id}}">
     <input name="plan_price_id" type="hidden" value="{{$customer->plan_price_id}}">
     <input name="plan_start_date" type="hidden" value="{{$customer->plan_start_date}}">
-    <div class="row">
-        <div class="col-lg-9">
+    <div class="row g-4">
+        <div class="col-lg-9 order-2 order-md-1">
             <div class="actions">
                 <div class="upper-box">
                     <div class="d-flex">
@@ -51,7 +51,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             Back <i class="fa-solid fa-backward pl-2"></i></a>
                     </div>
                     <div class="row g-4">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Seat Owner Name <span>*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->name) }}">
                             @error('name')
@@ -60,7 +60,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">DOB <span>*</span></label>
                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}">
                             @error('dob')
@@ -69,7 +69,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Mobile Number <span>*</span></label>
                             <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}">
                             @error('mobile')
@@ -78,7 +78,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Email Id <span>*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}">
                             @error('email')
@@ -101,7 +101,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                     </h4>
                     <p class="text-danger">Note : These details are optional. You may fill them in if you wish, or leave them blank.</p>
                     <div class="row g-4">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Id Proof Received (Optional)</label>
                             <select id="id_proof_name" class="form-control @error('id_proof_name') is-invalid @enderror" name="id_proof_name">
                                 <option value="">Select Id Proof</option>
@@ -115,7 +115,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Upload Scan Copy of Proof (Optional)</label>
                             <input type="file" class="form-control @error('id_proof_file') is-invalid @enderror" name="id_proof_file" id="id_proof_file" autocomplete="off">
                             @error('id_proof_file')
@@ -137,7 +137,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3 order-1 order-md-2">
             <div class="seat--info">
                 @php
                 $class='';
@@ -191,7 +191,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             Back <i class="fa-solid fa-backward pl-2"></i></a>
                     </div>
                     <div class="row g-4">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Seat Owner Name <span>*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" id="name" value="{{ old('name', $customer->name) }}" readonly>
                             @error('name')
@@ -200,7 +200,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">DOB <span>*</span></label>
                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}" readonly>
                             @error('dob')
@@ -209,7 +209,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Mobile Number <span>*</span></label>
                             <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}" readonly>
                             @error('mobile')
@@ -218,7 +218,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Email Id <span>*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" readonly>
                             @error('email')
@@ -406,19 +406,19 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         Back <i class="fa-solid fa-backward pl-2"></i></a>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Seat Owner Name</span>
                         <h5 class="uppercase">{{ $customer->name }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Date Of Birth </span>
                         <h5>{{ $customer->dob }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Mobile Number</span>
                         <h5>+91-{{ $customer->mobile }}</h5>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <span>Email Id</span>
                         <h5>{{ $customer->email }}</h5>
                     </div>

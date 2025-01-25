@@ -33,7 +33,11 @@
                     @yield('content')
                     <script>
                         // Session expiration popup logic here
-                        const sessionLifetime = {{ config('session.lifetime')}}* 60; // Convert to seconds
+                        const sessionLifetime = {
+                            {
+                                config('session.lifetime')
+                            }
+                        }* 60; // Convert to seconds
                         const warningTime = sessionLifetime - 60; // Show popup 1 minute before expiration
 
                         setTimeout(function() {
@@ -153,7 +157,7 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             // Function to show a popup
             function showOfflinePopup() {
                 Swal.fire({
@@ -163,18 +167,18 @@
                     confirmButtonText: 'OK'
                 });
             }
-    
+
             // Check if already offline on page load
             if (!navigator.onLine) {
                 showOfflinePopup();
             }
-    
+
             // Listen for offline and online events
-            window.addEventListener('offline', function () {
+            window.addEventListener('offline', function() {
                 showOfflinePopup();
             });
-    
-            window.addEventListener('online', function () {
+
+            window.addEventListener('online', function() {
                 Swal.fire({
                     title: 'Back Online',
                     text: 'Your internet connection has been restored.',
@@ -183,8 +187,28 @@
                 });
             });
         });
+
+        $(document).ready(function() {
+            function addClassOnResize() {
+                if ($(window).width() <= 480) {
+                    $('.sidebar').addClass('w-120');
+                } else {
+                    $('.sidebar').removeClass('w-120');
+                }
+            }
+
+            // Run the function on window resize
+            $(window).resize(function() {
+                addClassOnResize();
+            });
+
+            // Initial check when the page loads
+            addClassOnResize();
+        });
     </script>
-    
+
+
+
 </body>
 
 </html>

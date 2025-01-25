@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,14 +16,17 @@
 <body>
     <div class="adminstrator-login">
         <div class="left">
-            <h2>Empower Learning,<br>
-                Shape Futures: <br>
-                Your Library, Your Legacy.</h2>
+            <div class="top">
+                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+            </div>
+            <div class="content">
+                <h2>Empower Learning,<br>
+                    Shape Futures: <br>
+                    Your Library, Your Legacy.</h2>
+            </div>
         </div>
         <div class="right">
-            <div class="top">
-                <img src="" alt="">
-            </div>
+            
             <div class="middle">
                 <h5>Welcome Back, </h5>
                 <h2>Library Administrator!</h2>
@@ -34,9 +36,9 @@
                     {{ session('success') }}
                 </div>
                 @elseif($errors->has('error'))
-                    <div class="alert alert-danger mb-0 mt-1">
-                        {{ $errors->first('error') }}
-                    </div>
+                <div class="alert alert-danger mb-0 mt-1">
+                    {{ $errors->first('error') }}
+                </div>
                 @endif
                 <form method="POST" action="{{ route('login.store') }}" class="validateForm">
                     @csrf
@@ -44,7 +46,7 @@
                     <div class="row g-3 mt-1">
                         <div class="col-lg-12">
                             <label for="">Email Address</label>
-                            <input id="email"  type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email" autofocus>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -53,7 +55,7 @@
                         </div>
                         <div class="col-lg-12">
                             <label for="">Password</label>
-                            <input id="password"  type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="current-password">
+                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="current-password">
                             @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -68,16 +70,16 @@
                                 </label>
                             </div>
                         </div>
-                       
+
                         <div class="col-lg-12">
-                            <button type="submit" class="btn btn-primary button">Login Now                            
-                        </button>
+                            <button type="submit" class="btn btn-primary button"><em>Login Now</em>
+                            </button>
                         </div>
-                        
+
                     </div>
                 </form>
             </div>
-            <div class="bottom"></div>
+            
         </div>
     </div>
 

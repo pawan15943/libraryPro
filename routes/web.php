@@ -14,14 +14,14 @@ use App\Http\Controllers\LibraryController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
 
 
-Route::get('/search/my-library', [MasterController::class, 'maindirectory']);
-Route::get('/', [MasterController::class, 'searchLibrary']);
+
 Route::get('/get-libraries', [MasterController::class, 'getLibraries'])->name('get-libraries');
 Route::post('/store/inquiry', [MasterController::class, 'Inquerystore'])->name('submit.inquiry');
 
@@ -217,8 +217,14 @@ Route::middleware(['auth:learner','no-cache'])->group(function () {
   Route::get('learner/request', [LearnerController::class, 'learnerRequest'])->name('learner.request');
 });
 
+Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');
+Route::get('blog', [SiteController::class, 'blog'])->name('blog');
+Route::get('contact-us', [SiteController::class, 'contactUs'])->name('contact-us');
+Route::get('privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('term-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
+Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
 
-
-
+Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
+Route::get('/', [SiteController::class, 'home']);
 
 

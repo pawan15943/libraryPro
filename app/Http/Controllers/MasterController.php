@@ -618,17 +618,7 @@ class MasterController extends Controller
         return redirect()->route('feature.create')->with('success', $message);
     }
 
-    public function searchLibrary(){
-        $cities = City::pluck('city_name', 'id');
-        $topLibraries = Library::take(5)->get();
-        $library_count=Library::count();
-        $learner_count=Learner::count();
-        $city_count=City::count();
-        $feedback_count=Feedback::count();
-        $happy_customer=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
-       
-        return view('library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customer','feedback_count'));
-    }
+  
 
     public function getLibraries(Request $request)
     {
@@ -678,10 +668,7 @@ class MasterController extends Controller
     }
 
 
-    public function maindirectory(){
-        $subscriptions = Subscription::with('permissions')->get();
-        return view('welcome',compact('subscriptions'));
-    }
+    
 
     
 }

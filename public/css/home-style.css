@@ -537,3 +537,9 @@
         button.accordion-button.collapsed {
             font-weight: 700;
         }
+
+        @media screen and (max-width:768px) {
+            header ul.navbar-nav.ms-auto.mb-lg-0>li+li {
+                margin-left: 0rem;
+            }
+        }

@@ -1963,4 +1963,15 @@ class LearnerController extends Controller
         return redirect()->back()->with('success', 'Learner Id Card Generate successfully!');
     }
 
+
+    public function learnerProfile(){
+        return view('learner.profile');
+    }
+
+    public function learnerRequest(){
+     $learner_request = DB::table('learner_request')->where('learner_id', Auth::user()->id)->get();
+     return view('learner.request',compact('learner_request'));
+
+    }
+
 }

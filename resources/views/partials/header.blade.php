@@ -92,7 +92,9 @@
         </div>
         <!-- Modal Popup end for Configration -->
         <!--Notifications -->
-
+        @if(isset(auth()->user()->unreadNotifications))
+            
+        
         <div class="notification">
             <div class="dropdown">
                 @php
@@ -104,7 +106,9 @@
                 } elseif (Auth::guard('learner')->check()) {
                 $guard = 'learner';
                 }
+                dd(isset(auth()->user()->unreadNotifications));
                 $unreadNotifications = auth()->user()->unreadNotifications->where('data.guard', $guard);
+                dd($unreadNotifications);
                 @endphp
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                      <i class="fas fa-bell fa-fw"></i>
@@ -140,7 +144,9 @@
             </div>
 
         </div>
-
+        @else
+            
+        @endif
         <div class="profile">
             <div class="dropdown">
                 Welcome

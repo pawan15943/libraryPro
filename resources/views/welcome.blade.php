@@ -71,14 +71,14 @@
     <!-- Section 1 -->
     <section class="hero_Section">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-6 order-2 order-md-1 text-center text-md-start">
                     <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
                     <h2 class="head-text-2">Effortlessly Manage Your Library – From Bookings to Reporting, All in One Place!</h2>
                     <p class="head-text-3">Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.</p>
                     <a href="" class="cta">Sign Up Now!</a>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
                     <img src="{{ asset('public/img/head.png') }}" alt="ok" class="img-fluid">
                 </div>
             </div>
@@ -88,7 +88,7 @@
     <!-- Section 2 -->
     <section class="product-features">
         <div class="container">
-            <div class="heading">
+            <div class="heading text-center text-md-start">
                 <span>Features of Product</span>
                 <h2>Transform Your <br>
                     Library into a Smart Space </h2>
@@ -133,7 +133,7 @@
     <!-- Section 3 -->
     <section class="product-benefits">
         <div class="container">
-            <div class="heading mb-5">
+            <div class="heading mb-5 text-center text-md-start">
                 <span>Benefits of Product</span>
                 <h2>Library<br>
                     Features we offers</h2>
@@ -343,7 +343,7 @@
             </div>
 
 
-            <div class="row mt-4 justify-content-center mb-4">
+            <div class="row mt-4 g-4 justify-content-center mb-4">
                 @foreach($subscriptions as $subscription)
                 <div class="col-lg-4">
                     <div class="plan-box">
@@ -661,30 +661,30 @@
     <footer>
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-3">
+                <div class="col-lg-3 text-center text-md-start">
                     <img src="{{ asset('public/img/libraro-white.svg') }}" alt="logo" class="logo">
                 </div>
                 <div class="col-lg-3">
-                    <h4>IMPORTANT LINKS</h4>
+                    <h4 class="text-center text-md-start">Important Links</h4>
                     <ul>
-                        <li><a href="">HOME</a></li>
-                        <li><a href="">ABOUT</a></li>
-                        <li><a href="">FAQ</a></li>
-                        <li><a href="">BLOG</a></li>
-                        <li><a href="">CONTACT</a></li>
+                        <li><a href="">Home</a></li>
+                        <li><a href="">About Us</a></li>
+                        <li><a href="">Faq's</a></li>
+                        <li><a href="">Blog</a></li>
+                        <li><a href="">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
-                    <h4>CONTACT US</h4>
+                    <h4 class="text-center text-md-start">Other Links</h4>
                     <ul>
-                        <li><a href="">PRIVACY POLICY</a></li>
-                        <li><a href="">TERMS OF USE</a></li>
-                        <li><a href="">REFUND POLICY</a></li>
+                        <li><a href="">Privacy Polisy</a></li>
+                        <li><a href="">Terms of Use</a></li>
+                        <li><a href="">Refund Policy</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
-                    <h4>IMPORTANT LINKS</h4>
-                    <ul class="social">
+                    <h4 class="text-center text-md-start">Follow Us On</h4>
+                    <ul class="social text-center text-md-start justify-content-center">
                         <li><a href=""><i class="fab fa-facebook"></i></a></li>
                         <li><a href=""><i class="fab fa-instagram"></i></a></li>
                         <li><a href=""><i class="fab fa-linkedin"></i></a></li>

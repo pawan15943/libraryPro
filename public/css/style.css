@@ -316,6 +316,7 @@ h6 {
     margin: 0;
 }
 
+
 a {
     font-weight: var(--fw-1) !important;
     color: var(--c4);
@@ -5213,3 +5214,4 @@ ul.social li {
 ul.social li a .fab {
     font-size: 1.6rem;
 }
+

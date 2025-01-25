@@ -87,7 +87,7 @@
                             <a class="nav-link ">Contact Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link button">Add Your Library</a>
+                            <a class="nav-link button">Get Your Library Onboard</a>
                         </li>
                     </ul>
 
@@ -860,19 +860,19 @@
             }
         });
 
-        // $(window).on('load', function() {
-        //     $('#loader').fadeOut('slow', function() {
-        //         $(this).remove(); 
-        //     });
-        // });
-
         $(window).on('load', function() {
-            setTimeout(function() {
-                $('#loader').fadeOut('slow', function() {
-                    $(this).remove(); 
-                });
-            }, 2000); 
+            $('#loader').fadeOut('slow', function() {
+                $(this).remove(); 
+            });
         });
+
+        // $(window).on('load', function() {
+        //     setTimeout(function() {
+        //         $('#loader').fadeOut('slow', function() {
+        //             $(this).remove(); 
+        //         });
+        //     }, 2000); 
+        // });
     </script>
 
 </body>

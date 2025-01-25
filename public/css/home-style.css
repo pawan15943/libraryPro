@@ -548,6 +548,77 @@ button.accordion-button.collapsed {
     padding: 1rem 0;
 }
 
+
+/* Inner Pages CSS */
+section.inner-header {
+    background: linear-gradient(0deg, #cffff4, #fff5e9);
+}
+
+section.inner-header h1 {
+    margin: 6rem 0;
+    padding: 0;
+    text-align: center;
+    color: #18225f;
+    font-weight: 600;
+}
+
+nav {
+    padding: .8rem 0;
+}
+
+ol.breadcrumb {
+    margin: 0;
+}
+
+section.breadcrumb {
+    margin: 0;
+}
+
+nav a {
+    text-decoration: none;
+}
+
+.page-content {
+    padding-bottom: 3.5rem;
+}
+
+.page-content h6 {
+    padding: 1rem 0 !important;
+    color: #04a0b4;
+    font-weight: 600;
+}
+
+.page-content h4 {
+    padding: 1rem 0 !important;
+}
+
+.page-content p {
+    line-height: 25px;
+}
+
+.page-content p+p {
+    margin-top: 1rem;
+}
+
+label {
+    font-weight: 600;
+    font-size: .8rem;
+    margin-bottom: .5rem;
+}
+
+.page-content a{
+    text-decoration: none;
+}
+
+input,select,textarea{
+    font-family: 'Outfit','sans-sarif';
+}
+
+input,select{
+    height: 45px;
+}
+
+
 @media screen and (max-width:768px) {
     header ul.navbar-nav.ms-auto.mb-lg-0>li+li {
         margin-left: 0rem;

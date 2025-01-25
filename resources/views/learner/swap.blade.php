@@ -15,8 +15,8 @@
                
 <input id="plan_type_id" type="hidden" name="plan_type_id" value="{{$customer->plan_type_id }}">
 
-<div class="row">
-    <div class="col-lg-9">
+<div class="row g-4">
+    <div class="col-lg-9 order-2 order-md-1">
         <div class="actions">
             <div class="upper-box">
                 <div class="d-flex">
@@ -26,7 +26,7 @@
                         Back <i class="fa-solid fa-backward pl-2"></i></a>
                 </div>
                 <div class="row g-4">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <label for="">Seat Owner Name <span>*</span></label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->name) }}" readonly>
                         @error('name')
@@ -35,7 +35,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <label for="">DOB <span>*</span></label>
                         <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}" readonly>
                         @error('dob')
@@ -44,7 +44,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <label for="">Mobile Number <span>*</span></label>
                         <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}" readonly>
                         @error('mobile')
@@ -53,7 +53,7 @@
                         </span>
                         @enderror
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 col-6">
                         <label for="">Email Id <span>*</span></label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" readonly>
                         @error('email')
@@ -83,14 +83,14 @@
                     <p class="text-danger font-weight-bold">Note : You can swap your seat with any other seat that has the same plan available for booking.</p>
                     <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->id}}">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Current Seat No. <span>*</span></label>
                             <input  class="form-control"   value="{{ $customer->seat_no }} - {{ $customer->plan_type_name }}" readonly>
                         
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Select Seat<span>*</span></label>
-                            <select name="seat_id" id="new_seat_id" class="form-control form-control-sm h-auto">
+                            <select name="seat_id" id="new_seat_id" class="form-control form-select">
                                 <option>Select Seat</option>
                                 @foreach($available_seat as $id => $seat_no)
                                 <option value="{{ $id }}"> {{ $seat_no }}</option>
@@ -107,7 +107,7 @@
 
                     </div>
                     <div class="row mt-3">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                         <span>Current Seat Status</span>
                         <h4 id="swap_status"></h4>
                         </div>
@@ -122,7 +122,7 @@
             </form>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
             @php 
                 $class='';  

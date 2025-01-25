@@ -17,8 +17,8 @@ $diffInDays = $today->diffInDays($endDate, false);
     <input name="plan_type_id" type="hidden" value="{{$customer->plan_type_id}}">
     <input name="plan_price_id" type="hidden" value="{{$customer->plan_price_id}}">
     <input name="plan_start_date" type="hidden" value="{{$customer->plan_start_date}}">
-    <div class="row">
-        <div class="col-lg-9">
+    <div class="row g-4">
+        <div class="col-lg-9 order-2 order-md-1">
             <div class="actions">
                 <div class="upper-box">
                     <div class="d-flex">
@@ -28,7 +28,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                     Back <i class="fa-solid fa-backward pl-2"></i></a>
                     </div>
                     <div class="row g-4">
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Seat Owner Name <span>*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror char-only" placeholder="Full Name" name="name" id="name" value="{{ old('name', $customer->name) }}" >
                             @error('name')
@@ -37,7 +37,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">DOB <span>*</span></label>
                             <input type="date" class="form-control @error('dob') is-invalid @enderror" placeholder="DOB" name="dob" id="dob" value="{{ old('dob', $customer->dob) }}" >
                             @error('dob')
@@ -46,7 +46,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Mobile Number <span>*</span></label>
                             <input type="text" class="form-control @error('mobile') is-invalid @enderror digit-only" maxlength="10" minlength="10" placeholder="Mobile Number" name="mobile" id="mobile" value="{{ old('mobile', $customer->mobile) }}" >
                             @error('mobile')
@@ -55,7 +55,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </span>
                             @enderror
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-6">
                             <label for="">Email Id <span>*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" >
                             @error('email')
@@ -69,8 +69,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                 <div class="action-box">
                     <h4 class="mb-4">Actionables</h4>
                     <div class="row g-4">
-                        <div class="col-lg-6" >
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 col-6">
                                 <label for="">Start Date <span>*</span></label>
                                 <input type="date" class="form-control " name="plan_start_date" value="{{ old('plan_start_date', $customer->plan_start_date) }}" >
                                 @error('plan_start_date')
@@ -79,7 +78,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 col-6">
                                 <label for="">End Date <span>*</span></label>
                                 <input type="date" class="form-control " name="plan_end_date" value="{{ old('plan_end_date', $customer->plan_end_date) }}" >
                                 @error('plan_end_date')
@@ -88,9 +87,6 @@ $diffInDays = $today->diffInDays($endDate, false);
                                 </span>
                                 @enderror
                             </div>
-                        </div>
-                 
-
                     </div>
                     <div class="row mt-3">
                         <div class="col-lg-3">
@@ -100,7 +96,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                 </div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-3 order-1 order-md-2">
             <div class="seat--info">
                 <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
                 <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">

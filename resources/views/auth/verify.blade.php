@@ -13,14 +13,17 @@
 <body>
     <div class="adminstrator-login">
         <div class="left">
-            <h2>Empower Learning,<br>
-                Shape Futures: <br>
-                Your Library, Your Legacy.</h2>
+            <div class="top">
+                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+            </div>
+            <div class="content">
+                <h2>Empower Learning,<br>
+                    Shape Futures: <br>
+                    Your Library, Your Legacy.</h2>
+            </div>
         </div>
         <div class="right">
-            <div class="top">
-                <img src="" alt="">
-            </div>
+
             <div class="middle">
                 <h2>Verify Email id via OTP</h2>
                 <p>Check OTP in you Email Id and Verify your OTP Here and go next </p>
@@ -45,9 +48,7 @@
                         </div>
                     </div>
                 </form>
-
             </div>
-            <div class="bottom"></div>
         </div>
     </div>
 

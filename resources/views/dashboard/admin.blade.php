@@ -79,7 +79,7 @@
     $currentYear = date('Y');
     $currentMonth = date('m');
     @endphp
-    <div class="row align-items-center mt-4" id="filter">
+    <div class="row align-items-center mt-4 g-3" id="filter">
         <div class="col-lg-3">
             <h4>Filter Dashboard Data</h4>
         </div>
@@ -119,7 +119,7 @@
     <!-- Library Main Counts -->
     <div class="row  g-4 mt-1 mb-4">
         @can('has-permission', 'Total Seats')
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="main-count cardbg-1">
                 <span>Total Seats</span>
                 <h2 id="total_seat" >0</h2>
@@ -128,8 +128,8 @@
             </div>
         </div>
         @endcan
-        @can('has-permission', 'Booked Seats')
-        <div class="col-lg-3">
+        @can('has-permission', 'Total Booked Seats Count')
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="main-count cardbg-2">
                 <span>Booked Seats</span>
                 <h2 id="booked_seat" class="count">0</h2>
@@ -139,7 +139,7 @@
         </div>
         @endcan
         @can('has-permission', 'Available Seats')
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="main-count cardbg-2">
                 <span>Avaialble Seats</span>
                 <h2 id="available_seat">0</h2>
@@ -149,7 +149,7 @@
             </div>
         </div>
        @endcan
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12">
             <div class="main-count cardbg-4">
                 <span>Expired Seats</span>
                 <h2 id="expired_seat">0</h2>
@@ -194,24 +194,7 @@
                         <span class="mt-1"><i class="fa fa-clock"></i> {{$value->created_at}}</span>
                     </li>
                 @endforeach
-                {{-- <li>New User Added on Seat 10
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
-                <li>Seat 3 Swaped with Seat 12
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
-                <li>Seat No 10 is deleted.
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
-                <li>Seat 14 Booked for First Half
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
-                <li>Seat 14 Plan Upgrade Houlry Slot 1 to Full Day
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li>
-                <li>Seat 10 Enter in Extnded Mode Today
-                    <span class="mt-1"><i class="fa fa-clock"></i> 18-11-2024 10:20:45 AM</span>
-                </li> --}}
+               
             </ul>
         </div>
     </div>
@@ -229,7 +212,7 @@
     <div class="row g-4">
         
         @can('has-permission', 'Total Bookings')
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>Total Slots Bookings</h6>
                 <div class="d-flex">
@@ -240,7 +223,7 @@
             </div>
         </div>
         @endcan
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Active Slots</h6>
                 <div class="d-flex">
@@ -250,7 +233,7 @@
                 <a href="{{ route('learners.list.view', ['type' => 'active_booking']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-1">
                 <h6>Expired Slots</h6>
                 <div class="d-flex">
@@ -261,13 +244,14 @@
             </div>
         </div>
     </div>
+
     <h4 class="pt-4">Current Month Slots Booked</h4>
     <div class="col-lg-12 pb-4">
         <p class="text-danger m-0 mt-1">Note : Expired and Extended seat counts are always based on the Past and Current Month, as the system operates on a monthly subscription model.</p>
     </div>
     <div class="row g-4">
         @can('has-permission', 'Total Booked Seats Count')
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-3">
                 <h6>This Month Total</h6>
                 <div class="d-flex">
@@ -278,7 +262,7 @@
             </div>
         </div>
         @endcan
-        <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>This Month Booked</h6>
                 <div class="d-flex">
@@ -288,7 +272,7 @@
                 <a href="{{ route('learners.list.view', ['type' => 'booing_slot']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
             </div>
         </div>
-        {{-- <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+        {{-- <div class="col-lg-2 col-md-4 col-sm-6 col-6">
             <div class="booking-count bg-4">
                 <h6>Previous Month Booked</h6>
                 <div class="d-flex">
@@ -299,7 +283,7 @@
     </div>
 </div> --}}
 @can('has-permission', 'Expired Seats')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-1">
         <h6>This Month Expired</h6>
         <div class="d-flex">
@@ -311,7 +295,7 @@
 </div>
 @endcan
 @can('has-permission', 'Expired in 5 Days')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-1">
         <h6>Expired in 5 Days</h6>
         <div class="d-flex">
@@ -323,7 +307,7 @@
 </div>
 @endcan
 @can('has-permission', 'Extended Seats')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-4">
         <h6>Extended Seats</h6>
         <div class="d-flex">
@@ -337,7 +321,7 @@
 @endcan
 @can('has-permission', 'Online Paid')
 
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Online Paid</h6>
         <div class="d-flex">
@@ -349,7 +333,7 @@
 </div>
 @endcan
 @can('has-permission', 'Offline Paid')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Offline Paid</h6>
         <div class="d-flex">
@@ -360,7 +344,7 @@
     </div>
 </div>
 @endcan
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Pay Later</h6>
         <div class="d-flex">
@@ -372,7 +356,7 @@
 </div>
 
 @can('has-permission', 'Swap Seats')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Swap Seats</h6>
         <div class="d-flex">
@@ -385,7 +369,7 @@
 </div>
 @endcan
 @can('has-permission', 'Upgrade Seats')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Upgrade Seats</h6>
         <div class="d-flex">
@@ -397,7 +381,7 @@
 </div>
 @endcan
 @can('has-permission', 'Reactive Seats')
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Reactive Seats</h6>
         <div class="d-flex">
@@ -409,7 +393,7 @@
     </div>
 </div>
 @endcan
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Renew Seats</h6>
         <div class="d-flex">
@@ -420,7 +404,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'renew_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Close Seats</h6>
         <div class="d-flex">
@@ -431,7 +415,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'close_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6">
     <div class="booking-count bg-3">
         <h6>Delete Seats</h6>
         <div class="d-flex">
@@ -441,7 +425,7 @@
         <a href="{{ route('learners.list.view', ['type' => 'delete_seat']) }}" class="viewall">View All <i class="fa fa-long-arrow-right"></i> </a>
     </div>
 </div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6 d-none">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6 d-none">
     <div class="booking-count bg-4">
         <h6>WhatsApp Sended</h6>
         <div class="d-flex">
@@ -451,7 +435,7 @@
         <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
     </div>
 </div>
-<div class="col-lg-2 col-md-3 col-sm-6 col-6 d-none">
+<div class="col-lg-2 col-md-4 col-sm-6 col-6 d-none">
     <div class="booking-count bg-4">
         <h6>Email Sended</h6>
         <div class="d-flex">
@@ -467,7 +451,7 @@
 <!-- Plan Wise Booking Counts -->
 <div class="row g-4 planwisecount">
    
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Full Day</h6>
             <div class="d-flex">
@@ -477,7 +461,7 @@
         </div>
     </div>
    
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>First Half</h6>
             <div class="d-flex">
@@ -486,7 +470,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Second Half</h6>
             <div class="d-flex">
@@ -495,7 +479,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 1</h6>
             <div class="d-flex">
@@ -504,7 +488,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 2</h6>
             <div class="d-flex">
@@ -513,7 +497,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 3</h6>
             <div class="d-flex">
@@ -522,7 +506,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-4">
             <h6>Hourly Slot 4</h6>
             <div class="d-flex">
@@ -531,7 +515,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-3">
             <h6>Total Booked Seats</h6>
             <div class="d-flex">
@@ -540,7 +524,7 @@
             <img src="{{url('public/img/seat.svg')}}" alt="library" class="img-fluid rounded">
         </div>
     </div>
-    <div class="col-lg-2 col-md-3 col-sm-6 col-6">
+    <div class="col-lg-2 col-md-4 col-sm-6 col-6">
         <div class="booking-count bg-3">
             <h6>Available Seats</h6>
             <div class="d-flex">
@@ -556,7 +540,7 @@
 <!-- Dahboard Charts -->
 
 @can('has-permission', 'Library Analytics')
-<div class="row mt-4">
+<div class="row mt-4 g-4">
     <div class="col-lg-8">
         <div class="card chart">
             <h5 class="mb-3">Planwise Revenue</h5>
@@ -649,6 +633,7 @@
         <div class="seat-statistics">
             <h4 class="mb-3 text-center">Seat About to Expire</h4>
             <ul class="contents">
+               
                 @if(!$renewSeats->isEmpty())
 
                 @foreach($renewSeats as $key => $value)
@@ -657,7 +642,7 @@
                         <img src="{{url('public/img/booked.png')}}" alt="library" class="img-fluid rounded">
                         <div class="seat-content">
                             <h6>Seat No. {{$value->seat_no}}</h6>
-                            <small>{{$value->planType->name}}</small>
+                            <small>{{$value->planType->name ?? ''}}</small>
                         </div>
                         <div class="seat-status">
                             <p>Expired in {{ \Carbon\Carbon::now()->diffInDays($value->plan_end_date) }} Days</p>

@@ -17,6 +17,34 @@
     --text-color: {{ $textColor ?? '#333' }}; 
 } */
 
+.small,
+small {
+    font-size: .875em;
+    font-weight: 600;
+    color: #858585;
+}
+
+span.icon {
+    width: 35px;
+    height: 35px;
+    display: inline-flex;
+    background: #d4daff;
+    justify-content: center;
+    align-items: center;
+    border-radius: 35px;
+    margin-right: .5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #151f38;
+}
+
+.me-2 {
+    margin-right: .5rem !important;
+    width: 25px;
+}
+
+
+
 :root {
     --c1: #151F38;
     --c2: #1D7BAD;
@@ -188,16 +216,34 @@ a.go-back {
     justify-content: center;
 }
 
+.top {
+    width: 100%;
+}
+
+.adminstrator-login .logo {
+    width: 180px;
+    display: block;
+    margin-left: auto;
+    margin: 0 !important;
+}
+
 .adminstrator-login .left {
     background-color: var(--c1);
     width: 70%;
     padding: 1.5rem 2rem;
 }
 
+.left .content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
 .adminstrator-login .left {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .adminstrator-login .left h2 {
@@ -208,8 +254,17 @@ a.go-back {
 .adminstrator-login .right {
     width: 30%;
     padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
 }
 
+.middle {
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
 .adminstrator-login .left h2 {
     color: var(--c5);
@@ -481,7 +536,11 @@ nav ol {
     transform: translateX(-50%);
 } */
 
-
+.text-secondary {
+    --bs-text-opacity: 1;
+    font-weight: 600;
+    display: block;
+}
 
 .library-dashbaord .content-area {
     flex: 1;
@@ -496,14 +555,14 @@ nav ol {
 .content-area .header {
     position: sticky;
     top: 0;
-    z-index: 1050;
+    z-index: 1020;
     background: #fff;
     box-shadow: 1px 0 5px #00000021 !important;
 }
 
 .content-area .content {
     flex: 1;
-    padding: .5rem;
+    padding: 0 .5rem;
     background: linear-gradient(180deg, #eafdff, transparent);
 }
 
@@ -2020,6 +2079,9 @@ body {
     padding: 1.5rem 2rem;
 }
 
+.middle h5 {
+    color: #007888 !important;
+}
 
 .adminstrator-login .left h2 {
     color: var(--c5);
@@ -2248,7 +2310,7 @@ table td {
     align-items: center;
     margin: 0;
     padding: 8px 12px;
-    margin-top: .5rem;
+    margin-top: .3rem;
     margin-bottom: .3rem;
 }
 
@@ -2284,11 +2346,7 @@ nav ol {
 }
 
 
-.content-area .content {
-    flex: 1;
-    padding: .5rem;
-    background: linear-gradient(180deg, #eafdff, transparent);
-}
+
 
 .content .card {
     background: var(--c5);
@@ -4461,16 +4519,74 @@ ul.activity li span {
     z-index: -1;
 }
 
+@media screen and (max-width:840px) {
+    .dashboard-Header h1 * {
+        font-size: 1.5rem !important;
+    }
+}
 
 @media screen and (max-width:480px) {
+    .table-responsive{
+        border-radius: 0 !important;
+    }
+    ul.libraryFeatures {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    th,
+    td {
+        white-space: nowrap;
+        padding: .5rem 1.5rem !important;
+    }
+
     .w-120 {
         width: 0 !important;
         overflow: hidden;
     }
 
+    .dashboard h1,
+    .dashboard h1 * {
+        font-size: 1rem !important;
+    }
+
+    .seat-booking {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    small.text-success.ml-2 {
+        display: none;
+    }
+
     table.table.text-center.datatable.border-bottom th,
     table.table.text-center.datatable.border-bottom td {
         white-space: nowrap;
+    }
+
+    .adminstrator-login {
+        flex-direction: column;
+    }
+
+    .adminstrator-login .left,
+    .adminstrator-login .right {
+        width: 100%;
+    }
+
+    .adminstrator-login .left .content {
+        display: none;
+    }
+
+    .right {
+        flex: 1;
+    }
+
+    .adminstrator-login .left {
+        padding: 1rem 2rem;
+    }
+
+    .adminstrator-login .logo {
+        margin: 0 auto !important;
     }
 }
 
@@ -4982,11 +5098,13 @@ ul.locations li {
     margin-bottom: 3.5rem;
 }
 
+
 .product-features-box h4 {
     color: #fff !important;
     font-size: 1.2rem;
     font-weight: 400;
     line-height: 27px;
+   
 }
 
 .feedback-box .customer-info {
@@ -5008,14 +5126,18 @@ ul.locations li {
     font-size: 1.2rem;
 }
 
+.customer-info h4 {
+    font-size: 1.2rem;
+    color: #05acc1;
+    font-weight: 400;
+}
+
 .feedback-box .customer-info .profile {
     width: 45px !important;
 }
 
 .feedback-box .message {
     font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 7rem;
 }
 
 /* Inquiry */

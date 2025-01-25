@@ -15,18 +15,16 @@
 <body>
     <div class="adminstrator-login">
         <div class="left">
-            <h2>Empower Learning,<br>
-                Shape Futures: <br>
-                Your Library, Your Legacy.</h2>
+            <div class="top">
+                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+            </div>
+            <div class="content">
+                <h2>Empower Learning,<br>
+                    Shape Futures: <br>
+                    Your Library, Your Legacy.</h2>
+            </div>
         </div>
         <div class="right">
-            <div class="top">
-                <img src="" alt="">
-            </div>
-
-
-
-
             <div class="middle">
                 <h5>Welcome Back, </h5>
                 <h2>Library Admin!</h2>
@@ -66,25 +64,24 @@
                         <!-- Remember Me checkbox -->
                         <div class="col-lg-12 ">
                             <div class="form-group">
-                                
+
                                 <input class="form-check-input no-validate" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="form-label">Remember Me</label>
                                 <div class="error-msg"></div>
-                            </div> 
-                            
+                            </div>
+
                         </div>
                         <div class="col-lg-12">
                             <button type="submit" class="btn btn-primary button">Let’s get started! </button>
                         </div>
                         <div class="col-lg-12 text-center">
                             <small><a href="{{ route('password.request.library') }}" class="forgot-password">Forgot Password ?</a></small>
-                            <p>If you are Not Register ? <a href="{{route('register')}}" class="links d-inline">Register Now</a>
+                            <p>If you are Not Register ? <a href="{{route('register')}}" class="links d-inline"><em>Register Now</em></a>
                             </p>
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="bottom"></div>
         </div>
     </div>
 

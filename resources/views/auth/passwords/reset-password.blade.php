@@ -12,7 +12,7 @@
 </div>
 @endif
 
-<div class="card">
+<div class="card mb-4">
     <form action="{{ url('change-password') }}" class="validateForm" method="POST">
         @csrf
         <div class="row g-4">

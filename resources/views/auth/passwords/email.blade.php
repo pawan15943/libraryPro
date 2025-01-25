@@ -16,14 +16,17 @@
 <body>
     <div class="adminstrator-login">
         <div class="left">
-            <h2>Empower Learning,<br>
-                Shape Futures: <br>
-                Your Library, Your Legacy.</h2>
+            <div class="top">
+                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+            </div>
+            <div class="content">
+                <h2>Empower Learning,<br>
+                    Shape Futures: <br>
+                    Your Library, Your Legacy.</h2>
+            </div>
         </div>
         <div class="right">
-            <div class="top">
-                <img src="" alt="">
-            </div>
+           
             <div class="middle">
                 <h5>Trouble Logging In</h5>
                 <h2>Library Admin?</h2>
@@ -48,19 +51,17 @@
                         </div>
                         <div class="col-lg-12 text-center">
                             <button type="submit" class="btn btn-primary button mb-2">Send Password Reset Link </button>
-                            <small>Check your inbox, and we’ll guide you through! or  <a href="{{ route('login.library') }}" class="forgot-password">Login Now ?</a></small>
+                            <small>Check your inbox, and we’ll guide you through! or <a href="{{ route('login.library') }}" class="forgot-password">Login Now ?</a></small>
                         </div>
                         <div class="col-lg-12 text-center">
-                           
+
                         </div>
                     </div>
 
                 </form>
 
             </div>
-            <div class="col-lg-12 text-center">
-
-            </div>
+            
         </div>
     </div>
 

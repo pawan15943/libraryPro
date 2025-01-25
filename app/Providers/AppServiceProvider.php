@@ -140,6 +140,11 @@ class AppServiceProvider extends ServiceProvider
                 'Dashboard' => route('library.home'),
                 'Library Counts Details' => route('learners.list.view'),
             ],
+            'learner.expire' => [
+                'Dashboard' => route('library.home'),
+                'Learners List' => route('learners'),
+                'Expired The Learner' => route('learner.expire'),
+            ],
             'library.feedback' => [
                 'Dashboard' => route('library.home'),
                 'Library Feedback' => route('library.feedback'),
@@ -209,6 +214,8 @@ class AppServiceProvider extends ServiceProvider
             'report.expense' => 'Manage Expanse',
             'library.feedback' => 'Library Feedback',
             'library.video-training' => 'Video Tutorials',
+            'learner.expire' => 'Expired The Learner'
+          
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

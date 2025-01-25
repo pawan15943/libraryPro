@@ -145,7 +145,7 @@ $current_route = Route::currentRouteName();
                     <div class="col-lg-2">
                         <label for="status">Seat No.</label>
                         <select name="seat_no" id="seat_no" class="form-select">
-                            <option value="">Sear No</option>
+                            <option value="">Seat No</option>
 
                             @foreach($seats as $seat)
                             <option value="{{ $seat->id }}" {{ request()->get('seat_no') == $seat->id ? 'selected' : '' }}>

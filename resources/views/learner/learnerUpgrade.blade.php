@@ -35,7 +35,7 @@ $readonlyStyle = '';
 <form action="{{ route('learners.update.upgrade', $customer->id) }}" method="POST" enctype="multipart/form-data" id="changePlan">
     @csrf
     @method('PUT')
-<input type="hidden" value="{{$customer->learner_detail_id}}" name="learner_detail_id">
+    <input type="hidden" value="{{$customer->learner_detail_id}}" name="learner_detail_id">
     <div class="row">
         <div class="col-lg-9">
             <div class="actions">

@@ -14,10 +14,37 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-        <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
+    <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
+    <style>
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #loader h4{
+            margin-top: -2rem;
+            color:#0d8898;
+        }
+    </style>
 </head>
 
 <body>
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+
+
+    <div id="loader">
+        <dotlottie-player src="https://lottie.host/db22cec8-bed8-4ce9-8993-e2c88bff2231/qJmiiH5Orw.lottie" background="transparent" speed="1" style="width: 150px; height: 150px" loop autoplay></dotlottie-player>
+        <h4>Library Manager...</h4>
+    </div>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container">
@@ -831,6 +858,20 @@
                     });
                 }
             }
+        });
+
+        // $(window).on('load', function() {
+        //     $('#loader').fadeOut('slow', function() {
+        //         $(this).remove(); 
+        //     });
+        // });
+
+        $(window).on('load', function() {
+            setTimeout(function() {
+                $('#loader').fadeOut('slow', function() {
+                    $(this).remove(); 
+                });
+            }, 2000); 
         });
     </script>
 

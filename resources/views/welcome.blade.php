@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin</title>
+    <title>Library Management System | Easy Library Automation Software</title>
+    <meta type="description" value="Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">
@@ -648,8 +649,8 @@
                             <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">
                             <h4>We Are Here
                                 to Assist you</h4>
-                            <p>Call : +91-8114479678</p>
-                            <p>Mail : libraro@nbcc.com</p>
+                            <p class="m-0">Call : <a href="tel:91-8114479678">91-8114479678</a></p>
+                            <p>Mail : <a href="mailto:info@librarymanager.in">info@librarymanager.in</a></p>
                         </div>
                         <img src="{{ asset('public/img/direcotry/support.png') }}" alt="support" class="img-fluid">
                     </div>

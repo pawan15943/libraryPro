@@ -14,7 +14,8 @@
     <div class="adminstrator-login">
         <div class="left">
             <div class="top">
-                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo"></a>
             </div>
             <div class="content">
                 <h2>Empower Learning,<br>

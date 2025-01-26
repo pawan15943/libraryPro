@@ -17,7 +17,8 @@
     <div class="adminstrator-login">
         <div class="left">
             <div class="top">
-                <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('public/img/libraro-white.svg') }}" alt="Libraro Logo" class="logo"></a>
             </div>
             <div class="content">
                 <h2>Empower Learning,<br>
@@ -26,7 +27,7 @@
             </div>
         </div>
         <div class="right">
-            
+
             <div class="middle">
                 <h5>Welcome Back, </h5>
                 <h2>Library Administrator!</h2>
@@ -79,7 +80,7 @@
                     </div>
                 </form>
             </div>
-            
+
         </div>
     </div>
 

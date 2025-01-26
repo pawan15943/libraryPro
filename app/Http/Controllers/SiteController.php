@@ -31,7 +31,7 @@ class SiteController extends Controller
     }
     public function home(){
         $subscriptions = Subscription::with('permissions')->get();
-        return view('welcome',compact('subscriptions'));
+        return view('site.home',compact('subscriptions'));
     }
     public function searchLibrary(){
         $cities = City::pluck('city_name', 'id');
@@ -42,6 +42,6 @@ class SiteController extends Controller
         $feedback_count=Feedback::count();
         $happy_customer=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
        
-        return view('library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customer','feedback_count'));
+        return view('site.library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customer','feedback_count'));
     }
 }

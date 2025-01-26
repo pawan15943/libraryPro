@@ -7,6 +7,15 @@
             --c1: {{ $primary_color ? $primary_color : '#151F38'  }};
         }
         </style> -->
+
+        <style>
+            .backdrop {
+    z-index: 1000 !important; /* Example value */
+}
+.modal {
+    z-index: 1050 !important; /* Ensure this is higher than the backdrop */
+}
+        </style>
 <div class="header">
     <div class="d-flex" style="gap:1rem">
         <div class="conatent flex" style="flex: 1;">
@@ -74,22 +83,28 @@
         </div>
         <!-- Expiry Warning Ends-->
 
-        <!-- Modal Popup for Configration -->
-        <div class="modal fade" id="todayrenew" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <h4>Your library Renew today. Please consider renewing your plan!</h4>
-                        <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
-
-                    </div>
+        <div class="modal" tabindex="-1" id="todayrenew">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <h4>Your library Renew today. Please consider renewing your plan!</h4>
+                    <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
             </div>
-        </div>
+          </div>
+
+
+
+        
         <!-- Modal Popup end for Configration -->
         <!--Notifications -->
         @if(isset(auth()->user()->unreadNotifications))

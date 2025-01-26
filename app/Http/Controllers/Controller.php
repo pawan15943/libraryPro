@@ -1284,17 +1284,17 @@ class Controller extends BaseController
               
                 if ($slot['type_id'] == 1 && !$user->can('has-permission', 'Full Day')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'FirstHalf')) {
+                } elseif ($slot['type_id'] == 2 && !$user->can('has-permission', 'First Half')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'SecondHalf')) {
+                } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'Second Half')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly1')) {
+                } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly Slot 1')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly2')) {
+                } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly Slot 2')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly3')) {
+                } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly Slot 3')) {
                     $hasPermission = false;
-                } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly4')) {
+                } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
                     $hasPermission = false;
                 }
                 $existPlantype=PlanType::withoutGlobalScopes()->where('library_id',$library_id)->where('day_type_id',$slot['type_id'])->first();

@@ -50,11 +50,16 @@
             @endswitch">
                 <div class="top-content">
                     <h4>{{$plan->name}}
-                        @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
-                            <span><a href="{{ route('subscriptions.choosePlan') }}">Upgrade Plan</a></span>
-                            @endif
+                       
                     </h4>
-                    <label for="">Active </label>
+                    <label for="">
+                    @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
+                    <a href="{{ route('subscriptions.choosePlan') }}" class="text-danger">Upgrade Plan</a>
+                    @else
+                    Active 
+                    @endif    
+                    
+                    </label>
                 </div>
                 <div class="d-flex">
                     <ul class="plann-info">

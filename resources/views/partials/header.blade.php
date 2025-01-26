@@ -1,26 +1,61 @@
 <div id="loader">
     <div class="spinner"></div>
 </div>
-<!-- <style>
+<style>
         @php  if(!empty($primary_color)) @endphp
         :root {
             --c1: {{ $primary_color ? $primary_color : '#151F38'  }};
         }
-        </style> -->
-
-        <style>
-            .backdrop {
-    z-index: 1000 !important; /* Example value */
-}
-.modal {
-    z-index: 1050 !important; /* Ensure this is higher than the backdrop */
-}
         </style>
+
+   <!-- Expiry Warning -->
+   <div class="modal" id="planExpiryModal" tabindex="-1">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                   
+                    <div class="modal-body">
+                        <button type="button" class="btn-close align-self-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
+                        @if($librarydiffInDays < 0)
+                            <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
+                            @elseif($librarydiffInDays > 0)
+                            <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
+                            @else
+                            <p class="text-danger text-center text-bold">Your library plan expires today. Please consider renewing your plan!</p>
+                            @endif
+
+                            <button type="button" class="btn btn-primary button m-auto w-100" data-bs-dismiss="modal" aria-label="Close">Renew your Subscription</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Expiry Warning Ends-->
+
+        <div class="modal" tabindex="-1" id="todayrenew">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Your library Renew today. Please consider renewing your plan!</h4>
+                    <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        <!-- Modal Popup end for Configration -->
+   
+
 <div class="header">
     <div class="d-flex" style="gap:1rem">
         <div class="conatent flex" style="flex: 1;">
             <i class="fa fa-bars mr-2" id="sidebar"></i>
-
             @if(isset($upcomingdiffInDays) && Auth::guard('library')->check() && $is_renew && $isProfile)
             <small class="text-danger ml-2"> <i class="fa fa-clock"></i>
                 @if($upcomingdiffInDays > 0)
@@ -58,54 +93,10 @@
 
         </div>
 
-        <!-- Expiry Warning -->
-        <div class="modal fade" id="planExpiryModal" tabindex="-1" aria-labelledby="planExpiryLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <!-- <div class="modal-header">
-                        <h5 class="modal-title" id="planExpiryLabel">Plan Expiry Warning</h5>
-                        
-                    </div> -->
-                    <div class="modal-body">
-                        <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
-                        @if($librarydiffInDays < 0)
-                            <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
-                            @elseif($librarydiffInDays > 0)
-                            <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
-                            @else
-                            <p class="text-danger text-center text-bold">Your library plan expires today. Please consider renewing your plan!</p>
-                            @endif
-
-                            <button type="button" class="btn btn-primary button m-auto w-100" data-bs-dismiss="modal" aria-label="Close">Renew your Subscription</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Expiry Warning Ends-->
-
-        <div class="modal" tabindex="-1" id="todayrenew">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>Your library Renew today. Please consider renewing your plan!</h4>
-                    <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
+      
+        <!-- old popup position -->
         
-        <!-- Modal Popup end for Configration -->
+        
         <!--Notifications -->
         @if(isset(auth()->user()->unreadNotifications))
             

@@ -556,9 +556,34 @@ nav ol {
 .content-area .header {
     position: sticky;
     top: 0;
-    z-index: 1020;
     background: #fff;
     box-shadow: 1px 0 5px #00000021 !important;
+}
+
+
+/* Navbar */
+.content-area .header {
+    z-index: 1000;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    z-index: 1050;
+
+}
+
+/* Modal Content */
+.modal {
+    position: fixed;
+    z-index: 1060;
+
+}
+
+.modal-container {
+    position: fixed;
+    z-index: 1100;
+    /* Override everything */
 }
 
 .content-area .content {
@@ -2722,7 +2747,7 @@ ul.actionalbls li i {
 }
 
 .modal-backdrop {
-    z-index: 1040 !important;
+    z-index: 1018 !important;
 }
 
 .modal {
@@ -4527,9 +4552,10 @@ ul.activity li span {
 }
 
 @media screen and (max-width:480px) {
-    .table-responsive{
+    .table-responsive {
         border-radius: 0 !important;
     }
+
     ul.libraryFeatures {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -5105,7 +5131,7 @@ ul.locations li {
     font-size: 1.2rem;
     font-weight: 400;
     line-height: 27px;
-   
+
 }
 
 .feedback-box .customer-info {
@@ -5214,4 +5240,3 @@ ul.social li {
 ul.social li a .fab {
     font-size: 1.6rem;
 }
-

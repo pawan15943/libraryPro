@@ -9,7 +9,7 @@
                 <ul>
                     <li><a href="{{url('/')}}">Home</a></li>
                     <li><a href="{{route('about-us')}}">About Us</a></li>
-                    <li><a href="#faq">Faq's</a></li>
+                    <li><a href="{{url('/#faq')}}">Faq's</a></li>
                     <li><a href="{{route('blog')}}">Blog</a></li>
                     <li><a href="{{route('contact-us')}}">Contact Us</a></li>
                 </ul>

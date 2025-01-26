@@ -49,7 +49,7 @@
                             <label for="">Email Id <span>*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
                                 value="{{ old('email') }}">
-                            <span class="text-secondary">Please provide a correct email ID for future communications.</span>
+                            <!-- <span class="text-secondary">Please provide a correct email ID for future communications.</span> -->
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -60,7 +60,7 @@
                             <label for="">Contact No. (WhatsApp Number) <span>*</span></label>
                             <input type="text" class="form-control digit-only @error('library_mobile') is-invalid @enderror" name="library_mobile" maxlength="10"
                                 value="{{ old('library_mobile') }}">
-                            <span class="text-secondary">Provide a correct WhatsApp number for future communications and reminders.</span>
+                            <!-- <span class="text-secondary">Provide a correct WhatsApp number for future communications and reminders.</span> -->
                             @error('library_mobile')
 
                             <span class="invalid-feedback" role="alert">

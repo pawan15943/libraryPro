@@ -33,7 +33,7 @@
                 <small>Register Now and Unlock Exciting Opportunities!</small>
                 <form action="{{ route('library.store') }}" method="POST" class="validateForm" enctype="multipart/form-data">
                     @csrf
-                    <div class="row g-2 mt-1">
+                    <div class="row g-3 mt-1">
                         <div class="col-lg-12">
                             <label>Library Name<span>*</span></label>
                             <input type="text" class="form-control char-only @error('library_name') is-invalid @enderror" name="library_name"

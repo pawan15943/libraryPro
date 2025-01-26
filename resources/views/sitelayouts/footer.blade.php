@@ -7,19 +7,19 @@
             <div class="col-lg-3">
                 <h4 class="text-center text-md-start">Important Links</h4>
                 <ul>
-                    <li><a href="">Home</a></li>
-                    <li><a href="">About Us</a></li>
-                    <li><a href="">Faq's</a></li>
-                    <li><a href="">Blog</a></li>
-                    <li><a href="">Contact Us</a></li>
+                    <li><a href="{{url('/')}}">Home</a></li>
+                    <li><a href="{{route('about-us')}}">About Us</a></li>
+                    <li><a href="#faq">Faq's</a></li>
+                    <li><a href="{{route('blog')}}">Blog</a></li>
+                    <li><a href="{{route('contact-us')}}">Contact Us</a></li>
                 </ul>
             </div>
             <div class="col-lg-3">
                 <h4 class="text-center text-md-start">Other Links</h4>
                 <ul>
-                    <li><a href="">Privacy Polisy</a></li>
-                    <li><a href="">Terms of Use</a></li>
-                    <li><a href="">Refund Policy</a></li>
+                    <li><a href="{{route('privacy-policy')}}">Privacy Polisy</a></li>
+                    <li><a href="{{route('term-and-condition')}}">Terms of Use</a></li>
+                    <li><a href="{{route('refund-policy')}}">Refund Policy</a></li>
                 </ul>
             </div>
             <div class="col-lg-3">
@@ -35,7 +35,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-lg-12">
-                <p class="py-1 text-center text-white m-0">@2025, All rights reserved</p>
+                <p class="py-1 text-center text-white m-0">@{{ date('Y') }}, All rights reserved</p>
             </div>
         </div>
     </div>

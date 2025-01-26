@@ -9,7 +9,7 @@
                     <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
                     <h2 class="head-text-2">Effortlessly Manage Your Library – From Bookings to Reporting, All in One Place!</h2>
                     <p class="head-text-3">Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.</p>
-                    <a href="" class="cta">Sign Up Now!</a>
+                    <a href="{{route('register')}}" class="cta">Sign Up Now!</a>
                 </div>
                 <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
                     <img src="{{ asset('public/img/head.png') }}" alt="ok" class="img-fluid">
@@ -64,7 +64,7 @@
     </section>
 
     <!-- Section 3 -->
-    <section class="product-benefits">
+    <section class="product-benefits" id="features">
         <div class="container">
             <div class="heading mb-5 text-center text-md-start">
                 <span>Benefits of Product</span>
@@ -262,7 +262,7 @@
         </div>
     </section>
 
-    <div class="our-plan">
+    <div class="our-plan" id="pricing">
         <div class="container">
             <!-- Dynamic 3 -->
             <h2 class="text-center mb-4">Our Pricing</h2>
@@ -388,7 +388,7 @@
     </section>
 
     <!-- Frequently Asked Questions -->
-    <section class="py-5">
+    <section class="py-5" id="faqy">
         <div class="container">
             <h2 class="text-center mb-5">Frequently Asked Questions</h2>
             <div class="row justify-content-center">

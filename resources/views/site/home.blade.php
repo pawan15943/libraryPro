@@ -50,12 +50,7 @@
                                 <img src="{{ asset('public/img/03.png') }}" alt="03">
                             </div>
                         </div>
-                        <!-- <div class="item">
-                            <div class="product-features-box">
-                                <h4>Create Custom Plan as per learner Requirement</h4>
-                                <img src="" alt="">
-                            </div>
-                        </div> -->
+                        
                     </div>
                 </div>
 

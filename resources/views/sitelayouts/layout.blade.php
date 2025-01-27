@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library Management System | Easy Library Automation Software</title>
-    <meta type="description" value="Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.">
+    <title>Libraro: Best Library Management Software in India | Easy & Efficient</title>
+    <meta type="description" value="Libraro is India’s #1 library management software for schools, colleges, and public libraries. Simplify cataloging, membership, book issuing, and returns with our easy-to-use, feature-rich system. Perfect for small to large libraries.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">
@@ -15,9 +15,34 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-    <style>
-        
-    </style>
+    
+
+    <!-- Libraru Schema -->
+    {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Libraro",
+    "url": "https://www.libraro.in",
+    "applicationCategory": "Library Management Software",
+    "operatingSystem": "Windows, Web-based",
+    "description": "Libraro is a powerful library management software to simplify cataloging, membership, and book tracking for schools, colleges, and public libraries.",
+    "offers": {
+        "@type": "Offer",
+        "price": "Contact for pricing",
+        "priceCurrency": "INR"
+    },
+    "author": {
+        "@type": "Organization",
+        "name": "Techito"
+    },
+    "softwareVersion": "1.0",
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "256"
+    }
+    }
+
 </head>
 
 

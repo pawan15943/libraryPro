@@ -12,7 +12,7 @@
                     <a href="{{route('register')}}" class="cta">Sign Up Now!</a>
                 </div>
                 <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
-                    <img src="{{ asset('public/img/head.png') }}" alt="ok" class="img-fluid">
+                    <img src="{{ asset('public/img/head.png') }}" alt="Library management software" class="img-fluid">
                 </div>
             </div>
         </div>
@@ -34,20 +34,20 @@
                             <div class="product-features-box">
                                 <h4>Interactive Dashboard with <br>
                                     Complete Seat Tracking</h4>
-                                <img src="{{ asset('public/img/01.png') }}" alt="01">
+                                <img src="{{ asset('public/img/01.png') }}" alt="Library management software">
                             </div>
                         </div>
                         <div class="item">
                             <div class="product-features-box">
                                 <h4>Engage with Our Seat Mapping Feature: Expired and Extended Highlights</h4>
-                                <img src="{{ asset('public/img/02.png') }}" alt="02">
+                                <img src="{{ asset('public/img/02.png') }}" alt="Library automation software">
                             </div>
                         </div>
                         <div class="item">
                             <div class="product-features-box">
                                 <h4>Efficient & Seamless
                                     Reporting that make you Hasselfree</h4>
-                                <img src="{{ asset('public/img/03.png') }}" alt="03">
+                                <img src="{{ asset('public/img/03.png') }}" alt="Best library software in India">
                             </div>
                         </div>
                         
@@ -61,10 +61,9 @@
     <!-- Section 3 -->
     <section class="product-benefits" id="features">
         <div class="container">
-            <div class="heading mb-5 text-center text-md-start">
-                <span>Benefits of Product</span>
-                <h2>Library<br>
-                    Features we offers</h2>
+            <div class="heading mb-5 text-center">
+                <span>Features of Libraro: The Best Library Software in India</span>
+                <h2>Why Choose Libraro for Library Management?</h2>
             </div>
             <div class="row g-4">
                 <div class="col-lg-3">

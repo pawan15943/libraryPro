@@ -15,34 +15,35 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-    
+
 
     <!-- Libraru Schema -->
-    {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Libraro",
-    "url": "https://www.libraro.in",
-    "applicationCategory": "Library Management Software",
-    "operatingSystem": "Windows, Web-based",
-    "description": "Libraro is a powerful library management software to simplify cataloging, membership, and book tracking for schools, colleges, and public libraries.",
-    "offers": {
-        "@type": "Offer",
-        "price": "Contact for pricing",
-        "priceCurrency": "INR"
-    },
-    "author": {
-        "@type": "Organization",
-        "name": "Techito"
-    },
-    "softwareVersion": "1.0",
-    "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "reviewCount": "256"
-    }
-    }
-
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "Libraro",
+            "url": "https://www.libraro.in",
+            "applicationCategory": "Library Management Software",
+            "operatingSystem": "Windows, Web-based",
+            "description": "Libraro is a powerful library management software to simplify cataloging, membership, and book tracking for schools, colleges, and public libraries.",
+            "offers": {
+                "@type": "Offer",
+                "price": "Contact for pricing",
+                "priceCurrency": "INR"
+            },
+            "author": {
+                "@type": "Organization",
+                "name": "Techito"
+            },
+            "softwareVersion": "1.0",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "reviewCount": "256"
+            }
+        }
+    </script>
 </head>
 
 

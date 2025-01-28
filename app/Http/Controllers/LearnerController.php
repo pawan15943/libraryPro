@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
@@ -1972,6 +1973,52 @@ class LearnerController extends Controller
      $learner_request = DB::table('learner_request')->where('learner_id', Auth::user()->id)->get();
      return view('learner.request',compact('learner_request'));
 
+    }
+
+    public function learnerAttendence(Request $request){
+        if($request->has('date')){
+            $learners= $this->getLearnersByLibrary()->where('learners.status',1)->get();
+        }else{
+            $learners=null;
+        }
+        
+        return view('learner.attendance',compact('learners'));
+     
+    }
+
+    public function updateAttendance(Request $request)
+    {
+        // Validate incoming request
+        $request->validate([
+            'learner_id' => 'required|integer',
+            'attendance' => 'required|integer',
+            'date' => 'required|date',
+        ]);
+
+        // Extract variables from the request
+        $learnerId = $request->learner_id;
+        $attendance = $request->attendance;
+        $date = $request->date;
+
+        // Check if attendance already exists for the date and learner
+        $existingAttendance = Attendance::where('learner_id', $learnerId)
+            ->where('date', $date)
+            ->first();
+
+        if ($existingAttendance) {
+            // Update attendance if it exists
+            $existingAttendance->attendance = $attendance;
+            $existingAttendance->save();
+        } else {
+            // Insert new attendance record if it doesn't exist
+            Attendance::create([
+                'learner_id' => $learnerId,
+                'attendance' => $attendance,
+                'date' => $date,
+            ]);
+        }
+
+        return response()->json(['success' => true, 'message' => 'Attendance updated successfully!']);
     }
 
 }

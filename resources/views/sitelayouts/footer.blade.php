@@ -36,7 +36,7 @@
         <div class="row mt-3">
             <div class="col-lg-12">
             
-                <p class="py-1 text-center text-white m-0">Copyright © {{ date('Y') }} Library Manager. All Rights Reserved.</p>
+                <p class="py-1 text-center text-white m-0">Copyright © {{ date('Y') }} Libraro.in. All Rights Reserved.</p>
             </div>
         </div>
     </div>

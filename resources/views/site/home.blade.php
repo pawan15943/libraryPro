@@ -62,14 +62,16 @@
 <section class="product-benefits" id="features">
     <div class="container">
         <div class="heading mb-5 text-center">
-            <span>Features of Libraro: The Best Library Software in India</span>
-            <h2>Why Choose Libraro for Library Management?</h2>
+            <span class="text-white">Features of Libraro: The Best Library Software in India</span>
+            <h2>Why Choose Libraro <br>for Library Management?</h2>
         </div>
         <div class="row g-4">
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/swap.png') }}" alt="Swap Seat" class="icon">
-                    <h4>Seamless <br>
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/swap.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Seamless
                         Seat Swapping</h4>
                     <span>Effortlessly switch seats for the perfect spot every time—boost comfort and productivity
                         with just a click!</span>
@@ -77,8 +79,10 @@
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Swap Seat" class="icon">
-                    <h4>Easy <br>
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Easy
                         Plan Upgrades</h4>
                     <span>Instantly upgrade your plan for more access and perks—unlock the best library experience
                         anytime!</span>
@@ -86,8 +90,11 @@
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/reactivate.png') }}" alt="Swap Seat" class="icon">
-                    <h4>Reactivate <br>
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/reactive.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Reactivate
                         Seat Access</h4>
                     <span>Quickly reactivate your seat and jump back into your favorite study spot—no waiting, just
                         instant access!</span>
@@ -95,8 +102,11 @@
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/close.png') }}" alt="Swap Seat" class="icon">
-                    <h4>Close <br>
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/closed.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Close
                         Seat Option</h4>
                     <span>Quickly reactivate your seat and jump back into your favorite study spot—no waiting, just
                         instant access!</span>
@@ -104,15 +114,21 @@
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/cancel.png') }}" alt="Swap Seat" class="icon">
-                    <h4>Cancel <br>
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/cancal.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Cancel
                         Seat Booking</h4>
                     <span>Cancel your seat booking anytime with ease—flexibility for your changing schedule!</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Delete <br>
                         Seat Booking</h4>
                     <span>Easily delete seat bookings you no longer need—maintain a clear and up-to-date booking
@@ -121,140 +137,180 @@
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/notification.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Effortless Communication</h4>
                     <span>Send updates, notifications, or reminders to students instantly via WhatsApp or email directly from the portal.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/membership-card.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Flexible Membership Plans</h4>
                     <span>Modify learner plans seamlessly to fit their changing needs.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/reset.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Quick Library Reset</h4>
                     <span>Mistakes happen! Reset your library settings with just one click to start fresh.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/import.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+
                     <h4>Simple Data Import</h4>
                     <span>Import existing learner data effortlessly in a single step to get started without delays.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/export.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Export Data with Ease</h4>
                     <span>Keep complete control by exporting your library data whenever needed.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/report.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Comprehensive Reporting</h4>
                     <span>Get detailed, actionable insights to optimize your library's performance.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/dashboard.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Interactive Dashboard</h4>
                     <span>Access everything at a glance with our intuitive and user-friendly dashboard.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/extend.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Extend Seat Usage</h4>
                     <span>Extend seat access days for learners with just a few clicks.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/backups.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Automated Weekly Backups</h4>
                     <span>Rest easy knowing your library’s data is backed up automatically every week.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/history.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Maintain Full Seat History</h4>
                     <span>Keep a detailed record of every seat and its usage history.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/user-interface.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Simplified User Interface</h4>
                     <span>Enjoy the easiest and most intuitive UI that requires no learning curve.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/direcoty-listing.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Free Directory Listing</h4>
                     <span>Get a complimentary listing in our library directory to boost visibility.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/login-portal.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Learner Login Portal</h4>
                     <span>Provide learners with a secure login to access all library features effortlessly.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/activities.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Track Recent Activities</h4>
                     <span>Monitor all recent activities in your library to stay updated.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/expired.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Quick Action on Expired Seats</h4>
                     <span>View a dedicated listing of expiring and expired seats to take timely actions.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/simple-setup.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Flexible Setup Options</h4>
                     <span>Set up your library for half-day, full-day, or hourly operations—all in one step.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/revenue.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Expense and Revenue Management</h4>
                     <span>Manage your library’s expenses and calculate monthly revenue seamlessly.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/training.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Online Training Videos</h4>
                     <span>Access training videos anytime to make the most of the software’s features.</span>
                 </div>
             </div>
+
             <div class="col-lg-3">
                 <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
-                    <h4>24/7 Support</h4>
-                    <span>Enjoy round-the-clock assistance to address any challenges you face.</span>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="benefits">
-                    <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/id-card.png') }}" alt="Swap Seat" class="icon">
+                    </div>
                     <h4>Easy ID Cards & Smart Attendance Tracking</h4>
                     <span>Effortless ID cards and smart attendance tracking with Libraro – simple, accurate, and efficient!</span>
                 </div>
@@ -517,12 +573,11 @@
             </div>
             @endif
             <div class="col-lg-6">
-                <h2 class="mb-4">Have Any Query ? <br>
-                    Request a Callback</h2>
-                <form action="{{ route('submit.inquiry') }}" method="POST">
+                <h2 class="mb-4">Would you like to schedule a demo?</h2>
+                <form action="{{ route('submit.inquiry') }}" method="POST" class="me-3">
                     @csrf
                     <div class="form-box">
-                        <div class="row g-4">
+                        <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="name">Full Name</label>
                                 <input type="text"
@@ -589,9 +644,9 @@
                         <h4>We Are Here
                             to Assist you</h4>
                         <p class="m-0">Call : <a href="tel:91-8114479678">91-8114479678</a></p>
-                        <p>Mail : <a href="mailto:info@librarymanager.in">info@librarymanager.in</a></p>
+                        <p>Mail : <a href="mailto:info@libraro.in">info@libraro.in</a></p>
                     </div>
-                    <img src="{{ asset('public/img/direcotry/support.png') }}" alt="support" class="img-fluid">
+                    <img src="{{ asset('public/img/contact.png') }}" alt="support" class="img-fluid">
                 </div>
             </div>
         </div>

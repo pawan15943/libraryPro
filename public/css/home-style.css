@@ -211,9 +211,11 @@ a.cta:hover {
 }
 
 .product-benefits .heading span {
-    color: #0ae4ff !important;
+    color: #fff !important;
     font-weight: 600;
     font-size: 1rem;
+    display: block;
+    margin-bottom: .6rem;
 }
 
 .product-benefits .heading h2 {
@@ -240,10 +242,53 @@ a.cta:hover {
     border: 1px solid #e7e7e7;
     padding: 2rem;
     border-radius: 1.5rem;
-    /* box-shadow: 1px 0px 20px #00000026; */
     height: 100%;
     transition: all .5s;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: all .5s;
 }
+
+.product-benefits .col-lg-3:nth-child(odd) .benefits:hover::after {
+    right: -90px;
+    bottom: -90px;
+    transition: all .5s;
+}
+
+.product-benefits .col-lg-3:nth-child(even) .benefits:hover::after {
+    right: -90px;
+    bottom: -90px;
+    transition: all .5s;
+}
+
+.product-benefits .col-lg-3:nth-child(odd) .benefits::after {
+    background: #d8f7fb;
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    right: -100px;
+    bottom: -100px;
+    border-radius: 200px;
+    z-index: -1;
+    transition: all .5s;
+}
+
+.product-benefits .col-lg-3:nth-child(even) .benefits::after {
+    background: #ffebcf;
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    right: -100px;
+    bottom: -100px;
+    border-radius: 200px;
+    z-index: -1;
+    transition: all .5s;
+}
+
+
 
 .benefits h4 {
     font-weight: 600;
@@ -284,9 +329,25 @@ a.cta:hover {
     font-weight: 400;
 }
 
+.iconbox {
+    background: #c9f9ff;
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1.5rem ! IMPORTANT;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 80px;
+    margin: 0;
+    padding: 0;
+}
+
+.iconbox:nth-child(even){
+    background: #ffebcf !important;
+}
+
 .icon {
-    width: 40px;
-    margin-bottom: 1.5rem;
+    width: 45px;
 }
 
 .heading {
@@ -471,7 +532,7 @@ button.btn.btn-primary:hover {
 /* Inquiry */
 .inquiry {
     padding: 3.5rem 0;
-
+    background: #f0fdff;
 }
 
 .inquiry .form-control:not(textarea),
@@ -501,8 +562,12 @@ button.btn.btn-primary:hover {
 }
 
 footer {
-    background: #113140;
+    background: #000;
     padding-top: 2.5rem;
+}
+
+footer p.py-1.text-center.text-white.m-0 {
+    font-size: .8rem;
 }
 
 footer h4 {
@@ -543,12 +608,12 @@ ul.social li a .fab {
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: #ffedb9 !important;
-    font-weight: 700;
+    background-color: #fff6db !important;
+    font-weight: 600;
 }
 
 button.accordion-button.collapsed {
-    font-weight: 700;
+    font-weight: 600;
 }
 
 .main-box .support a {
@@ -559,6 +624,7 @@ button.accordion-button.collapsed {
 
 .support h4 {
     padding: 1rem 0;
+    font-size: 1.2rem;
 }
 
 
@@ -633,6 +699,9 @@ input,
 select {
     height: 45px;
 }
+
+
+
 
 
 @media screen and (max-width:768px) {

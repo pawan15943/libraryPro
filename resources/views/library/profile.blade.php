@@ -137,11 +137,11 @@
                         @enderror
                     </div>
                     <div class="col-lg-12">
-                        <label for="">Your Address on Google Map <span>(Optional)</span></label>
-                        <input type="text" class="form-control">
-                        <span class="text-danger">Your provided library address will shown to visiters on your listing so mention it Correctly (Put Map Embed Code)</span>
-
+                        <label for="google_map">Your Address on Google Map <span>(Optional)</span></label>
+                        <textarea name="google_map" id="google_map" class="form-control" rows="5" placeholder="Paste Google Map Embed Code here"></textarea>
+                        <span class="text-danger">Your provided library address will be shown to visitors on your listing, so please mention it correctly (Put Map Embed Code).</span>
                     </div>
+                    
                 </div>
                 <h4 class="py-4">Library Owner Info</h4>
                 <div class="row g-4">

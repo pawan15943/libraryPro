@@ -1977,10 +1977,11 @@ class LearnerController extends Controller
 
     public function learnerAttendence(Request $request){
         if($request->has('date')){
-            $learners= $this->getLearnersByLibrary()->where('learners.status',1)->get();
+            $learners= $this->getLearnersByLibrary()->leftJoin('attendances','learners.id','=','attendances.learner_id')->where('learners.status',1)->get();
         }else{
             $learners=null;
         }
+    
         
         return view('learner.attendance',compact('learners'));
      
@@ -2020,5 +2021,34 @@ class LearnerController extends Controller
 
         return response()->json(['success' => true, 'message' => 'Attendance updated successfully!']);
     }
+
+    public function IdCard(){
+        return view('learner.idCard');
+    }
+    public function support(){
+        return view('learner.support');
+    }
+    public function blog(){
+        return view('learner.blog');
+    }
+    public function feadback(){
+        return view('learner.feadback');
+    }
+    public function suggestions(){
+        return view('learner.suggestions');
+    }
+    public function attendance(){
+        return view('learner.my-attendance');
+    }
+    public function complaints(){
+        return view('learner.complaints');
+    }
+    public function transactions(){
+        return view('learner.transactions');
+    }
+    public function booksLibrary(){
+        return view('learner.booksLibrary');
+    }
+    
 
 }

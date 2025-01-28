@@ -31,7 +31,7 @@
                                 <td>{{ $value->page_title }}</td>
                                 <td>{{ $value->page_slug }}</td>
                                 <td>
-                                    <a href="{{ route('page.edit', $value->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="{{ route('blog.edit', $value->id) }}" class="btn btn-sm btn-warning">Edit</a>
                                    
                                 </td>
                             </tr>

@@ -95,7 +95,14 @@ class SiteController extends Controller
         return view('administrator.addBlog',compact('categories'));
     }
 
-   
+    public function editBlog($id)
+    {
+       
+        $categories=Category::get();
+        $data = Blog::findOrFail($id);
+      
+        return view('administrator.addBlog', compact('data','categories'));
+    }
     public function blogStore(Request $request, $id = null)
     {
        

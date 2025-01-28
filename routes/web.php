@@ -213,7 +213,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/add-blog', [SiteController::class, 'createBlog'])->name('add-blog');
         Route::post('/blog/store/{id?}', [SiteController::class, 'blogStore'])->name('blog.store');
         Route::get('/blogs', [SiteController::class, 'listBlog'])->name('blogs');
-        
+        Route::get('/blog/edit/{id}', [SiteController::class, 'editBlog'])->name('blog.edit');
           
               });
 });

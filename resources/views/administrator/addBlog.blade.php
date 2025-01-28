@@ -116,7 +116,8 @@
                 id="tags" 
                 name="tags" 
                 class="form-control @error('tags') is-invalid @enderror" 
-                value="{{ old('tags', isset($data) ? $data->tags->pluck('name')->implode(', ') : '') }}">
+                value="{{ old('tags', isset($data) ? implode(',', json_decode($data->tags, true)) : '') }}"
+                >
             @error('tags')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -143,7 +144,7 @@
                 @foreach($categories as $category)
                     <option 
                         value="{{ $category->id }}" 
-                        {{ isset($data) && $data->categories->contains($category->id) ? 'selected' : '' }}>
+                        >
                         {{ $category->name }}
                     </option>
                 @endforeach
@@ -178,24 +179,7 @@
     new Tagify(document.querySelector('#tags'));
     new Tagify(document.querySelector('#categories'));
 </script>
-{{-- <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const categoriesInput = document.querySelector('#categories');
-        const categoriesTagify = new Tagify(categoriesInput, {
-            enforceWhitelist: false, // Allow free input (not restricted to predefined items)
-            whitelist: [], // Define if you want predefined suggestions
-            dropdown: {
-                enabled: 0, // Show suggestions when typing
-            },
-        });
 
-        // Convert to a plain array of strings on input form submission
-        categoriesInput.addEventListener('change', function () {
-            const tags = categoriesTagify.value.map(tag => tag.value); // Extract just the 'value' field
-            categoriesInput.value = JSON.stringify(tags); // Update the input value
-        });
-    });
-</script> --}}
 
 <script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
 

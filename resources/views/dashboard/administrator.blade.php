@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="col-lg-6">
-            <h4 class="mb-4">Upcming Renewal</h4>
+            <h4 class="mb-4">Upcoming Renewal</h4>
             <div class="table-responsive">
                 <table class="table text-center datatable border-bottom">
                     <thead>

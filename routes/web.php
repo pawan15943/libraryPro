@@ -206,8 +206,16 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/features/store/{id?}', [MasterController::class, 'storeFeature'])->name('feature.storeFeature');
         Route::get('/features/edit/{id}', [MasterController::class, 'featureEdit'])->name('feature.edit');
         Route::delete('/features/delete/{id}', [MasterController::class, 'destroy'])->name('feature.destroy');
-
-    });
+        Route::get('/add-page', [SiteController::class, 'createpage'])->name('add-page');
+        Route::get('/page', [SiteController::class, 'listPage'])->name('page');
+        Route::post('/page/store/{id?}', [SiteController::class, 'pageStore'])->name('page.store');
+        Route::get('/page/edit/{id}', [SiteController::class, 'editPage'])->name('page.edit');
+        Route::get('/add-blog', [SiteController::class, 'createBlog'])->name('add-blog');
+        Route::post('/blog/store/{id?}', [SiteController::class, 'blogStore'])->name('blog.store');
+        Route::get('/blogs', [SiteController::class, 'listBlog'])->name('blogs');
+        Route::get('/blog/edit/{id}', [SiteController::class, 'editBlog'])->name('blog.edit');
+          
+              });
 });
 
 Route::middleware(['auth:learner','no-cache'])->group(function () {
@@ -226,5 +234,6 @@ Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refu
 
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
 Route::get('/', [SiteController::class, 'home']);
+
 
 

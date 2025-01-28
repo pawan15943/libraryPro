@@ -13,6 +13,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.6/css/dataTables.dataTables.css" />
+   
+
 </head>
 
 <body>
@@ -33,11 +35,7 @@
                     @yield('content')
                     <script>
                         // Session expiration popup logic here
-                        const sessionLifetime = {
-                            {
-                                config('session.lifetime')
-                            }
-                        }* 60; // Convert to seconds
+                        const sessionLifetime = {{config('session.lifetime')}}* 60; // Convert to seconds
                         const warningTime = sessionLifetime - 60; // Show popup 1 minute before expiration
 
                         setTimeout(function() {
@@ -63,6 +61,9 @@
 
 
     </div>
+   
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -74,8 +75,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="{{ url('public/js/main-scripts.js') }}"></script>
     <script src="{{ url('public/js/main-validation.js') }}"></script>
-
-
+   
     <!-- Include DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.3/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>

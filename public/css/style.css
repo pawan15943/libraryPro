@@ -5240,3 +5240,42 @@ ul.social li {
 ul.social li a .fab {
     font-size: 1.6rem;
 }
+
+/* Learner CSS */
+
+span.badge.badge-danger {
+    color: #fff;
+    background: red;
+    font-weight: 400;
+    font-size: .8rem;
+}
+
+.dashboard.learner ul.features {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+.dashboard.learner ul.features li{
+    background: #fff;
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: 1rem;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.dashboard.learner ul.features li img{
+    width: 75px;
+    display: block;
+    margin: 1.5rem auto;
+}
+
+.dashboard.learner ul.features li p{
+    font-weight: 700;
+    margin: 0;
+}

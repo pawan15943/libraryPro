@@ -154,12 +154,14 @@
         @endif
         <div class="profile">
             <div class="dropdown">
-                {{Auth::user()->name}}
+                
+                @if(Auth::user()->library_nam !="")
                 <span class="icon">{{ strtoupper(substr(Auth::user()->library_name, 0, 2)) }}</span>
+                @endif
                 Welcome
                 <a class="dropdown-toggle uppercase" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{Auth::user()->library_name}}
-
+                {{Auth::user()->name}}
                 </a>
                 <ul class="dropdown-menu">
 

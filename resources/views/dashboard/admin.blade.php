@@ -18,7 +18,7 @@
         <p>Email: support@library.com</p>
     </div>
 </div>
-<div class="dashboard">
+<div class="dashboard learner">
     <div class="row">
         <div class="col-lg-12">
             <div class="greeting-container">

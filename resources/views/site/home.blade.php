@@ -287,7 +287,7 @@
             @foreach($subscriptions as $subscription)
             <div class="col-lg-3">
                 <div class="plan-box">
-                    <h1 id="subscription_fees_{{$subscription->id}}"></h1>
+                    <h1 id="subscription_fees_{{$subscription->id}}"> / monthly</h1>
                     <h4>{{$subscription->name}}</h4>
                     <ul class="plan-features contents">
                         @foreach($subscription->permissions as $permission)

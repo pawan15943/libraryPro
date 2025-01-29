@@ -23,9 +23,11 @@
 
                 <tbody>
                     @if(isset($transaction))
+                    
                     @foreach($transaction as $key => $value)
                     @php
-                        $plan=App\Models\Plan::where('id',$value->plan)->first();
+                        $plan=App\Models\Plan::withoutGlobalScopes()->where('id',$value->plan_id)->first();
+                      
                     @endphp
                     <tr>
                         <td>{{$key+1}}</td>
@@ -47,7 +49,7 @@
                             <span class="text-danger">Failed</span>
                             @endif
                         </td>
-                        @can('has-permission', 'Download Payment Receipt')
+                      
                         <td>
                             <ul class="actionalbls">
                                 <li>
@@ -65,7 +67,7 @@
                                 </li>
                             </ul>
                         </td>
-                        @endcan
+                        
                     </tr>
                     @endforeach
                     @else

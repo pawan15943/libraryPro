@@ -5243,7 +5243,7 @@ ul.social li a .fab {
 
 /* Learner CSS */
 
-span.badge.badge-danger {
+.dashboard span.badge.badge-danger {
     color: #fff;
     background: red;
     font-weight: 400;

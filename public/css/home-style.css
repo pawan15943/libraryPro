@@ -330,7 +330,7 @@ a.cta:hover {
 }
 
 .iconbox {
-    background: #c9f9ff;
+    background: linear-gradient(45deg, #40eaff, #fff76f);
     width: 80px;
     height: 80px;
     margin-bottom: 1.5rem ! IMPORTANT;

@@ -2053,10 +2053,10 @@ class LearnerController extends Controller
 
 
     public function IdCard(){
-        $learners = LearnerDetail::withoutGlobalScopes()->where('learner_id', Auth::user()->id)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->leftJoin('seats','learner_detail.seat_id','=','seats.id')->select('learner_detail.*','plans.name as plan_name','plan_types.name as plan_type_name','seats.seat_no')->get();
+        $data=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
         $library_name=Library::where('id',Auth::user()->library_id)->select('library_name','features')->first();
-        dd( $learners);
-        return view('learner.idCard',compact('library_name','learners'));
+     
+        return view('learner.idCard',compact('library_name','data'));
     }
     public function support(){
         return view('learner.support');

@@ -50,7 +50,8 @@ $current_route = Route::currentRouteName();
                             <th>Active Plan</th>
                             <th>Expired On</th>
                            
-                            <th>Mark Attendance</th>
+                            <th>In time</th>
+                            <th>Out time</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -96,6 +97,11 @@ $current_route = Route::currentRouteName();
                                     <input class="form-check-input toggle" type="checkbox" id="myToggle" data-learner="{{$value->id}}" {{ $value->attendance == 1 ? 'checked' : '' }}>
                                 </div>
                             </td>
+                            <td>
+                                <div class="form-check form-switch justify-content-center">
+                                    <input class="form-check-input outToggle" type="checkbox" id="outToggle" data-learner="{{$value->id}}">
+                                </div>
+                            </td>
                         </tr>
                         @endforeach
                      
@@ -128,34 +134,61 @@ $current_route = Route::currentRouteName();
                     alert('Please select a date!');
                     return;
                 }
+                var time='in';
+                updateAttendance(learner_id,attendance,date,time);
+                
+            });
 
+            $('.outToggle').on('change', function () {
+                console.log("out");
+                var attendance =  1;
+
+                // Get learner_id and date
+                var learner_id = $(this).data('learner');
+                var date = $('#date').val();
+
+                // Validate date before making the AJAX request
+                if (!date) {
+                   
+                    alert('Please select a date!');
+                    return;
+                }
+                var time='out';
+                updateAttendance(learner_id,attendance,date,time);
+                
+            });
+
+
+            function updateAttendance(learner_id,attendance,date,time){
                 // Send AJAX request
                 if(learner_id && attendance && date){
 
-                
-                    $.ajax({
-                        url: '{{ route('update.attendance') }}',
-                        method: 'POST',
-                        data: {
-                            learner_id: learner_id,
-                            attendance: attendance,
-                            date: date,
-                            _token: '{{ csrf_token() }}' 
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                alert(response.message);
-                            } else {
-                                alert('Error updating attendance');
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('Error:', error);
-                            alert('Something went wrong. Please try again.');
-                        }
-                    });
+                                
+                            $.ajax({
+                                url: '{{ route('update.attendance') }}',
+                                method: 'POST',
+                                data: {
+                                    learner_id: learner_id,
+                                    attendance: attendance,
+                                    date: date,
+                                    time: time,
+                                    _token: '{{ csrf_token() }}' 
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        console.log(response.message);
+                                       
+                                    } else {
+                                        alert('Error updating attendance');
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('Error:', error);
+                                    alert('Something went wrong. Please try again.');
+                                }
+                            });
                 }
-            });
+            }
         });
     </script>
 

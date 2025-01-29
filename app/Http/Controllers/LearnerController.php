@@ -1994,33 +1994,45 @@ class LearnerController extends Controller
             'learner_id' => 'required|integer',
             'attendance' => 'required|integer',
             'date' => 'required|date',
+            'time' => 'required|in:in,out', // Ensuring time is either 'in' or 'out'
         ]);
 
         // Extract variables from the request
         $learnerId = $request->learner_id;
         $attendance = $request->attendance;
         $date = $request->date;
+        $currentTime = now();
 
-        // Check if attendance already exists for the date and learner
+        // Find existing attendance record
         $existingAttendance = Attendance::where('learner_id', $learnerId)
             ->where('date', $date)
             ->first();
 
         if ($existingAttendance) {
-            // Update attendance if it exists
+            // Update only the relevant time field
+            if ($request->time == 'in') {
+                $existingAttendance->in_time = $currentTime;
+            } elseif ($request->time == 'out') {
+                $existingAttendance->out_time = $currentTime;
+            }
+
+            // Update attendance status
             $existingAttendance->attendance = $attendance;
             $existingAttendance->save();
         } else {
-            // Insert new attendance record if it doesn't exist
+            // If no record exists, create a new one with only the relevant time set
             Attendance::create([
                 'learner_id' => $learnerId,
                 'attendance' => $attendance,
                 'date' => $date,
+                'in_time' => $request->time == 'in' ? $currentTime : null,
+                'out_time' => $request->time == 'out' ? $currentTime : null,
             ]);
         }
 
         return response()->json(['success' => true, 'message' => 'Attendance updated successfully!']);
     }
+
 
     public function IdCard(){
         return view('learner.idCard');

@@ -2,82 +2,111 @@
 @section('content')
 
 
-<div class="card mb-4">
-    <div class="row">
-        @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        <h4 class="mb-4">Add Request</h4>
-        {{-- <form action="{{ isset($request) ? route('request.store', $request->id) : route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
-            @csrf --}}
 
-            <div class="form-group">
-                <label for="category_name">Request</label>
-                <select name="request_name" class="form-select  @error('request_name') is-invalid @enderror" >
-                    <option value="">Select Request</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change Plan</option>
-                    <option value="{{ 'upgradePlan' ?? old('request_name') }}">Upgrade/Downgrade Plan</option>
-                    <option value="{{ 'renewPlan' ?? old('request_name') }}">Renew Plan</option>
-                    <option value="{{ 'closePlan' ?? old('request_name') }}">Close Plan</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change/Swap seat</option>
-                  
-                </select>
-                @error('request_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-           
-            <div class="col-lg-3 mt-4">
-                <button type="submit" class="btn btn-primary button">{{ isset($feature) ? 'Update ' : 'Add ' }}</button>
-            </div>
-        {{-- </form> --}}
+<style>
+    .book-card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .book-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+
+    .book-card h3 {
+        margin: 10px 0;
+        font-size: 20px;
+        color: #333;
+    }
+
+    .book-card p {
+        color: #666;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .book-card .status {
+        padding: 8px 15px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 15px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .status.available {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .status.borrowed {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+    .book-card img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        width: 96px;
+    }
+</style>
+
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <input type="text" class="form-control" placeholder="Search by title, author, or ISBN">
     </div>
-   
+    <div class="col-lg-2">
+        <select class="form-select">
+            <option value="">All Categories</option>
+            <option value="fiction">Fiction</option>
+            <option value="non-fiction">Non-Fiction</option>
+            <option value="science">Science</option>
+            <option value="history">History</option>
+        </select>
+
+    </div>
+    <div class="col-lg-2">
+        <select class="form-select">
+            <option value="">Availability</option>
+            <option value="available">Available</option>
+            <option value="borrowed">Borrowed</option>
+        </select>
+    </div>
+    <div class="col-lg-2">
+        <input type="submit" class="btn btn-primary button">
+    </div>
+
+
 </div>
 
+<h4 class="py-4">Our Library Books</h4>
 <div class="row">
-    <div class="col-lg-12">
-        <div class="table-responsive">
-            <table class="table text-center datatable dataTable" id="datatable">
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Request Name</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($learner_request as $index => $value)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $value->request_name }}</td>
-                        <td>{{$value->request_date}}</td>  
-                        <td>@if($value->request_status==0)
-                            <span class=" text-danger d-inline">Pending</span>
-                            @else
-                            <span class=" text-success d-inline">Resolved (By Admin)</span>
-                            @endif
-                        </td>                      
-                        <td>
-                            <ul class="actionalbls">
-                               
-                                <li>
-                                </li>
-                              
-                            </ul>
-                            
-                       
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="col-lg-3">
+        <div class="book-card">
+            <img src="{{url('public/img/01.jpg')}}" alt="Book Cover">
+            <h3>Book Title 1</h3>
+            <p>Author: Author 1</p>
+            <span class="status available">Available</span>
+        </div>
+
+    </div>
+    <div class="col-lg-3">
+        <div class="book-card">
+            <img src="{{url('public/img/01.jpg')}}" alt="Book Cover">
+            <h3>Book Title 2</h3>
+            <p>Author: Author 2</p>
+            <span class="status borrowed">Borrowed</span>
         </div>
     </div>
 </div>
-
-
 @endsection

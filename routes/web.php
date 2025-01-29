@@ -233,6 +233,8 @@ Route::middleware(['auth:learner','no-cache'])->group(function () {
   Route::get('learner/complaints', [LearnerController::class, 'complaints'])->name('complaints');
   Route::get('learner/transactions', [LearnerController::class, 'transactions'])->name('my-transactions');
   Route::get('books-library', [LearnerController::class, 'booksLibrary'])->name('books-library');
+  Route::post('learner/request/store', [LearnerController::class, 'learnerRequestCreate'])->name('requaet.store');
+  
 });
 
 Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');

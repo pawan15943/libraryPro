@@ -8,6 +8,7 @@ use App\Models\Learner;
 use App\Models\LearnerDetail;
 use App\Models\LearnerTransaction;
 use App\Models\Plan;
+use App\Models\Blog;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
 use App\Models\Seat;
@@ -1975,6 +1976,22 @@ class LearnerController extends Controller
 
     }
 
+    public function learnerRequestCreate(Request $request){
+        $request->validate([
+            'request_name' => 'required|string|max:255',
+        ]);
+    
+        DB::table('learner_request')->insert([
+            'learner_id' => Auth::id(),
+            'request_name' => $request->request_name,
+            'request_date' => Carbon::now()->toDateString(),
+            'created_at' => now(),
+            
+        ]);
+    
+        return redirect('learner/request')->with('success', 'Request submitted successfully.');
+    }
+
     public function learnerAttendence(Request $request){
         if($request->has('date')){
             $learners= $this->getLearnersByLibrary()->leftJoin('attendances','learners.id','=','attendances.learner_id')->where('learners.status',1)->get();
@@ -2041,7 +2058,8 @@ class LearnerController extends Controller
         return view('learner.support');
     }
     public function blog(){
-        return view('learner.blog');
+        $data=Blog::get();
+        return view('learner.blog',compact('data'));
     }
     public function feadback(){
         return view('learner.feadback');
@@ -2049,14 +2067,53 @@ class LearnerController extends Controller
     public function suggestions(){
         return view('learner.suggestions');
     }
-    public function attendance(){
-        return view('learner.my-attendance');
+    public function attendance(Request $request){
+        $dates = LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->select('plan_start_date', 'plan_end_date')->get();
+        $data=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
+        $my_attandance=Attendance::where('learner_id',Auth::user()->id)->get();
+
+        if ($request->has('request_name') && !empty($request->request_name)) {
+            $year = Carbon::parse($request->request_name)->year;
+            $month = Carbon::parse($request->request_name)->month;
+
+            $my_attandance = Attendance::where('learner_id', Auth::user()->id)
+            ->whereYear('date', $year)
+            ->whereMonth('date', $month)
+            ->get();
+        }
+        
+        $months = [];
+
+        foreach ($dates as $date) {
+            $start = Carbon::parse($date->plan_start_date)->startOfMonth();
+            $end = Carbon::parse($date->plan_end_date)->startOfMonth();
+    
+            // Loop through the months within the start and end date range
+            while ($start <= $end) {
+                $year = $start->year;
+                $monthNumber = $start->month;
+                $monthName = $start->format('F');
+                $year_month = $start->format('Y-m') ;
+               
+                $months[] = [
+                    'year' => $year,
+                    'month' => $monthNumber,
+                    'month_name' => $monthName,
+                    'year_month' => $year_month
+                ];
+    
+                $start->addMonth();
+            }
+        }
+        return view('learner.my-attendance',compact('months','data','my_attandance'));
     }
     public function complaints(){
         return view('learner.complaints');
     }
     public function transactions(){
-        return view('learner.transactions');
+        $transaction=LearnerTransaction::withoutGlobalScopes()->where('learner_transactions.learner_id',Auth::user()->id)->leftJoin('learner_detail','learner_transactions.learner_detail_id','=','learner_detail.id')->select('learner_transactions.*','learner_detail.plan_type_id','learner_detail.plan_id')->get();
+      
+        return view('learner.transactions',compact('transaction'));
     }
     public function booksLibrary(){
         return view('learner.booksLibrary');

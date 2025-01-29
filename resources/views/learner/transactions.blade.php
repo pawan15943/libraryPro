@@ -24,17 +24,22 @@
                 <tbody>
                     @if(isset($transaction))
                     @foreach($transaction as $key => $value)
+                    @php
+                        $plan=App\Models\Plan::where('id',$value->plan)->first();
+                    @endphp
                     <tr>
-                        <td>1</td>
-                        <td><span class="premium p-2 rounded text-white">{{$plan ? $plan->name : $value->plan}}</span></td>
-                        <td><i class="fa fa-inr"></i> {{$value->amount}}</td>
+                        <td>{{$key+1}}</td>
+                        <td><span class="premium p-2 rounded text-white">{{$plan ? $plan->name : ''}}</span></td>
+                        <td><i class="fa fa-inr"></i> {{$value->total_amount}}</td>
                         <td><i class="fa fa-inr"></i> {{$value->paid_amount}}</td>
                         <td>{{$value->transaction_id ? $value->transaction_id : 'NA'}}</td>
-                        <td>{{$value->transaction_date}}</td>
+                        <td>{{$value->paid_date}}</td>
                         <td>{{
-                            $value->payment_mode == 1 ? 'Online' : 
-                            ($value->payment_mode == 2 ? 'Offline' : 'Not Paid') 
-                        }} Paid</td>
+                           $value->payment_mode == 1 ? 'Online ' : 'Offline '
+                           
+                        }} 
+                        Paid
+                        </td>
 
                         <td>@if($value->is_paid==1)
                             <span class="text-success">Success</span>

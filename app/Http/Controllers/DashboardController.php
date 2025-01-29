@@ -250,7 +250,6 @@ class DashboardController extends Controller
 
        $features = Feature::whereIn('id', $featuresArray)->get();
        
-  
         if ($user->hasRole('learner')) {
           
             return view('dashboard.learner',compact('learners','library_name','features'));

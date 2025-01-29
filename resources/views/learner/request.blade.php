@@ -8,8 +8,8 @@
         <div class="alert alert-success">{{ session('success') }}</div>
         @endif
         <h4 class="mb-4">Add Request</h4>
-        {{-- <form action="{{ isset($request) ? route('request.store', $request->id) : route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
-            @csrf --}}
+        <form action="{{ route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
+            @csrf
 
             <div class="form-group">
                 <label for="category_name">Request</label>
@@ -30,9 +30,9 @@
             </div>
            
             <div class="col-lg-3 mt-4">
-                <button type="submit" class="btn btn-primary button">{{ isset($feature) ? 'Update ' : 'Add ' }}</button>
+                <button type="submit" class="btn btn-primary button">{{ 'Add ' }}</button>
             </div>
-        {{-- </form> --}}
+        </form>
     </div>
    
 </div>

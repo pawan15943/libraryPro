@@ -114,7 +114,22 @@ class LibraryController extends Controller
     {
         $rules = [
             'library_name'   => 'required|string|max:255',
-            'email'  => 'required|email|max:255|unique:libraries,email',
+            'email'  => [
+            'required',
+            'email',
+            'max:255',
+            'unique:libraries,email',
+            function ($attribute, $value, $fail) {
+                $library = \App\Models\Library::where('email', $value)->first();
+                if ($library) {
+                    if (!$library->email_verified_at) {
+                        $fail('You are already registered with us. Your email verification is pending. Please use the login option to complete it.');
+                    } else {
+                        $fail('Email already exists.');
+                    }
+                }
+            }
+        ],
             'library_mobile' => 'required|digits:10',
             'state_id'       => 'nullable|exists:states,id',
             'city_id'        => 'nullable|exists:cities,id',
@@ -675,11 +690,13 @@ class LibraryController extends Controller
             'library_owner' => 'required|string|max:255',
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
-            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024|dimensions:width=200,height=80',
+            // 'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024|dimensions:width=200,height=80',
+            'library_logo' => 'nullable',
             'library_owner_email' => 'required|email',
             'library_owner_contact' => 'required|string|max:10',
             'features' => 'nullable|array', 
             'features.*' => 'integer',
+            'google_map'=>'nullable',
         ]);
         
       

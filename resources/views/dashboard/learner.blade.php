@@ -10,7 +10,7 @@
         <div class="col-lg-12">
             <div class="greeting-container">
                 <i id="greeting-icon" class="fas fa-sun greeting-icon"></i>
-                <h2 id="greeting-message" class="typing-text">Good Morning! Student Name!</h2>
+                <h2 id="greeting-message" class="typing-text">Good Morning! {{Auth::user()->name}}!</h2>
             </div>
         </div>
     </div>
@@ -26,24 +26,27 @@
         </div>
 
         <div class="col-lg-3">
-            <div class="active-plan-box bg-dark">
-                <h4>Seat No. : 25</h4>
-                <label for="">
-                    <!-- Show this Button When Plan Expire -->
-                    <!-- <a href="{{ route('subscriptions.choosePlan') }}" class="text-danger">Upgrade Plan</a> -->
-                    Active
-                </label>
-                <div class="d-flex">
-                    <ul class="plann-info">
-                        <li>My Plan : Full Day (Monthly)</li>
-                        <li>Plan End Date :</li>
-                        <li>Plan Start Date :</li>
-                        <li>Plan Price :</li>
-                        <li>Payment Status : Paid</li>
-                    </ul>
+            @foreach($learners as $key => $learner)
+                @if($learner->status==1)
+             
+                <div class="active-plan-box bg-dark">
+                    <h4>Seat No. : {{ $learner->seat_no }}</h4>
+                    <label for="">
+                    
+                        Active
+                    </label>
+                    <div class="d-flex">
+                        <ul class="plann-info">
+                            <li>My Plan : {{ $learner->plan_type_name }} ({{$learner->plan_name}})</li>
+                            <li>Plan End Date :{{ $learner->plan_end_date }}</li>
+                            <li>Plan Start Date :{{ $learner->plan_start_date }}</li>
+                            <li>Plan Price :{{$learner->plan_price_id}}</li>
+                            <li>Payment Status : {{$learner->is_paid ? 'Paid' : 'Unpaid'}}</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-
+                @endif
+            @endforeach
         </div>
     </div>
 
@@ -53,51 +56,15 @@
         <div class="col-lg-12">
             <h4 class="py-4">Features List</h4>
             <ul class="features">
+                @foreach($features as $key => $value)
                 <li>
                     <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
+                    <img src="{{ asset('public/'.$value->image) }}" alt="Feature Icon" width="50">
+                    <p>{{$value->name}}</p>
                 </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
-                <li>
-                    <!-- Feature Icon -->
-                    <img src="" alt="Feature Icon">
-                    <p>Features Name</p>
-                </li>
+                @endforeach
+              
+             
             </ul>
         </div>
     </div>

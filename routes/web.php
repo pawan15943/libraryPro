@@ -144,7 +144,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
       Route::post('/upgrade/renew/store', [LearnerController::class, 'learnerUpgradeRenew'])->name('learner.upgrade.renew.store');
-      
+      Route::get('/attendance', [LearnerController::class, 'learnerAttendence'])->name('attendance');
+      Route::post('/update-attendance', [LearnerController::class, 'updateAttendance'])->name('update.attendance');
       
     });
     Route::get('seat/history/list', [LearnerController::class, 'seatHistory'])->name('seats.history');
@@ -223,6 +224,15 @@ Route::middleware(['auth:learner','no-cache'])->group(function () {
   Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');
   Route::get('learner/profile', [LearnerController::class, 'learnerProfile'])->name('learner.profile');
   Route::get('learner/request', [LearnerController::class, 'learnerRequest'])->name('learner.request');
+  Route::get('learner/IdCard', [LearnerController::class, 'IdCard'])->name('my-library-id');
+  Route::get('learner/support', [LearnerController::class, 'support'])->name('support');
+  Route::get('learner/blog', [LearnerController::class, 'blog'])->name('learner.blog');
+  Route::get('learner/feadback', [LearnerController::class, 'feadback'])->name('learner.feadback');
+  Route::get('learner/suggestions', [LearnerController::class, 'suggestions'])->name('learner.suggestions');
+  Route::get('learner/attendance', [LearnerController::class, 'attendance'])->name('my-attendance');
+  Route::get('learner/complaints', [LearnerController::class, 'complaints'])->name('complaints');
+  Route::get('learner/transactions', [LearnerController::class, 'transactions'])->name('my-transactions');
+  Route::get('books-library', [LearnerController::class, 'booksLibrary'])->name('books-library');
 });
 
 Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');

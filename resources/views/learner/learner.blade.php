@@ -341,11 +341,11 @@ $current_route = Route::currentRouteName();
             {{-- <div class="d-flex justify-content-center">
                 <div class="pagination-container">
                     {{ $learners->links('vendor.pagination.default') }}
-        </div>
-    </div> --}}
+            </div>
+            </div> --}}
 
-</div>
-</div>
+        </div>
+    </div>
 </div>
 
 

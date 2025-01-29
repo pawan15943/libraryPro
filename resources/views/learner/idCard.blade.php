@@ -2,79 +2,29 @@
 @section('content')
 
 
-<div class="card mb-4">
-    <div class="row">
-        @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        <h4 class="mb-4">Add Request</h4>
-        {{-- <form action="{{ isset($request) ? route('request.store', $request->id) : route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
-            @csrf --}}
 
-            <div class="form-group">
-                <label for="category_name">Request</label>
-                <select name="request_name" class="form-select  @error('request_name') is-invalid @enderror" >
-                    <option value="">Select Request</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change Plan</option>
-                    <option value="{{ 'upgradePlan' ?? old('request_name') }}">Upgrade/Downgrade Plan</option>
-                    <option value="{{ 'renewPlan' ?? old('request_name') }}">Renew Plan</option>
-                    <option value="{{ 'closePlan' ?? old('request_name') }}">Close Plan</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change/Swap seat</option>
-                  
-                </select>
-                @error('request_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-           
-            <div class="col-lg-3 mt-4">
-                <button type="submit" class="btn btn-primary button">{{ isset($feature) ? 'Update ' : 'Add ' }}</button>
-            </div>
-        {{-- </form> --}}
-    </div>
-   
-</div>
 
 <div class="row">
-    <div class="col-lg-12">
-        <div class="table-responsive">
-            <table class="table text-center datatable dataTable" id="datatable">
-                <thead>
-                    <tr>
-                        <th>S.No.</th>
-                        <th>Request Name</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($learner_request as $index => $value)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $value->request_name }}</td>
-                        <td>{{$value->request_date}}</td>  
-                        <td>@if($value->request_status==0)
-                            <span class=" text-danger d-inline">Pending</span>
-                            @else
-                            <span class=" text-success d-inline">Resolved (By Admin)</span>
-                            @endif
-                        </td>                      
-                        <td>
-                            <ul class="actionalbls">
-                               
-                                <li>
-                                </li>
-                              
-                            </ul>
-                            
-                       
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="col-lg-4">
+        <div class="myId">
+            <h5>Shree Shyam Library</h5>
+           wq <hr>
+            <!-- Photo -->
+            <img src="{{url('public/img/user.png')}}" alt="User" class="id-profile">
+            <!-- Personal Info -->
+            <div class="learner-info mt-4">
+                <h4>Pawan Rathore</h4>
+                <h6>Library Id</h6>
+            </div>
+            <hr>
+            <!-- Plan Info -->
+            <div class="learner-plan-info mt-4">
+                <p class="m-0">FULLDAY (Monthly)</p>
+                <p class="m-0">Shift [06:00 AM to 10:00 PM]</p>
+                <p class="m-0">End Date : 25 Jan 2025</p>
+            </div>
+            <hr>
+            <h4 class="mt-4">Seat No : 10</h4>
         </div>
     </div>
 </div>

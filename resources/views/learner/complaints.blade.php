@@ -2,77 +2,58 @@
 @section('content')
 
 
-<div class="card mb-4">
-    <div class="row">
-        @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        <h4 class="mb-4">Add Request</h4>
-        {{-- <form action="{{ isset($request) ? route('request.store', $request->id) : route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
-            @csrf --}}
+<div class="card">
+    <div class="row g-4">
 
-            <div class="form-group">
-                <label for="category_name">Request</label>
-                <select name="request_name" class="form-select  @error('request_name') is-invalid @enderror" >
-                    <option value="">Select Request</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change Plan</option>
-                    <option value="{{ 'upgradePlan' ?? old('request_name') }}">Upgrade/Downgrade Plan</option>
-                    <option value="{{ 'renewPlan' ?? old('request_name') }}">Renew Plan</option>
-                    <option value="{{ 'closePlan' ?? old('request_name') }}">Close Plan</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change/Swap seat</option>
-                  
-                </select>
-                @error('request_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-           
-            <div class="col-lg-3 mt-4">
-                <button type="submit" class="btn btn-primary button">{{ isset($feature) ? 'Update ' : 'Add ' }}</button>
-            </div>
-        {{-- </form> --}}
+        <h4>Add Complaint</h4>
+
+        <div class="col-lg-12">
+            <input type="text" class="form-control" placeholder="Enter Title">
+        </div>
+
+        <div class="col-lg-12">
+            <textarea name="" class="form-control" id="" placeholder="Enter your description"></textarea>
+        </div>
+
+        <div class="col-lg-12">
+            <input type="file" name="" class="form-control" id="">
+            <div class="screenshot"></div>
+        </div>
+
+        <div class="col-lg-3 mt-4">
+            <button type="submit" class="btn btn-primary button">Submit</button>
+        </div>
     </div>
-   
 </div>
-
-<div class="row">
+<h4 class="py-4">Complaints List</h4>
+<div class="row mb-4">
     <div class="col-lg-12">
         <div class="table-responsive">
             <table class="table text-center datatable dataTable" id="datatable">
                 <thead>
                     <tr>
                         <th>S.No.</th>
-                        <th>Request Name</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Library Status</th>
                     </tr>
                 </thead>
                 <tbody>
+                    @if(isset($learner_request ))
                     @foreach($learner_request as $index => $value)
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $value->request_name }}</td>
-                        <td>{{$value->request_date}}</td>  
-                        <td>@if($value->request_status==0)
-                            <span class=" text-danger d-inline">Pending</span>
-                            @else
-                            <span class=" text-success d-inline">Resolved (By Admin)</span>
-                            @endif
-                        </td>                      
+                        <td>{{$value->request_date}}</td>
                         <td>
-                            <ul class="actionalbls">
-                               
-                                <li>
-                                </li>
-                              
-                            </ul>
-                            
-                       
                         </td>
                     </tr>
                     @endforeach
+                    @else
+                    <tr>
+                        <td colspan="4">No Data Found</td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
         </div>

@@ -201,6 +201,8 @@ a.go-back {
     font-weight: 600 !important;
 }
 
+
+
 .modal-lg,
 .modal-xl {
     --bs-modal-width: 700px;
@@ -2057,13 +2059,7 @@ a.go-back {
     margin-bottom: .3rem;
 }
 
-.detailes input,
-.detailes select,
-.detailes textarea {
-    font-size: .9rem !important;
-    height: 45px;
-    font-weight: 600 !important;
-}
+
 
 .modal-lg,
 .modal-xl {
@@ -5174,7 +5170,7 @@ ul.locations li {
 }
 
 .inquiry .form-control:not(textarea),
-.inquiry  .button {
+.inquiry .button {
     height: 50px !important;
 }
 
@@ -5182,6 +5178,10 @@ ul.locations li {
 .main-box {
     position: relative;
     z-index: 1;
+}
+
+.card textarea {
+    height: auto !important;
 }
 
 .main-box .support {
@@ -5261,7 +5261,7 @@ ul.social li a .fab {
 
 
 
-.dashboard.learner ul.features li{
+.dashboard.learner ul.features li {
     background: #fff;
     box-shadow: 1px 0 5px #00000045;
     border-radius: 1rem;
@@ -5269,13 +5269,13 @@ ul.social li a .fab {
     padding: 1.5rem;
 }
 
-.dashboard.learner ul.features li img{
+.dashboard.learner ul.features li img {
     width: 75px;
     display: block;
     margin: 1.5rem auto;
 }
 
-.dashboard.learner ul.features li p{
+.dashboard.learner ul.features li p {
     font-weight: 700;
     margin: 0;
 }
@@ -5283,4 +5283,45 @@ ul.social li a .fab {
 .form-switch .form-check-input:checked {
     background-color: #51c013 !important;
     border-color: #51c013 !important;
+}
+
+
+.myId {
+    background: #fff;
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: 1rem;
+    padding: 1.2rem 0;
+    text-align: center;
+}
+
+img.id-profile {
+    height: 130px;
+    width: 130px;
+}
+
+.address-box {
+    background: #ffff;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    gap: 1.5rem;
+    flex-direction: column;
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: 1rem;
+}
+
+.blog-box {
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.blog-box a {
+    text-decoration: none;
+    color: #089eb1;
+    font-weight: 700 !IMPORTANT;!I;!;
 }

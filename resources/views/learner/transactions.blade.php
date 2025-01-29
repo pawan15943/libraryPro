@@ -2,82 +2,76 @@
 @section('content')
 
 
-<div class="card mb-4">
-    <div class="row">
-        @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        <h4 class="mb-4">Add Request</h4>
-        {{-- <form action="{{ isset($request) ? route('request.store', $request->id) : route('requaet.store') }}" method="POST" enctype="multipart/form-data">            
-            @csrf --}}
-
-            <div class="form-group">
-                <label for="category_name">Request</label>
-                <select name="request_name" class="form-select  @error('request_name') is-invalid @enderror" >
-                    <option value="">Select Request</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change Plan</option>
-                    <option value="{{ 'upgradePlan' ?? old('request_name') }}">Upgrade/Downgrade Plan</option>
-                    <option value="{{ 'renewPlan' ?? old('request_name') }}">Renew Plan</option>
-                    <option value="{{ 'closePlan' ?? old('request_name') }}">Close Plan</option>
-                    <option value="{{ 'changePlan' ?? old('request_name') }}">Change/Swap seat</option>
-                  
-                </select>
-                @error('request_name')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-                @enderror
-            </div>
-           
-            <div class="col-lg-3 mt-4">
-                <button type="submit" class="btn btn-primary button">{{ isset($feature) ? 'Update ' : 'Add ' }}</button>
-            </div>
-        {{-- </form> --}}
-    </div>
-   
-</div>
-
-<div class="row">
+<!-- Breadcrumb -->
+<div class="row justify-content-center mb-4">
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table text-center datatable dataTable" id="datatable">
+            <table class="table text-center datatable">
                 <thead>
                     <tr>
-                        <th>S.No.</th>
-                        <th>Request Name</th>
-                        <th>Request Date</th>
-                        <th>Status</th>
+                        <th>S.No</th>
+                        <th>Plan Name</th>
+                        <th>Plan Price</th>
+                        <th>Paid Amt (After GST)</th>
+                        <th>Trxn Id</th>
+                        <th>Trxn Date</th>
+                        <th>Payment Method</th>
+                        <th>Trxn Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    @foreach($learner_request as $index => $value)
+                    @if(isset($transaction))
+                    @foreach($transaction as $key => $value)
                     <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $value->request_name }}</td>
-                        <td>{{$value->request_date}}</td>  
-                        <td>@if($value->request_status==0)
-                            <span class=" text-danger d-inline">Pending</span>
+                        <td>1</td>
+                        <td><span class="premium p-2 rounded text-white">{{$plan ? $plan->name : $value->plan}}</span></td>
+                        <td><i class="fa fa-inr"></i> {{$value->amount}}</td>
+                        <td><i class="fa fa-inr"></i> {{$value->paid_amount}}</td>
+                        <td>{{$value->transaction_id ? $value->transaction_id : 'NA'}}</td>
+                        <td>{{$value->transaction_date}}</td>
+                        <td>{{
+                            $value->payment_mode == 1 ? 'Online' : 
+                            ($value->payment_mode == 2 ? 'Offline' : 'Not Paid') 
+                        }} Paid</td>
+
+                        <td>@if($value->is_paid==1)
+                            <span class="text-success">Success</span>
                             @else
-                            <span class=" text-success d-inline">Resolved (By Admin)</span>
+                            <span class="text-danger">Failed</span>
                             @endif
-                        </td>                      
+                        </td>
+                        @can('has-permission', 'Download Payment Receipt')
                         <td>
                             <ul class="actionalbls">
-                               
                                 <li>
+
+                                    <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" id="custId" name="id" value="{{ $value->id }}">
+                                        <input type="hidden" name="type" value="library">
+
+                                        <button type="submit">
+                                            <i class="fa fa-print"></i>
+                                        </button>
+                                    </form>
+
                                 </li>
-                              
                             </ul>
-                            
-                       
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
+                    @else
+                    <tr>
+                        <td colspan="9">No Data Found</td>
+                    </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
 
 @endsection

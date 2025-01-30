@@ -8,6 +8,7 @@ use App\Models\Learner;
 use App\Models\LearnerDetail;
 use App\Models\LearnerTransaction;
 use App\Models\Plan;
+use App\Models\Library;
 use App\Models\Blog;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
@@ -2054,7 +2055,10 @@ class LearnerController extends Controller
 
 
     public function IdCard(){
-        return view('learner.idCard');
+        $data=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
+        $library_name=Library::where('id',Auth::user()->library_id)->select('library_name','features')->first();
+     
+        return view('learner.idCard',compact('library_name','data'));
     }
     public function support(){
         return view('learner.support');

@@ -192,8 +192,8 @@ $current_route = Route::currentRouteName();
             }
 
             $("form").on("submit", function () {
-            $(".toggle, .outToggle").prop("checked", false).trigger("change");
-        });
+                $(".toggle, .outToggle").prop("checked", false).trigger("change");
+            });
         });
     </script>
 

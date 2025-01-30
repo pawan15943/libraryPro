@@ -2125,7 +2125,8 @@ class LearnerController extends Controller
         return view('learner.my-attendance',compact('months','data','my_attandance'));
     }
     public function complaints(){
-        return view('learner.complaints');
+        $data=Complaint::where('learner_id',Auth::user()->id)->get();
+        return view('learner.complaints',compact('data'));
     }
     public function transactions(){
         $transaction=LearnerTransaction::withoutGlobalScopes()->where('learner_transactions.learner_id',Auth::user()->id)->leftJoin('learner_detail','learner_transactions.learner_detail_id','=','learner_detail.id')->select('learner_transactions.*','learner_detail.plan_type_id','learner_detail.plan_id')->get();
@@ -2184,7 +2185,7 @@ class LearnerController extends Controller
          $data['library_id']=Auth::user()->library_id;
          Complaint::create($data);
  
-         return redirect()->route('learner.complaints')->with('success','Data created Successfully');
+         return redirect()->route('complaints')->with('success','Data created Successfully');
          
      }
 

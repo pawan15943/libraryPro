@@ -4,25 +4,43 @@
 
 <div class="card">
     <div class="row g-4">
-
-        <h4>Add Complaint</h4>
-
-        <div class="col-lg-12">
-            <input type="text" class="form-control" placeholder="Enter Title">
-        </div>
-
-        <div class="col-lg-12">
-            <textarea name="" class="form-control" id="" placeholder="Enter your description"></textarea>
-        </div>
-
-        <div class="col-lg-12">
-            <input type="file" name="" class="form-control" id="">
-            <div class="screenshot"></div>
-        </div>
-
-        <div class="col-lg-3 mt-4">
-            <button type="submit" class="btn btn-primary button">Submit</button>
-        </div>
+        <form action="{{ route('learner.complaint.store') }}" class="validateForm" method="POST" enctype="multipart/form-data">
+            @csrf
+            <h4>Add Complaint</h4>
+        
+            <div class="col-lg-12">
+                <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Enter Title" value="{{ old('title') }}">
+                @error('title') 
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        
+            <div class="col-lg-12">
+                <textarea name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter your description">{{ old('description') }}</textarea>
+                @error('description') 
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        
+            <div class="col-lg-12">
+                <input type="file" name="attachment" class="form-control @error('attachment') is-invalid @enderror">
+                <div class="screenshot"></div>
+                @error('attachment') 
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
+            </div>
+        
+            <div class="col-lg-3 mt-4">
+                <button type="submit" class="btn btn-primary button">Submit</button>
+            </div>
+        </form>
+        
     </div>
 </div>
 <h4 class="py-4">Complaints List</h4>
@@ -39,13 +57,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if(isset($learner_request ))
-                    @foreach($learner_request as $index => $value)
+                    @if(isset($data ))
+                    @foreach($data as $index => $value)
                     <tr>
                         <td>{{ $index + 1 }}</td>
-                        <td>{{ $value->request_name }}</td>
-                        <td>{{$value->request_date}}</td>
+                        <td>{{ $value->title }}</td>
+                        <td>{{$value->description}}</td>
                         <td>
+                            @if($value->status==1)
+                            
+                                Resolved
+                            @elseif($value->status==2)
+                                Clarification
+                            @else
+                                Pending
+                            @endif
                         </td>
                     </tr>
                     @endforeach

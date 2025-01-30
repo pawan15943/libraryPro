@@ -59,13 +59,13 @@ $current_route = Route::currentRouteName();
     
 
                         @foreach($learners as $key => $value)
-                        @php
-                        $today = Carbon::today();
-                        $endDate = Carbon::parse($value->plan_end_date);
-                        $diffInDays = $today->diffInDays($endDate, false);
-                        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
-                        $diffExtendDay= $today->diffInDays($inextendDate, false);
-                        @endphp
+                            @php
+                            $today = Carbon::today();
+                            $endDate = Carbon::parse($value->plan_end_date);
+                            $diffInDays = $today->diffInDays($endDate, false);
+                            $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
+                            $diffExtendDay= $today->diffInDays($inextendDate, false);
+                            @endphp
                         <tr>
                             <td>{{$value->seat_no}}<br>
                                 <small>{{$value->plan_type_name}}</small>
@@ -94,12 +94,12 @@ $current_route = Route::currentRouteName();
                          
                             <td>
                                 <div class="form-check form-switch justify-content-center">
-                                    <input class="form-check-input toggle" type="checkbox" id="myToggle" data-learner="{{$value->id}}" {{ $value->attendance == 1 ? 'checked' : '' }}>
+                                    <input class="form-check-input toggle" type="checkbox" id="myToggle{{$value->learner_id}}" data-learner="{{$value->learner_id}}" {{ $value->attendance == 1 ? 'checked' : '' }}>
                                 </div>
                             </td>
                             <td>
                                 <div class="form-check form-switch justify-content-center">
-                                    <input class="form-check-input outToggle" type="checkbox" id="outToggle" data-learner="{{$value->id}}">
+                                    <input class="form-check-input outToggle" type="checkbox" id="outToggle{{$value->learner_id}}" data-learner="{{$value->learner_id}}">
                                 </div>
                             </td>
                         </tr>
@@ -122,11 +122,11 @@ $current_route = Route::currentRouteName();
         $(document).ready(function () {
             // Add event listener for the toggle
             $('.toggle').on('change', function () {
-                // Determine attendance value
-                var attendance = $(this).is(':checked') ? 1 : 2;
+                let learner_id = $(this).data("learner"); // Get the learner ID of the clicked toggle
+              
+                let attendance = $(this).prop("checked") ? 1 : 0; // Get the new attendance value (1 or 0)
+                let currentToggle = $(this);
 
-                // Get learner_id and date
-                var learner_id = $(this).data('learner');
                 var date = $('#date').val();
 
                 // Validate date before making the AJAX request
@@ -189,6 +189,10 @@ $current_route = Route::currentRouteName();
                             });
                 }
             }
+
+            $("form").on("submit", function () {
+            $(".toggle, .outToggle").prop("checked", false).trigger("change");
+        });
         });
     </script>
 

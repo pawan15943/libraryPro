@@ -13,6 +13,9 @@ use App\Models\Blog;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
 use App\Models\Seat;
+use App\Models\Suggestion;
+use App\Models\LearnerFeedback;
+use App\Models\Complaint;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -1995,12 +1998,20 @@ class LearnerController extends Controller
 
     public function learnerAttendence(Request $request){
         if($request->has('date')){
-            $learners= $this->getLearnersByLibrary()->leftJoin('attendances','learners.id','=','attendances.learner_id')->where('learners.status',1)->get();
-        }else{
+            $learners =  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+            ->where('learners.library_id', auth()->user()->id)
+            ->leftJoin('attendances', function ($join) use ($request) {
+                $join->on('learners.id', '=', 'attendances.learner_id')
+                     ->whereDate('attendances.date', '=', $request->date);
+            })
+            ->where('learners.status', 1)
+            ->select('learners.*','learner_detail.*', DB::raw('COALESCE(attendances.attendance, 2) as attendance'))
+            ->get();
+            }else{
             $learners=null;
         }
-    
-        
+       
+        // dd($learners);
         return view('learner.attendance',compact('learners'));
      
     }
@@ -2055,7 +2066,7 @@ class LearnerController extends Controller
     public function IdCard(){
         $data=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
         $library_name=Library::where('id',Auth::user()->library_id)->select('library_name','features')->first();
-     
+        
         return view('learner.idCard',compact('library_name','data'));
     }
     public function support(){
@@ -2069,7 +2080,8 @@ class LearnerController extends Controller
         return view('learner.feadback');
     }
     public function suggestions(){
-        return view('learner.suggestions');
+        $data=Suggestion::where('learner_id',Auth::user()->id)->get();
+        return view('learner.suggestions',compact('data'));
     }
     public function attendance(Request $request){
         $dates = LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->select('plan_start_date', 'plan_end_date')->get();
@@ -2122,6 +2134,81 @@ class LearnerController extends Controller
     public function booksLibrary(){
         return view('learner.booksLibrary');
     }
+
+    public function suggestionsStore(Request $request){
+      
+       $data= $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+           
+        ]);
+        
+        if ($request->hasFile('attachment')) {
+            $this->validate($request, ['attachment' => 'mimes:webp,png,jpg,jpeg|max:200']);
+            $attachment = $request->attachment;
+            $id_proof_fileNewName = "suggestion" . time() . $attachment->getClientOriginalName();
+            $attachment->move('public/uploade/', $id_proof_fileNewName);
+            $attachment = 'public/uploade/' . $id_proof_fileNewName;
+        } else {
+            $attachment = null;
+        }
+        $data['attachment']=$attachment;
+        $data['learner_id']=Auth::user()->id;
+        $data['library_id']=Auth::user()->library_id;
+        Suggestion::create($data);
+
+        return redirect()->route('learner.suggestions')->with('success','Data created Successfully');
+        
+    }
+
+    public function complaintsStore(Request $request){
+      
+        $data= $request->validate([
+             'title' => 'required',
+             'description' => 'required',
+            
+         ]);
+         
+         if ($request->hasFile('attachment')) {
+             $this->validate($request, ['attachment' => 'mimes:webp,png,jpg,jpeg|max:200']);
+             $attachment = $request->attachment;
+             $id_proof_fileNewName = "suggestion" . time() . $attachment->getClientOriginalName();
+             $attachment->move('public/uploade/', $id_proof_fileNewName);
+             $attachment = 'public/uploade/' . $id_proof_fileNewName;
+         } else {
+             $attachment = null;
+         }
+         $data['attachment']=$attachment;
+         $data['learner_id']=Auth::user()->id;
+         $data['library_id']=Auth::user()->library_id;
+         Complaint::create($data);
+ 
+         return redirect()->route('learner.complaints')->with('success','Data created Successfully');
+         
+     }
+
+
+     public function feadbackStore(Request $request){
+        $data=$request->validate([
+            'frequency' => 'required|integer|in:1,2,3,4', // Must be 1, 2, 3, or 4
+            'purpose' => 'required|string|max:255', // Required, max 255 chars
+            'resources' => 'required|integer|in:1,2', // Must be 1 (Yes) or 2 (No) [change if needed]
+            'resource_suggestions' => 'nullable|string|max:500', // Optional, max 500 chars
+            'rating' => 'required|integer|min:1|max:5', // Rating between 1-5
+            'staff' => 'required|integer|in:1,2', // Must be 1 (Yes) or 2 (No) [change if needed]
+            'comments' => 'nullable|string|max:500', // Optional, max 500 chars
+        ]);
+    
+        
+        $data['learner_id']=Auth::user()->id;
+        $data['library_id']=Auth::user()->library_id;
+        if(LearnerFeedback::where('learner_id',Auth::user()->id)->exists()){
+            return redirect()->route('learner.feadback')->with('error',' Your feedback already uploaded');
+        }
+        LearnerFeedback::create($data);
+        return redirect()->route('learner.feadback')->with('success','Thank you for your feedback!');
+        
+     }
     
 
 }

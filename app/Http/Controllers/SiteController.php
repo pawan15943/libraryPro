@@ -155,7 +155,7 @@ class SiteController extends Controller
     
         // Handle header image upload
         if ($request->hasFile('header_image')) {
-            $data['header_image'] = $request->file('header_image')->store('blog_images', 'public');
+            $data['header_image'] = $request->file('header_image')->store('blog_images', 'public/uploade');
         }
     
         // Save or update the blog

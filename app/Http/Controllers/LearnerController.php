@@ -1994,18 +1994,20 @@ class LearnerController extends Controller
 
     public function learnerAttendence(Request $request){
         if($request->has('date')){
-            $learners= $this->getLearnersByLibrary()->leftJoin('attendances','learners.id','=','attendances.learner_id')->where('learners.status',1)->get();
+            $learners= Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+            ->where('learners.library_id', auth()->user()->id)->leftJoin('attendances','learners.id','=','attendances.learner_id')->where('learners.status',1)->where('learner_detail.status',1)->select('learners.id as id','learner_detail.*','attendances.*','learners.*')->get();
         }else{
             $learners=null;
         }
     
-        
+       
         return view('learner.attendance',compact('learners'));
      
     }
 
     public function updateAttendance(Request $request)
     {
+        //dd($request);
         // Validate incoming request
         $request->validate([
             'learner_id' => 'required|integer',

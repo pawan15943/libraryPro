@@ -3,7 +3,7 @@
 
 
 <!-- Learners Blog -->
-<div class="row">
+<div class="row g-4">
     @foreach($data as $key => $value)
         <div class="col-lg-4">
             <div class="blog-box">

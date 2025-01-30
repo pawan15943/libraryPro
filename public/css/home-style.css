@@ -239,7 +239,6 @@ a.cta:hover {
 
 .benefits {
     background: #fff;
-    border: 1px solid #e7e7e7;
     padding: 2rem;
     border-radius: 1.5rem;
     height: 100%;
@@ -263,7 +262,7 @@ a.cta:hover {
 }
 
 .product-benefits .col-lg-3:nth-child(odd) .benefits::after {
-    background: #d8f7fb;
+    background: linear-gradient(45deg, #00e2ff, #ffffff);
     content: '';
     position: absolute;
     width: 200px;
@@ -330,7 +329,7 @@ a.cta:hover {
 }
 
 .iconbox {
-    background: linear-gradient(45deg, #40eaff, #fff76f);
+    background: linear-gradient(45deg, #00e3ff, #fffccc);
     width: 80px;
     height: 80px;
     margin-bottom: 1.5rem ! IMPORTANT;
@@ -343,7 +342,7 @@ a.cta:hover {
 }
 
 .iconbox:nth-child(even){
-    background: #ffebcf !important;
+    background: linear-gradient(199deg, #ffffff, #fba300) !important;
 }
 
 .icon {

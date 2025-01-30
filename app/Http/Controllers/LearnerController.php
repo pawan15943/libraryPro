@@ -2018,6 +2018,7 @@ class LearnerController extends Controller
 
     public function updateAttendance(Request $request)
     {
+        //dd($request);
         // Validate incoming request
         $request->validate([
             'learner_id' => 'required|integer',

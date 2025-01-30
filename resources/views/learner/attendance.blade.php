@@ -7,7 +7,7 @@ $current_route = Route::currentRouteName();
 
 <!-- Bootstrap Toggle CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<div class="row">
+
     
 
     <div class="row mb-4 ">
@@ -38,6 +38,7 @@ $current_route = Route::currentRouteName();
 
         
     </div>
+
     <div class="row mb-4">
         <div class="col-lg-12">
             <div class="table-responsive ">
@@ -56,7 +57,7 @@ $current_route = Route::currentRouteName();
                     </thead>
                     <tbody>
                         @if($learners)
-    
+                        
 
                         @foreach($learners as $key => $value)
                             @php
@@ -115,7 +116,7 @@ $current_route = Route::currentRouteName();
             </div>
         </div>
     </div>
-    </div>
+
 
 
     <script>
@@ -128,7 +129,7 @@ $current_route = Route::currentRouteName();
                 let currentToggle = $(this);
 
                 var date = $('#date').val();
-
+                alert(learner_id);
                 // Validate date before making the AJAX request
                 if (!date) {
                     alert('Please select a date!');

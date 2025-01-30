@@ -64,11 +64,12 @@
                             @enderror
                         </div>
                         <div class="col-lg-12">
-                            <div class="form-check">
+                            <div class="form-group">
                                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                 <label class="form-check-label" for="remember">
                                     Remember Me
                                 </label>
+                                <div class="error-msg"></div>
                             </div>
                         </div>
 

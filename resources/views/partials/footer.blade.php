@@ -1,1 +1,1 @@
-<div class="footer">All Rights Reserved by NBCC.</div>
+<div class="footer">@ {{date('Y')}} All Rights Reserved by Libraro.</div>

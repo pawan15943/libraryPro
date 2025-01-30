@@ -89,5 +89,12 @@
     </div>
 </div>
 
-
+<script>
+    $(document).ready(function() {
+        let table = new DataTable('#datatable', {
+          
+        });
+        
+    });
+</script>
 @endsection

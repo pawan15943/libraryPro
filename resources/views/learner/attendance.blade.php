@@ -120,81 +120,75 @@ $current_route = Route::currentRouteName();
 
 
     <script>
-        $(document).ready(function () {
-            // Add event listener for the toggle
-            $('.toggle').on('change', function () {
-                let learner_id = $(this).data("learner"); // Get the learner ID of the clicked toggle
-              
-                let attendance = $(this).prop("checked") ? 1 : 0; // Get the new attendance value (1 or 0)
-                let currentToggle = $(this);
+       $(document).ready(function () {
+    // Add event listener for the attendance toggle (In time)
+    $('.toggle').on('change', function () {
+        let learner_id = $(this).data("learner"); // Get the learner ID of the clicked toggle
+        let attendance = $(this).prop("checked") ? 1 : 0; // Get the new attendance value (1 or 0)
+        let currentToggle = $(this);
 
-                var date = $('#date').val();
-                alert(learner_id);
-                // Validate date before making the AJAX request
-                if (!date) {
-                    alert('Please select a date!');
-                    return;
+        // Get the selected date from the input
+        var date = $('#date').val();
+        
+        // Validate date before making the AJAX request
+        if (!date) {
+            alert('Please select a date!');
+            return;
+        }
+
+        // Ensure only the clicked learner's attendance is updated for "in" time
+        var time = 'in';
+        updateAttendance(learner_id, attendance, date, time); // Update attendance for the 'in' time
+    });
+
+    // Add event listener for the out-time toggle
+    $('.outToggle').on('change', function () {
+        let learner_id = $(this).data('learner'); // Get the learner ID of the clicked toggle
+        var attendance = $(this).prop("checked") ? 1 : 0; // Attendance value (same for "out" toggle)
+
+        var date = $('#date').val();
+        
+        // Validate date before making the AJAX request
+        if (!date) {
+            alert('Please select a date!');
+            return;
+        }
+
+        // Ensure only the clicked learner's attendance is updated for "out" time
+        var time = 'out'; // Set the time type to 'out'
+        updateAttendance(learner_id, attendance, date, time); // Update attendance for the 'out' time
+    });
+
+    // Function to handle attendance update via AJAX
+    function updateAttendance(learner_id, attendance, date, time){
+        // Send AJAX request to update attendance for the specific learner
+        if(learner_id && attendance !== undefined && date){
+            $.ajax({
+                url: '{{ route('update.attendance') }}',  // Ensure route is correct
+                method: 'POST',
+                data: {
+                    learner_id: learner_id,  // Pass the learner ID for the specific row
+                    attendance: attendance,  // Pass the attendance value (1 or 0)
+                    date: date,              // Pass the selected date
+                    time: time,              // Pass 'in' or 'out'
+                    _token: '{{ csrf_token() }}'  // CSRF token for security
+                },
+                success: function (response) {
+                    if (response.success) {
+                        console.log(response.message); // Success message
+                    } else {
+                        alert('Error updating attendance');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('Something went wrong. Please try again.');
                 }
-                var time='in';
-                updateAttendance(learner_id,attendance,date,time);
-                
             });
+        }
+    }
+});
 
-            $('.outToggle').on('change', function () {
-                console.log("out");
-                var attendance =  1;
-
-                // Get learner_id and date
-                var learner_id = $(this).data('learner');
-                var date = $('#date').val();
-
-                // Validate date before making the AJAX request
-                if (!date) {
-                   
-                    alert('Please select a date!');
-                    return;
-                }
-                var time='out';
-                updateAttendance(learner_id,attendance,date,time);
-                
-            });
-
-
-            function updateAttendance(learner_id,attendance,date,time){
-                // Send AJAX request
-                if(learner_id && attendance && date){
-
-                                
-                            $.ajax({
-                                url: '{{ route('update.attendance') }}',
-                                method: 'POST',
-                                data: {
-                                    learner_id: learner_id,
-                                    attendance: attendance,
-                                    date: date,
-                                    time: time,
-                                    _token: '{{ csrf_token() }}' 
-                                },
-                                success: function (response) {
-                                    if (response.success) {
-                                        console.log(response.message);
-                                       
-                                    } else {
-                                        alert('Error updating attendance');
-                                    }
-                                },
-                                error: function (xhr, status, error) {
-                                    console.error('Error:', error);
-                                    alert('Something went wrong. Please try again.');
-                                }
-                            });
-                }
-            }
-
-            $("form").on("submit", function () {
-            $(".toggle, .outToggle").prop("checked", false).trigger("change");
-        });
-        });
     </script>
 
     @endsection

@@ -7,8 +7,8 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="myId">
-            <h5>{{$library_name->library_name}}</h5>
-           wq <hr>
+            <h5>{{$library_name->library_name}} - ID</h5>
+            <hr>
             <!-- Photo -->
             <img src="{{url('public/img/user.png')}}" alt="User" class="id-profile">
             <!-- Personal Info -->

@@ -20,7 +20,7 @@
         <div class="col-lg-9">
             <div class="dashboard-Header">
                 <img src="{{url('public/img/bg-library-welcome.png')}}" alt="library" class="img-fluid rounded">
-                <h1>Welcome to <span>Libraro</span><br>
+                <h1>Welcome to <span>{{$library_name->library_name}}</span><br>
                     Let’s Make Your <span class="typing-text"> Library the Place to Be! 📚🌟</span></h1>
             </div>
         </div>
@@ -75,49 +75,10 @@
             <ul class="features mb-4">
                 <li>
                     <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
+                    
+                    <p>Book List is Available Soon!</p>
                 </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Book Name</p>
-                </li>
+                
             </ul>
         </div>
     </div>
@@ -129,24 +90,9 @@
             <ul class="features mb-4">
                 <li>
                     <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Exam Name</p>
+                    <p>Govt. Exam Information is Available Soon!</p>
                 </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Exam Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Exam Name</p>
-                </li>
-                <li>
-                    <!-- Book Icon -->
-                    <img src="" alt="Book Icon">
-                    <p>Exam Name</p>
-                </li>
+                
                 
             </ul>
         </div>

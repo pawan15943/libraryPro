@@ -9,7 +9,8 @@
                 <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
                 <h2 class="head-text-2">Effortlessly Manage Your Library – From Bookings to Reporting, All in One Place!</h2>
                 <p class="head-text-3">Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.</p>
-                <a href="{{route('register')}}" class="cta">Upgrade Your Library Now!</a>
+                <a href="{{route('register')}}" class="cta">Try Libraro Free!</a>
+                <a href="{{route('register')}}" class="cta ms-3 rounded"><i class="fa fa-play"></i></a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
                 <img src="{{ asset('public/img/head.png') }}" alt="Library management software" class="img-fluid">

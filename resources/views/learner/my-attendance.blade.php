@@ -3,24 +3,26 @@
 
 
 <div class="card">
-    <div class="row">
-        <form action="{{ route('my-attendance') }}" method="GET">
-        <div class="form-group">
-            <label for="category_name">Select Month</label>
-            <select name="request_name" class="form-select">
-                <option value="">Select Month</option>
-                @foreach($months as $key => $value)
-                <option value="{{$value['year_month']}}" {{ request('request_name') == $value['year_month'] ? 'selected' : '' }}>{{$value['month_name']}}</option>
-                @endforeach
-            </select>
+    <form action="{{ route('my-attendance') }}" method="GET">
+        <div class="row">
 
-        </div>
+            <div class="col-lg-4">
+                <label for="category_name">Select Month <span class="text-danger">*</span></label>
+                <select name="request_name" class="form-select">
+                    <option value="">Select Month</option>
+                    @foreach($months as $key => $value)
+                    <option value="{{$value['year_month']}}" {{ request('request_name') == $value['year_month'] ? 'selected' : '' }}>{{$value['month_name']}}</option>
+                    @endforeach
+                </select>
 
-        <div class="col-lg-3 mt-4">
-            <button type="submit" class="btn btn-primary button">Search</button>
+            </div>
+
+            <div class="col-lg-3 mt-4">
+                <button type="submit" class="btn btn-primary button">Search</button>
+            </div>
         </div>
-        </form>
-    </div>
+    </form>
+
 
 </div>
 <h4 class="py-4">My Attendance : {{$data->plan_type_name}} ({{ \Carbon\Carbon::parse($data->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($data->end_time)->format('h:i A') }})</h4>
@@ -40,14 +42,14 @@
                 </thead>
                 <tbody>
                     @if($my_attandance)
-                    @foreach($my_attandance as $key => $value)  
+                    @foreach($my_attandance as $key => $value)
                     <tr>
                         <td>{{ \Carbon\Carbon::parse($value->date)->format('M j, Y') }}</td>
                         <td>
                             @if($value->attendance==1)
-                                Present
+                            Present
                             @else
-                                Absent
+                            Absent
                             @endif
                         </td>
                         <td>{{ \Carbon\Carbon::parse($value->in_time)->format('h:i A') }}</td>

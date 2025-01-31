@@ -10,7 +10,8 @@
             <h4>Add Complaint</h4>
 
             <div class="col-lg-12">
-                <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Enter Title" value="{{ old('title') }}">
+                <label for="category_name">Compliant Title <span class="text-danger">*</span></label>
+                <input type="text" name="title" class="form-control char-only @error('title') is-invalid @enderror" placeholder="Enter Title" value="{{ old('title') }}">
                 @error('title')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -19,6 +20,7 @@
             </div>
 
             <div class="col-lg-12">
+                <label for="category_name">Compliant Description <span class="text-danger">*</span></label>
                 <textarea name="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter your description">{{ old('description') }}</textarea>
                 @error('description')
                 <span class="invalid-feedback" role="alert">
@@ -28,7 +30,8 @@
             </div>
 
             <div class="col-lg-12">
-                <input type="file" name="attachment" class="form-control @error('attachment') is-invalid @enderror">
+                <label for="category_name">Screenshot (optional)</label>
+                <input type="file" name="attachment" class="form-control no-validate @error('attachment') is-invalid @enderror">
                 <div class="screenshot"></div>
                 @error('attachment')
                 <span class="invalid-feedback" role="alert">
@@ -40,9 +43,10 @@
             <div class="col-lg-3 mt-4">
                 <button type="submit" class="btn btn-primary button">Submit</button>
             </div>
-    </form>
 
-</div>
+
+        </div>
+    </form>
 </div>
 <h4 class="py-4">Complaints List</h4>
 <div class="row mb-4">
@@ -66,12 +70,11 @@
                         <td>{{$value->description}}</td>
                         <td>
                             @if($value->status==1)
-
-                            Resolved
+                            <span class="text-success">Resolved</span>
                             @elseif($value->status==2)
-                            Clarification
+                            <span class="text-secondary">Clarification</span>
                             @else
-                            Pending
+                            <span class="text-danger">Pending</span>
                             @endif
                         </td>
                     </tr>
@@ -89,9 +92,9 @@
 <script>
     $(document).ready(function() {
         let table = new DataTable('#datatable', {
-          
+
         });
-        
+
     });
 </script>
 

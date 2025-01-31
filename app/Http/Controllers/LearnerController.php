@@ -1971,7 +1971,9 @@ class LearnerController extends Controller
 
 
     public function learnerProfile(){
-        return view('learner.profile');
+        $learner=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
+
+        return view('learner.profile',compact('learner'));
     }
 
     public function learnerRequest(){
@@ -1983,12 +1985,15 @@ class LearnerController extends Controller
     public function learnerRequestCreate(Request $request){
         $request->validate([
             'request_name' => 'required|string|max:255',
+            'description' => 'required',
         ]);
     
         DB::table('learner_request')->insert([
             'learner_id' => Auth::id(),
             'request_name' => $request->request_name,
+            'description' => $request->description,
             'request_date' => Carbon::now()->toDateString(),
+            
             'created_at' => now(),
             
         ]);
@@ -2071,7 +2076,11 @@ class LearnerController extends Controller
         return view('learner.idCard',compact('library_name','data'));
     }
     public function support(){
-        return view('learner.support');
+        $library_name=Library::where('id',Auth::user()->library_id)->first();
+
+        return view('learner.support',compact('library_name'));
+
+
     }
     public function blog(){
         $data=Blog::get();

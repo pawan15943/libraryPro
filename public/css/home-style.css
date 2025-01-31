@@ -114,7 +114,7 @@ a.nav-link.button:hover {
 
 
 .cta {
-    padding: .8rem 3.5rem;
+    padding: .8rem 1.5rem;
     background: #18225f;
     border-radius: .5rem;
     box-shadow: 1px 4px 0 #ababab;
@@ -170,7 +170,7 @@ a.cta:hover {
 }
 
 .product-features-box {
-    background: #369a8e;
+    background: #ccfff9;
     padding: 1.5rem;
     border-radius: 1.5rem;
     min-height: 500px;
@@ -189,7 +189,7 @@ a.cta:hover {
 
 
 #features .owl-item:nth-child(odd) .product-features-box {
-    background: #bc770d;
+    background: #ffeed5;
 }
 
 .product-features {
@@ -262,7 +262,7 @@ a.cta:hover {
 }
 
 .product-benefits .col-lg-3:nth-child(odd) .benefits::after {
-    background: linear-gradient(45deg, #00e2ff, #ffffff);
+    background: linear-gradient(45deg, #c1f8ff, #ffffff);
     content: '';
     position: absolute;
     width: 200px;
@@ -275,7 +275,7 @@ a.cta:hover {
 }
 
 .product-benefits .col-lg-3:nth-child(even) .benefits::after {
-    background: #ffebcf;
+    background: linear-gradient(45deg, #fff6b8, transparent);
     content: '';
     position: absolute;
     width: 200px;
@@ -329,7 +329,7 @@ a.cta:hover {
 }
 
 .iconbox {
-    background: linear-gradient(45deg, #00e3ff, #fffccc);
+    background: linear-gradient(45deg, #b9f8ff, #d6faff);
     width: 80px;
     height: 80px;
     margin-bottom: 1.5rem ! IMPORTANT;
@@ -354,7 +354,6 @@ a.cta:hover {
 }
 
 .product-features-box h4 {
-    color: #fff !important;
     font-size: 1.2rem;
     font-weight: 600;
     line-height: 27px;

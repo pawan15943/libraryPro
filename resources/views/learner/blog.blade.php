@@ -3,11 +3,16 @@
 
 
 <!-- Learners Blog -->
-<div class="row g-4">
+<div class="row g-4 mb-4">
     @foreach($data as $key => $value)
         <div class="col-lg-4">
             <div class="blog-box">
-                <img src="{{ asset($value->header_image ) }}" alt="blog-title" class="blog-thumb">
+                @if($value->header_image !="")
+                <img src="{{ url('public/img/blog.png') }}" alt="blog-title" class="blog-thumb">
+                <!-- <img src="{{ asset($value->header_image ) }}" alt="blog-title" class="blog-thumb"> -->
+                @else
+                <img src="{{ url('public/img/blog.png') }}" alt="blog-title" class="blog-thumb">
+                @endif
                 <h4>{{ $value->page_title }}</h4>
                 <a href="">Read Full Article >></a>
             </div>

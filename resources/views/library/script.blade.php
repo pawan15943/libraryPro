@@ -104,14 +104,24 @@
     $(document).ready(function () {
     // Handle status selection
     $('#statusDropdown').change(function () {
+      
+        
         var status = $(this).val();
 
-        // Show the modal if clarification is selected
-        if (status == 'clarification') {
+        // Get the row id from the dropdown (data attribute)
+        var rowId = $(this).data('row-id');
+
+        // If clarification is selected, show the modal
+        if (status == '3') {
             $('#clarificationModal').show();
         } else {
             $('#clarificationModal').hide();
         }
+
+        // Save the row ID in a hidden input field to submit later
+        $('#submitStatus').data('row-id', rowId);
+        var remark=null;
+        clarificationStatus(rowId,status,remark)
     });
 
     // Close the modal when clicking the close button
@@ -122,35 +132,51 @@
     // Submit status using AJAX
     $('#submitStatus').click(function () {
         var status = $('#statusDropdown').val();
+        var rowId = $(this).data('row-id'); // Get the row id
         var remark = $('#remarkText').val();
 
-        // If clarification is selected, check for remarks
-        if (status == 'clarification' && remark.trim() === "") {
+      
+        if (status == '3' && remark.trim() === "") {
             alert('Please provide remarks for clarification.');
             return;
         }
+       
+        clarificationStatus(rowId,status,remark)
+      
+    });
 
-        // AJAX request to submit the status
+
+    function clarificationStatus(rowId,status,remark){
         $.ajax({
-            url: '{{ route("clarification.submit.status") }}', // The route for handling the status update
+            url: '{{ route('clarification.submit.status') }}', 
             method: 'POST',
             data: {
+                row_id: rowId, 
                 status: status,
                 remark: remark,
-                _token: '{{ csrf_token() }}' // CSRF token for security
+                _token: '{{ csrf_token() }}' 
             },
             success: function (response) {
-                alert('Status updated successfully!');
-                $('#statusDropdown').val(''); // Reset dropdown
-                $('#remarkText').val(''); // Reset textarea
-                $('#clarificationModal').hide(); // Close modal
+               console.log(response);
+                
+                $('#statusDropdown').val('');
+                $('#remarkText').val(''); 
+                $('#clarificationModal').hide(); 
+                if (response.success) {
+                    toastr.success('Status updated successfully!');
+                } else {
+                    toastr.error('Failed to update status.');
+                }
             },
             error: function () {
                 alert('An error occurred. Please try again.');
             }
         });
-    });
+    }
 });
+
+
+
 
 
   

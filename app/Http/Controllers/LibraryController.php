@@ -998,12 +998,30 @@ class LibraryController extends Controller
     }
 
     public function clarificationStatus(Request $request){
+       
         $validated = $request->validate([
-            'status' => 'required|string',
+            'row_id' => 'required|integer|exists:complaints,id',
+            'status' => 'required',
             'remark' => 'nullable|string',
         ]);
 
-        Complaint::
+        // Find the complaint using the row_id and update status and remark
+        $complaint = Complaint::find($request->row_id);
+
+        if (!$complaint) {
+            return response()->json(['error' => 'Complaint not found.'], 404);
+        }
+
+      
+        $complaint->update([
+            'status' => $validated['status'],
+            'response' => $validated['remark'] ?? null, 
+        ]);
+
+        return response()->json([
+            'success'=>200,
+            'message' => 'Complaint status updated successfully.'
+        ]);
     }
 
 

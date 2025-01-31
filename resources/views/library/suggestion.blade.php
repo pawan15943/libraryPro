@@ -25,7 +25,7 @@
                         <th>Description</th>
                         <th>Status</th>
                         <th>Response</th>
-                        <th>Action</th>
+                        
                     </tr>
                 </thead>
 
@@ -45,17 +45,9 @@
                             <span class="text-danger">Pending</span>
                             @endif
                         </td>
-                        <td>{{$value->response}}</td>
+                        <td>{{$value->response ?? 'NA'}}</td>
                       
-                        <td>
-                            <ul class="actionalbls">
-                                <li>
-
-                                  libary id ko as krke use kro ek bar
-
-                                </li>
-                            </ul>
-                        </td>
+                        
                         
                     </tr>
                     @endforeach

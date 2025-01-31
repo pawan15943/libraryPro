@@ -985,18 +985,27 @@ class LibraryController extends Controller
     }
 
     public function learnerComplaints(){
-        $data=Complaint::where('library_id',Auth::user()->id)->get();
+        $data=Complaint::where('complaints.library_id',Auth::user()->id)->leftJoin('learners','complaints.learner_id','=','learners.id')->select('learners.name as learner_name','complaints.*')->get();
         return view('library.complaint',compact('data'));
     }
 
     public function learnerSuggestions(){
-        $data=Suggestion::where('library_id',Auth::user()->id)->get();
+        $data=Suggestion::where('suggestions.library_id',Auth::user()->id)->leftJoin('learners','suggestions.learner_id','=','learners.id')->select('learners.name as learner_name','suggestions.*')->get();
         return view('library.suggestion',compact('data'));
     }
 
     public function learnerFeedback(){
-        $data=LearnerFeedback::where('library_id',Auth::user()->id)->get();
+        $data=LearnerFeedback::where('learner_feedback.library_id',Auth::user()->id)->leftJoin('learners','learner_feedback.learner_id','=','learners.id')->select('learners.name as learner_name','learner_feedback.*')->get();
         return view('library.learner-feedback',compact('data'));
+    }
+
+    public function clarificationStatus(Request $request){
+        $validated = $request->validate([
+            'status' => 'required|string',
+            'remark' => 'nullable|string',
+        ]);
+
+        Complaint::
     }
 
 

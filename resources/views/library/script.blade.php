@@ -100,5 +100,58 @@
         let table = new DataTable('#datatable');
        
     });
+
+    $(document).ready(function () {
+    // Handle status selection
+    $('#statusDropdown').change(function () {
+        var status = $(this).val();
+
+        // Show the modal if clarification is selected
+        if (status == 'clarification') {
+            $('#clarificationModal').show();
+        } else {
+            $('#clarificationModal').hide();
+        }
+    });
+
+    // Close the modal when clicking the close button
+    $('.close-btn').click(function () {
+        $('#clarificationModal').hide();
+    });
+
+    // Submit status using AJAX
+    $('#submitStatus').click(function () {
+        var status = $('#statusDropdown').val();
+        var remark = $('#remarkText').val();
+
+        // If clarification is selected, check for remarks
+        if (status == 'clarification' && remark.trim() === "") {
+            alert('Please provide remarks for clarification.');
+            return;
+        }
+
+        // AJAX request to submit the status
+        $.ajax({
+            url: '{{ route("clarification.submit.status") }}', // The route for handling the status update
+            method: 'POST',
+            data: {
+                status: status,
+                remark: remark,
+                _token: '{{ csrf_token() }}' // CSRF token for security
+            },
+            success: function (response) {
+                alert('Status updated successfully!');
+                $('#statusDropdown').val(''); // Reset dropdown
+                $('#remarkText').val(''); // Reset textarea
+                $('#clarificationModal').hide(); // Close modal
+            },
+            error: function () {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+});
+
+
   
 </script>

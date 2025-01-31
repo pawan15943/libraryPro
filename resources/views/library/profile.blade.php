@@ -137,17 +137,17 @@
                         @enderror
                     </div>
                     <div class="col-lg-12">
-                        <label for="google_map">Your Address on Google Map <span>(Optional)</span></label>
-                        <textarea name="google_map" id="google_map" class="form-control" rows="5" placeholder="Paste Google Map Embed Code here"></textarea>
-                        <span class="text-danger">Your provided library address will be shown to visitors on your listing, so please mention it correctly (Put Map Embed Code).</span>
+                        <label for="google_map">Your Address on Google Map (Optional)</label>
+                        <textarea name="google_map" id="google_map" class="form-control no-validate" rows="5" placeholder="Paste Google Map Embed Code here"></textarea>
+                        <span class="text-info"><b>Note</b> : Your provided library address will be shown to visitors on your listing, so please mention it correctly (Put Map Embed Code).</span>
                     </div>
                     
                 </div>
                 <h4 class="py-4">Library Owner Info</h4>
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <label for="">Library Logo <span>*</span></label>
-                        <input type="file" class="form-control @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
+                        <label for="">Library Logo  (Optional) </label>
+                        <input type="file" class="form-control no-validate @error('library_logo') is-invalid @enderror" name="library_logo" id="fileInput">
                         @error('library_logo')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

@@ -68,12 +68,12 @@ class LoadMenus
             //learner remainig days count
 
             $leraner=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
-            $learner_current_library_extend=Hour::withoutGlobalScopes()->where('library_id',Auth::user()->library_id)->first()->value('extend_days');
+            $learner_current_library_extend=Hour::withoutGlobalScopes()->where('library_id',Auth::user()->library_id)->first();
             if($leraner && $learner_current_library_extend){
                 $today = Carbon::today();
                 $endDate = Carbon::parse($leraner->plan_end_date);
                 $diffInDays = $today->diffInDays($endDate, false);
-                $inextendDate = $endDate->copy()->addDays($learner_current_library_extend); // Preserving the original $endDate
+                $inextendDate = $endDate->copy()->addDays($learner_current_library_extend->extend_days); // Preserving the original $endDate
                 $diffExtendDay = $today->diffInDays($inextendDate, false);
             }else{
                 $diffExtendDay=0;

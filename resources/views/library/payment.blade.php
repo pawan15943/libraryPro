@@ -169,7 +169,7 @@
                         <select name="payment_method" class="form-select">
                             <option value="">Select Mode</option>
                             <option value="1" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Online</option>
-                            <option value="2" {{ old('payment_method') == 'Offline' ? 'selected' : '' }}>Offline</option>
+                            {{-- <option value="2" {{ old('payment_method') == 'Offline' ? 'selected' : '' }}>Offline</option> --}}
                         </select>
                         @if($errors->has('payment_method'))
                         <span class="text-danger">{{ $errors->first('payment_method') }}</span>

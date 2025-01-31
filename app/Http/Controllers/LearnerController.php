@@ -1861,29 +1861,64 @@ class LearnerController extends Controller
         }
     }
 
+    // public function incrementMessageCount(Request $request)
+    // {
+
+    //     $id = $request->input('id');
+    //     $type = $request->input('type');
+
+    //     // Find the learner record
+    //     $learner = Learner::find($id);
+
+    //     if ($learner) {
+    //         // Retrieve the relevant row in the email_message table for this learner
+    //         $detailCount = DB::table('email_message')->where('learner_id', $learner->id)->first();
+
+    //         if ($detailCount) {
+    //             if ($type === 'whatsapp') {
+    //                 $newMessageCount = $detailCount->learner_message + 1;
+    //                 DB::table('email_message')->where('learner_id', $learner->id)->update([
+    //                     'learner_message' => $newMessageCount,
+    //                 ]);
+    //             } elseif ($type === 'email') {
+    //                 $newEmailCount = $detailCount->learner_email + 1;
+    //                 DB::table('email_message')->where('learner_id', $learner->id)->update([
+    //                     'learner_email' => $newEmailCount,
+    //                 ]);
+    //             }
+
+    //             return response()->json(['success' => true]);
+    //         }
+    //     }
+
+    //     return response()->json(['success' => false], 404);
+    // }
     public function incrementMessageCount(Request $request)
     {
 
         $id = $request->input('id');
         $type = $request->input('type');
+        $message = $request->input('message');
 
         // Find the learner record
         $learner = Learner::find($id);
 
         if ($learner) {
-            // Retrieve the relevant row in the email_message table for this learner
+         
             $detailCount = DB::table('email_message')->where('learner_id', $learner->id)->first();
 
             if ($detailCount) {
                 if ($type === 'whatsapp') {
-                    $newMessageCount = $detailCount->learner_message + 1;
-                    DB::table('email_message')->where('learner_id', $learner->id)->update([
-                        'learner_message' => $newMessageCount,
+                    
+                    DB::table('email_message')->where('learner_id', $learner->id)->create([
+                        'learner_message' => $message,
+                        'created_at' => now(),
                     ]);
                 } elseif ($type === 'email') {
-                    $newEmailCount = $detailCount->learner_email + 1;
-                    DB::table('email_message')->where('learner_id', $learner->id)->update([
-                        'learner_email' => $newEmailCount,
+                    
+                    DB::table('email_message')->where('learner_id', $learner->id)->create([
+                        'learner_email' => $message,
+                        'created_at' => now(),
                     ]);
                 }
 

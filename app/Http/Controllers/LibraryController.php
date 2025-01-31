@@ -459,9 +459,7 @@ class LibraryController extends Controller
             LibraryTransaction::where('id', $request->library_transaction_id)->update([
                 'transaction_id' => $request->transaction_id ?? mt_rand(10000000, 99999999),
             ]);
-        }
-        
-        elseif($request->payment_method=='1'){
+        } elseif($request->payment_method=='1'){
             $key = 'rzp_test_m67hVSALfSsx0w';
             $secret = 'nIgv7EaQ3RqyXRe9QAAKf9xD';
             

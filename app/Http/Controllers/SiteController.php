@@ -153,9 +153,12 @@ class SiteController extends Controller
             $data['tags'] = json_encode($tags); // Save tags as a JSON array like ["tag one", "tag two"]
         }
     
-        // Handle header image upload
+
         if ($request->hasFile('header_image')) {
-            $data['header_image'] = $request->file('header_image')->store('blog_images', 'public/uploade');
+            $header_image = $request->file('header_image');
+            $library_logoNewName = "header_image" . time() . '.' . $header_image->getClientOriginalExtension();
+            $header_image->move(public_path('uploads'), $library_logoNewName);
+            $data['header_image'] = 'uploads/' . $library_logoNewName;
         }
     
         // Save or update the blog

@@ -168,6 +168,54 @@ class AppServiceProvider extends ServiceProvider
                 ]),
             ],
 
+            // Learner Bread crumb
+
+            // Administrator Links
+            'learner.home' => ['Dashboard' => route('home')],
+            'learner.request' => [
+                'Dashboard' => route('learner.home'),
+                'Learner Request' => route('learner.request'),
+            ],
+            'learner.profile' => [
+                'Dashboard' => route('learner.home'),
+                'Learner profile' => route('learner.profile'),
+            ],
+            'my-library-id' => [
+                'Dashboard' => route('learner.home'),
+                'My Library ID' => route('my-library-id'),
+            ],
+            'my-attendance' => [
+                'Dashboard' => route('learner.home'),
+                'My Library Attendance' => route('my-attendance'),
+            ],
+            'my-transactions' => [
+                'Dashboard' => route('learner.home'),
+                'My Transactions' => route('my-transactions'),
+            ],
+            'complaints' => [
+                'Dashboard' => route('learner.home'),
+                'Complaints' => route('complaints'),
+            ],
+            'learner.suggestions' => [
+                'Dashboard' => route('learner.home'),
+                'Suggestions' => route('learner.suggestions'),
+            ],
+            'learner.blog' => [
+                'Dashboard' => route('learner.home'),
+                'Blog' => route('learner.blog'),
+            ],
+            'books-library' => [
+                'Dashboard' => route('learner.home'),
+                'Library Books' => route('books-library'),
+            ],
+            'learner.feadback' => [
+                'Dashboard' => route('learner.home'),
+                'Feedback' => route('learner.feadback'),
+            ],
+            'support' => [
+                'Dashboard' => route('learner.home'),
+                'Support' => route('support'),
+            ],
         ];
 
         return $breadcrumbs[$routeName] ?? [];
@@ -214,8 +262,22 @@ class AppServiceProvider extends ServiceProvider
             'report.expense' => 'Manage Expanse',
             'library.feedback' => 'Library Feedback',
             'library.video-training' => 'Video Tutorials',
-            'learner.expire' => 'Expired The Learner'
-          
+            'learner.expire' => 'Expired The Learner',
+
+            // leaner
+            'learner.home' => 'Learner Dashboard',
+            'learner.request' => 'Learner Request',
+            'learner.profile' => 'Learner Profile',
+            'my-library-id' => 'My Library ID',
+            'my-attendance' => 'My Library Attendance',
+            'my-transactions' => 'My Transactions',
+            'complaints' => 'Complaints',
+            'learner.suggestions' => 'Suggestions',
+            'learner.blog' => 'Blog',
+            'books-library' => 'Library Books',
+            'learner.feadback' => 'Feedback',
+            'support' => 'Support',
+
         ];
 
         return $titles[$routeName] ?? ucfirst(str_replace('.', ' ', $routeName));

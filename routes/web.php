@@ -244,7 +244,7 @@ Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');
 Route::get('blog', [SiteController::class, 'blog'])->name('blog');
 Route::get('contact-us', [SiteController::class, 'contactUs'])->name('contact-us');
 Route::get('privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy-policy');
-Route::get('term-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
+Route::get('terms-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
 Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
 
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);

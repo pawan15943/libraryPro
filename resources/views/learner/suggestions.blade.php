@@ -8,11 +8,8 @@
         <div class="row g-4">
 
             <h4>Add Suggestions</h4>
-
-
-
             <div class="col-lg-12">
-                <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" placeholder="Enter Title" value="{{ old('title') }}">
+                <input type="text" name="title" class="form-control char-only @error('title') is-invalid @enderror" placeholder="Enter Title" value="{{ old('title') }}">
                 @error('title')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -30,7 +27,7 @@
             </div>
 
             <div class="col-lg-12">
-                <input type="file" name="attachment" class="form-control @error('attachment') is-invalid @enderror">
+                <input type="file" name="attachment" class="form-control no-validate @error('attachment') is-invalid @enderror">
                 <div class="screenshot"></div>
                 @error('attachment')
                 <span class="invalid-feedback" role="alert">
@@ -42,9 +39,10 @@
             <div class="col-lg-3 mt-4">
                 <button type="submit" class="btn btn-primary button">Submit</button>
             </div>
-    </form>
 
-</div>
+
+        </div>
+    </form>
 </div>
 <h4 class="py-4">Suggestion List</h4>
 <div class="row mb-4">
@@ -68,12 +66,11 @@
                         <td>{{$value->description}}</td>
                         <td>
                             @if($value->status==1)
-
-                            Resolved
+                            <span class="text-success">Resolved</span>
                             @elseif($value->status==2)
-                            Clarification
+                            <span class="text-secondary">Clarification</span>
                             @else
-                            Pending
+                            <span class="text-danger">Pending</span>
                             @endif
                         </td>
                     </tr>
@@ -92,9 +89,9 @@
 <script>
     $(document).ready(function() {
         let table = new DataTable('#datatable', {
-          
+
         });
-        
+
     });
 </script>
 @endsection

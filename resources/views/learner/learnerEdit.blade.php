@@ -164,13 +164,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         @endif
                         <!-- End -->
             </div>
-            {{-- <div class="seat--info">
-                    <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
-            <p>{{ $customer->plan_name}}</p>
-            <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
-        </div> --}}
+           
     </div>
     </div>
 

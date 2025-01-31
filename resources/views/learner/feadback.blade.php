@@ -16,7 +16,7 @@
     <form action="{{ route('learner.feedback.store') }}" method="POST" class="validateForm">
         @csrf
         <div class="row g-4">
-            <h4 class="mb-4">Library Feedback Form</h4>
+            <h4>Library Feedback Form</h4>
             <!-- Frequency of Visits -->
             <div class="col-lg-6">
                 <label for="frequency">How often do you visit the library?</label>

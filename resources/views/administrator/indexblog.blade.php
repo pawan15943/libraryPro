@@ -10,7 +10,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <a href="{{ route('add-page') }}" class="btn btn-primary">Create Blog
+        <a href="{{ route('add-blog') }}" class="btn btn-primary">Create Blog
 
         </a>
         <div class="table-responsive">

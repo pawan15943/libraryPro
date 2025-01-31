@@ -17,14 +17,14 @@
             <div class="col-lg-3">
                 <h4 class="text-center text-md-start">Other Links</h4>
                 <ul>
-                    <li><a href="{{route('privacy-policy')}}">Privacy Polisy</a></li>
+                    <li><a href="{{route('privacy-policy')}}">Privacy Policy</a></li>
                     <li><a href="{{route('term-and-condition')}}">Terms of Use</a></li>
                     <li><a href="{{route('refund-policy')}}">Refund Policy</a></li>
                 </ul>
             </div>
             <div class="col-lg-3">
                 <h4 class="text-center text-md-start">Follow Us On</h4>
-                <ul class="social text-center text-md-start justify-content-center">
+                <ul class="social">
                     <li><a href=""><i class="fab fa-facebook"></i></a></li>
                     <li><a href=""><i class="fab fa-instagram"></i></a></li>
                     <li><a href=""><i class="fab fa-linkedin"></i></a></li>

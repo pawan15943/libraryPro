@@ -10,6 +10,7 @@
                 <thead>
                     <tr>
                         <th>S.No</th>
+                        <th>Plan Type</th>
                         <th>Plan Name</th>
                         <th>Plan Price</th>
                         <th>Paid Amt (After GST)</th>
@@ -27,10 +28,12 @@
                     @foreach($transaction as $key => $value)
                     @php
                         $plan=App\Models\Plan::withoutGlobalScopes()->where('id',$value->plan_id)->first();
+                        $planType=App\Models\PlanType::withoutGlobalScopes()->where('id',$value->plan_type_id)->first();
                       
                     @endphp
                     <tr>
                         <td>{{$key+1}}</td>
+                        <td>{{$planType ? $planType->name : ''}}</td>
                         <td><span class="premium p-2 rounded text-white">{{$plan ? $plan->name : ''}}</span></td>
                         <td><i class="fa fa-inr"></i> {{$value->total_amount}}</td>
                         <td><i class="fa fa-inr"></i> {{$value->paid_amount}}</td>

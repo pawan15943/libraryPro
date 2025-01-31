@@ -9,47 +9,47 @@
         </style>
 
    <!-- Expiry Warning -->
-   <div class="modal" id="planExpiryModal" tabindex="-1">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                   
-                    <div class="modal-body">
-                        <button type="button" class="btn-close align-self-right" data-bs-dismiss="modal" aria-label="Close"></button>
-                        <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
-                        @if($librarydiffInDays < 0)
-                            <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
-                            @elseif($librarydiffInDays > 0)
-                            <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
-                            @else
-                            <p class="text-danger text-center text-bold">Your library plan expires today. Please consider renewing your plan!</p>
-                            @endif
+<div class="modal" id="planExpiryModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            
+            <div class="modal-body">
+                <button type="button" class="btn-close align-self-right" data-bs-dismiss="modal" aria-label="Close"></button>
+                <img src="{{ url('public/img/plan-expire.png') }}" alt="plan-expire" class="plan-expire img-fluid">
+                @if($librarydiffInDays < 0)
+                    <p class="text-danger text-center">Your library plan expired {{ abs($librarydiffInDays) }} days. Please consider renewing your plan!</p>
+                @elseif($librarydiffInDays > 0)
+                <p class="text-danger text-center">Your library plan will expire in {{ $librarydiffInDays }} days. Please consider renewing your plan!</p>
+                @else
+                <p class="text-danger text-center text-bold">Your library plan expires today. Please consider renewing your plan!</p>
+                @endif
 
-                            <button type="button" class="btn btn-primary button m-auto w-100" data-bs-dismiss="modal" aria-label="Close">Renew your Subscription</button>
-                    </div>
-                </div>
+                <button type="button" class="btn btn-primary button m-auto w-100" data-bs-dismiss="modal" aria-label="Close">Renew your Subscription</button>
             </div>
         </div>
-        <!-- Expiry Warning Ends-->
+    </div>
+</div>
+<!-- Expiry Warning Ends-->
 
-        <div class="modal" tabindex="-1" id="todayrenew">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h4>Your library Renew today. Please consider renewing your plan!</h4>
-                    <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
+<div class="modal" tabindex="-1" id="todayrenew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="planExpiryLabel">Renew Plan</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <!-- Modal Popup end for Configration -->
+        <div class="modal-body">
+            <h4>Your library Renew today. Please consider renewing your plan!</h4>
+            <button id="renewButton" type="button" class="btn btn-primary" onclick="renewPlan()">Configure Plan</button>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Popup end for Configration -->
    
 
 <div class="header">
@@ -63,19 +63,19 @@
                 @endif
             </small>
             @endif
-
+          
             @if(isset($librarydiffInDays) && Auth::guard('library')->check() && !$is_renew && $isProfile)
 
-
+           
             @if($librarydiffInDays > 0)
             <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$librarydiffInDays}} days!</small>
 
             @elseif($librarydiffInDays < 0)
                 <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($librarydiffInDays) }} days ago </small>
 
-                @else
+            @else
                 <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
-                @endif
+            @endif
 
                 @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
                     <script>
@@ -88,8 +88,20 @@
                     </script>
 
                     <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
-                    @endif
-                    @endif
+                    
+                @endif
+            @endif
+               <!-- learner  -->      
+            @if(isset($diffExtendDay) && Auth::guard('learner')->check() && !$learner_is_renew )
+                @if($diffExtendDay > 0)
+                <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$diffExtendDay}} days!</small>
+                @elseif($diffExtendDay < 0)
+                <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($diffExtendDay) }} days ago </small>
+
+                @else
+                <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
+                @endif
+            @endif
 
         </div>
 
@@ -168,18 +180,22 @@
                     <li>
                         <img src="{{ url('public/img/user.png') }}" alt="profile" class="LibraryProfile">
                     </li>
+                    @if(Auth::guard('library')->check())
                     <li>
                         <a class="dropdown-item text-center" href="javascript:;">
                             <small class="text-danger">Library Unique Id</small><br>
                             {{Auth::user()->library_no ?? ''}}</a>
-                    </li>
-                    <!-- Change Password -->
-                    <li>
+                    </li> 
+                      <!-- Change Password -->
+                      <li>
                         <a class="dropdown-item" href="{{route('change.password')}}">
                             <i class="fas fa-key fa-sm fa-fw mr-2 text-gray-400"></i>
                             Change Library Password
                         </a>
                     </li>
+                    @endif
+                   
+                  
                     <!-- Logout -->
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -244,16 +260,7 @@
         <button onclick="closeNotification()" class="close">&times;</button>
     </div>
 </div>
-{{-- @if (session('error'))
-<div class="alert alert-danger">
-    {{ session('error') }}
-</div>
-@endif
-@if (session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif --}}
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('.dropdown-item').forEach(function(notificationItem) {

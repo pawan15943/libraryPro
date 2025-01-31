@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreLibraryRequest;
 use App\Models\City;
+use App\Models\Complaint;
 use App\Models\Feedback;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
+use App\Models\LearnerFeedback;
 use App\Models\LearnerTransaction;
 use App\Models\Library;
 use App\Models\LibrarySetting;
@@ -18,6 +20,7 @@ use App\Models\PlanType;
 use App\Models\Seat;
 use App\Models\State;
 use App\Models\Subscription;
+use App\Models\Suggestion;
 use App\Models\TempOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -979,6 +982,21 @@ class LibraryController extends Controller
 
     public function videoTraining(){
         return view('library.video-recording');
+    }
+
+    public function learnerComplaints(){
+        $data=Complaint::where('library_id',Auth::user()->id)->get();
+        return view('library.complaint',compact('data'));
+    }
+
+    public function learnerSuggestions(){
+        $data=Suggestion::where('library_id',Auth::user()->id)->get();
+        return view('library.suggestion',compact('data'));
+    }
+
+    public function learnerFeedback(){
+        $data=LearnerFeedback::where('library_id',Auth::user()->id)->get();
+        return view('library.learner-feedback',compact('data'));
     }
 
 

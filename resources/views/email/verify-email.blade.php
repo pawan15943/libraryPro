@@ -1,68 +1,83 @@
-<html xmlns="https://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Libraro</title>
-
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="https://www.allenoverseas.com/wp-content/uploads/2022/06/favicon.png" type="image/png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
-        rel="stylesheet">
-
-
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
-    <style>
-        body {
-            font-family: 'Raleway';
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email OTP Verification - Libraro</title>
 </head>
 
-<body style="display: block;">
+<body style="margin: 0; padding: 0; font-family: 'Mulish', sans-serif; background-color: #fff;">
+    <div style="max-width: 650px; margin: 1.5rem auto; border: 1px solid #c9c9c9 !important; border-radius: 1.5rem;">
+        <!-- Header -->
+        <div>
+            <img src="{{url('/public/img/opt-head.png')}}" alt="OTP Verification" style="width: 100%; border-radius: 1.5rem;">
+        </div>
 
+        <!-- Content -->
+        <div style="padding: 20px; color: #333333;">
+            <!-- OTP Message -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h2
+                    style="font-size: 26px; font-weight: 600; font-family: 'Outfit', sans-serif; color: #000; margin-bottom: 15px;">
+                    Verify Your Email Address</h2>
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">
+                    Hello {{ $name }},
+                    <br>
+                    Use the One-Time Password (OTP) below to verify your email address. This code is valid for the next
+                    10 minutes.
+                </p>
 
-    <table class="main-mailer" width="722" border="0" cellspacing="0" cellpadding="0" align="center"
-        style="border:1px solid #cccccc; padding:0;">
-        <tbody>
-            <tr>
-                <td style="text-align: center;">
-                    <img style="display:block; width:730px;"
-                        src="{{asset('public/emailer/txo-logo.jpg')}}">
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 0px 15px;">
-                    <p style="margin: 0; margin-top: 15px; font-weight: 500; line-height: 24px;">Dear {{$name}},</p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Thank you for signing up with <b>Library Manager!</b> To verify your email address, please use the following OTP (One-Time Password):</p>
-                    <h2 style="margin: 0; font-weight: 600; padding: 1rem 0;">{{$otp}}</h2>
-                  
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 0px 15px;">
-                    <p style="margin: 0; font-weight: 500; line-height: 24px;">This OTP is valid for the next 10 minutes.</p>
-                    <p style="margin: 0; font-weight: 500; line-height: 24px;">Need Assistance?</p>
-                    <p style="margin: 0; font-weight: 500; line-height: 24px;">If you have any questions or encounter any issues, feel free to contact our support team.</p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Email:</b>
-                        <a href="mailto:info@librarymanager.in">info@librarymanager.in</a></p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;"><b>Phone Number:</b> <a href="tel:+918114479678">+91-8114479678</a>, 
-                        <a href="tel:+917737918848">+91-7737918848</a></p>
-                    <p style="margin: 0; margin-top: 10px; font-weight: 500; line-height: 24px;">Thank you for choosing Library Manager!</p>
-                </td>
-            </tr>
-            <tr>
-                <td style="padding: 0px 15px; margin-top: 16px;">
-                    <p style="margin: 0; margin-top: 10px; font-weight: 700; line-height: 24px;"><b>Team,</b></p>
-                    <p style="margin: 0; margin-bottom: 15px; font-weight: 500; line-height: 24px;">Libraro- A product by Techito</p>
-                </td>
-            </tr>
-            <tr>
-         
-        </tbody>
-    </table>
+                <!-- OTP Code -->
+                <div
+                    style="display: inline-block; padding: 15px 30px; background-color: #000; color: #ffffff; font-size: 24px; font-weight: bold; border-radius: 5px; margin: 20px 0;">
+                    {{$otp}}</div>
 
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">
+                    If you didn’t request this email, please ignore it. Your account is secure.
+                </p>
+            </div>
+
+            <!-- Final CTA -->
+            <div style="text-align: center; margin-bottom: 30px;">
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">
+                    Need assistance? Feel free to reach out to us anytime at <a href="mailto:support@libraro.in"
+                        style="color: #000; text-decoration: none; font-weight: bold;">support@libraro.in</a> or call us at <a href="tel:8114479678" style="color: #000; text-decoration: none; font-weight: bold;">+91-8114479678</a>, <a href="tel:7737918848" style="color: #000; text-decoration: none; font-weight: bold;">+91-7737918848 </a>.We’re here to help!
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div
+            style="background-color: #000000; color: #ffffff; text-align: center; padding: 20px; font-size: 14px; font-family: 'Mulish', sans-serif; border-radius: 1rem;">
+            <!-- Logo -->
+            <img src="{{url('/public/img/libraro-white.svg')}}" alt="Libraro Logo" style="margin-bottom: 15px; width: 150px;">
+
+            <!-- Social Links -->
+            <p style="margin: 0; margin-bottom: 1rem; font-weight: 800;">Follow us on:</p>
+            <a href="https://facebook.com" target="_blank"
+                style="margin: 0 10px; text-decoration: none; color: #ffffff;">Facebook</a>
+            <a href="https://twitter.com" target="_blank"
+                style="margin: 0 10px; text-decoration: none; color: #ffffff;">Twitter</a>
+            <a href="https://linkedin.com" target="_blank"
+                style="margin: 0 10px; text-decoration: none; color: #ffffff;">LinkedIn</a>
+            <a href="https://instagram.com" target="_blank"
+                style="margin: 0 10px; text-decoration: none; color: #ffffff;">Instagram</a>
+
+            <!-- Address -->
+            <p style="margin: 15px 0; font-size: .7rem;">Office : H.No. 955, Vinoba Bhave Nagar | KOTA, RAJASTHAN | INDIA</p>
+
+            <!-- Legal Links -->
+            <p style="margin: 15px 0; font-size: .7rem;">This email was sent to noreply@libraro.in.</p>
+            <p style="margin: 15px 0; font-size: .7rem;">
+                <a href="#" style="text-decoration: none; color: #ffffff; margin: 0 10px;">Privacy Policy</a> |
+                <a href="#" style="text-decoration: none; color: #ffffff; margin-left: 10px;">Terms of Service</a>
+            </p>
+
+            <!-- Copyright -->
+            <p style="margin: 15px 0; font-size: .7rem;">&copy; 2021-2025 All rights reserved - Libraro.in®</p>
+        </div>
+    </div>
 </body>
 
 </html>

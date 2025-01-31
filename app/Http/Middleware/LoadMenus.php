@@ -65,6 +65,23 @@ class LoadMenus
         view()->share('menus', $menus);
 
         if (Auth::check()) {
+            //learner remainig days count
+
+            $leraner=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();
+            $learner_current_library_extend=Hour::withoutGlobalScopes()->where('library_id',Auth::user()->library_id)->first()->value('extend_days');
+            if($leraner && $learner_current_library_extend){
+                $today = Carbon::today();
+                $endDate = Carbon::parse($leraner->plan_end_date);
+                $diffInDays = $today->diffInDays($endDate, false);
+                $inextendDate = $endDate->copy()->addDays($learner_current_library_extend); // Preserving the original $endDate
+                $diffExtendDay = $today->diffInDays($inextendDate, false);
+            }else{
+                $diffExtendDay=0;
+            }
+            $learner_is_renew=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id) ->where('status', 0)
+            ->where('plan_start_date', '>=', date('Y-m-d'))
+            ->exists();
+            //learner remainig days count
             $isEmailVeri = Library::where('id', Auth::user()->id)->whereNotNull('email_verified_at')->exists();
             $checkSub = LibraryTransaction::where('library_id', Auth::user()->id)->where('status', 1)->exists();
             $ispaid = Library::where('id', Auth::user()->id)->where('is_paid', 1)->exists();
@@ -224,6 +241,8 @@ class LoadMenus
             View::share('hourly4Count', $hourly4Count);
             View::share('extended_seats', $extended_seats);
             View::share('extendDay', $extendDay);
+            View::share('diffExtendDay', $diffExtendDay);
+            View::share('learner_is_renew', $learner_is_renew);
         }
         if (auth()->check() && Auth::guard('library')->check()) {
             $user = Auth::user();

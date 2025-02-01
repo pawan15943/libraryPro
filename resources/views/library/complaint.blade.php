@@ -3,6 +3,30 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
+
+<div class="modal" tabindex="-1" id="clarificationModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provide Remarks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="m-0">Eneter your clearification in detail :</p>
+                <textarea id="remarkText" rows="4" cols="50" class="form-control" ></textarea>
+                              
+            </div>
+            <div class="modal-footer">
+                <button id="submitStatus" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
 @if (session('error'))
 <div class="alert alert-danger">
     {{ session('error') }}
@@ -30,13 +54,13 @@
                 </thead>
 
                 <tbody>
-                  
+
                     @foreach($data as $key => $value)
-                  
+
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$value->learner_name}}</td>
-                       
+
                         <td> {{$value->title}}</td>
                         <td> {{$value->description}}</td>
                         <td>
@@ -50,14 +74,14 @@
                             <span class="text-info">Pending</span>
                             @endif
 
-                           
+
                         </td>
                         <td>{{$value->response}}</td>
-                      
+
                         <td>
                             <ul class="actionalbls">
                                 <li>
-                                    <select id="statusDropdown" class="form-control" data-row-id="{{$value->id}}">
+                                    <select class="form-control statusDropdown" data-row-id="{{$value->id}}">
                                         <option value="">Select Status</option>
                                         <option value="1">Resolved</option>
                                         <option value="2">Reject</option>
@@ -66,23 +90,17 @@
                                 </li>
                             </ul>
                         </td>
-                        
+
                     </tr>
                     @endforeach
-                   
+
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<div id="clarificationModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h4>Provide Remarks</h4>
-        <textarea id="remarkText" rows="4" cols="50"></textarea>
-        <br>
-        <button id="submitStatus" class="btn btn-primary">Submit</button>
-    </div>
-</div>
+
+
+
 @include('library.script')
 @endsection

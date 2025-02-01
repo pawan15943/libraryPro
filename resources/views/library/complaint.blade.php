@@ -60,10 +60,6 @@
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$value->learner_name}}</td>
-<<<<<<< HEAD
-
-=======
->>>>>>> 3ab6125bb6258224709a50e56d3d45301254d37e
                         <td> {{$value->title}}</td>
                         <td> {{$value->description}}</td>
                         <td>
@@ -76,16 +72,11 @@
                             @else
                             <span class="text-info">Pending</span>
                             @endif
-<<<<<<< HEAD
 
 
                         </td>
                         <td>{{$value->response}}</td>
 
-=======
-                        </td>
-                        <td>{{$value->response}}</td>
->>>>>>> 3ab6125bb6258224709a50e56d3d45301254d37e
                         <td>
                             <ul class="actionalbls">
                                 <li>
@@ -98,10 +89,6 @@
                                 </li>
                             </ul>
                         </td>
-<<<<<<< HEAD
-
-=======
->>>>>>> 3ab6125bb6258224709a50e56d3d45301254d37e
                     </tr>
                     @endforeach
 

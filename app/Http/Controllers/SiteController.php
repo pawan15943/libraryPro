@@ -34,7 +34,8 @@ class SiteController extends Controller
     }
     public function home(){
         $subscriptions = Subscription::with('permissions')->get();
-        return view('site.home',compact('subscriptions'));
+        $premiumSub=Subscription::where('id',3)->first();
+        return view('site.home',compact('subscriptions','premiumSub'));
     }
     public function searchLibrary(){
         $cities = City::pluck('city_name', 'id');

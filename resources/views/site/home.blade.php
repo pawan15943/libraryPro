@@ -329,7 +329,7 @@
 <div class="our-plan" id="pricing">
     <div class="container">
         <!-- Dynamic 3 -->
-        <h2 class="text-center mb-4">Our Pricing</h2>
+        <h2 class="text-center mb-4">Our Pricing </h2>
         <div class="row g-4 justify-content-center">
             <div class="col-lg-4 payment-mode">
                 <select name="plan_mode" id="plan_mode" class="form-select">
@@ -342,18 +342,33 @@
 
         <div class="row mt-4 g-4 justify-content-center mb-4">
             @foreach($subscriptions as $subscription)
+            @php
+
+            $subscribedPermissions = $subscription->permissions->pluck('name')->toArray();
+            @endphp
+
             <div class="col-lg-3">
                 <div class="plan-box">
                     <h1 id="subscription_fees_{{$subscription->id}}"> / monthly</h1>
                     <h4>{{$subscription->name}}</h4>
                     <ul class="plan-features contents">
-                        @foreach($subscription->permissions as $permission)
+                        @foreach($premiumSub->permissions as $permission)
+                        @if(in_array($permission->name, $subscribedPermissions))
                         <li>
                             <div class="d-flex">
-                                <i class="fa-solid fa-check"></i>
-                                {{$permission->name}}
+                                <i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}
                             </div>
                         </li>
+
+                        @else
+                        <li>
+                            <div class="d-flex">
+                                <i class="fa-solid fa-xmark text-danger me-2"></i> {{ $permission->name }}
+                            </div>
+                        </li>
+
+                        @endif
+
                         @endforeach
                     </ul>
 
@@ -365,6 +380,8 @@
 
             @endforeach
         </div>
+
+
         <!-- Dynamic 3 -->
     </div>
 
@@ -575,12 +592,12 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to schedule a demo?</h2>
-                <form action="{{ route('submit.inquiry') }}" method="POST" class="me-3">
+                <form action="{{ route('submit.inquiry') }}" method="POST" class="me-3 validateForm">
                     @csrf
                     <div class="form-box">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <label for="name">Full Name</label>
+                                <label for="name">Full Name <span class="text-danger">*</span></label>
                                 <input type="text"
                                     name="full_name"
                                     class="form-control @error('full_name') is-invalid @enderror char-only"
@@ -593,7 +610,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="mobile_number">Mobile Number</label>
+                                <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
                                 <input type="text"
                                     name="mobile_number"
                                     class="form-control @error('mobile_number') is-invalid @enderror digit-only"
@@ -606,7 +623,7 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="email">Email Id</label>
+                                <label for="email">Email Id <span class="text-danger">*</span></label>
                                 <input type="email"
                                     name="email"
                                     class="form-control @error('email') is-invalid @enderror"
@@ -619,19 +636,63 @@
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="message">Message</label>
-                                <textarea rows="5"
-                                    name="message"
-                                    class="form-control @error('message') is-invalid @enderror"
-                                    placeholder="Enter Message">{{ old('message') }}</textarea>
-                                @error('message')
+                                <label for="email">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date"
+                                    name="preferred_date"
+                                    class="form-control @error('preferred_date') is-invalid @enderror"
+                                    placeholder="Enter Email Address"
+                                    value="{{ old('email') }}">
+                                @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <button class="btn btn-primary button" type="submit">Submit Details</button>
+                                <label for="email">Preferred Date</label>
+                                <select class="form-select no-validate" id="timeSlot">
+                                    <option value="">Select Time Slot</option>
+                                    <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
+                                    <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
+                                    <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
+                                    <option value="8:30 AM - 9:00 AM">8:30 AM - 9:00 AM</option>
+                                    <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
+                                    <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
+                                    <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+                                    <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                                    <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+                                    <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+                                    <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
+                                    <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
+                                    <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
+                                    <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
+                                    <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
+                                    <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
+                                    <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
+                                    <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
+                                    <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
+                                    <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
+                                    <option value="5:00 PM - 5:30 PM">5:00 PM - 5:30 PM</option>
+                                    <option value="5:30 PM - 6:00 PM">5:30 PM - 6:00 PM</option>
+                                    <option value="6:00 PM - 6:30 PM">6:00 PM - 6:30 PM</option>
+                                    <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
+                                    <option value="7:00 PM - 7:30 PM">7:00 PM - 7:30 PM</option>
+                                </select>
+                                @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
+                                <label class="form-check-label" for="terms" style="margin-top:.25rem;">
+                                    I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
+                                </label>
+                                <div class="error-msg"></div>
+                            </div>
+                            <div class="col-lg-4">
+                                <button class="btn btn-primary button" type="submit">Book My Slot</button>
                             </div>
                         </div>
                     </div>

@@ -5,6 +5,10 @@
     transition: all .5s;
 }
 
+.error {
+    color: #eb0000;
+    font-weight: 500;
+}
 
 body {
     overflow: auto;
@@ -341,7 +345,7 @@ a.cta:hover {
     padding: 0;
 }
 
-.iconbox:nth-child(even){
+.iconbox:nth-child(even) {
     background: linear-gradient(199deg, #ffffff, #fba300) !important;
 }
 

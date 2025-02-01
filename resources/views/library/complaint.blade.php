@@ -36,7 +36,6 @@
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$value->learner_name}}</td>
-                       
                         <td> {{$value->title}}</td>
                         <td> {{$value->description}}</td>
                         <td>
@@ -49,11 +48,8 @@
                             @else
                             <span class="text-info">Pending</span>
                             @endif
-
-                           
                         </td>
                         <td>{{$value->response}}</td>
-                      
                         <td>
                             <ul class="actionalbls">
                                 <li>
@@ -66,7 +62,6 @@
                                 </li>
                             </ul>
                         </td>
-                        
                     </tr>
                     @endforeach
                    

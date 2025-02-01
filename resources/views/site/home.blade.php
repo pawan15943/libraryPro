@@ -592,8 +592,9 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to schedule a demo?</h2>
-                <form action="{{ route('submit.inquiry') }}" method="POST" class="me-3 validateForm">
+                <form class="me-3 validateForm" method="post" id="demoRequest">
                     @csrf
+                    <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">
                         <div class="row g-3">
                             <div class="col-lg-12">
@@ -602,7 +603,7 @@
                                     name="full_name"
                                     class="form-control @error('full_name') is-invalid @enderror char-only"
                                     placeholder="Enter your Name"
-                                    value="{{ old('full_name') }}">
+                                    value="{{ old('full_name') }}" id="demoName">
                                 @error('full_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -641,16 +642,16 @@
                                     name="preferred_date"
                                     class="form-control @error('preferred_date') is-invalid @enderror"
                                     placeholder="Enter Email Address"
-                                    value="{{ old('email') }}">
-                                @error('email')
+                                    value="">
+                                @error('preferred_date')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
                             <div class="col-lg-12">
-                                <label for="email">Preferred Date</label>
-                                <select class="form-select no-validate" id="timeSlot">
+                                <label for="">Preferred Time</label>
+                                <select class="form-select no-validate" id="timeSlot" name="preferred_time">
                                     <option value="">Select Time Slot</option>
                                     <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
                                     <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
@@ -692,7 +693,7 @@
                                 <div class="error-msg"></div>
                             </div>
                             <div class="col-lg-4">
-                                <button class="btn btn-primary button" type="submit">Book My Slot</button>
+                                <button class="btn btn-primary" type="submit">Book My Slot</button>
                             </div>
                         </div>
                     </div>
@@ -714,4 +715,32 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Prevent form submission and handle via AJAX
+        $('#demoRequest').on('submit', function (e) {
+            e.preventDefault();
+            var name =$('#demoName');
+            
+            // AJAX request to submit the form
+            $.ajax({
+                url: '{{ route('master.store') }}', 
+                type: 'POST',
+                data:name,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (response) {
+                   console.log(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log('AJAX Error: ', error);
+                    alert('There was an error processing the request. Please try again.');
+                }
+            });
+        });
+    });
+</script>
+
 @endsection

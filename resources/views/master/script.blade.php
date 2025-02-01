@@ -60,7 +60,7 @@
 <script>
     $(document).ready(function() {
         $(document.body).off('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour')
-            .on('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour,#library_expense', function(event) {
+            .on('submit', '#planForm, #planTypeForm , #operating_hour , #library_seat, #planPriceForm , #extend_hour,#library_expense,#demo-request', function(event) {
             event.preventDefault(); 
             
             var formData = new FormData(this);

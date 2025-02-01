@@ -234,7 +234,7 @@ class MasterController extends Controller
     
     public function storemaster(Request $request, $id = null)
     {
-       
+       dd($request);
         $this->validationfunction($request);
         $modelClass = 'App\\Models\\' . $request->databasemodel;
         $table=$request->databasetable;

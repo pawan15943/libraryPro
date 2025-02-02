@@ -172,7 +172,7 @@ class SiteController extends Controller
         $blog->save();
     
         $message = $id ? 'Blog updated successfully!' : 'Blog created successfully!';
-        return redirect()->route('add-page')->with('success', $message);
+        return redirect()->route('blogs')->with('success', $message);
     }
 
     public function listBlog(){

@@ -19,9 +19,8 @@
                 id="page_title" 
                 name="page_title" 
                 class="form-control @error('page_title') is-invalid @enderror" 
-                value="{{ old('page_title', $data->page_title ?? '') }}" 
-                required
-            >
+                value="{{ old('page_title', $page->page_title ?? '') }}"
+                onkeyup="generateSlug()" >
             @error('page_title')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -31,11 +30,8 @@
     
         <div>
             <label for="page_slug">Page Slug</label>
-            <textarea 
-                id="page_slug" 
-                name="page_slug" 
-                class="form-control" 
-                >{{ old('page_slug', $data->page_slug ?? '') }}</textarea>
+            <input  id="page_slug" name="page_slug" class="form-control"value="{{ old('page_slug', $page->page_slug ?? '') }}" >
+           
         </div>
     
         <div class="form-group">
@@ -113,7 +109,7 @@
                 id="tags" 
                 name="tags" 
                 class="form-control @error('tags') is-invalid @enderror" 
-                value="{{ old('tags', isset($data) ? implode(',', json_decode($data->tags, true)) : '') }}"
+                value="{{ old('tags', isset($data->tags) ? implode(',', json_decode($data->tags, true)) : '') }}"
                 >
             @error('tags')
                 <span class="invalid-feedback" role="alert">
@@ -199,5 +195,17 @@
         });
     });
 </script>
+<script>
+    // Function to generate the slug based on page title
+    function generateSlug() {
+        var title = document.getElementById('page_title').value;
+        var slug = title
+            .toLowerCase() // Convert to lowercase
+            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .replace(/-+/g, '-'); // Replace multiple hyphens with a single hyphen
 
+        document.getElementById('page_slug').value = slug;
+    }
+</script>
 @endsection

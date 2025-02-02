@@ -152,7 +152,7 @@
         </div>
 
         <!-- Header Image -->
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="header_image">Header Image</label>
             <input 
                 type="file" 
@@ -165,14 +165,19 @@
                 </span>
             @enderror
         </div>
-
-        <button type="submit" class="btn btn-primary">{{ isset($data) ? 'Update' : 'Save' }}</button>
+        <div class="col-lg-3">
+            <button type="submit" class="btn btn-primary button">
+                {{ isset($data) ? 'Update' : 'Save' }}
+            </button>
+        </div>
+       
     </form>
 </div>
 
 <!-- Include Tagify JS & CSS -->
 <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+
 
 <script>
     // Initialize Tagify for Tags and Categories
@@ -188,6 +193,14 @@
         .catch( error => {
             console.error( error );
         } );
+</script>
+<script>
+    $(document).ready(function() {
+        $('#categories_id').select2({
+            placeholder: "Select Categories",
+            allowClear: true
+        });
+    });
 </script>
 
 @endsection

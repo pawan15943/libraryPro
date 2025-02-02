@@ -7,10 +7,11 @@
 @if(session('error'))
 <div class="alert alert-danger">{{ session('error') }}</div>
 @endif
-
+<div class="col-lg-3 mb-4">
+    <a href="{{ route('add-page') }}" class="btn btn-primary button">Create New Page</a>
+</div>
 <div class="row">
     <div class="col-lg-12">
-        <a href="{{ route('add-page') }}" class="btn btn-primary">Create New Page</a>
         <div class="table-responsive">
             <table class="table text-center datatable dataTable" id="datatable">
              
@@ -29,8 +30,11 @@
                                 <td>{{ $page->page_title }}</td>
                                 <td>{{ $page->page_slug }}</td>
                                 <td>
-                                    <a href="{{ route('page.edit', $page) }}" class="btn btn-sm btn-warning">Edit</a>
-                                   
+                                    <ul class="actionalbls">
+                                        <li>
+                                            <a href="{{ route('page.edit', $page) }}" ><i class="fas fa-edit"></i></a>
+                                        </li>
+                                    </ul>
                                 </td>
                             </tr>
                         @endforeach

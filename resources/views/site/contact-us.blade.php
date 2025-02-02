@@ -51,7 +51,7 @@
             <div class="col-lg-6">
                 <h2 class="mb-4 text-center">Have Any Query ? <br>
                     Request a Callback</h2>
-                <form action="{{ route('submit.inquiry') }}" method="POST">
+                <form  method="POST" id="inqueryForm">
                     @csrf
                     <div class="form-box">
                         <div class="row g-4">
@@ -61,12 +61,8 @@
                                     name="full_name"
                                     class="form-control @error('full_name') is-invalid @enderror char-only"
                                     placeholder="Enter your Name"
-                                    value="{{ old('full_name') }}">
-                                @error('full_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    value="">
+                             
                             </div>
                             <div class="col-lg-12">
                                 <label for="mobile_number">Mobile Number</label>
@@ -74,12 +70,8 @@
                                     name="mobile_number"
                                     class="form-control @error('mobile_number') is-invalid @enderror digit-only"
                                     placeholder="Enter Mobile Number"
-                                    value="{{ old('mobile_number') }}">
-                                @error('mobile_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    value="" minlength="8" maxlength="10">
+                               
                             </div>
                             <div class="col-lg-12">
                                 <label for="email">Email Id</label>
@@ -87,24 +79,16 @@
                                     name="email"
                                     class="form-control @error('email') is-invalid @enderror"
                                     placeholder="Enter Email Address"
-                                    value="{{ old('email') }}">
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    value="">
+                              
                             </div>
                             <div class="col-lg-12">
                                 <label for="message">Message</label>
                                 <textarea rows="5"
                                     name="message"
                                     class="form-control @error('message') is-invalid @enderror"
-                                    placeholder="Enter Message">{{ old('message') }}</textarea>
-                                @error('message')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    placeholder="Enter Message"></textarea>
+                               
                             </div>
                             <div class="col-lg-12">
                                 <button class="btn btn-primary button" type="submit">Submit Details</button>
@@ -118,6 +102,61 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+    
+        $('#inqueryForm').on('submit', function (e) {
+            e.preventDefault();
+           
+            var formData = new FormData(this);
+            $.ajax({
+                url: '{{ route('submit.inquiry') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (response) {
+                    
+                    
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                        
+                        // Optionally, reset the form after success
+                        $('#inqueryForm')[0].reset(); 
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
+                },
+                error: function (xhr) {
+                    var response = xhr.responseJSON;
+                    
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
 
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.log('AJAX Error: ', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
+            });
+
+
+        });
+    });
+</script>
 
 @endsection

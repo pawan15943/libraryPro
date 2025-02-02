@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Category;
 use App\Models\City;
+use App\Models\DemoRequest;
 use App\Models\Feedback;
+use App\Models\Inquiry;
 use App\Models\Learner;
 use App\Models\Library;
 use App\Models\Page;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
 {
@@ -18,7 +21,8 @@ class SiteController extends Controller
         return view('site.about-us');
     }
     public function blog(){
-        return view('site.blog');
+        $data=Blog::get();
+        return view('site.blog',compact('data'));
     }
     public function contactUs(){
         return view('site.contact-us');
@@ -175,7 +179,71 @@ class SiteController extends Controller
         $blogs = Blog::all();
         return view('administrator.indexblog',compact('blogs'));
     }
+
+    public function demoRequestStore(Request $request){
+        $validator = Validator::make($request->all(), [
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|digits:10',
+            'email' => 'required|email',
+            'preferred_date' => 'required|date',
+            'preferred_time' => 'nullable|string',
+            'terms' => 'required'
+        ]);
     
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        DemoRequest::create([
+            'full_name' => $request->full_name,
+            'mobile_number' => $request->mobile_number,
+            'email' => $request->email,
+            'preferred_date' => $request->preferred_date,
+            'preferred_time' => $request->preferred_time
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Request stored successfully!'
+        ]);
+      
+    }
+    
+    public function Inquerystore(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|string|max:15',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string|max:1000',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+       
+        Inquiry::create($validator->validated());
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Inquiry submitted successfully!'
+        ]);
+        
+    }
+
+    public function demoRequest(){
+        $data=DemoRequest::get();
+        return view('administrator.demoRequest',compact('data'));
+    }
+
+    public function inqueryShow(){
+        $data=Inquiry::get();
+        return view('administrator.inquery',compact('data'));
+    }
 
     
 }

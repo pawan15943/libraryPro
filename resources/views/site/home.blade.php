@@ -592,7 +592,7 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to schedule a demo?</h2>
-                <form class="me-3 validateForm" method="post" id="demoRequest">
+                <form class="me-3 "  id="demoRequest">
                     @csrf
                     <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">
@@ -603,12 +603,8 @@
                                     name="full_name"
                                     class="form-control @error('full_name') is-invalid @enderror char-only"
                                     placeholder="Enter your Name"
-                                    value="{{ old('full_name') }}" id="demoName">
-                                @error('full_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    value="" id="demoName">
+                              
                             </div>
                             <div class="col-lg-12">
                                 <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
@@ -616,7 +612,7 @@
                                     name="mobile_number"
                                     class="form-control @error('mobile_number') is-invalid @enderror digit-only"
                                     placeholder="Enter Mobile Number"
-                                    value="{{ old('mobile_number') }}">
+                                    value="" minlength="8" maxlength="10">
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -629,12 +625,8 @@
                                     name="email"
                                     class="form-control @error('email') is-invalid @enderror"
                                     placeholder="Enter Email Address"
-                                    value="{{ old('email') }}">
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    value="">
+                              
                             </div>
                             <div class="col-lg-12">
                                 <label for="email">Preferred Date <span class="text-danger">*</span></label>
@@ -643,11 +635,7 @@
                                     class="form-control @error('preferred_date') is-invalid @enderror"
                                     placeholder="Enter Email Address"
                                     value="">
-                                @error('preferred_date')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                              
                             </div>
                             <div class="col-lg-12">
                                 <label for="">Preferred Time</label>
@@ -679,11 +667,7 @@
                                     <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
                                     <option value="7:00 PM - 7:30 PM">7:00 PM - 7:30 PM</option>
                                 </select>
-                                @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                               
                             </div>
                             <div class="col-lg-12 form-group">
                                 <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
@@ -718,27 +702,56 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
-        // Prevent form submission and handle via AJAX
+    
         $('#demoRequest').on('submit', function (e) {
             e.preventDefault();
-            var name =$('#demoName');
-            
-            // AJAX request to submit the form
+           
+            var formData = new FormData(this);
             $.ajax({
-                url: '{{ route('master.store') }}', 
+                url: '{{ route('demo-request') }}',
                 type: 'POST',
-                data:name,
+                data: formData,
                 processData: false,
                 contentType: false,
                 dataType: 'json',
                 success: function (response) {
-                   console.log(response);
+                    console.log(response);
+                    
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                        
+                        // Optionally, reset the form after success
+                        $('#demoRequest')[0].reset(); 
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
                 },
-                error: function (xhr, status, error) {
-                    console.log('AJAX Error: ', error);
-                    alert('There was an error processing the request. Please try again.');
+                error: function (xhr) {
+                    var response = xhr.responseJSON;
+                    
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.log('AJAX Error: ', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
                 }
             });
+
+
         });
     });
 </script>

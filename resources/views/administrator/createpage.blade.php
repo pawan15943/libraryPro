@@ -115,8 +115,12 @@
                     </span>
                 @enderror
             </div>
-        
-            <button type="submit" class="btn btn-primary">{{ isset($page) ? 'Update' : 'Save' }}</button>
+            <div class="col-lg-3">
+                <button type="submit" class="btn btn-primary button">
+                    {{ isset($page) ? 'Update' : 'Save' }}
+                </button>
+            </div>
+           
         </form>
         
         

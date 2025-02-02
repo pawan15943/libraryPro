@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-libraries', [MasterController::class, 'getLibraries'])->name('get-libraries');
-Route::post('/store/inquiry', [MasterController::class, 'Inquerystore'])->name('submit.inquiry');
+
 
 Route::get('administrator/login', [LoginController::class, 'showLoginForm'])->name('login.administrator');
 Route::get('library/login', [LoginController::class, 'showAdminLoginForm'])->name('login.library');
@@ -173,8 +173,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
-      Route::post('library/dashboard/data', [DashboardController::class, 'libraryGetData'])->name('library.dashboard.data.get');
-      Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
+        Route::post('library/dashboard/data', [DashboardController::class, 'libraryGetData'])->name('library.dashboard.data.get');
+        Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
         Route::get('/csv/web/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
        
         Route::get('/export-invalid-records/web', [Controller::class, 'exportCsv'])->name('web.export.invalid.records');
@@ -219,8 +219,9 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/blog/store/{id?}', [SiteController::class, 'blogStore'])->name('blog.store');
         Route::get('/blogs', [SiteController::class, 'listBlog'])->name('blogs');
         Route::get('/blog/edit/{id}', [SiteController::class, 'editBlog'])->name('blog.edit');
-          
-              });
+        Route::get('/inquery', [SiteController::class, 'inqueryShow'])->name('inquiry');
+        Route::get('/demo', [SiteController::class, 'demoRequest'])->name('demo');
+        });
 });
 
 Route::middleware(['auth:learner','no-cache'])->group(function () {
@@ -253,6 +254,7 @@ Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refu
 
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
 Route::get('/', [SiteController::class, 'home']);
-
+Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
+Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
 
 

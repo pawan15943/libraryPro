@@ -14,6 +14,9 @@ class LoggerMiddleware
     public function handle($request, Closure $next)
     {
         try {
+            if (!in_array($request->method(), ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'])) {
+                return response()->json(['error' => 'Method not allowed'], 405);
+            }
             $user = Auth::user();
             $response = $next($request);
 
@@ -26,6 +29,13 @@ class LoggerMiddleware
             return $response;
         } catch (\Exception $ex) {
             $this->logFailure($request, $ex);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred.',
+                    'error' => $ex->getMessage()
+                ], 500);
+            }
             throw $ex;
         }
     }

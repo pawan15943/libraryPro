@@ -8,8 +8,9 @@
         <div class="col-lg-4">
             <div class="blog-box">
                 @if($value->header_image !="")
-                <img src="{{ url('public/img/blog.png') }}" alt="blog-title" class="blog-thumb">
-                <!-- <img src="{{ asset($value->header_image ) }}" alt="blog-title" class="blog-thumb"> -->
+               
+                <img src="{{ asset('public/'.   $value->header_image ) }}" alt="blog-title" class="blog-thumb">
+
                 @else
                 <img src="{{ url('public/img/blog.png') }}" alt="blog-title" class="blog-thumb">
                 @endif

@@ -90,6 +90,13 @@
                                     placeholder="Enter Message"></textarea>
                                
                             </div>
+                            <div class="col-lg-12 form-group">
+                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
+                                <label class="form-check-label" for="terms" style="margin-top:.25rem;">
+                                    I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
+                                </label>
+                                <div class="error-msg"></div>
+                            </div>
                             <div class="col-lg-12">
                                 <button class="btn btn-primary button" type="submit">Submit Details</button>
                             </div>

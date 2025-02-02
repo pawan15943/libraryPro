@@ -218,6 +218,7 @@ class SiteController extends Controller
             'mobile_number' => 'required|string|max:15',
             'email' => 'required|email|max:255',
             'message' => 'required|string|max:1000',
+              'terms' => 'required'
         ]);
     
         if ($validator->fails()) {

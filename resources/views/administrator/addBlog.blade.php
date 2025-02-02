@@ -11,10 +11,7 @@
     <h4 class="mb-4">{{ isset($data) ? 'Edit Blog' : 'Create Blog' }}</h4>
     <form action="{{ isset($data) ? route('blog.store', $data->id) : route('blog.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @if (isset($data))
-            @method('PUT') 
-        @endif
-
+      
         <div>
             <label for="page_title">Page Title</label>
             <input 

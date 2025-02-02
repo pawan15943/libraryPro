@@ -92,7 +92,7 @@ class SiteController extends Controller
         }
 
         // Redirect or return with success message
-        return redirect()->route('add-page')->with('success',$message);
+        return redirect()->route('page')->with('success',$message);
     }
 
     public function createBlog(){

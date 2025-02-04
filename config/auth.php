@@ -35,22 +35,25 @@ return [
     |
     */
 
-   'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
+
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+            'session' => 'session_web',
+        ],
+        'library' => [
+            'driver' => 'session',
+            'provider' => 'libraries',
+            'session' => 'session_library',
+        ],
+        'learner' => [
+            'driver' => 'session',
+            'provider' => 'learners',
+            'session' => 'session_learner',
+        ],
     ],
 
-    'library' => [
-        'driver' => 'session',
-        'provider' => 'libraries',
-    ],
-
-    'learner' => [
-        'driver' => 'session',
-        'provider' => 'learners',
-    ],
-],
 
     /*
     |--------------------------------------------------------------------------

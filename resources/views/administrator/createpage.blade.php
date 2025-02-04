@@ -18,9 +18,7 @@
         <h4 class="mb-4">{{ isset($page) ? 'Edit Page' : 'Create Page' }}</h4>
         <form action="{{ isset($page) ? route('page.store', $page->id) : route('page.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            @if (isset($page))
-                @method('PUT') <!-- Use PUT for updating existing page -->
-            @endif
+           
         
             <div>
                 <label for="page_title">Page Title</label>
@@ -29,9 +27,8 @@
                     id="page_title" 
                     name="page_title" 
                     class="form-control @error('page_title') is-invalid @enderror" 
-                    value="{{ old('page_title', $page->page_title ?? '') }}" 
-                    required
-                >
+                    value="{{ old('page_title', $page->page_title ?? '') }}"
+                    onkeyup="generateSlug()" >
                 @error('page_title')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -41,13 +38,9 @@
         
             <div>
                 <label for="page_slug">Page Slug</label>
-                <textarea 
-                    id="page_slug" 
-                    name="page_slug" 
-                    class="form-control" 
-                    >{{ old('page_slug', $page->page_slug ?? '') }}</textarea>
+                <input  id="page_slug" name="page_slug" class="form-control"value="{{ old('page_slug', $page->page_slug ?? '') }}" >
+               
             </div>
-        
             <div class="form-group">
                 <label for="page_content">Page Content</label>
                 <textarea 
@@ -103,7 +96,7 @@
                 @enderror
             </div>
         
-            <div>
+            <div div class="col-lg-12 mb-4 " >
                 <label for="meta_og">Meta OG</label>
                 <textarea 
                     id="meta_og" 
@@ -115,8 +108,12 @@
                     </span>
                 @enderror
             </div>
-        
-            <button type="submit" class="btn btn-primary">{{ isset($page) ? 'Update' : 'Save' }}</button>
+            <div class="col-lg-3">
+                <button type="submit" class="btn btn-primary button">
+                    {{ isset($page) ? 'Update' : 'Save' }}
+                </button>
+            </div>
+           
         </form>
         
         
@@ -130,6 +127,20 @@
         .catch( error => {
             console.error( error );
         } );
+</script>
+
+<script>
+    // Function to generate the slug based on page title
+    function generateSlug() {
+        var title = document.getElementById('page_title').value;
+        var slug = title
+            .toLowerCase() // Convert to lowercase
+            .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .replace(/-+/g, '-'); // Replace multiple hyphens with a single hyphen
+
+        document.getElementById('page_slug').value = slug;
+    }
 </script>
 
 @endsection

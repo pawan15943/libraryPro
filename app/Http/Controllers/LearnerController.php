@@ -37,6 +37,14 @@ class LearnerController extends Controller
     public function __construct(LearnerService $learnerService)
     {
         $this->learnerService = $learnerService;
+        
+        // $this->middleware('auth:library', ['only' => ['index']]);
+        $this->middleware(function ($request, $next) {
+            if (!Auth::guard('library')->check()) {
+                return redirect('/');
+            }
+            return $next($request);
+        });
     }
 
     protected function validateCustomer(Request $request, array $additionalRules = [])

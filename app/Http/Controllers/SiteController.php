@@ -7,11 +7,13 @@ use App\Models\Category;
 use App\Models\City;
 use App\Models\DemoRequest;
 use App\Models\Feedback;
+use App\Models\Inquiry;
 use App\Models\Learner;
 use App\Models\Library;
 use App\Models\Page;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
 {
@@ -19,9 +21,15 @@ class SiteController extends Controller
     {
         return view('site.about-us');
     }
+<<<<<<< HEAD
     public function blog()
     {
         return view('site.blog');
+=======
+    public function blog(){
+        $data=Blog::get();
+        return view('site.blog',compact('data'));
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
     }
     public function contactUs()
     {
@@ -99,7 +107,11 @@ class SiteController extends Controller
         }
 
         // Redirect or return with success message
+<<<<<<< HEAD
         return redirect()->route('add-page')->with('success', $message);
+=======
+        return redirect()->route('page')->with('success',$message);
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
     }
 
     public function createBlog()
@@ -180,7 +192,7 @@ class SiteController extends Controller
         $blog->save();
 
         $message = $id ? 'Blog updated successfully!' : 'Blog created successfully!';
-        return redirect()->route('add-page')->with('success', $message);
+        return redirect()->route('blogs')->with('success', $message);
     }
 
     public function listBlog()
@@ -188,6 +200,7 @@ class SiteController extends Controller
         $blogs = Blog::all();
         return view('administrator.indexblog', compact('blogs'));
     }
+<<<<<<< HEAD
     public function demoRequestStore(Request $request)
     {
         // Validate the incoming request
@@ -197,6 +210,74 @@ class SiteController extends Controller
             'mobile_number' => 'required|string|max:15',
             'preferred_date' => 'required',
         ]);
+=======
+
+    public function demoRequestStore(Request $request){
+        $validator = Validator::make($request->all(), [
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|digits:10',
+            'email' => 'required|email',
+            'preferred_date' => 'required|date',
+            'preferred_time' => 'nullable|string',
+            'terms' => 'required'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        DemoRequest::create([
+            'full_name' => $request->full_name,
+            'mobile_number' => $request->mobile_number,
+            'email' => $request->email,
+            'preferred_date' => $request->preferred_date,
+            'preferred_time' => $request->preferred_time
+        ]);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Request stored successfully!'
+        ]);
+      
+    }
+    
+    public function Inquerystore(Request $request)
+    {
+        $validator = Validator::make($request->all(),[
+            'full_name' => 'required|string|max:255',
+            'mobile_number' => 'required|string|max:15',
+            'email' => 'required|email|max:255',
+            'message' => 'required|string|max:1000',
+              'terms' => 'required'
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+       
+        Inquiry::create($validator->validated());
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Inquiry submitted successfully!'
+        ]);
+        
+    }
+
+    public function demoRequest(){
+        $data=DemoRequest::get();
+        return view('administrator.demoRequest',compact('data'));
+    }
+
+    public function inqueryShow(){
+        $data=Inquiry::get();
+        return view('administrator.inquery',compact('data'));
+    }
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
 
         if ($validated) {
             // Save the request data

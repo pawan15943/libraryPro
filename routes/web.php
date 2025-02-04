@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\LibraryController;
@@ -23,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/get-libraries', [MasterController::class, 'getLibraries'])->name('get-libraries');
-Route::post('/store/inquiry', [MasterController::class, 'Inquerystore'])->name('submit.inquiry');
+
 
 Route::get('administrator/login', [LoginController::class, 'showLoginForm'])->name('login.administrator');
 Route::get('library/login', [LoginController::class, 'showAdminLoginForm'])->name('login.library');
@@ -173,8 +174,8 @@ Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
-      Route::post('library/dashboard/data', [DashboardController::class, 'libraryGetData'])->name('library.dashboard.data.get');
-      Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
+        Route::post('library/dashboard/data', [DashboardController::class, 'libraryGetData'])->name('library.dashboard.data.get');
+        Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');
         Route::get('/csv/web/upload/{id?}', [Controller::class, 'showUploadForm'])->name('configration.upload');
        
         Route::get('/export-invalid-records/web', [Controller::class, 'exportCsv'])->name('web.export.invalid.records');
@@ -219,11 +220,17 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('/blog/store/{id?}', [SiteController::class, 'blogStore'])->name('blog.store');
         Route::get('/blogs', [SiteController::class, 'listBlog'])->name('blogs');
         Route::get('/blog/edit/{id}', [SiteController::class, 'editBlog'])->name('blog.edit');
-          
-              });
+        Route::get('/inquery', [SiteController::class, 'inqueryShow'])->name('inquiry');
+        Route::get('/demo', [SiteController::class, 'demoRequest'])->name('demo');
+        Route::get('menu/create', [DataController::class, 'create'])->name('menu.create');
+        Route::post('menu/store', [DataController::class, 'store'])->name('menu.store');
+        Route::get('menu/edit/{id?}', [DataController::class, 'edit'])->name('menu.edit');
+        Route::put('menu/update', [DataController::class, 'update'])->name('menu.update');
+        Route::delete('menu/destroy', [DataController::class, 'delete'])->name('menu.destroy');
+        });
 });
 
-Route::middleware(['auth:learner','no-cache'])->group(function () {
+Route::middleware(['auth:learner'])->group(function () {
   // Route::get('list/notification', [NotificationController::class, 'show'])->name('list.notification');
   Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');//learner dashboard
   Route::get('learner/profile', [LearnerController::class, 'learnerProfile'])->name('learner.profile');
@@ -254,4 +261,9 @@ Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refu
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
 Route::get('/', [SiteController::class, 'home']);
 Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
+<<<<<<< HEAD
+=======
+Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
+
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
 

@@ -1,5 +1,6 @@
 @php
 $current_route = Route::currentRouteName();
+
 @endphp
 
 <div class="sidebar scroll">

@@ -234,7 +234,7 @@ class MasterController extends Controller
     
     public function storemaster(Request $request, $id = null)
     {
-       dd($request);
+      
         $this->validationfunction($request);
         $modelClass = 'App\\Models\\' . $request->databasemodel;
         $table=$request->databasetable;
@@ -652,22 +652,10 @@ class MasterController extends Controller
        
         return response()->json($libraries);
     }
-    public function Inquerystore(Request $request)
-    {
-        $data=$request->validate([
-            'full_name' => 'required|string|max:255',
-            'mobile_number' => 'required|string|max:15',
-            'email' => 'required|email|max:255',
-            'message' => 'required|string|max:1000',
-        ]);
-    
-       
-        Inquiry::create($data);
-
-        return back()->with('success', 'Inquiry submitted successfully!');
+   
+    public function menu(){
+        return view('master.menu');
     }
-
-
     
 
     

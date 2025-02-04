@@ -590,13 +590,18 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to schedule a demo?</h2>
+<<<<<<< HEAD
                 <form class="me-3 formValidate" id="demoRequest">
+=======
+                <form class="me-3 "  id="demoRequest">
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
                     @csrf
                     <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <label for="name">Full Name <span class="text-danger">*</span></label>
+<<<<<<< HEAD
                                 <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Enter your Name" value="{{ old('full_name') }}">
                                 @error('full_name')
                                 <span class="invalid-feedback" role="alert">
@@ -607,6 +612,22 @@
                             <div class="col-lg-12">
                                 <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
                                 <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Enter Mobile Number" value="{{ old('mobile_number') }}">
+=======
+                                <input type="text"
+                                    name="full_name"
+                                    class="form-control @error('full_name') is-invalid @enderror char-only"
+                                    placeholder="Enter your Name"
+                                    value="" id="demoName">
+                              
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
+                                <input type="text"
+                                    name="mobile_number"
+                                    class="form-control @error('mobile_number') is-invalid @enderror digit-only"
+                                    placeholder="Enter Mobile Number"
+                                    value="" minlength="8" maxlength="10">
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -615,6 +636,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <label for="email">Email Id <span class="text-danger">*</span></label>
+<<<<<<< HEAD
                                 <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email Address" value="{{ old('email') }}">
                                 @error('email')
                                 <span class="invalid-feedback" role="alert">
@@ -630,6 +652,23 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
+=======
+                                <input type="email"
+                                    name="email"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    placeholder="Enter Email Address"
+                                    value="">
+                              
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="email">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date"
+                                    name="preferred_date"
+                                    class="form-control @error('preferred_date') is-invalid @enderror"
+                                    placeholder="Enter Email Address"
+                                    value="">
+                              
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
                             </div>
                             <div class="col-lg-12">
                                 <label for="preferred_time">Preferred Time</label>
@@ -642,6 +681,10 @@
                                     <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
                                     <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
                                 </select>
+<<<<<<< HEAD
+=======
+                               
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
                             </div>
                             <div class="col-lg-12 form-group">
                                 <input type="checkbox" class="me-2 form-check-input" name="terms" id="terms" autocomplete="off">
@@ -674,6 +717,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
+<<<<<<< HEAD
     $('#demoRequest').on('submit', function (e) {
         e.preventDefault();
 
@@ -704,6 +748,58 @@
                     $('#' + field).after('<div class="error text-danger">' + messages[0] + '</div>');
                 }
             }
+=======
+    
+        $('#demoRequest').on('submit', function (e) {
+            e.preventDefault();
+           
+            var formData = new FormData(this);
+            $.ajax({
+                url: '{{ route('demo-request') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                        
+                        // Optionally, reset the form after success
+                        $('#demoRequest')[0].reset(); 
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
+                },
+                error: function (xhr) {
+                    var response = xhr.responseJSON;
+                    
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.log('AJAX Error: ', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
+            });
+
+
+>>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
         });
     });
 });

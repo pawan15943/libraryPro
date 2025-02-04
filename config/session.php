@@ -17,6 +17,11 @@ return [
     |            "memcached", "redis", "dynamodb", "array"
     |
     */
+    'session' => [
+        'web' => 'session_web',
+        'library' => 'session_library',
+        'learner' => 'session_learner',
+    ],
 
     'driver' => env('SESSION_DRIVER', 'file'),
 

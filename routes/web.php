@@ -253,6 +253,5 @@ Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refu
 
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
 Route::get('/', [SiteController::class, 'home']);
-
-
+Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
 

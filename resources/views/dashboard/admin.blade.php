@@ -72,7 +72,6 @@
                                 @else
                                 (Monthly)
                                 @endif
-
                             </a>
                         </li>
                     </ul>

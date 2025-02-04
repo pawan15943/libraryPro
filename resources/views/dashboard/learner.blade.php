@@ -27,25 +27,23 @@
 
         <div class="col-lg-3">
             @foreach($learners as $key => $learner)
-                @if($learner->status==1)
-             
-                <div class="active-plan-box bg-dark">
-                    <h4>Seat No. : {{ $learner->seat_no }}</h4>
-                    <label for="">
-                    
-                        Active
-                    </label>
-                    <div class="d-flex">
-                        <ul class="plann-info">
-                            <li>My Plan : {{ $learner->plan_type_name }} ({{$learner->plan_name}})</li>
-                            <li>Plan End Date :{{ $learner->plan_end_date }}</li>
-                            <li>Plan Start Date :{{ $learner->plan_start_date }}</li>
-                            <li>Plan Price :{{$learner->plan_price_id}}</li>
-                            <li>Payment Status : {{$learner->is_paid ? 'Paid' : 'Unpaid'}}</li>
-                        </ul>
-                    </div>
+            @if($learner->status==1)
+
+            <div class="active-plan-box basic">
+                <h4>Seat No. : {{ $learner->seat_no }}</h4>
+                <label for="">
+                    Active
+                </label>
+                <div class="d-flex mt-2">
+                    <ul class="plann-info">
+                        <li>Plan End Date : <a href="javascript:;">{{ $learner->plan_end_date }}</a> </li>
+                        <li>Plan Price : <a href="javascript:;"> {{ $learner->plan_price_id}} </a></li>
+                        <li>Payment Status :  <a href="javascript:;"> {{$learner->is_paid ? 'Paid' : 'Unpaid'}} </a></li>
+                    </ul>
                 </div>
-                @endif
+               
+            </div>
+            @endif
             @endforeach
         </div>
     </div>
@@ -63,8 +61,8 @@
                     <p>{{$value->name}}</p>
                 </li>
                 @endforeach
-              
-             
+
+
             </ul>
         </div>
     </div>
@@ -75,10 +73,10 @@
             <ul class="features mb-4">
                 <li>
                     <!-- Book Icon -->
-                    
+
                     <p>Book List is Available Soon!</p>
                 </li>
-                
+
             </ul>
         </div>
     </div>
@@ -92,8 +90,8 @@
                     <!-- Book Icon -->
                     <p>Govt. Exam Information is Available Soon!</p>
                 </li>
-                
-                
+
+
             </ul>
         </div>
     </div>

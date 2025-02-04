@@ -14,20 +14,20 @@ use App\Models\State;
 use App\Models\SubMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Permission;
 
 class DataController extends Controller
 {
-    public function index(Request $request)
-    {
-        $user = auth()->user();
-       
-        $plan=Menu::withTrashed()->get();
-        return view('master.menu',compact('plan'));
-    }
+   
     public function create ()
     {
+       
+        $menusParent=Menu::pluck('name','id');
         $menus=Menu::withTrashed()->get();
-        return view('master.menu',compact('menus'));
+       
+        $permissions=Permission::where('permission_category_id',2)->select('name')->get();
+       
+        return view('master.menu',compact('menus','menusParent','permissions'));
     }
     public function edit($id)
     {
@@ -39,9 +39,10 @@ class DataController extends Controller
     {
         $request->validate([
         'name' => 'required',
-        'order' => 'required',
-        'slug' => 'required',
         'url' => 'required',
+        'order' => 'required',
+        'guard' => 'required',
+       
         ]);
         
         Menu::create(
@@ -54,9 +55,12 @@ class DataController extends Controller
         $validatedData = $request->validate([
             'id' => 'required|exists:menus,id',
             'name' => 'required|string|max:255',
-            'order' => 'required|integer',
-            'slug' => 'required|string|max:255',
             'url' => 'required|string|max:255',
+            'order' => 'required|integer',
+            'guard' => 'required|string|max:255',
+           'parent_id'=>'nullable',
+           'has_permissions'=>'nullable',
+           
             'icon' => 'nullable|string|max:255',
         ]);
 

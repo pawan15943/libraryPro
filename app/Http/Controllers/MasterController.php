@@ -653,7 +653,9 @@ class MasterController extends Controller
         return response()->json($libraries);
     }
    
-
+    public function menu(){
+        return view('master.menu');
+    }
     
 
     

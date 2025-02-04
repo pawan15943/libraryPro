@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\LibraryController;
@@ -221,10 +222,15 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('/blog/edit/{id}', [SiteController::class, 'editBlog'])->name('blog.edit');
         Route::get('/inquery', [SiteController::class, 'inqueryShow'])->name('inquiry');
         Route::get('/demo', [SiteController::class, 'demoRequest'])->name('demo');
+        Route::get('menu/create', [DataController::class, 'create'])->name('menu.create');
+        Route::post('menu/store', [DataController::class, 'store'])->name('menu.store');
+        Route::get('menu/edit/{id?}', [DataController::class, 'edit'])->name('menu.edit');
+        Route::put('menu/update', [DataController::class, 'update'])->name('menu.update');
+        Route::delete('menu/destroy', [DataController::class, 'delete'])->name('menu.destroy');
         });
 });
 
-Route::middleware(['auth:learner','no-cache'])->group(function () {
+Route::middleware(['auth:learner'])->group(function () {
   // Route::get('list/notification', [NotificationController::class, 'show'])->name('list.notification');
   Route::get('learner/home', [DashboardController::class, 'learnerDashboard'])->name('learner.home');//learner dashboard
   Route::get('learner/profile', [LearnerController::class, 'learnerProfile'])->name('learner.profile');

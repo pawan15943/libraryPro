@@ -2107,8 +2107,18 @@ class LearnerController extends Controller
                 'out_time' => $request->time == 'out' ? $currentTime : null,
             ]);
         }
+        $learner=Learner::where('id', $learnerId)->select('name')->first();
 
-        return response()->json(['success' => true, 'message' => 'Attendance updated successfully!']);
+        if($attendance==1){
+            $message='Attendance of '. $learner->name .' has been marked Present!';
+            return response()->json(['present' => true, 'message' => $message]);
+        }else{
+            $message='';
+            $message='Attendance of '. $learner->name .' has been marked Absent!';
+            return response()->json(['absent' => true, 'message' => $message]);
+        }
+
+        
     }
 
 

@@ -158,6 +158,10 @@ class AppServiceProvider extends ServiceProvider
                 'Learners List' => route('learners'),
                 'Import Learners' => route('library.upload.form'),
             ],
+            'attendance' => [
+                'Dashboard' => route('library.home'),
+                'Add Learner Attendace' => route('attendance'),
+            ],
 
             'report.expense' => [
                 'Dashboard' => route('library.home'),
@@ -263,6 +267,7 @@ class AppServiceProvider extends ServiceProvider
             'library.feedback' => 'Library Feedback',
             'library.video-training' => 'Video Tutorials',
             'learner.expire' => 'Expired The Learner',
+            'attendance' => 'Add Learner Attendace',
 
             // leaner
             'learner.home' => 'Learner Dashboard',

@@ -261,9 +261,6 @@ Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refu
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
 Route::get('/', [SiteController::class, 'home']);
 Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
-<<<<<<< HEAD
-=======
 Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
 
->>>>>>> 3020e38b75d537a3c7eeb55848ddeb80c872922e
 

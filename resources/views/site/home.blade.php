@@ -63,8 +63,8 @@
 <section class="product-benefits" id="features">
     <div class="container">
         <div class="heading mb-5 text-center">
-            <span class="text-white">Features of Libraro: The Best Library Software in India</span>
-            <h2>Why Choose Libraro <br>for Library Management?</h2>
+            <span class="text-white">Features of Our Library Automation Software</span>
+            <h2>Why Choose Our Library Management Tool?</h2>
         </div>
         <div class="row g-4">
             <div class="col-lg-3">

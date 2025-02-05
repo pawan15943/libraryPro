@@ -397,15 +397,43 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="owl-carousel" id="feedback">
+                    @if(!empty($happy_customers))
+                  
+                    @foreach($happy_customers as $key => $value)
+                     
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-                            <div class="message">As a librarian, I was constantly struggling to keep track of books and overdue records. With Library Manager, everything is automated, and managing our collection is now a breeze. Excellent product and great support team!</div>
+                            <div class="message">{{$value->description ?? ''}}</div>
                             <div class="customer-info">
                                 <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
-                                    <h4>Priya Mehta</h4>
-                                    <span>Senior Librarian</span>
+                                    <h4>{{$value->library_owner ?? ''}}</h4>
+                                    <span>{{$value->library_name ?? ''}}</span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                          
+                    @else
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+
+                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>Amit Kumar</h4>
+                                    <span>Library In-Charge</span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -459,6 +487,8 @@
                             </div>
                         </div>
                     </div>
+                    @endif
+                  
                 </div>
 
             </div>

@@ -41,6 +41,12 @@
                 <input  id="page_slug" name="page_slug" class="form-control"value="{{ old('page_slug', $page->page_slug ?? '') }}" >
                
             </div>
+            <div>
+                <label for="route">Page Route</label>
+                <input  id="route" name="route" class="form-control"value="{{ old('route', $page->route ?? '') }}" >
+               
+            </div>
+
             <div class="form-group">
                 <label for="page_content">Page Content</label>
                 <textarea 

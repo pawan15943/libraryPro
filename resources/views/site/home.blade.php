@@ -341,9 +341,10 @@
 
 
         <div class="row mt-4 g-4 justify-content-center mb-4">
+           
             @foreach($subscriptions as $subscription)
             @php
-
+          
             $subscribedPermissions = $subscription->permissions->pluck('name')->toArray();
             @endphp
 

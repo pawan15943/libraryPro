@@ -259,7 +259,7 @@ Route::get('terms-and-condition', [SiteController::class, 'termAndCondition'])->
 Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
 
 Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
-Route::get('/', [SiteController::class, 'home']);
+Route::get('/', [SiteController::class, 'home'])->name('/');
 Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
 Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
 

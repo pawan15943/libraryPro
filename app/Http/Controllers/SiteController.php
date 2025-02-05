@@ -78,6 +78,7 @@ class SiteController extends Controller
             'meta_description' => 'nullable|string',
             'meta_keyword' => 'nullable|string',
             'meta_og' => 'nullable|string',
+            'route' => 'nullable|string',
         ]);
 
         // If $id exists, update the existing page

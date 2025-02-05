@@ -98,6 +98,8 @@
     $(document).ready(function() {
         
         var plan_mode = $('#plan_mode').find(":selected").val();
+        console.log(plan_mode);
+        
         subscription_price(plan_mode);
         
         $('#plan_mode').on('change', function() {

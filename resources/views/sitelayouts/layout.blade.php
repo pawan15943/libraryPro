@@ -6,9 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Libraro: Best Library Management Software in India | Easy & Efficient</title>
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
+    
+    <title>Libraro: Best Library Management Software in India | Easy & Efficient</title>
     <meta type="description" value="Libraro is India’s #1 library management software for schools, colleges, and public libraries. Simplify cataloging, membership, book issuing, and returns with our easy-to-use, feature-rich system. Perfect for small to large libraries.">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">

@@ -11,7 +11,13 @@
 
 /* Default Css */
 
+.ck-editor__editable {
+    min-height: 200px; /* Adjust height as needed */
+}
 
+.ck-powered-by {
+    display: none !important;
+}
 
 *::-webkit-scrollbar {
     width: .3em;

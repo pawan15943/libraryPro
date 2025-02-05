@@ -1,18 +1,13 @@
 
 @extends('layouts.admin')
 @section('content')
-<style>
-    .ck-editor__editable {
-    min-height: 200px; /* Adjust height as needed */
-}
 
-</style>
 <div class="card mb-4">
     <h4 class="mb-4">{{ isset($data) ? 'Edit Blog' : 'Create Blog' }}</h4>
     <form action="{{ isset($data) ? route('blog.store', $data->id) : route('blog.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
       
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="page_title">Page Title</label>
             <input 
                 type="text" 
@@ -21,6 +16,7 @@
                 class="form-control @error('page_title') is-invalid @enderror" 
                 value="{{ old('page_title', $page->page_title ?? '') }}"
                 onkeyup="generateSlug()" >
+                <small>Blog URL : </small>
             @error('page_title')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -28,16 +24,15 @@
             @enderror
         </div>
     
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="page_slug">Page Slug</label>
             <input  id="page_slug" name="page_slug" class="form-control"value="{{ old('page_slug', $page->page_slug ?? '') }}" >
-           
         </div>
     
-        <div class="form-group">
+        <div class="col-lg-12 mb-4">
             <label for="page_content">Page Content</label>
             <textarea 
-                id="page_content" 
+                id="editor" 
                 name="page_content" 
                 class="form-control @error('page_content') is-invalid @enderror" 
                 >{{ old('page_content', $data->page_content ?? '') }}</textarea>
@@ -48,7 +43,7 @@
             @enderror
         </div>
     
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="meta_title">Meta Title</label>
             <input 
                 type="text" 
@@ -63,7 +58,7 @@
             @enderror
         </div>
     
-        <div>
+        <div  class="col-lg-12 mb-4">
             <label for="meta_description">Meta Description</label>
             <textarea 
                 id="meta_description" 
@@ -76,7 +71,7 @@
             @enderror
         </div>
     
-        <div>
+        <div  class="col-lg-12 mb-4">
             <label for="meta_keyword">Meta Keyword</label>
             <textarea 
                 id="meta_keyword" 
@@ -89,7 +84,7 @@
             @enderror
         </div>
     
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="meta_og">Meta OG</label>
             <textarea 
                 id="meta_og" 
@@ -103,7 +98,7 @@
         </div>
 
         <!-- Tags -->
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="tags">Tags</label>
             <input 
                 id="tags" 
@@ -118,7 +113,7 @@
             @enderror
         </div>
         <!-- categories -->
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="categories">Categories</label>
             <input 
                 id="categories" 
@@ -131,7 +126,7 @@
                 </span>
             @enderror
         </div>
-        <div>
+        <div class="col-lg-12 mb-4">
             <label for="categories_id">Select Categories</label>
             <select name="categories_id[]" id="categories_id" class="form-control" multiple>
                 @foreach($categories as $category)
@@ -178,14 +173,19 @@
     new Tagify(document.querySelector('#categories'));
 </script>
 
-
-<script src="https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    ClassicEditor.create( document.querySelector( '#page_content' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+    ClassicEditor
+    .create(document.querySelector('#editor'))
+    .then(editor => {
+        editor.editing.view.focus(); // Ensures typing starts immediately
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
+    
 </script>
 <script>
     $(document).ready(function() {

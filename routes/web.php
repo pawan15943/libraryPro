@@ -258,7 +258,7 @@ Route::get('privacy-policy', [SiteController::class, 'privacyPolicy'])->name('pr
 Route::get('terms-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
 Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
 
-Route::get('find-my-library', [SiteController::class, 'searchLibrary']);
+Route::get('find-my-library', [SiteController::class, 'searchLibrary'])->name('find-my-library');
 Route::get('/', [SiteController::class, 'home'])->name('/');
 Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
 Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');

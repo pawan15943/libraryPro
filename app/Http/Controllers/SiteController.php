@@ -9,6 +9,7 @@ use App\Models\DemoRequest;
 use App\Models\Feedback;
 use App\Models\Inquiry;
 use App\Models\Learner;
+use App\Models\LearnerFeedback;
 use App\Models\Library;
 use App\Models\Page;
 use App\Models\Subscription;
@@ -37,9 +38,12 @@ class SiteController extends Controller
         return view('site.refund-policy');
     }
     public function home(){
+        $happy_customers=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_owner','libraries.library_name','libraries.created_at','feedback.*','cities.city_name')->get();
+
+       
         $subscriptions = Subscription::with('permissions')->get();
         $premiumSub=Subscription::where('id',3)->first();
-        return view('site.home',compact('subscriptions','premiumSub'));
+        return view('site.home',compact('subscriptions','premiumSub','happy_customers'));
     }
     public function searchLibrary(){
         $cities = City::pluck('city_name', 'id');

@@ -14,25 +14,12 @@
                         <a class="nav-link" href="{{route('about-us')}}">About Us</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{url('/#features')}}">Features</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="{{url('/#pricing')}}">Pricing</a>
                     </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li> -->
-
+                    <li class="nav-item">
+                        <a class="nav-link border-dashed" href="{{route('find-my-library')}}">FIND MY LIBRARY</a>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link " href="{{route('blog')}}">Blog</a>
                     </li>

@@ -3,19 +3,18 @@
 
 <head>
     @php
-        $current_route = Route::currentRouteName();
-        $page=App\Models\Page::where('route',$current_route)->first();
-        
+    $current_route = Route::currentRouteName();
+    $page=App\Models\Page::where('route',$current_route)->first();
     @endphp
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
-   
-    <title>{{$page->meta_title}}</title>
-    
-    <meta type="description" value="{{$page->meta_description}}">
+
+    <title>{{$page->meta_title ?? ''}}</title>
+
+    <meta type="description" value="{{$page->meta_description ?? ''}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">
@@ -172,7 +171,7 @@
             });
 
             function subscription_price(plan_mode) {
-                
+
                 if (plan_mode) {
                     $.ajax({
                         url: '{{ route('subscriptions.getSubscriptionPrice') }}',
@@ -187,11 +186,13 @@
                         success: function(response) {
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
-                                let modeText = plan_mode == 1 ? " (Monthly)" : plan_mode == 2 ? " (Yearly)" : "";
-                                $('#subscription_fees_' + subscription.id).text(subscription.fees + modeText);
-                                $('#plan_mode_' + subscription.id).val(plan_mode)
-                                $('#price_' + subscription.id).val(subscription.fees)
+                                let modeText = plan_mode == 1 ? "<span>/mo</span>" : plan_mode == 2 ? "<span>/yr</span>" : "";
+
+                                $('#subscription_fees_' + subscription.id).html(subscription.fees + modeText); // Use .html() instead of .text()
+                                $('#plan_mode_' + subscription.id).val(plan_mode);
+                                $('#price_' + subscription.id).val(subscription.fees);
                             });
+
                         },
                         error: function(xhr) {
                             toastr.error('An error occurred. Please try again.');

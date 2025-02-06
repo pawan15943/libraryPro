@@ -160,10 +160,12 @@
         $(document).ready(function() {
 
             var plan_mode = $('#plan_mode').find(":selected").val();
+            $(".buy-now-btn").attr("data-plan_mode", plan_mode);
             subscription_price(plan_mode);
 
             $('#plan_mode').on('change', function() {
                 var plan_mode = $(this).val();
+                $(".buy-now-btn").attr("data-plan_mode", plan_mode);
                 subscription_price(plan_mode);
 
             });
@@ -207,7 +209,30 @@
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            $(".buy-now-btn").click(function() {
+                var planId = $(this).data("id");
+                var planMode = $("#plan_mode").val(); // Get the selected plan mode from dropdown
 
+                $.ajax({
+                    url: "{{ route('store.selected.plan') }}", // Route to store in session
+                    method: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        plan_id: planId,
+                        plan_mode: planMode
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        if (response.success) {
+                            window.location.href = "{{ route('register') }}"; // Redirect to registration page
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

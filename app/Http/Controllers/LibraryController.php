@@ -237,6 +237,7 @@ class LibraryController extends Controller
 
     public function sendVerificationEmail($library)
     {
+       
         // Prepare the data to send to the email view
         $data = [
             'name' => $library->library_name,
@@ -251,7 +252,7 @@ class LibraryController extends Controller
 
     public function verifyOtp(Request $request)
     {
-      
+       
         // Validate the input
         $request->validate([
             'email' => 'required|email',
@@ -325,7 +326,23 @@ class LibraryController extends Controller
 
     public function paymentProcess(Request $request)
     {
-        $month = ($request->plan_mode == 2) ? 12 : 1;
+       
+        $planId = session('selected_plan_id');
+        $planMode = session('selected_plan_mode');
+        if($planId && $planMode){
+            $month=($planMode==2)? 12 : 1;
+            $subscription_id=$planId;
+            $sub_data=Subscription::where('id',$planId)->first();
+            $amount=($planMode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
+        }elseif($request){
+            $month = ($request->plan_mode == 2) ? 12 : 1;
+            $subscription_id=$request->subscription_id;
+            $amount=$request->price;
+        }else{
+            return redirect('subscriptions.choosePlan')->with('error', 'Plan not selected');
+            
+        }
+        
 
         if ($request->library_id) {
             $library_id = $request->library_id;
@@ -359,7 +376,7 @@ class LibraryController extends Controller
             $gst = 0;
             $discount = 0;
         }
-        $amount=$request->price;
+       
         //First Apply Discount, Then GST
         $discount_amount=$amount*($discount/100);
         $price_after_discount=$amount-$discount_amount;
@@ -367,10 +384,10 @@ class LibraryController extends Controller
         $final_price=$price_after_discount+$gst_amount;
        
            
-        if (isset($request->subscription_id) && !is_null($request->subscription_id)) {
+        if (isset($subscription_id) && !is_null($subscription_id)) {
            
             Library::where('id', $library_id)->update([
-                'library_type' => $request->subscription_id,
+                'library_type' => $subscription_id,
             ]);
         
             $transactionId = null;
@@ -389,7 +406,7 @@ class LibraryController extends Controller
                         'amount'       => $amount,
                         'paid_amount'  => $final_price,
                         'month'        => $month,
-                        'subscription' => $request->subscription_id,
+                        'subscription' => $subscription_id,
                         'gst'          => $gst,
                         'discount'     => $discount,
                     ]);
@@ -409,7 +426,7 @@ class LibraryController extends Controller
                     'amount'       => $amount,
                     'paid_amount'  => $final_price,
                     'month'        => $month,
-                    'subscription' => $request->subscription_id,
+                    'subscription' => $subscription_id,
                     'gst'          => $gst,
                     'discount'     => $discount,
                 ]);
@@ -541,6 +558,13 @@ class LibraryController extends Controller
                 'is_paid' => 1,
                
             ]);
+          
+            if( session('selected_plan_id') && session('selected_plan_mode')){
+                session()->forget(['selected_plan_id', 'selected_plan_mode']);
+
+            }
+
+     
             $isProfile = Library::where('id', $library_transaction_id->library_id)->where('is_profile', 1)->exists();
             if($isProfile){
                 
@@ -670,7 +694,10 @@ class LibraryController extends Controller
     }
     public function profile()
     {
-        
+        if( session('selected_plan_id') && session('selected_plan_mode')){
+            session()->forget(['selected_plan_id', 'selected_plan_mode']);
+
+        }
         $library = Library::where('id', auth()->user()->id)->first();  
         
         $states=State::where('is_active',1)->get();

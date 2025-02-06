@@ -251,5 +251,15 @@ class SiteController extends Controller
         return view('administrator.inquery',compact('data'));
     }
 
+    public function storeSelectedPlan(Request $request)
+    {
+        session([
+            'selected_plan_id' => $request->plan_id,
+            'selected_plan_mode' => $request->plan_mode
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
     
 }

@@ -36,6 +36,12 @@ class LibraryService
             }
 
             if ($isEmailVeri) {
+                $planId = session('selected_plan_id');
+                $planMode = session('selected_plan_mode');
+                if($planId && $planMode){
+                    return route('subscriptions.payment');
+                    
+                }
                 return route('subscriptions.choosePlan');
             }
 

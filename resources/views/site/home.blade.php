@@ -371,8 +371,9 @@
                     </ul>
 
                     <div class="p-3">
-                        <button class="btn btn-primary">Buy Now</button>
+                        <button class="btn btn-primary buy-now-btn"  data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
                     </div>
+                    
                 </div>
             </div>
 

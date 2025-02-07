@@ -60,7 +60,7 @@
 </section>
 
 <!-- Section 3 -->
-<section class="product-benefits" id="features">
+<section class="product-benefits">
     <div class="container">
         <div class="heading mb-5 text-center">
             <span class="text-white">Features of Our Library Automation Software</span>
@@ -546,7 +546,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="collapseFour">
                                 Qus 4: Can I import my existing library data into Libraro?
                             </button>
                         </h2>
@@ -560,7 +560,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="collapseFive">
                                 Qus 5: Does Libraro support multiple users and roles?
                             </button>
                         </h2>
@@ -574,7 +574,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="collapseSix">
                                 Qus 6: Is my library data secure with Libraro?
                             </button>
                         </h2>
@@ -588,7 +588,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="collapseSeven">
                                 Qus 7: How do I get support if I face any issues?
                             </button>
                         </h2>
@@ -624,21 +624,13 @@
                     <div class="form-box">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <label for="name">Full Name <span class="text-danger">*</span></label>
-                                <input type="text"
-                                    name="full_name"
-                                    class="form-control @error('full_name') is-invalid @enderror char-only"
-                                    placeholder="Enter your Name"
-                                    value="" id="demoName">
+                                <label for="full_name">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Enter your Name" autocomplete="off" id="full_name">
 
                             </div>
                             <div class="col-lg-12">
                                 <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
-                                <input type="text"
-                                    name="mobile_number"
-                                    class="form-control @error('mobile_number') is-invalid @enderror digit-only"
-                                    placeholder="Enter Mobile Number"
-                                    value="" minlength="8" maxlength="10">
+                                <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Enter Mobile Number" minlength="8" maxlength="10" autocomplete="off" id="mobile_number">
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -647,24 +639,16 @@
                             </div>
                             <div class="col-lg-12">
                                 <label for="email">Email Id <span class="text-danger">*</span></label>
-                                <input type="email"
-                                    name="email"
-                                    class="form-control @error('email') is-invalid @enderror"
-                                    placeholder="Enter Email Address"
-                                    value="">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email Address" autocomplete="off" id="email">
 
                             </div>
                             <div class="col-lg-12">
-                                <label for="email">Preferred Date <span class="text-danger">*</span></label>
-                                <input type="date"
-                                    name="preferred_date"
-                                    class="form-control @error('preferred_date') is-invalid @enderror"
-                                    placeholder="Enter Email Address"
-                                    value="">
+                                <label for="preferred_date">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror" id="preferred_date">
 
                             </div>
                             <div class="col-lg-12">
-                                <label for="">Preferred Time (Optional)</label>
+                                <label for="timeSlot">Preferred Time (Optional)</label>
                                 <select class="form-select no-validate" id="timeSlot" name="preferred_time">
                                     <option value="">Select Time Slot</option>
                                     <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
@@ -696,7 +680,7 @@
                                 <small class="text-danger">*We will call you at your preferred time based on our availability.</small>
                             </div>
                             <div class="col-lg-12 form-group">
-                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
+                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms">
                                 <label class="form-check-label" for="terms">
                                     I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
                                 </label>

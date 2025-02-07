@@ -14,7 +14,8 @@
 
     <title>{{$page->meta_title ?? ''}}</title>
 
-    <meta type="description" value="{{$page->meta_description ?? ''}}">
+    <meta name="description" content="{{ $page->meta_description ?? '' }}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">

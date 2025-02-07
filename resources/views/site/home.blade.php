@@ -504,7 +504,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_01" aria-expanded="true" aria-controls="collapseOne">
+                                data-bs-target="#faq_01" aria-expanded="true" aria-controls="faq_01">
                                 Qus 1: What is Libraro, and how does it work?
                             </button>
                         </h2>
@@ -518,7 +518,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_02" aria-expanded="false" aria-controls="collapseTwo">
+                                data-bs-target="#faq_02" aria-expanded="false" aria-controls="faq_02">
                                 Qus 2: Who can use Libraro?
                             </button>
                         </h2>
@@ -532,7 +532,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_03" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_03" aria-expanded="false" aria-controls="faq_03">
                                 Qus 3: Is Libraro compatible with different devices?
                             </button>
                         </h2>
@@ -546,7 +546,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="collapseFour">
+                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="faq_04">
                                 Qus 4: Can I import my existing library data into Libraro?
                             </button>
                         </h2>
@@ -560,7 +560,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="collapseFive">
+                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="faq_05">
                                 Qus 5: Does Libraro support multiple users and roles?
                             </button>
                         </h2>
@@ -574,7 +574,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="collapseSix">
+                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="faq_06">
                                 Qus 6: Is my library data secure with Libraro?
                             </button>
                         </h2>
@@ -588,7 +588,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="collapseSeven">
+                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="faq_07">
                                 Qus 7: How do I get support if I face any issues?
                             </button>
                         </h2>

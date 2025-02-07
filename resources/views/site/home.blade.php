@@ -350,7 +350,7 @@
 
             <div class="col-lg-3">
                 <div class="plan-box">
-                    <h1 id="subscription_fees_{{$subscription->id}}"> </h1>
+                    <h1 id="subscription_fees_{{$subscription->id}}"></h1>
                     <h4>{{$subscription->name}}</h4>
                     <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)
@@ -618,7 +618,7 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to <br><span>Schedule a free Demo?</span></h2>
-                <form class="me-3 " id="demoRequest">
+                <form class="me-3" id="demoRequest">
                     @csrf
                     <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">

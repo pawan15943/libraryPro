@@ -718,7 +718,19 @@ select {
 }
 
 
+img.blog-thumb {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 1.5rem;
+}
 
+.blog-box a {
+    color: #0092a4;
+}
+
+.blog-box a:hover {
+    font-weight: 700 !IMPORTANT;
+}
 
 
 @media screen and (max-width:768px) {

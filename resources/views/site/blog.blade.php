@@ -27,8 +27,7 @@
 
 <section class="page-content">
     <div class="container">
-        <h4>Blog List</h4>
-        <div class="row g-4 mb-4">
+          <div class="row g-4 mb-4">
             @foreach($data as $key => $value)
                 <div class="col-lg-4">
                     <div class="blog-box">

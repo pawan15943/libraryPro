@@ -17,7 +17,7 @@
                         <a class="nav-link" href="{{url('/#pricing')}}">Pricing</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link border-dashed" href="">FIND MY LIBRARY</a>
+                        <a class="nav-link border-dashed" href="{{route('find-my-library')}}">FIND MY LIBRARY</a>
                     </li>
                     
                     <li class="nav-item">

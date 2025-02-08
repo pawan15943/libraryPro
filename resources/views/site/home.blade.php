@@ -7,10 +7,9 @@
         <div class="row g-4 align-items-center">
             <div class="col-lg-6 order-2 order-md-1 text-center text-md-start">
                 <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
-                <h2 class="head-text-2">Effortlessly Manage Your Library – From Bookings to Reporting, All in One Place!</h2>
-                <p class="head-text-3">Simplify library management with our feature-rich, user-friendly library software. Perfect for schools, colleges, and public libraries.</p>
-                <a href="{{route('register')}}" class="cta">Try Libraro Free!</a>
-                <a href="{{route('register')}}" class="cta ms-3 rounded"><i class="fa fa-play"></i></a>
+                <h2 class="head-text-2">Effortlessly manage your library—from seat bookings to reporting—all in one place!</h2>
+                <p class="head-text-3">Optimize your library operations with our feature-rich, user-friendly software—perfect for public and private libraries.</p>
+                <a href="{{route('register')}}" class="cta">Sign Up Today – Start Managing Effortlessly!</a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
                 <img src="{{ asset('public/img/head.png') }}" alt="Library management software" class="img-fluid">
@@ -60,7 +59,7 @@
 </section>
 
 <!-- Section 3 -->
-<section class="product-benefits" id="features">
+<section class="product-benefits">
     <div class="container">
         <div class="heading mb-5 text-center">
             <span class="text-white">Features of Our Library Automation Software</span>
@@ -329,7 +328,10 @@
 <div class="our-plan" id="pricing">
     <div class="container">
         <!-- Dynamic 3 -->
-        <h2 class="text-center mb-4">Our Pricing </h2>
+        <div class="heading mb-5 text-center">
+            <span class="text-white">Libraro Plans & Pricing</span>
+            <h2>Affordable & Transparent Pricing - Choose the Best Plan for You</h2>
+        </div>
         <div class="row g-4 justify-content-center">
             <div class="col-lg-4 payment-mode">
                 <select name="plan_mode" id="plan_mode" class="form-select">
@@ -341,42 +343,41 @@
 
 
         <div class="row mt-4 g-4 justify-content-center mb-4">
-           
+
             @foreach($subscriptions as $subscription)
             @php
-          
+
             $subscribedPermissions = $subscription->permissions->pluck('name')->toArray();
             @endphp
 
             <div class="col-lg-3">
                 <div class="plan-box">
-                    <h1 id="subscription_fees_{{$subscription->id}}"> </h1>
+                    <h1 id="subscription_fees_{{$subscription->id}}"></h1>
                     <h4>{{$subscription->name}}</h4>
                     <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)
                         @if(in_array($permission->name, $subscribedPermissions))
-                            <li>
-                                <div class="d-flex">
-                                    <i class="fa-solid fa-check text-white me-2"></i> {{ $permission->name }}
-                                </div>
-                            </li>
+                        <li>
+                            <div class="d-flex">
+                                <i class="fa-solid fa-check text-white me-2"></i> {{ $permission->name }}
+                            </div>
+                        </li>
                         @else
-                            <li>
-                                <div class="d-flex">
-                                    <i class="fa-solid fa-xmark text-white me-2"></i> {{ $permission->name }}
-                                </div>
-                            </li>
+                        <li>
+                            <div class="d-flex">
+                                <i class="fa-solid fa-xmark text-white me-2"></i> {{ $permission->name }}
+                            </div>
+                        </li>
                         @endif
                         @endforeach
                     </ul>
 
                     <div class="p-3">
-                        <button class="btn btn-primary buy-now-btn"  data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
+                        <button class="btn btn-primary buy-now-btn" data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
                     </div>
-                    
+
                 </div>
             </div>
-
             @endforeach
         </div>
 
@@ -398,10 +399,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="owl-carousel" id="feedback">
-                    @if(!empty($happy_customers))
-                  
+
+                    @if(!($happy_customers->isEmpty()))
                     @foreach($happy_customers as $key => $value)
-                     
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
@@ -423,18 +423,17 @@
                         </div>
                     </div>
                     @endforeach
-                          
                     @else
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
-                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="message">As the <b>Founder & Director</b>, I created Libraro to simplify library operations with automation, seamless bookings, and powerful analytics. It's the all-in-one solution for modern libraries!</div>
                             <div class="customer-info">
                                 <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
-                                    <h4>Amit Kumar</h4>
-                                    <span>Library In-Charge</span>
+                                    <h4>Pawan Rathore</h4>
+                                    <span>Founder: Libraro</span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -450,12 +449,12 @@
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
-                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
                             <div class="customer-info">
                                 <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
-                                    <h4>Amit Kumar</h4>
-                                    <span>Library In-Charge</span>
+                                    <h4>Heena Kaushar</h4>
+                                    <span>Developer: Libraro </span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -489,7 +488,7 @@
                         </div>
                     </div>
                     @endif
-                  
+
                 </div>
 
             </div>
@@ -507,7 +506,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_01" aria-expanded="true" aria-controls="collapseOne">
+                                data-bs-target="#faq_01" aria-expanded="true" aria-controls="faq_01">
                                 Qus 1: What is Libraro, and how does it work?
                             </button>
                         </h2>
@@ -521,7 +520,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_02" aria-expanded="false" aria-controls="collapseTwo">
+                                data-bs-target="#faq_02" aria-expanded="false" aria-controls="faq_02">
                                 Qus 2: Who can use Libraro?
                             </button>
                         </h2>
@@ -535,7 +534,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_03" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_03" aria-expanded="false" aria-controls="faq_03">
                                 Qus 3: Is Libraro compatible with different devices?
                             </button>
                         </h2>
@@ -549,7 +548,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="faq_04">
                                 Qus 4: Can I import my existing library data into Libraro?
                             </button>
                         </h2>
@@ -563,7 +562,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="faq_05">
                                 Qus 5: Does Libraro support multiple users and roles?
                             </button>
                         </h2>
@@ -577,7 +576,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="faq_06">
                                 Qus 6: Is my library data secure with Libraro?
                             </button>
                         </h2>
@@ -591,7 +590,7 @@
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="collapseThree">
+                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="faq_07">
                                 Qus 7: How do I get support if I face any issues?
                             </button>
                         </h2>
@@ -621,27 +620,19 @@
             @endif
             <div class="col-lg-6">
                 <h2 class="mb-4">Would you like to <br><span>Schedule a free Demo?</span></h2>
-                <form class="me-3 " id="demoRequest">
+                <form class="me-3" id="demoRequest">
                     @csrf
                     <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">
                         <div class="row g-3">
                             <div class="col-lg-12">
-                                <label for="name">Full Name <span class="text-danger">*</span></label>
-                                <input type="text"
-                                    name="full_name"
-                                    class="form-control @error('full_name') is-invalid @enderror char-only"
-                                    placeholder="Enter your Name"
-                                    value="" id="demoName">
+                                <label for="full_name">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Enter your Name" autocomplete="off" id="full_name">
 
                             </div>
                             <div class="col-lg-12">
                                 <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
-                                <input type="text"
-                                    name="mobile_number"
-                                    class="form-control @error('mobile_number') is-invalid @enderror digit-only"
-                                    placeholder="Enter Mobile Number"
-                                    value="" minlength="8" maxlength="10">
+                                <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Enter Mobile Number" minlength="8" maxlength="10" autocomplete="off" id="mobile_number">
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -650,24 +641,16 @@
                             </div>
                             <div class="col-lg-12">
                                 <label for="email">Email Id <span class="text-danger">*</span></label>
-                                <input type="email"
-                                    name="email"
-                                    class="form-control @error('email') is-invalid @enderror"
-                                    placeholder="Enter Email Address"
-                                    value="">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email Address" autocomplete="off" id="email">
 
                             </div>
                             <div class="col-lg-12">
-                                <label for="email">Preferred Date <span class="text-danger">*</span></label>
-                                <input type="date"
-                                    name="preferred_date"
-                                    class="form-control @error('preferred_date') is-invalid @enderror"
-                                    placeholder="Enter Email Address"
-                                    value="">
+                                <label for="preferred_date">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror" id="preferred_date">
 
                             </div>
                             <div class="col-lg-12">
-                                <label for="">Preferred Time (Optional)</label>
+                                <label for="timeSlot">Preferred Time (Optional)</label>
                                 <select class="form-select no-validate" id="timeSlot" name="preferred_time">
                                     <option value="">Select Time Slot</option>
                                     <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
@@ -699,7 +682,7 @@
                                 <small class="text-danger">*We will call you at your preferred time based on our availability.</small>
                             </div>
                             <div class="col-lg-12 form-group">
-                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
+                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms">
                                 <label class="form-check-label" for="terms">
                                     I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
                                 </label>

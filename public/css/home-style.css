@@ -718,8 +718,51 @@ select {
 }
 
 
+img.blog-thumb {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 1.5rem;
+}
+
+.blog-box a {
+    color: #0092a4;
+}
+
+.blog-box a:hover {
+    font-weight: 700 !IMPORTANT;
+}
+
+a.nav-link.border-dashed {
+    
+    
+}
 
 
+.border-dashed {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0091a4;
+    text-transform: uppercase;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    font-weight: 700  !important;
+    background: linear-gradient(90deg, #b09604, #047a8a, #25327a);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s linear infinite;
+  }
+  
+  @keyframes shine {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  
 
 @media screen and (max-width:768px) {
     header ul.navbar-nav.ms-auto.mb-lg-0>li+li {

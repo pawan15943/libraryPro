@@ -264,7 +264,7 @@ class SiteController extends Controller
     public function blogDetail($id){
         
         $data=Blog::where('id',$id)->first();
-        return view('site.blog-detail',compact('data'));
+        return view('site.blog-details',compact('data'));
     }
 
     

@@ -133,7 +133,7 @@ class MasterController extends Controller
 
     public function storeOrUpdatePermission(Request $request, $permissionId = null)
     {
-       
+     
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -200,7 +200,6 @@ class MasterController extends Controller
 
     public function assignPermissionsToSubscription(Request $request)
     {
-        
         $request->validate([
             'subscription_id' => 'required',
             'permissions' => 'array', 

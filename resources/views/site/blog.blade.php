@@ -38,7 +38,8 @@
                         <img src="{{ url('public/img/blog.png') }}" alt="blog-title" class="blog-thumb">
                         @endif
                         <h4>{{ $value->page_title }}</h4>
-                        <a href="">Read Full Article >></a>
+                        <a href="{{ route('blog-detail', ['id' => $value->id]) }}">Read Full Article >></a>
+
                     </div>
                 </div>
             @endforeach

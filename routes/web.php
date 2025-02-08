@@ -243,7 +243,7 @@ Route::middleware(['auth:learner'])->group(function () {
   Route::get('learner/attendance', [LearnerController::class, 'attendance'])->name('my-attendance');
   Route::get('learner/complaints', [LearnerController::class, 'complaints'])->name('complaints');
   Route::get('learner/transactions', [LearnerController::class, 'transactions'])->name('my-transactions');
-  Route::get('books-library', [LearnerController::class, 'booksLibrary'])->name('books-library');
+  Route::get('learner/books-library', [LearnerController::class, 'booksLibrary'])->name('books-library');
   Route::post('learner/request/store', [LearnerController::class, 'learnerRequestCreate'])->name('requaet.store');
   Route::post('learner/suggestions/store', [LearnerController::class, 'suggestionsStore'])->name('learner.suggestion.store');
   Route::post('learner/complaints/store', [LearnerController::class, 'complaintsStore'])->name('learner.complaint.store');

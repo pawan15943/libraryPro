@@ -352,8 +352,12 @@
 
             <div class="col-lg-3">
                 <div class="plan-box">
+                    <s><h4 id="before_discount_fees_{{$subscription->id}}"></h4></s>
+
                     <h1 id="subscription_fees_{{$subscription->id}}"></h1>
+                    
                     <h4>{{$subscription->name}}</h4>
+                    
                     <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)
                         @if(in_array($permission->name, $subscribedPermissions))

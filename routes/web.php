@@ -238,6 +238,7 @@ Route::middleware(['auth:learner'])->group(function () {
   Route::get('learner/IdCard', [LearnerController::class, 'IdCard'])->name('my-library-id');
   Route::get('learner/support', [LearnerController::class, 'support'])->name('support');
   Route::get('learner/blog', [LearnerController::class, 'blog'])->name('learner.blog');
+  Route::get('learner/blog/detail/show', [LearnerController::class, 'blogDetailShow'])->name('blog.detail.show');
   Route::get('learner/feadback', [LearnerController::class, 'feadback'])->name('learner.feadback');
   Route::get('learner/suggestions', [LearnerController::class, 'suggestions'])->name('learner.suggestions');
   Route::get('learner/attendance', [LearnerController::class, 'attendance'])->name('my-attendance');
@@ -263,5 +264,5 @@ Route::get('/', [SiteController::class, 'home'])->name('/');
 Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
 Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
 Route::post('/store-selected-plan', [SiteController::class, 'storeSelectedPlan'])->name('store.selected.plan');
-Route::get('blog/detail/{id}', [SiteController::class, 'blogDetail'])->name('blog-detail');
+Route::get('blog/detail/{slug}', [SiteController::class, 'blogDetail'])->name('blog-detail');
 

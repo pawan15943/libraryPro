@@ -261,9 +261,9 @@ class SiteController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function blogDetail($id){
+    public function blogDetail($slug){
         
-        $data=Blog::where('id',$id)->first();
+        $data=Blog::where('page_slug',$slug)->first();
         return view('site.blog-details',compact('data'));
     }
 

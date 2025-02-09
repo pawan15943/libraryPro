@@ -185,13 +185,25 @@
                         },
                         dataType: 'json',
                         success: function(response) {
+                            console.log('plan',response);
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
                                 let modeText = plan_mode == 1 ? "<span>/mo</span>" : plan_mode == 2 ? "<span>/yr</span>" : "";
-
+                                
                                 $('#subscription_fees_' + subscription.id).html(subscription.fees + modeText); // Use .html() instead of .text()
                                 $('#plan_mode_' + subscription.id).val(plan_mode);
                                 $('#price_' + subscription.id).val(subscription.fees);
+                                
+
+                                    // Ensure both fees and discount are numbers
+                                    let fees = parseFloat(subscription.fees) || 0;
+                                    let discount = parseFloat(subscription.discount) || 0;
+
+                                    // Avoid division by zero
+                                    let beforeFees = ((fees * discount /100) + fees)
+                                    $('#before_discount_fees_' + subscription.id).html(beforeFees.toFixed(0));
+    
+                            
                             });
 
                         },

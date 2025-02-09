@@ -2273,6 +2273,13 @@ class LearnerController extends Controller
         return redirect()->route('learner.feadback')->with('success','Thank you for your feedback!');
         
      }
+
+     
+     public function blogDetailShow($slug){
+        
+        $data=Blog::where('page_slug',$slug)->first();
+        return view('site.blog-details',compact('data'));
+    }
     
 
 }

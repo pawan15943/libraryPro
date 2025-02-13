@@ -312,9 +312,9 @@ class LibraryController extends Controller
     {
         
         if($request->plan_mode==1){
-            $subscription_prices = Subscription::with('permissions')->select('monthly_fees as fees','id','discount')->get();
+            $subscription_prices = Subscription::with('permissions')->select('monthly_fees as fees','id','slash_price','plan_description')->get();
         }elseif($request->plan_mode==2){
-            $subscription_prices = Subscription::with('permissions')->select('yearly_fees as fees','id','discount')->get();
+            $subscription_prices = Subscription::with('permissions')->select('yearly_fees as fees','id','slash_price','plan_description')->get();
 
         }
         

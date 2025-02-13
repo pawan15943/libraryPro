@@ -4926,15 +4926,17 @@ section.hero_Section h2 {
     margin-bottom: 2rem;
 }
 
+.logo {
+    margin: 1.5rem 0;
+}
+
+
 .hero_Section .search input {
     height: 55px !important;
     padding: 1.5rem;
     font-size: 1.1rem !important;
 }
 
-.logo {
-    margin: 1.5rem 0;
-}
 
 .hero_Section .search {
     position: relative;
@@ -5350,6 +5352,4 @@ img.id-profile {
     text-decoration: none;
     color: #089eb1;
     font-weight: 700 !IMPORTANT;
-    !I;
-    !;
 }

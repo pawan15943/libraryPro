@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -227,6 +228,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('menu/edit/{id?}', [DataController::class, 'edit'])->name('menu.edit');
         Route::put('menu/update', [DataController::class, 'update'])->name('menu.update');
         Route::delete('menu/destroy', [DataController::class, 'delete'])->name('menu.destroy');
+        Route::get('inquery/get', [AdminController::class, 'contactInqueryGet'])->name('inquery.list');
+        
         });
 });
 

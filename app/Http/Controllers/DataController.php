@@ -159,33 +159,35 @@ class DataController extends Controller
         }
     }
 
-        // Redirect back with a success message
-       
-        public function activeDeactive(Request $request,$id)
-        {
-          
-            $modelClass = 'App\\Models\\' . $request->dataTable; // Dynamically build the model class name
+    // Redirect back with a success message
+    
+    public function activeDeactive(Request $request,$id)
+    {
+        
+        $modelClass = 'App\\Models\\' . $request->dataTable; // Dynamically build the model class name
 
-                if (!class_exists($modelClass)) {
-                    return response()->json(['status' => 'error', 'message' => 'Invalid model'], 400);
+            if (!class_exists($modelClass)) {
+                return response()->json(['status' => 'error', 'message' => 'Invalid model'], 400);
+            }
+
+            $data = $modelClass::withTrashed()->find($id);
+
+            if ($data) {
+                if ($data->trashed()) {
+                    $data->restore();
+                    $status = 'activated';
+                } else {
+                    $data->delete();
+                    $status = 'deactivated';
                 }
-
-                $data = $modelClass::withTrashed()->find($id);
-
-                if ($data) {
-                    if ($data->trashed()) {
-                        $data->restore();
-                        $status = 'activated';
-                    } else {
-                        $data->delete();
-                        $status = 'deactivated';
-                    }
-                
-                    return response()->json(['status' => 'success', 'message' => 'Data successfully ' . $status, 'data_status' => $status]);
-                }else{
-                    
-                } return response()->json(['status' => 'error', 'message' => 'Data not found'], 404);
             
-        }
+                return response()->json(['status' => 'success', 'message' => 'Data successfully ' . $status, 'data_status' => $status]);
+            }else{
+                
+            } return response()->json(['status' => 'error', 'message' => 'Data not found'], 404);
+        
+    }
+
+   
 
 }

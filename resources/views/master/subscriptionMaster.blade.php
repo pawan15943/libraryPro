@@ -48,16 +48,32 @@
         </div>
         <div class="col-lg-4">
             <label for="subscription">Yearly Plan Price</label>
-            <input 
-                type="text" 
-                class="form-control digit-only" 
-                name="yearly_fees" 
-                value="{{ old('yearly_fees', $subscription->yearly_fees ?? '') }}"
-            >
+            <input type="text" class="form-control digit-only"  name="yearly_fees" value="{{ old('yearly_fees', $subscription->yearly_fees ?? '') }}">
             @error('yearly_fees')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
         </div>
+        {{-- <div class="col-lg-4">
+            <label for="discount">Discount</label>
+            <input type="text" class="form-control digit-only"  name="discount" value="{{ old('discount', $subscription->discount ?? '') }}">
+            @error('discount')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="col-lg-4">
+            <label for="expiry_date">Expiry Date</label>
+            <input type="date" class="form-control"  name="expiry_date" value="{{ old('expiry_date', $subscription->expiry_date ?? '') }}">
+            @error('expiry_date')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div>
+        <div class="col-lg-4">
+            <label for="expiry_message">Expiry Message</label>
+            <input type="text" class="form-control "  name="expiry_message" value="{{ old('expiry_message', $subscription->expiry_message ?? '') }}">
+            @error('expiry_message')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
+        </div> --}}
         <div class="col-lg-3">
             <button type="submit" class="btn btn-primary button">
                 {{ $subscription ? 'Update Subscription' : 'Create Subscription' }}

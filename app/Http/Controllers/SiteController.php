@@ -52,9 +52,9 @@ class SiteController extends Controller
         $learner_count=Learner::count();
         $city_count=City::count();
         $feedback_count=Feedback::count();
-        $happy_customer=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
+        $happy_customers=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
        
-        return view('site.library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customer','feedback_count'));
+        return view('site.library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customers','feedback_count'));
     }
     public function listPage(){
         $pages = Page::all();
@@ -266,6 +266,20 @@ class SiteController extends Controller
         $data=Blog::where('page_slug',$slug)->first();
         return view('site.blog-details',compact('data'));
     }
+    public function getLibrariesLocations()
+    {
+        $libraries = Library::whereNotNull('latitude')
+                            ->whereNotNull('longitude')
+                            ->select('library_name', 'latitude', 'longitude', 'library_address')
+                            ->get();
+
+        return response()->json($libraries);
+    }
+    public function libraryDetail($slug){
+        $data=Library::where('library_name',$slug)->first();
+        return view('site.library-details',compact('data'));
+    }
+
 
     
 }

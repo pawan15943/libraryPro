@@ -1,612 +1,716 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('sitelayouts.layout')
+@section('content')
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
-        rel="stylesheet">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+
+
+<!-- Section 1 -->
+<section class="hero_Section_directory" style="background: url('{{ asset('/public/img/direcotry/bg-head.png') }}') no-repeat; background-size:cover;">
+    <div class="container">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-12">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-lg-8">
+                        <h1>Find the Best Libraries Near You in India</h1>
+
+                        <div class="search">
+                            <input type="text" id="library-search" class="form-control" placeholder="Enter Location or library name to search near you">
+                            <i class="fa fa-search"></i>
+                            <ul id="suggestions" class="list-group mt-2"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Library -->
+<section class="popular py-5">
+    <div class="container">
+        <div class="heading mb-5">
+            <h2>Featured & Popular Libraries</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="owl-carousel" id="library-list">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="google-map pt-5">
+    <h2 class="mb-4 text-center">Explore Our Libraries Across India – Interactive Map!</h2>
+    <div id="map" style="width: 100%; height: 550px;"></div>
+</section>
+
+<!-- <section class="google-map pt-5">
+    <h2 class="mb-4 text-center">Explore Our Libraries Across India – Interactive Map!</h2>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="{{ asset('public/css/style.css')}}">
-</head>
+    @php
+        $libraries = \App\Models\Library::whereNotNull('latitude')
+                    ->whereNotNull('longitude')
+                    ->get();
+       
+        // Generate Google Maps URL with multiple locations
+        $googleMapsUrl = "https://www.google.com/maps/dir/";
 
-<body>
+        foreach ($libraries as $library) {
+            $googleMapsUrl .= "{$library->latitude},{$library->longitude}/";
+        }
+    @endphp
+
+    <iframe src="{{ $googleMapsUrl }}" width="100%" height="550" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+</section> -->
+
+<!-- <section class="google-map pt-5">
+    <h2 class="mb-4 text-center">Explore Our Libraries Across India – Interactive Map!</h2>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.649389374019!2d75.83269327839233!3d25.113727177766872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396f85c36f29576f%3A0x173a1efae7a53a41!2sNew%20Balaji%20Computer%20Classes%2C%20Kota!5e0!3m2!1sen!2sin!4v1739291970498!5m2!1sen!2sin" width="100%" height="550" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</section> -->
 
 
-    <!-- Section 1 -->
-    <section class="hero_Section" style="background: url('{{ asset('/public/img/direcotry/bg-head.png') }}') no-repeat; background-size:cover;">
-        <div class="container">
-            <div class="row align-items-center mb-5">
-                <div class="col-lg-6">
-                    <img src="{{ asset('public/img/direcotry/logo.png') }}" alt="logo" class="logo">
-                </div>
-                <div class="col-lg-6">
-                    <ul class="">
-                        <li class="">
-                            <a class="active" aria-current="page" href="#">Home</a>
-                        </li>
-                        <li class="">
-                            <a class="" href="#">Features</a>
-                        </li>
-                        <li class="">
-                            <a class="" href="#">Pricing</a>
-                        </li>
-                    </ul>
-                </div>
+<section class="important-counts">
+    <div class="container">
+        <h2 class="mb-5">Important Factors <br>That Make Us the Right Choice</h2>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6 col-6">
+                <h1>{{$library_count}}+</h1>
+                <p>Library Enrolled</p>
             </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <h1>{{$learner_count}}+</h1>
+                <p>Learner Enrolled</p>
+            </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <h1>{{$city_count}}+</h1>
+                <p>Total Cities
+            </div>
+            <div class="col-lg-3 col-md-6 col-6">
+                <h1>{{$feedback_count}}+</h1>
+                <p>Customers trusts</p>
+            </div>
+        </div>
+    </div>
+</section>
 
-            <div class="row h-100 align-items-center">
-                <div class="col-lg-12">
-                    <div class="row align-items-center justify-content-center mt-5">
-                        <div class="col-lg-8">
-                            <h1>Hi! Can you help me find the nearest library?
-                                I'd love to explore one nearby!</h1>
+<!-- Customer's Feedback -->
+<section class="customer-feedback">
 
-                            <div class="search">
-                                <input type="text" id="library-search" class="form-control" placeholder="Enter Location or library name to search near you">
-                                <i class="fa fa-search"></i>
-                                <ul id="suggestions" class="list-group mt-2"></ul>
+    <div class="container">
+        <div class="heading mb-5">
+            <span>Customer's Feedback</span>
+            <h2>What Our <br>
+                Happy Customers Say’s</h2>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="owl-carousel" id="feedback">
+                    @if(!($happy_customers->isEmpty()))
+                    @foreach($happy_customers as $key => $value)
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <div class="message">{{$value->description ?? ''}}</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>{{$value->library_owner ?? ''}}</h4>
+                                    <span>{{$value->library_name ?? ''}}</span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
                             </div>
                         </div>
-
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <h4 class="text-white text-center py-3">Search Direct by City</h4>
-                            <ul class="locations" id="city-list">
+                    @endforeach
+                    @else
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
-                                @foreach($cities as $key => $value)
-                                <li class="city-item" data-city="{{ $key }}">
-                                    <div class="location-box">
-                                        <i class="fa fa-map-marker-alt"></i>
-                                        <p>{{ $value }}</p>
-                                    </div>
-                                </li>
-                                @endforeach
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 2 -->
-    <section class="featured-library py-5">
-        <div class="container">
-            <div class="heading text-center mb-5">
-                <h2>Top Libraries in KOTA</h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="owl-carousel" id="library-list">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 3 -->
-    <section class="why-choose-us">
-        <div class="container">
-            <div class="heading mb-5">
-                <span>Benefits of Product</span>
-                <h2>Best Place to Search <br>
-                    Library in INDIA</h2>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-4">
-                    <div class="benefits">
-                        <i class="fa fa-check"></i>
-                        <div class="content">
-                            <p>Check what you
-                                need to
-                                achieve your goals.</p>
-                            <div class="border-thick"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="benefits">
-                        <i class="fa fa-check"></i>
-                        <div class="content">
-                            <p>Check what you
-                                need to
-                                achieve your goals.</p>
-                            <div class="border-thick"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="benefits">
-                        <i class="fa fa-check"></i>
-                        <div class="content">
-                            <p>Check what you
-                                need to
-                                achieve your goals.</p>
-                            <div class="border-thick"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Customer's Feedback -->
-    <section class="customer-experience">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6">
-                    <div class="about-main">
-                        <img src="{{ asset('public/img/direcotry/about.png') }}" alt="about" class="img-fluid">
-                        <img src="{{ asset('public/img/direcotry/about-upper.png') }}" alt="upper" class="upper">
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="heading mb-5">
-                        <span>Customer's Feedback</span>
-                        <h2>What is your <br>
-                            Learning Experience</h2>
-                    </div>
-
-                    <p>A library is more than just a place to study—it's a sanctuary for discovery, inspiration, and
-                        personal growth. Whether you're preparing for exams, diving into research, or simply seeking a
-                        peaceful escape among the pages of a book, everyone has their own reason for visiting a library.
-                    </p>
-
-                    <p>At Book My Library, we believe in breaking the conventional boundaries of what a library can be.
-                        Our platform connects you with the best libraries near you, offering a variety of spaces
-                        tailored to your needs. From spacious, beautifully designed study halls to cozy reading areas
-                        stocked with diverse genres, we ensure you find the perfect environment to focus and thrive.</p>
-
-                    <p>Libraries aren't just for studying; they're also a haven for relaxation and rejuvenation. Whether
-                        you're looking to recharge your mind, find inspiration, or escape the daily grind, our libraries
-                        provide a unique ambiance where you can concentrate on what truly matters.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="important-counts">
-        <div class="container">
-            <h2 class="mb-5">Important Factors That Make Us the Right Choice</h2>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 col-6">
-                    <h1>{{$library_count}}+</h1>
-                    <p>Library Enrolled</p>
-                </div>
-                <div class="col-lg-3 col-md-6 col-6">
-                    <h1>{{$learner_count}}+</h1>
-                    <p>Learner Enrolled</p>
-                </div>
-                <div class="col-lg-3 col-md-6 col-6">
-                    <h1>{{$city_count}}+</h1>
-                    <p>Total Cities
-                </div>
-                <div class="col-lg-3 col-md-6 col-6">
-                    <h1>{{$feedback_count}}+</h1>
-                    <p>Customers trusts</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Customer's Feedback -->
-    <section class="customer-feedback">
-
-        <div class="container">
-            <div class="heading mb-5">
-                <span>Customer's Feedback</span>
-                <h2>What Our <br>
-                    Happy Customers Say’s</h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="owl-carousel" id="feedback">
-                        @foreach($happy_customer as $key => $value)
-                        <div class="item">
-                            <div class="feedback-box">
-                                <div class="message">
-                                    {{$value->description}}
+                            <div class="message">As the <b>Founder & Director</b>, I created Libraro to simplify library operations with automation, seamless bookings, and powerful analytics. It's the all-in-one solution for modern libraries!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
+                                <div class="customer-details">
+                                    <h4>Pawan Rathore</h4>
+                                    <span>Founder: Libraro</span>
                                 </div>
-                                <div class="customer-info">
-                                    <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
-                                    <div class="customer-details">
-                                        <h4>{{$value->library_address}}, {{$value->city_name}}</h4>
-                                        @php
-                                        $createdYear = \Carbon\Carbon::parse($value->created_at)->year;
-                                        $currentYear = \Carbon\Carbon::now()->year;
-                                        @endphp
-
-                                        <span>
-                                            Working from {{ $createdYear == $currentYear ? 'This' : $createdYear }} year{{ $createdYear == $currentYear ? '' : 's' }}
-                                        </span>
-                                    </div>
-                                    <ul class="customer-ratings">
-                                        <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                        <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                        <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                        <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                        <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    </ul>
-                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
                             </div>
                         </div>
-                        @endforeach
                     </div>
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="inquiry">
-
-
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-                @endif
-                <div class="col-lg-6">
-                    <h2 class="mb-4">Have Any Query ? <br>
-                        Request a Callback</h2>
-                    <form action="{{ route('submit.inquiry') }}" method="POST">
-                        @csrf
-                        <div class="form-box">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <label for="name">Full Name</label>
-                                    <input type="text"
-                                        name="full_name"
-                                        class="form-control @error('full_name') is-invalid @enderror char-only"
-                                        placeholder="Enter your Name"
-                                        value="{{ old('full_name') }}">
-                                    @error('full_name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                            <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>Heena Kaushar</h4>
+                                    <span>Developer: Libraro </span>
                                 </div>
-                                <div class="col-lg-12">
-                                    <label for="mobile_number">Mobile Number</label>
-                                    <input type="text"
-                                        name="mobile_number"
-                                        class="form-control @error('mobile_number') is-invalid @enderror digit-only"
-                                        placeholder="Enter Mobile Number"
-                                        value="{{ old('mobile_number') }}">
-                                    @error('mobile_number')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="email">Email Id</label>
-                                    <input type="email"
-                                        name="email"
-                                        class="form-control @error('email') is-invalid @enderror"
-                                        placeholder="Enter Email Address"
-                                        value="{{ old('email') }}">
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-12">
-                                    <label for="message">Message</label>
-                                    <textarea rows="5"
-                                        name="message"
-                                        class="form-control @error('message') is-invalid @enderror"
-                                        placeholder="Enter Message">{{ old('message') }}</textarea>
-                                    @error('message')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-lg-12">
-                                    <button class="btn btn-primary button" type="submit">Submit Details</button>
-                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
                             </div>
                         </div>
-                    </form>
+                    </div>
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
-                </div>
-                <div class="col-lg-6">
-                    <div class="main-box">
-                        <div class="support">
-                            <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">
-                            <h4>We Are Here
-                                to Assist you</h4>
-                            <p>Call : +91-8114479678</p>
-                            <p>Mail : libraro@nbcc.com</p>
+                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>Sandeep Rathor</h4>
+                                    <span>Libraro Manager</span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
+                            </div>
                         </div>
-                        <img src="{{ asset('public/img/direcotry/support.png') }}" alt="support" class="img-fluid">
+                    </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Frequently Asked Questions -->
+<section class="py-5" id="faqy">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_01" aria-expanded="true" aria-controls="faq_01">
+                                Qus 1: What is Libraro, and how does it work?
+                            </button>
+                        </h2>
+                        <div id="faq_01" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Libraro is a comprehensive library management portal designed to simplify and automate library operations. It allows you to manage books, track issued and returned items, and generate reports efficiently, all through a user-friendly interface.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_02" aria-expanded="false" aria-controls="faq_02">
+                                Qus 2: Who can use Libraro?
+                            </button>
+                        </h2>
+                        <div id="faq_02" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Libraro is suitable for schools, colleges, universities, public libraries, and private libraries looking for a modern solution to streamline their library management processes.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_03" aria-expanded="false" aria-controls="faq_03">
+                                Qus 3: Is Libraro compatible with different devices?
+                            </button>
+                        </h2>
+                        <div id="faq_03" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Yes, Libraro is accessible on desktops, laptops, tablets, and smartphones, ensuring convenience for library staff and users anytime, anywhere.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_04" aria-expanded="false" aria-controls="faq_04">
+                                Qus 4: Can I import my existing library data into Libraro?
+                            </button>
+                        </h2>
+                        <div id="faq_04" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Absolutely! Libraro allows you to import existing data in bulk using easy-to-use templates, making the transition seamless for your library.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="faq_05">
+                                Qus 5: Does Libraro support multiple users and roles?
+                            </button>
+                        </h2>
+                        <div id="faq_05" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Yes, Libraro supports multiple user roles, such as administrators, librarians, and members. Each role has customized permissions to ensure smooth and secure operations.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_06" aria-expanded="false" aria-controls="faq_06">
+                                Qus 6: Is my library data secure with Libraro?
+                            </button>
+                        </h2>
+                        <div id="faq_06" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> Security is our top priority. Libraro uses advanced encryption and data protection measures to ensure your library's data is safe and accessible only to authorized users.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#faq_07" aria-expanded="false" aria-controls="faq_07">
+                                Qus 7: How do I get support if I face any issues?
+                            </button>
+                        </h2>
+                        <div id="faq_07" class="accordion-collapse collapse"
+                            data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <strong>Answer</strong> We provide dedicated customer support via email, phone, and chat to assist you with any technical or operational queries. You can also access our online help documentation for quick solutions.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer>
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-3">
-                    <img src="{{ asset('public/img/direcotry/logo.png') }}" alt="logo" class="">
-                </div>
-                <div class="col-lg-3">
-                    <h4>IMPORTANT LINKS</h4>
-                    <ul>
-                        <li><a href="">HOME</a></li>
-                        <li><a href="">ABOUT</a></li>
-                        <li><a href="">FAQ</a></li>
-                        <li><a href="">BLOG</a></li>
-                        <li><a href="">CONTACT</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>CONTACT US</h4>
-                    <ul>
-                        <li><a href="">PRIVACY POLICY</a></li>
-                        <li><a href="">TERMS OF USE</a></li>
-                        <li><a href="">REFUND POLICY</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3">
-                    <h4>IMPORTANT LINKS</h4>
-                    <ul class="social">
-                        <li><a href=""><i class="fab fa-facebook"></i></a></li>
-                        <li><a href=""><i class="fab fa-instagram"></i></a></li>
-                        <li><a href=""><i class="fab fa-linkedin"></i></a></li>
-                        <li><a href=""><i class="fab fa-youtube"></i></a></li>
-                        <li><a href=""><i class="fab fa-twitter"></i></a></li>
-                    </ul>
-                </div>
+<!-- Quick Support -->
+<section class="inquiry" id="demo">
+
+
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
             </div>
-            <div class="row mt-3">
-                <div class="col-lg-12">
-                    <p class="py-1 text-center text-white m-0">@2025, All rights reserved</p>
+            @endif
+            <div class="col-lg-6">
+                <h2 class="mb-4">Would you like to <br><span>Schedule a free Demo?</span></h2>
+                <form class="me-3" id="demoRequest">
+                    @csrf
+                    <input type="hidden" name="databasemodel" value="DemoRequest">
+                    <div class="form-box">
+                        <div class="row g-3">
+                            <div class="col-lg-12">
+                                <label for="full_name">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Enter your Name" autocomplete="off" id="full_name">
+
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
+                                <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Enter Mobile Number" minlength="8" maxlength="10" autocomplete="off" id="mobile_number">
+                                @error('mobile_number')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="email">Email Id <span class="text-danger">*</span></label>
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email Address" autocomplete="off" id="email">
+
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="preferred_date">Preferred Date <span class="text-danger">*</span></label>
+                                <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror" id="preferred_date">
+
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="timeSlot">Preferred Time (Optional)</label>
+                                <select class="form-select no-validate" id="timeSlot" name="preferred_time">
+                                    <option value="">Select Time Slot</option>
+                                    <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
+                                    <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
+                                    <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
+                                    <option value="8:30 AM - 9:00 AM">8:30 AM - 9:00 AM</option>
+                                    <option value="9:00 AM - 9:30 AM">9:00 AM - 9:30 AM</option>
+                                    <option value="9:30 AM - 10:00 AM">9:30 AM - 10:00 AM</option>
+                                    <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+                                    <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                                    <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+                                    <option value="11:30 AM - 12:00 PM">11:30 AM - 12:00 PM</option>
+                                    <option value="12:00 PM - 12:30 PM">12:00 PM - 12:30 PM</option>
+                                    <option value="12:30 PM - 1:00 PM">12:30 PM - 1:00 PM</option>
+                                    <option value="1:00 PM - 1:30 PM">1:00 PM - 1:30 PM</option>
+                                    <option value="1:30 PM - 2:00 PM">1:30 PM - 2:00 PM</option>
+                                    <option value="2:00 PM - 2:30 PM">2:00 PM - 2:30 PM</option>
+                                    <option value="2:30 PM - 3:00 PM">2:30 PM - 3:00 PM</option>
+                                    <option value="3:00 PM - 3:30 PM">3:00 PM - 3:30 PM</option>
+                                    <option value="3:30 PM - 4:00 PM">3:30 PM - 4:00 PM</option>
+                                    <option value="4:00 PM - 4:30 PM">4:00 PM - 4:30 PM</option>
+                                    <option value="4:30 PM - 5:00 PM">4:30 PM - 5:00 PM</option>
+                                    <option value="5:00 PM - 5:30 PM">5:00 PM - 5:30 PM</option>
+                                    <option value="5:30 PM - 6:00 PM">5:30 PM - 6:00 PM</option>
+                                    <option value="6:00 PM - 6:30 PM">6:00 PM - 6:30 PM</option>
+                                    <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
+                                    <option value="7:00 PM - 7:30 PM">7:00 PM - 7:30 PM</option>
+                                </select>
+                                <small class="text-danger">*We will call you at your preferred time based on our availability.</small>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms">
+                                <label class="form-check-label" for="terms">
+                                    I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
+                                </label>
+                                <div class="error-msg"></div>
+                            </div>
+                            <div class="col-lg-4">
+                                <button class="btn btn-primary" type="submit">Book My Slot</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="main-box">
+                    <div class="support">
+                        <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">
+                        <h4>We Are Here
+                            to Assist you</h4>
+                        <p class="m-0">Call : <a href="tel:91-8114479678">91-8114479678</a></p>
+                        <p>Mail : <a href="mailto:info@libraro.in">info@libraro.in</a></p>
+                    </div>
+                    <img src="{{ asset('public/img/contact.png') }}" alt="support" class="img-fluid">
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#demoRequest').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '{{ route("demo-request") }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        // Optionally, reset the form after success
+                        $('#demoRequest')[0].reset();
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
+                },
+                error: function(xhr) {
+                    var response = xhr.responseJSON;
+
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.error('AJAX Error:', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
+            });
+        });
+    });
+</script>
 
 
-    </footer>
+<script>
+    var elements = document.querySelectorAll('.digit-only');
+    for (i in elements) {
+        elements[i].onkeypress = function(e) {
+            this.value = this.value.replace(/^0+/, '');
+            if (isNaN(this.value + "" + String.fromCharCode(e.charCode)))
+                return false;
+        }
+        elements[i].onpaste = function(e) {
+            e.preventDefault();
+        }
+    }
+    $('.digit-only').on('keyup', function(e) {
+        $(this).val($(this).val().replace(/\s/g, ''));
+    });
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-    <script>
-        var elements = document.querySelectorAll('.digit-only');
-        for (i in elements) {
-            elements[i].onkeypress = function(e) {
-                this.value = this.value.replace(/^0+/, '');
-                if (isNaN(this.value + "" + String.fromCharCode(e.charCode)))
-                    return false;
-            }
-            elements[i].onpaste = function(e) {
+    $('.char-only').keydown(function(e) {
+        if (e.ctrlKey || e.altKey) {
+            e.preventDefault();
+        } else {
+            var key = e.keyCode;
+            if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
                 e.preventDefault();
             }
         }
-        $('.digit-only').on('keyup', function(e) {
-            $(this).val($(this).val().replace(/\s/g, ''));
-        });
+    });
 
+    
+    $('#feedback').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 20,
+        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            768: {
+                items: 2,
+                nav: false,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
+            }
+        }
+    });
+</script>
 
-        $('.char-only').keydown(function(e) {
-            if (e.ctrlKey || e.altKey) {
-                e.preventDefault();
+<script>
+    $(document).ready(function() {
+       
+        let selectedSuggestion = ''; 
+
+        // Trigger search when user types in the search field
+        $('#library-search').on('keyup', function() {
+            let query = $(this).val();
+
+            if (query.length > 2) {
+                showSuggestions(query);
+                fetchLibraries(query);
             } else {
-                var key = e.keyCode;
-                if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
-                    e.preventDefault();
-                }
+                fetchLibraries(selectedSuggestion);
+                $('#suggestions').empty(); // Clear suggestions
             }
         });
-        $('#feedback').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
+
+        // Show suggestions based on the query input
+        function showSuggestions(query) {
+            $.ajax({
+                url: '{{ route("get-libraries") }}', // Laravel route for library search
+                method: 'GET',
+                data: {
+                    query: query
                 },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
-            }
-        });
-    </script>
-
-
-
-    <script>
-        $(document).ready(function() {
-            let selectedSuggestion = ''; // Global variable to store selected suggestion
-
-            // Trigger search when user types in the search field
-            $('#library-search').on('keyup', function() {
-                let query = $(this).val();
-
-                // If the query length is more than 2 characters, show suggestions and fetch libraries
-                if (query.length > 2) {
-                    showSuggestions(query);
-                    fetchLibraries(query);
-                } else {
-                    // If query length is less than 2, show the default libraries
-                    fetchLibraries(selectedSuggestion);
-                    $('#suggestions').empty(); // Clear suggestions
-                }
-            });
-
-            // Show suggestions based on the query input
-            function showSuggestions(query) {
-                $.ajax({
-                    url: '{{ route("get-libraries") }}', // Laravel route for library search
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    success: function(data) {
-                        $('#suggestions').empty(); // Clear previous suggestions
-                        if (data.length > 0) {
-                            // Append the suggestions to the suggestion list
-                            $.each(data, function(index, library) {
-                                $('#suggestions').append('<li class="list-group-item suggestion-item" data-suggestion="' + library.library_name + '">' + library.library_name + ' - ' + library.library_address + '</li>');
-                            });
-                        } else {
-                            $('#suggestions').append('<li class="list-group-item">No suggestions found</li>');
-                        }
+                success: function(data) {
+                    $('#suggestions').empty(); // Clear previous suggestions
+                    if (data.length > 0) {
+                        // Append the suggestions to the suggestion list
+                        $.each(data, function(index, library) {
+                            $('#suggestions').append('<li class="list-group-item suggestion-item" data-suggestion="' + library.library_name + '">' + library.library_name + ' - ' + library.library_address + '</li>');
+                        });
+                    } else {
+                        $('#suggestions').append('<li class="list-group-item">No suggestions found</li>');
                     }
-                });
-            }
-
-            // When a suggestion is selected, update the search field and fetch the libraries
-            $(document).on('click', '.suggestion-item', function() {
-                selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
-                $('#library-search').val($(this).text()); // Update search field with selected suggestion
-                $('#suggestions').empty(); // Clear suggestions list
-                fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
+                }
             });
+        }
 
-            // Show Library Default Data
-            function fetchLibraries(query) {
-                $.ajax({
-                    url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                    method: 'GET',
-                    data: {
-                        query: query,
-                        suggestion: selectedSuggestion
-                    },
-                    success: function(data) {
-                        $('#library-list').empty(); // Clear the previous library results
+        // When a suggestion is selected, update the search field and fetch the libraries
+        $(document).on('click', '.suggestion-item', function() {
+            selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
+            $('#library-search').val($(this).text()); // Update search field with selected suggestion
+            $('#suggestions').empty(); // Clear suggestions list
+            fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
+        });
 
-                        if (data.length > 0) {
-                            // Initialize Owl Carousel (destroy if already initialized)
-                            if ($('#library-list').hasClass('owl-carousel')) {
-                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-                                $('#library-list').find('.owl-stage-outer').children().unwrap();
-                            }
+        // Show Library Default Data
+        function fetchLibraries(query) {
+            var baseUrl = "{{ url('/') }}";
+            $.ajax({
+                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
+                method: 'GET',
+                data: {
+                    query: query,
+                    suggestion: selectedSuggestion
+                },
+                success: function(data) {
+                    $('#library-list').empty(); // Clear the previous library results
 
-                            // Add Owl Carousel class
-                            $('#library-list').addClass('owl-carousel');
+                    if (data.length > 0) {
+                        // Initialize Owl Carousel (destroy if already initialized)
+                        if ($('#library-list').hasClass('owl-carousel')) {
+                            $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+                            $('#library-list').find('.owl-stage-outer').children().unwrap();
+                        }
 
-                            // Loop through each library and append it as a carousel item
-                            $.each(data, function(index, library) {
-                                let libraryHTML = `
+                        // Add Owl Carousel class
+                        $('#library-list').addClass('owl-carousel');
+
+                        // Loop through each library and append it as a carousel item
+                        $.each(data, function(index, library) {
+                            let libraryHTML = `
                                 <div class="item">
-                                    <div class="library-box">
-                                        <div class="image">
-                                            <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
-                                            <ul class="d-flex g-2">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="content p-3">
-                                            <h4 class="mb-3">${library.library_name}</h4>
-                                            <p>${library.library_address}</p>
-                                        </div>
+                                    <div class="featured-library">
+                                        <h4>${library.library_name}</h4>
+                                        <span>${library.library_address}</span>
+                                        <ul class="star-ratings">
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                            <li><i class="fa fa-star"></i></li>
+                                        </ul>
+
+                                        <ul class="library-feature">
+                                            <li>
+                                                <span>Pricing Plans</span>
+                                                <h5>${library.moonth==12 ? 'Yearly' : 'Monthly'}</h5>
+                                            </li>
+                                            <li>
+                                                <span>Library Type</span>
+                                                <h5>Public</h5>
+                                            </li>
+                                            <li>
+                                                <span>Avaialble Seats</span>
+                                                <h5 class="text-success">${library.total_seats}</h5>
+                                            </li>
+                                            <li>
+                                                <h5 class="text-success">Verified</h5>
+                                            </li>
+                                        </ul>
+                                        <a href="${baseUrl}/library-details/${library.library_name}" class="view-library">View Details <i class="fa fa-long-arrow-right"></i></a>
+
                                     </div>
+                                    
                                 </div>
                                 `;
-                                $('#library-list').append(libraryHTML);
-                            });
+                            $('#library-list').append(libraryHTML);
+                        });
 
-                            // Re-initialize Owl Carousel after appending items
-                            $('#library-list').owlCarousel({
-                                loop: true,
-                                margin: 30,
-                                nav: true,
-                                dots: true,
-                                autoplay: true,
-                                autoplayTimeout: 3000,
-                                autoplayHoverPause: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 2
-                                    },
-                                    1000: {
-                                        items: 3
-                                    }
+                        // Re-initialize Owl Carousel after appending items
+                        $('#library-list').owlCarousel({
+                            loop: true,
+                            margin: 30,
+                            nav: true,
+                            dots: true,
+                            autoplay: true,
+                            autoplayTimeout: 3000,
+                            autoplayHoverPause: true,
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                600: {
+                                    items: 2
+                                },
+                                1000: {
+                                    items: 3
                                 }
-                            });
-                        } else {
-                            $('#library-list').append('<p>No libraries found.</p>');
-                        }
+                            }
+                        });
+                    } else {
+                        $('#library-list').append('<p>No libraries found.</p>');
                     }
-                });
-            }
-
-
-
-            $(document).on('click', '.city-item', function() {
-                let selectedCity = $(this).data('city'); // Get the city from the data attribute
-                console.log("city", selectedCity)
-                // Fetch libraries based on the selected city
-                fetchLibrariesByCity(selectedCity);
+                }
             });
+        }
 
-            // Show Library Data According to City
 
-            function fetchLibrariesByCity(city) {
-                $.ajax({
-                    url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                    method: 'GET',
-                    data: {
-                        city: city
-                    },
-                    success: function(data) {
-                        $('#library-list').trigger('destroy.owl.carousel'); // Destroy the existing instance
-                        $('#library-list').empty(); // Clear the previous library results
 
-                        if (data.length > 0) {
-                            console.log("bycity", data);
-                            // Append items
-                            $.each(data, function(index, library) {
-                                let libraryHTML = `
+        $(document).on('click', '.city-item', function() {
+            let selectedCity = $(this).data('city'); // Get the city from the data attribute
+            console.log("city", selectedCity)
+            // Fetch libraries based on the selected city
+            fetchLibrariesByCity(selectedCity);
+        });
+
+        // Show Library Data According to City
+
+        function fetchLibrariesByCity(city) {
+            $.ajax({
+                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
+                method: 'GET',
+                data: {
+                    city: city
+                },
+                success: function(data) {
+                    $('#library-list').trigger('destroy.owl.carousel'); // Destroy the existing instance
+                    $('#library-list').empty(); // Clear the previous library results
+
+                    if (data.length > 0) {
+                        console.log("bycity", data);
+                        // Append items
+                        $.each(data, function(index, library) {
+                            let libraryHTML = `
                                             <div class="item">
                                                 <div class="library-box">
                                                     <div class="image">
@@ -626,73 +730,104 @@
                                                 </div>
                                             </div>
                                         `;
-                                $('#library-list').append(libraryHTML);
-                            });
+                            $('#library-list').append(libraryHTML);
+                        });
 
-                            // Reinitialize the Owl Carousel
-                            $('#library-list').owlCarousel({
-                                items: 3,
-                                loop: true,
-                                margin: 30,
-                                nav: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 2
-                                    },
-                                    1000: {
-                                        items: 3
-                                    }
+                        // Reinitialize the Owl Carousel
+                        $('#library-list').owlCarousel({
+                            items: 3,
+                            loop: true,
+                            margin: 30,
+                            nav: true,
+                            responsive: {
+                                0: {
+                                    items: 1
+                                },
+                                600: {
+                                    items: 2
+                                },
+                                1000: {
+                                    items: 3
                                 }
-                            });
-                        } else {
-                            $('#library-list').append('<p>No libraries found.</p>');
-                        }
+                            }
+                        });
+                    } else {
+                        $('#library-list').append('<p>No libraries found.</p>');
                     }
-                });
-            }
-            // Initial load of libraries (if no search/query)
-            fetchLibraries('');
-        });
-    </script>
-    <script>
-        $('.owl-carousel').trigger('destroy.owl.carousel');
-        $('#library-list').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
                 }
+            });
+        }
+        // Initial load of libraries (if no search/query)
+        fetchLibraries('');
+    });
+</script>
+
+<script>
+    $('.owl-carousel').trigger('destroy.owl.carousel');
+    $('#library-list').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 20,
+        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            768: {
+                items: 2,
+                nav: false,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
             }
-        });
-    </script>
+        }
+    });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var map = L.map('map').setView([20.5937, 78.9629], 5); // Default center: India
 
-</body>
+    // Load OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-</html>
+    // Fetch library locations from Laravel route
+    fetch("{{ route('getLibrariesLocations') }}")
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) return; // If no libraries, do nothing
+
+            var bounds = L.latLngBounds(); // Define a bounding box for fitting markers
+
+            data.forEach(library => {
+                var marker = L.marker([library.latitude, library.longitude])
+                    .addTo(map)
+                    .bindPopup(`<strong>${library.library_name}</strong><br>${library.library_address}`);
+
+                bounds.extend(marker.getLatLng()); // Expand bounds to include this location
+            });
+
+            // Auto-fit map to show all markers dynamically
+            map.fitBounds(bounds, { padding: [50, 50] });
+        })
+        .catch(error => console.error("Error loading map data:", error));
+});
+</script>
+
+
+@endsection

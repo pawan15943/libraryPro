@@ -16,6 +16,9 @@
 
     <meta name="description" content="{{ $page->meta_description ?? '' }}">
 
+    <meta name="keywords" content="Library management system, Library automation software, Best library management software, Digital library software, Online library system, Library book tracking, Library seat booking software, Online library seat reservation, Book my library seat, Library space management, College library software, School library management system, Public library management system, Best library software in India, Library automation tool India">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
         rel="stylesheet">
@@ -35,16 +38,27 @@
             "name": "Libraro",
             "url": "https://www.libraro.in",
             "applicationCategory": "Library Management Software",
+            "applicationSubCategory": "Library Seat Booking & Automation",
             "operatingSystem": "Windows, Web-based",
-            "description": "Libraro is a powerful library management software to simplify cataloging, membership, and book tracking for schools, colleges, and public libraries.",
+            "description": "Libraro is an advanced library management software designed to streamline cataloging, membership handling, seat booking, and book tracking for schools, colleges, and public libraries in India.",
             "offers": {
                 "@type": "Offer",
                 "price": "Contact for pricing",
-                "priceCurrency": "INR"
+                "priceCurrency": "INR",
+                "availability": "https://schema.org/InStock",
+                "eligibleRegion": {
+                    "@type": "Country",
+                    "name": "India"
+                }
             },
             "author": {
                 "@type": "Organization",
                 "name": "Techito"
+            },
+            "publisher": {
+                "@type": "Organization",
+                "name": "Techito",
+                "url": "https://www.techito.in"
             },
             "softwareVersion": "1.0",
             "aggregateRating": {
@@ -142,6 +156,9 @@
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
     <script src="{{ url('public/js/main-validation.js') }}"></script>
 
     <script>
@@ -185,25 +202,20 @@
                         },
                         dataType: 'json',
                         success: function(response) {
-                            console.log('plan',response);
+                            console.log('plan', response);
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
                                 let modeText = plan_mode == 1 ? "<span>/mo</span>" : plan_mode == 2 ? "<span>/yr</span>" : "";
+
+                                $('#subscription_fees_' + subscription.id).html('₹ ' + subscription.fees + modeText);
                                 
-                                $('#subscription_fees_' + subscription.id).html(subscription.fees + modeText); // Use .html() instead of .text()
                                 $('#plan_mode_' + subscription.id).val(plan_mode);
                                 $('#price_' + subscription.id).val(subscription.fees);
-                                
+                                let slash_price = subscription.slash_price ? '₹ ' + subscription.slash_price : '';
+                                $('#before_discount_fees_' + subscription.id).html(slash_price);
+                                $('#planDescription_' + subscription.id).html(subscription.plan_description);
 
-                                    // Ensure both fees and discount are numbers
-                                    let fees = parseFloat(subscription.fees) || 0;
-                                    let discount = parseFloat(subscription.discount) || 0;
 
-                                    // Avoid division by zero
-                                    let beforeFees = ((fees * discount /100) + fees)
-                                    $('#before_discount_fees_' + subscription.id).html(beforeFees.toFixed(0));
-    
-                            
                             });
 
                         },

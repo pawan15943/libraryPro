@@ -621,41 +621,61 @@ class MasterController extends Controller
 
     public function getLibraries(Request $request)
     {
-        $query = $request->input('query'); 
-        $suggestion = $request->input('suggestion'); 
-        $city = $request->input('city'); 
-     
-        // If a suggestion is selected (library name or location or city)
+        $query = $request->input('query');
+        $suggestion = $request->input('suggestion');
+        $city = $request->input('city');
+
+        // Base query with necessary joins and selects
+        $libraries = Library::leftJoin('seats', 'seats.library_id', '=', 'libraries.id')
+            ->leftJoin('library_transactions', 'library_transactions.library_id', '=', 'libraries.id')
+            ->select(
+                'library_transactions.month',
+                'libraries.library_address',
+                'libraries.library_name',
+                'libraries.google_map',
+                'libraries.library_type',
+                'libraries.state_id',
+                'libraries.city_id',
+                'libraries.library_logo',
+                DB::raw('COUNT(seats.id) as total_seats')
+            )
+            ->where('libraries.is_paid', 1)
+            ->where('libraries.is_profile', 1)
+            ->groupBy(
+                'libraries.id',
+                'library_transactions.month',
+                'libraries.library_address',
+                'libraries.library_name',
+                'libraries.google_map',
+                'libraries.library_type',
+                'libraries.state_id',
+                'libraries.city_id',
+                'libraries.library_logo'
+            );
+
+        // Apply filters dynamically
         if ($suggestion) {
-         
-            // Search libraries based on the selected suggestion (name, location, or city)
-            $libraries = Library::where('library_name', 'like', '%' . $suggestion . '%')
-                                ->orWhere('library_address', 'like', '%' . $suggestion . '%')
-                               
-                                ->get();
+            $libraries->where(function ($queryBuilder) use ($suggestion) {
+                $queryBuilder->where('libraries.library_name', 'like', '%' . $suggestion . '%')
+                    ->orWhere('libraries.library_address', 'like', '%' . $suggestion . '%');
+            });
         } elseif ($query) {
-            
-            // Search libraries based on the query input (name, location, or city)
-            $libraries = Library::where('library_name', 'like', '%' . $query . '%')
-                                ->orWhere('library_address', 'like', '%' . $query . '%')
-                               
-                                ->get();
-        } elseif($city){
-            $libraries = Library::where('city_id', '=', $city)
-            
-            ->get();
-        }else {
-            // Return top 5 libraries by default (e.g., by rating or popularity)
-            $libraries = Library::take(5)->get();
+            $libraries->where(function ($queryBuilder) use ($query) {
+                $queryBuilder->where('libraries.library_name', 'like', '%' . $query . '%')
+                    ->orWhere('libraries.library_address', 'like', '%' . $query . '%');
+            });
+        } elseif ($city) {
+            $libraries->where('libraries.city_id', '=', $city);
+        } else {
+            $libraries->take(5);
         }
-       
-        return response()->json($libraries);
+
+        return response()->json($libraries->get());
     }
+
    
     public function menu(){
         return view('master.menu');
     }
-    
-
     
 }

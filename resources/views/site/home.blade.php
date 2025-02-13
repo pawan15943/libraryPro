@@ -34,20 +34,20 @@
                         <div class="product-features-box">
                             <h4>Interactive Dashboard with <br>
                                 Complete Seat Tracking</h4>
-                            <img src="{{ asset('public/img/01.png') }}" alt="Library management software">
+                            <img src="{{ asset('public/img/01.png') }}" alt="Library management system">
                         </div>
                     </div>
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Engage with Our Seat Mapping Feature: Expired and Extended Highlights</h4>
-                            <img src="{{ asset('public/img/02.png') }}" alt="Library automation software">
+                            <img src="{{ asset('public/img/02.png') }}" alt="Library manager tool">
                         </div>
                     </div>
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Efficient & Seamless
                                 Reporting that make you Hasselfree</h4>
-                            <img src="{{ asset('public/img/03.png') }}" alt="Best library software in India">
+                            <img src="{{ asset('public/img/03.png') }}" alt="Online library system">
                         </div>
                     </div>
 
@@ -80,7 +80,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Easy Plan Upgrades" class="icon">
                     </div>
                     <h4>Easy
                         Plan Upgrades</h4>
@@ -91,8 +91,8 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/reactive.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/reactive.png') }}" alt="Reactivate
+                        Seat Access" class="icon">
                     </div>
                     <h4>Reactivate
                         Seat Access</h4>
@@ -104,7 +104,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="{{ asset('public/img/icons/closed.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/closed.png') }}" alt="Close Seat Option" class="icon">
                     </div>
                     <h4>Close
                         Seat Option</h4>
@@ -127,10 +127,9 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="{{ asset('public/img/icons/delete.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/delete.png') }}" alt="Delete Seat Booking" class="icon">
                     </div>
-                    <h4>Delete <br>
-                        Seat Booking</h4>
+                    <h4>Delete Seat Booking</h4>
                     <span>Easily delete seat bookings you no longer need—maintain a clear and up-to-date booking
                         history!</span>
                 </div>
@@ -138,8 +137,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/notification.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/notification.png') }}" alt="Effortless Communication" class="icon">
                     </div>
                     <h4>Effortless Communication</h4>
                     <span>Send updates, notifications, or reminders to students instantly via WhatsApp or email directly from the portal.</span>
@@ -149,7 +147,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="{{ asset('public/img/icons/membership-card.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/membership-card.png') }}" alt="Flexible Membership Plans" class="icon">
                     </div>
                     <h4>Flexible Membership Plans</h4>
                     <span>Modify learner plans seamlessly to fit their changing needs.</span>
@@ -158,8 +156,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/reset.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/reset.png') }}" alt="Quick Library Reset" class="icon">
                     </div>
                     <h4>Quick Library Reset</h4>
                     <span>Mistakes happen! Reset your library settings with just one click to start fresh.</span>
@@ -168,8 +165,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/import.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/import.png') }}" alt="Simple Data Import" class="icon">
                     </div>
 
                     <h4>Simple Data Import</h4>
@@ -179,8 +175,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/export.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/export.png') }}" alt="Export Data with Ease" class="icon">
                     </div>
                     <h4>Export Data with Ease</h4>
                     <span>Keep complete control by exporting your library data whenever needed.</span>
@@ -190,7 +185,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="{{ asset('public/img/icons/report.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/report.png') }}" alt="Comprehensive Reporting" class="icon">
                     </div>
                     <h4>Comprehensive Reporting</h4>
                     <span>Get detailed, actionable insights to optimize your library's performance.</span>
@@ -199,8 +194,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-
-                        <img src="{{ asset('public/img/icons/dashboard.png') }}" alt="Swap Seat" class="icon">
+                        <img src="{{ asset('public/img/icons/dashboard.png') }}" alt="Interactive Dashboard" class="icon">
                     </div>
                     <h4>Interactive Dashboard</h4>
                     <span>Access everything at a glance with our intuitive and user-friendly dashboard.</span>
@@ -326,7 +320,7 @@
 </section>
 
 <div class="our-plan" id="pricing">
-    <div class="container">
+    <div class="container-fluid">
         <!-- Dynamic 3 -->
         <div class="heading mb-5 text-center">
             <span class="text-white">Libraro Plans & Pricing</span>
@@ -352,33 +346,34 @@
 
             <div class="col-lg-3">
                 <div class="plan-box">
-                    <s><h4 id="before_discount_fees_{{$subscription->id}}"></h4></s>
+                    <div class="plan-content">
+                        <h4>{{$subscription->name}}</h4>
+                        <span class="d-block mb-4" id="planDescription_{{$subscription->id}}"></span>
+                        <h4 id="before_discount_fees_{{$subscription->id}}" class="slash"></h4>
+                        <h1 id="subscription_fees_{{$subscription->id}}"></h1>
 
-                    <h1 id="subscription_fees_{{$subscription->id}}"></h1>
-                    
-                    <h4>{{$subscription->name}}</h4>
-                    
+                        <button class="btn btn-primary buy-now-btn" data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
+                        <span class="expiry">*Offer Valid Till 20-02-2024</span>
+                    </div>
                     <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)
                         @if(in_array($permission->name, $subscribedPermissions))
                         <li>
                             <div class="d-flex">
-                                <i class="fa-solid fa-check text-white me-2"></i> {{ $permission->name }}
+                                <i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}
                             </div>
                         </li>
                         @else
                         <li>
                             <div class="d-flex">
-                                <i class="fa-solid fa-xmark text-white me-2"></i> {{ $permission->name }}
+                                <i class="fa-solid fa-xmark text-danger me-2"></i> {{ $permission->name }}
                             </div>
                         </li>
                         @endif
                         @endforeach
                     </ul>
 
-                    <div class="p-3">
-                        <button class="btn btn-primary buy-now-btn" data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
-                    </div>
+
 
                 </div>
             </div>
@@ -411,7 +406,7 @@
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
                             <div class="message">{{$value->description ?? ''}}</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>{{$value->library_owner ?? ''}}</h4>
                                     <span>{{$value->library_name ?? ''}}</span>
@@ -434,7 +429,7 @@
 
                             <div class="message">As the <b>Founder & Director</b>, I created Libraro to simplify library operations with automation, seamless bookings, and powerful analytics. It's the all-in-one solution for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
                                 <div class="customer-details">
                                     <h4>Pawan Rathore</h4>
                                     <span>Founder: Libraro</span>
@@ -478,8 +473,8 @@
                             <div class="customer-info">
                                 <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
-                                    <h4>Amit Kumar</h4>
-                                    <span>Library In-Charge</span>
+                                    <h4>Sandeep Rathor</h4>
+                                    <span>Libraro Manager</span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -492,9 +487,7 @@
                         </div>
                     </div>
                     @endif
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -715,6 +708,7 @@
         </div>
     </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

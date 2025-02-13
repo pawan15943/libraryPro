@@ -353,7 +353,7 @@
                         <h1 id="subscription_fees_{{$subscription->id}}"></h1>
 
                         <button class="btn btn-primary buy-now-btn" data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
-                        <span class="expiry">*Offer Valid Till 20-02-2024</span>
+                        <span class="expiry">*Offer Valid Till 31-04-2025</span>
                     </div>
                     <ul class="plan-features contents">
                         @foreach($premiumSub->permissions as $permission)

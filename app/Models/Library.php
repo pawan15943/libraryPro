@@ -35,7 +35,16 @@ class Library extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(Subscription::class, 'library_type', 'id'); // Assuming 'library_type' in libraries matches 'id' in subscriptions
     }
     
-    
+    public function state()
+    {
+        return $this->belongsTo(State::class, 'state_id');
+    }
+
+    // Library belongs to a City
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id');
+    }
 
   
     

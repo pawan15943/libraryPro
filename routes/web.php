@@ -229,6 +229,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::put('menu/update', [DataController::class, 'update'])->name('menu.update');
         Route::delete('menu/destroy', [DataController::class, 'delete'])->name('menu.destroy');
         Route::get('inquery/get', [AdminController::class, 'contactInqueryGet'])->name('inquery.list');
+        Route::get('demo/request/get', [AdminController::class, 'demoRequestGet'])->name('demo.list');
         
         });
 });
@@ -269,5 +270,5 @@ Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('su
 Route::post('/store-selected-plan', [SiteController::class, 'storeSelectedPlan'])->name('store.selected.plan');
 Route::get('blog/detail/{slug}', [SiteController::class, 'blogDetail'])->name('blog-detail');
 Route::get('getLibrariesLocations', [SiteController::class, 'getLibrariesLocations'])->name('getLibrariesLocations');
-Route::get('library/detail/{slug}', [SiteController::class, 'libraryDetail'])->name('libraryDetail');
+Route::get('library-details/{slug}', [SiteController::class, 'libraryDetail'])->name('libraryDetail');
 

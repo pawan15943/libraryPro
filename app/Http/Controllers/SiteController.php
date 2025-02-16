@@ -15,6 +15,7 @@ use App\Models\Page;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class SiteController extends Controller
 {
@@ -233,7 +234,10 @@ class SiteController extends Controller
             ], 422);
         }
        
-        Inquiry::create($validator->validated());
+        $data = $validator->validated();
+        unset($data['terms']);
+
+        Inquiry::create($data);
         return response()->json([
             'status' => 'success',
             'message' => 'Inquiry submitted successfully!'
@@ -276,8 +280,10 @@ class SiteController extends Controller
         return response()->json($libraries);
     }
     public function libraryDetail($slug){
-        $data=Library::where('library_name',$slug)->first();
-        return view('site.library-details',compact('data'));
+        
+        $library=Library::where('library_name',$slug)->with('state', 'city','subscription')->first();
+        $features=DB::table('features')->whereNull('deleted_at')->get();
+        return view('site.library-details',compact('library','features'));
     }
 
 

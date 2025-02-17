@@ -56,6 +56,22 @@ Route::get('library/create', [LibraryController::class, 'create'])->name('librar
 Route::post('library/store', [LibraryController::class, 'store'])->name('library.store');
 Route::post('/fee/generate-receipt', [Controller::class, 'generateReceipt'])->name('fee.generateReceipt');
 
+Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');
+Route::get('blog', [SiteController::class, 'blog'])->name('blog');
+Route::get('contact-us', [SiteController::class, 'contactUs'])->name('contact-us');
+Route::get('privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('terms-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
+Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
+
+Route::get('/search-libraries', [SiteController::class, 'searchLibrary'])->name('find-my-library');
+Route::get('/', [SiteController::class, 'home'])->name('/');
+Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
+Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
+Route::post('/store-selected-plan', [SiteController::class, 'storeSelectedPlan'])->name('store.selected.plan');
+Route::get('blog/detail/{slug}', [SiteController::class, 'blogDetail'])->name('blog-detail');
+Route::get('getLibrariesLocations', [SiteController::class, 'getLibrariesLocations'])->name('getLibrariesLocations');
+Route::get('library-details/{slug}', [SiteController::class, 'libraryDetail'])->name('libraryDetail');
+
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified','log.requests'])->group(function () {
   
@@ -256,19 +272,5 @@ Route::middleware(['auth:learner'])->group(function () {
   
 });
 
-Route::get('about-us', [SiteController::class, 'aboutUs'])->name('about-us');
-Route::get('blog', [SiteController::class, 'blog'])->name('blog');
-Route::get('contact-us', [SiteController::class, 'contactUs'])->name('contact-us');
-Route::get('privacy-policy', [SiteController::class, 'privacyPolicy'])->name('privacy-policy');
-Route::get('terms-and-condition', [SiteController::class, 'termAndCondition'])->name('term-and-condition');
-Route::get('refund-policy', [SiteController::class, 'refundPolicy'])->name('refund-policy');
 
-Route::get('/search-libraries', [SiteController::class, 'searchLibrary'])->name('find-my-library');
-Route::get('/', [SiteController::class, 'home'])->name('/');
-Route::post('demo-request', [SiteController::class, 'demoRequestStore'])->name('demo-request');
-Route::post('/store/inquiry', [SiteController::class, 'Inquerystore'])->name('submit.inquiry');
-Route::post('/store-selected-plan', [SiteController::class, 'storeSelectedPlan'])->name('store.selected.plan');
-Route::get('blog/detail/{slug}', [SiteController::class, 'blogDetail'])->name('blog-detail');
-Route::get('getLibrariesLocations', [SiteController::class, 'getLibrariesLocations'])->name('getLibrariesLocations');
-Route::get('library-details/{slug}', [SiteController::class, 'libraryDetail'])->name('libraryDetail');
 

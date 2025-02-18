@@ -1778,7 +1778,7 @@ h1 * {
 }
 
 .active-plan-box {
-    background: var(--c5);
+    background: #151f38;
     padding: 1.5rem;
     border-radius: 1.5rem;
     box-shadow: 1px 0 5px #00000021;

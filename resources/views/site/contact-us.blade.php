@@ -56,7 +56,7 @@
                     <div class="form-box">
                         <div class="row g-4">
                             <div class="col-lg-12">
-                                <label for="name">Full Name</label>
+                                <label for="name">Full Name<span class="text-danager">*</span></label>
                                 <input type="text"
                                     name="full_name"
                                     class="form-control @error('full_name') is-invalid @enderror char-only"
@@ -65,7 +65,7 @@
                              
                             </div>
                             <div class="col-lg-12">
-                                <label for="mobile_number">Mobile Number</label>
+                                <label for="mobile_number">Mobile Number<span class="text-danager">*</span></label>
                                 <input type="text"
                                     name="mobile_number"
                                     class="form-control @error('mobile_number') is-invalid @enderror digit-only"
@@ -74,7 +74,7 @@
                                
                             </div>
                             <div class="col-lg-12">
-                                <label for="email">Email Id</label>
+                                <label for="email">Email Id<span class="text-danager">*</span></label>
                                 <input type="email"
                                     name="email"
                                     class="form-control @error('email') is-invalid @enderror"
@@ -83,7 +83,7 @@
                               
                             </div>
                             <div class="col-lg-12">
-                                <label for="message">Message</label>
+                                <label for="message">Message<span class="text-danager">*</span></label>
                                 <textarea rows="5"
                                     name="message"
                                     class="form-control @error('message') is-invalid @enderror"
@@ -92,7 +92,7 @@
                             </div>
                             <div class="col-lg-12 form-group">
                                 <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms" autocomplete="off">
-                                <label class="form-check-label" for="terms" style="margin-top:.25rem;">
+                                <label class="form-check-label" for="terms">
                                     I agree to the Libraro <a href="#">Terms and Conditions.</a><sup class="text-danger">*</sup>
                                 </label>
                                 <div class="error-msg"></div>

@@ -20,6 +20,10 @@ body {
     --gredient-6: linear-gradient(0deg, #c3a81d, #ab8d15);
 }
 
+small.text-danger {
+    font-size: .8rem;
+}
+
 h1,
 h2,
 h3,

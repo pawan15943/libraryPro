@@ -56,7 +56,7 @@
                 <p>Our team is here to ensure you succeed. From setup to ongoing support, we are committed to providing assistance every step of the way.</p>
 
                 <h4>Why Trust Us?</h4>
-                <p>With a passion for innovation and a dedication to quality, LibraryManager.in is backed by Techito, a trusted IT company based in Kota, Rajasthan. We’ve been helping organizations across India modernize their operations with reliable and innovative solutions. When you choose Libraro, you’re choosing a team committed to excellence.</p>
+                <p>With a passion for innovation and a dedication to quality, libraro.in is backed by Techito, a trusted IT company based in Kota, Rajasthan. We’ve been helping organizations across India modernize their operations with reliable and innovative solutions. When you choose Libraro, you’re choosing a team committed to excellence.</p>
 
                 <h4>Get Started Today!</h4>
                 <p>Take the first step toward transforming your library. Schedule a free demo or reach out to our team to learn how Libraro can revolutionize your library management experience. Visit <a href="https://www.libraro.in/" target="_blank">www.libraro.in</a> and bring your library into the digital age with confidence. Let’s build a smarter library, together!</p>

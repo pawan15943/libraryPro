@@ -7,9 +7,9 @@
         <div class="row g-4 align-items-center">
             <div class="col-lg-6 order-2 order-md-1 text-center text-md-start">
                 <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
-                <h2 class="head-text-2">Effortlessly manage your library—from seat bookings to reporting—all in one place!</h2>
-                <p class="head-text-3">Optimize your library operations with our feature-rich, user-friendly software—perfect for public and private libraries.</p>
-                <a href="{{route('register')}}" class="cta">Sign Up Today – Start Managing Effortlessly!</a>
+                <h2 class="head-text-2">Effortlessly manage your library from seat bookings to reporting all in one place!</h2>
+                <p class="head-text-3">Optimize your library operations with our feature-rich, user-friendly software perfect for public and private libraries.</p>
+                <a href="{{route('register')}}" class="cta">Sign Up – Manage Effortlessly!</a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
                 <img src="{{ asset('public/img/head.png') }}" alt="Library management software" class="img-fluid">
@@ -324,7 +324,7 @@
         <!-- Dynamic 3 -->
         <div class="heading mb-5 text-center">
             <span class="text-white">Libraro Plans & Pricing</span>
-            <h2>Affordable & Transparent Pricing - Choose the Best Plan for You</h2>
+            <h2>Choose the Best Plan for You</h2>
         </div>
         <div class="row g-4 justify-content-center">
             <div class="col-lg-4 payment-mode">

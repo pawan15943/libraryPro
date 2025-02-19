@@ -89,7 +89,7 @@ header a.nav-link {
     margin-bottom: 1rem;
 }
 
-a.nav-link.button {
+.nav-link.button {
     height: auto ! IMPORTANT;
     background: #18225f;
     padding: .5rem 1.5rem ! IMPORTANT;
@@ -98,11 +98,12 @@ a.nav-link.button {
     box-shadow: 1px 4px 0 #ababab;
 }
 
-a.nav-link.button:hover {
+.nav-link.button:hover {
     background: #038b9c;
     box-shadow: 1px 1px 0 #ababab;
-
 }
+
+
 
 .head-text-2 {
     color: #18225F !important;
@@ -1032,6 +1033,264 @@ Directory
     color: #fff !important;
     text-align: center;
 }
+
+
+
+/* ====================================================================================
+                              Library Details Page 
+======================================================================================*/
+
+.libraryDetailedHeader {
+    padding: 3.5rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+section.libraryDetailedHeader::after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    height: 64px;
+    background: #ffffff29;
+    width: 100%;
+    z-index: -1;
+}
+
+.libraryDetailedHeader {
+    padding-top: 12rem;
+    padding-bottom: 2rem;
+    background: linear-gradient(175deg, #00BCD4, #3F51B5);
+}
+
+.libraryDetailedHeader h1,
+.libraryDetailedHeader h5 {
+    color: #fff;
+}
+
+.libraryDetailedHeader h5 {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.libraryDetailedHeader h1 {
+    margin-bottom: .8rem !important;
+    font-weight: 600 !important;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+h1.m-0 span {
+    color: #fff;
+    font-weight: 700;
+    font-style: italic;
+    background: #6db619;
+    padding: .4rem 1rem;
+    font-size: .9rem;
+    border-radius: 2rem;
+}
+
+.libraryDetailedHeader h1 {
+    margin-bottom: .8rem !important;
+    font-weight: 600 !important;
+}
+
+/* Library Detials */
+.libraryDetials {
+    padding: 3.5rem 0;
+}
+
+
+
+.libraryDetials h4 {
+    margin: 1.5rem 0;
+}
+
+ul.libraryFeatures {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+ul.libraryFeatures li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: calc(100% / 4 - 1.5rem);
+    box-shadow: 1px 0 5px #00000045;
+    padding: 2.5rem 0;
+    border-radius: 1.5rem;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+ul.libraryFeatures li span {
+    display: block;
+    text-align: center;
+    font-size: .9rem;
+}
+
+
+.library-images {
+    box-shadow: 1px 0 5px #00000045;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    margin-top: -16rem;
+    padding: 1.2rem;
+    background: #fff;
+    position: relative;
+    z-index: 2;
+}
+
+.library-images img {
+    width: 100%;
+    overflow: hidden;
+}
+
+.library-images .main-image img {
+    border-radius: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+ul.thumb {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+    overflow: scroll;
+    white-space: nowrap;
+}
+
+ul.thumb li {
+    width: calc(100% / 3 - 1rem);
+    display: inline-block;
+}
+
+
+ul.thumb li img {
+    border-radius: .5rem;
+    margin-bottom: .5rem;
+}
+
+
+.plans-box {
+    background: linear-gradient(45deg, #00BCD4, #3F51B5);
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+}
+
+.plans-box * {
+    color: #fff;
+}
+
+.plans-box {}
+
+.plans-box h4 {
+    margin: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.plans-box ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.plans-box ul li span {
+    font-size: .8rem;
+    color: #ffffffb5;
+}
+
+.plans-box ul li {
+    width: calc(100% / 2 - 1rem);
+    display: inline;
+}
+
+.plans-box a {
+    text-decoration: none;
+    font-size: .9rem;
+    display: block;
+    background: #18225f;
+    padding: .8rem 1rem;
+    border-radius: .8rem;
+    text-align: center;
+    margin-bottom: -1rem;
+}
+
+iframe.rounded {
+    border-radius: 1.5rem !important;
+    overflow: hidden;
+}
+
+ul.controls {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 6rem;
+    margin-top: 2rem;
+    margin-bottom: -1.3rem;
+}
+
+ul.controls span {
+    display: block;
+    font-size: .8rem;
+}
+
+ul.controls li {
+    text-align: center;
+}
+
+ul.controls li * {
+    color: #fff;
+}
+
+ul.controls li a {
+    text-decoration: none;
+    font-size: .9rem;
+}
+
+
+ul.library-anmities {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+ul.library-anmities li {
+    width: calc(100% / 3 - 1rem);
+}
+
+ul.library-anmities li span {
+    font-size: .8rem;
+    color: #9f9c9c;
+}
+
+ul.library-anmities p {
+    margin: 0;
+    font-weight: 800;
+}
+
+.review-box {
+    box-shadow: 1px 0 5px #00000045;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+}
+
+/* ====================================================================================
+                              End
+======================================================================================*/
 
 @media screen and (max-width:768px) {
     header ul.navbar-nav.ms-auto.mb-lg-0>li+li {

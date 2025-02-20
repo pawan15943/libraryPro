@@ -12,6 +12,9 @@ use App\Models\Learner;
 use App\Models\LearnerFeedback;
 use App\Models\Library;
 use App\Models\Page;
+use App\Models\PlanPrice;
+use App\Models\PlanType;
+use App\Models\Seat;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -280,10 +283,29 @@ class SiteController extends Controller
         return response()->json($libraries);
     }
     public function libraryDetail($slug){
-        
+       
         $library=Library::where('library_name',$slug)->with('state', 'city','subscription')->first();
+        // dd($library);
         $features=DB::table('features')->whereNull('deleted_at')->get();
-        return view('site.library-details',compact('library','features'));
+        $our_package=PlanPrice::leftJoin('plan_types','plan_prices.plan_type_id','=','plan_types.id')->leftJoin('plans','plan_prices.plan_id','=','plans.id')->select('plans.name as plan_name','plan_types.name as plan_type_name','plan_types.start_time','plan_types.end_time','plan_types.slot_hours','plan_prices.price','plans.plan_id')->where('plan_prices.library_id',$library->id)->get();
+        $total_seat=Seat::where('library_id',$library->id)->count();
+        $operating=PlanType::where('library_id',$library->id)->where('day_type_id',1)->select('start_time','end_time')->first();
+        $learnerFeedback=LearnerFeedback::where('library_id',$library->id)->with(['learner'])->get();
+        return view('site.library-details',compact('library','features','our_package','total_seat','operating','learnerFeedback'));
+    }
+
+    public function reviewstore(Request $request)
+    {
+       
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'rating' => 'required|integer|min:1|max:5',
+            'comments' => 'required|string',
+        ]);
+       
+        LearnerFeedback::create($validatedData);
+
+        return response()->json(['message' => 'Review submitted successfully!'], 200);
     }
 
 

@@ -214,6 +214,20 @@
             </ul>
 
         </div>
+        <div class="col-lg-12 mt-4">
+            <label for="">Library Inner Images  (Optional) </label>
+            <input type="file" class="form-control no-validate @error('library_images') is-invalid @enderror" name="library_images[]" id="libraryImages"  multiple accept="image/*">
+            @error('library_images')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+            @enderror
+
+
+            <small class="text-info d-block">Multiple images upload and must be in one of the following formats: JPG, JPEG, PNG, SVG, or WEBP.</small>
+        </div>
+        <div id="imagePreview" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+
 
 
     </div>
@@ -237,7 +251,55 @@
                 reader.readAsDataURL(file);
             }
         });
+
+       
     });
 </script>
+<script>
+    $(document).ready(function() {
+        // Show existing images if available
+        let existingImages = @json(json_decode($library->library_images ?? '[]'));
+        
+        $.each(existingImages, function(index, image) {
+            $("#imagePreview").append(
+                `<div class="image-container" style="position: relative; display: inline-block;">
+                    <img src="{{ asset('public') }}/${image}" width="100" style="margin: 5px; border: 1px solid #ddd; padding: 5px;">
+                    <button type="button" class="btn btn-danger btn-sm remove-existing-image" data-image="${image}" 
+                            style="position: absolute; top: 0; right: 0;">×</button>
+                </div>`
+            );
+        });
+    
+        // Preview new images on selection
+        $("#libraryImages").on("change", function(event) {
+            $("#imagePreview").html(""); // Clear previous previews
+    
+            let files = event.target.files;
+            $.each(files, function(index, file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    $("#imagePreview").append(
+                        `<img src="${e.target.result}" width="100" style="margin: 5px; border: 1px solid #ddd; padding: 5px;">`
+                    );
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    
+        // Remove existing image
+        $(document).on("click", ".remove-existing-image", function() {
+            let image = $(this).data("image");
+            $(this).parent().remove();
+    
+            // Add hidden input to mark image as deleted
+            $("<input>").attr({
+                type: "hidden",
+                name: "deleted_images[]",
+                value: image
+            }).appendTo("form");
+        });
+    });
+    </script>
+    
 @include('library.script')
 @endsection

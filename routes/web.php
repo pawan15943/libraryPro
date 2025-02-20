@@ -71,7 +71,7 @@ Route::post('/store-selected-plan', [SiteController::class, 'storeSelectedPlan']
 Route::get('blog/detail/{slug}', [SiteController::class, 'blogDetail'])->name('blog-detail');
 Route::get('getLibrariesLocations', [SiteController::class, 'getLibrariesLocations'])->name('getLibrariesLocations');
 Route::get('library-details/{slug}', [SiteController::class, 'libraryDetail'])->name('libraryDetail');
-
+Route::post('/submit-review', [SiteController::class, 'reviewstore'])->name('submit.review');
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified','log.requests'])->group(function () {
   
@@ -163,6 +163,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
       Route::post('/upgrade/renew/store', [LearnerController::class, 'learnerUpgradeRenew'])->name('learner.upgrade.renew.store');
       Route::get('/attendance', [LearnerController::class, 'learnerAttendence'])->name('attendance');
+      Route::get('get/learner/attendance', [LearnerController::class, 'getLearnerAttendence'])->name('get.learner.attendance');
       Route::post('/update-attendance', [LearnerController::class, 'updateAttendance'])->name('update.attendance');
       Route::get('/complaints', [LibraryController::class, 'learnerComplaints'])->name('library.learner.complaints');
       Route::get('/suggestions', [LibraryController::class, 'learnerSuggestions'])->name('library.learner.suggestions');

@@ -1,12 +1,14 @@
 @extends('sitelayouts.layout')
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 <section class="libraryDetailedHeader">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="m-0">{{ $library->library_name }} <span>Libraro Verified</span></h1>
-                <h5>Near police Chowki Vinoa BHave Nagar - 324005</h5>
-                <h5>KOTA, RAJASTHAN</h5>
+                <h5>{{ $library->library_address }}-{{ $library->library_zip }}</h5>
+                <h5>{{ $library->city->city_name }}, {{ $library->state->state_name }}</h5>
 
                 <ul class="controls">
                     <li>
@@ -53,7 +55,7 @@
                             </li>
                             <li>
                                 <span>Library Capacity</span>
-                                <p>200 Seats</p>
+                                <p>{{$total_seat}} Seats</p>
                             </li>
                             <li>
                                 <span>Lockers</span>
@@ -61,7 +63,8 @@
                             </li>
                             <li>
                                 <span>Operations Hourse</span>
-                                <p>09:30 PM to 23:00 PM</p>
+                                <p>{{ \Carbon\Carbon::parse($operating->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($operating->end_time)->format('h:i A') }}</p>
+
                             </li>
                             <li>
                                 <span>Operating Days</span>
@@ -91,146 +94,96 @@
                 <!-- Library Plans -->
                 <h4 class="mt-5">Our Library Packages</h4>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="plans-box">
-                            <h4>Full Day</h4>
-                            <ul>
-                                <li>
-                                    <span>Plan Type</span>
-                                    <p>Monthly</p>
-                                </li>
-                                <li>
-                                    <span>Validity</span>
-                                    <p>1 Month</p>
-                                </li>
-                                <li>
-                                    <span>Plan Price</span>
-                                    <p>500 INR</p>
-                                </li>
-                                <li>
-                                    <span>Duration</span>
-                                    <p>8 Hours</p>
-                                </li>
-                                <li class="w-100">
-                                    <a href="">Book Now</a>
-                                </li>
-                            </ul>
+                    @foreach($our_package as $key => $value)  
+                        <div class="col-lg-4">
+                            <div class="plans-box">
+                                <h4>{{$value->plan_type_name}}</h4>
+                                <ul>
+                                    <li>
+                                        <span>Plan Type</span>
+                                        <p>{{$value->plan_id == 12 ? 'Yearly' : 'Monthly'}}</p>
+                                    </li>
+                                    <li>
+                                        <span>Validity</span>
+                                        <p>{{$value->plan_name}}</p>
+                                    </li>
+                                    <li>
+                                        <span>Plan Price</span>
+                                        <p>{{$value->price}} INR</p>
+                                    </li>
+                                    <li>
+                                        <span>Duration</span>
+                                        <p>{{$value->slot_hours}} Hours</p>
+                                    </li>
+                                    <li class="w-100">
+                                        
+                                        <p>{{$value->start_time}} - {{$value->end_time}}</p>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="plans-box">
-                            <h4>First Half</h4>
-                            <ul>
-                                <li>
-                                    <span>Plan Type</span>
-                                    <p>Full Day</p>
-                                </li>
-                                <li>
-                                    <span>Validity</span>
-                                    <p>1 Month</p>
-                                </li>
-                                <li>
-                                    <span>Plan Price</span>
-                                    <p>500 INR</p>
-                                </li>
-                                <li>
-                                    <span>Duration</span>
-                                    <p>8 Hours</p>
-                                </li>
-                                <li class="w-100">
-                                    <a href="">Book Now</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="plans-box">
-                            <h4>Second Half</h4>
-                            <ul>
-                                <li>
-                                    <span>Plan Type</span>
-                                    <p>Full Day</p>
-                                </li>
-                                <li>
-                                    <span>Validity</span>
-                                    <p>1 Month</p>
-                                </li>
-                                <li>
-                                    <span>Plan Price</span>
-                                    <p>500 INR</p>
-                                </li>
-                                <li>
-                                    <span>Duration</span>
-                                    <p>8 Hours</p>
-                                </li>
-                                <li class="w-100">
-                                    <a href="">Book Now</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    @endforeach
+                  
                 </div>
 
                 <!-- Write a review -->
                 <h4 class="mt-5">Write a Review</h4>
-                <div class="row g-4 justify-content-center">
-                    <div class="col-lg-6">
-                        <label for="">Full Name</label>
-                        <input type="text" class="form-control" placeholder="Enter Your name">
+                
+                <form  method="POST" id="reviewForm">
+                        @csrf
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-lg-6">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control char-only" placeholder="Enter Your Name" >
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="rating">Provide Rating</label>
+                            <select id="rating" class="form-control form-select" name="rating" >
+                                <option value="">Select Rating</option>
+                                <option value="5">5 Star</option>
+                                <option value="4">4 Star</option>
+                                <option value="3">3 Star</option>
+                                <option value="2">2 Star</option>
+                                <option value="1">1 Star</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="review">Write a Review</label>
+                            <textarea id="review" class="form-control" name="comments"></textarea>
+                        </div>
+                        <div class="col-lg-12">
+                            <input type="submit" class="nav-link button" value="Add My Review">
+                        </div>
                     </div>
-                    <div class="col-lg-6">
-                        <label for="">Provide Rating</label>
-                        <select name="" id="" class="form-control form-select">
-                            <option value="">Select Rating</option>
-                            <option value="">5 Star</option>
-                            <option value="">4 Star</option>
-                            <option value="">3 Star</option>
-                            <option value="">2 Star</option>
-                            <option value="">1 Star</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-12">
-                        <label for="">Write a Review</label>
-                        <textarea name="" id="" class="form-control"></textarea>
-                    </div>
-                    <div class="col-lg-12">
-                        <input type="submit" class="nav-link button" value="Add My Review">
-                    </div>
-                </div>
+                </form>
 
                 <!-- Write a review -->
+                @if($learnerFeedback->isNotEmpty())
+               
                 <h4 class="mt-5">Learners Reviews</h4>
                 <div class="row g-4 justify-content-center">
+                    @foreach($learnerFeedback as $key => $value)
                     <div class="col-lg-6">
                         <div class="review-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum iste aperiam aliquid saepe perspiciatis eius! Alias dolore, dicta nulla excepturi quia fugit quaerat, distinctio provident culpa minus consequatur rerum eos?</p>
+                            <p>{{$value->comments}}</p>
                             <div class="d-flex mt-4">
                                 <img src="" alt="">
                                 <div class="leaner-info">
-                                    <h4 class="m-0">Mukesh Aahuja</h4>
+                                    <h4 class="m-0">{{$value->learner->name}}</h4>
                                     <span>Library Learner</span>
                                 </div>
                             </div>
 
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="review-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum iste aperiam aliquid saepe perspiciatis eius! Alias dolore, dicta nulla excepturi quia fugit quaerat, distinctio provident culpa minus consequatur rerum eos?</p>
-                            <div class="d-flex mt-4">
-                                <img src="" alt="">
-                                <div class="leaner-info">
-                                    <h4 class="m-0">Mukesh Aahuja</h4>
-                                    <span>Library Learner</span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
+                    @endforeach
+              
                 </div>
-
+                @else
+                <div class="row g-4 justify-content-center">
+                </div>
+                @endif
             </div>
 
             <!-- Library Image -->
@@ -248,11 +201,17 @@
                 </div>
 
                 <!-- location on Map -->
+                @if(!empty($library->google_map))
+                    
+              
+                
                 <h4>Location On Map</h4>
                 <div class="location">
                     <!-- Paste Iframe Code -->
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.6495305782005!2d75.8375642!3d25.1137224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396f85c36f29576f%3A0x173a1efae7a53a41!2sNew%20Balaji%20Computer%20Classes%2C%20Kota!5e0!3m2!1sen!2sin!4v1739934919077!5m2!1sen!2sin" width="100%" class="rounded" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    
+                    <iframe src="{{$library->google_map}}" width="100%" class="rounded" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
+                @endif
             </div>
         </div>
     </div>
@@ -314,6 +273,8 @@
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
     $(document).ready(function() {
         // Set the first thumbnail as the default main image
@@ -327,4 +288,57 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        $("#reviewForm").on('submit', function (e) {
+            e.preventDefault(); 
+    
+            var formData = new FormData(this);
+            formData.append('_token', '{{ csrf_token() }}');
+            $.ajax({
+                url: '{{ route('submit.review') }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function (response) {
+                    
+                    
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+                        
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+                        
+                        // Optionally, reset the form after success
+                        $('#reviewForm')[0].reset(); 
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
+                },
+                error: function (xhr) {
+                    var response = xhr.responseJSON;
+                    
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.log('AJAX Error: ', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
+            });
+        });
+    });
+    </script>
 @endsection

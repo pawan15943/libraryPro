@@ -703,6 +703,7 @@ class LibraryController extends Controller
         $states=State::where('is_active',1)->get();
         $citis=City::where('is_active',1)->get();
         $features=DB::table('features')->whereNull('deleted_at')->get();
+        
         return view('library.profile', compact('library', 'states','citis','features'));
     }
 
@@ -725,9 +726,37 @@ class LibraryController extends Controller
             'features' => 'nullable|array', 
             'features.*' => 'integer',
             'google_map'=>'nullable',
+            'library_images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         
-      
+        if ($request->hasFile('library_images')) {
+            $uploadedFiles = [];
+            
+            foreach ($request->file('library_images') as $file) {
+                $library_imageNewName = "library_img_" . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $library_imageNewName);
+                $uploadedFiles[] = 'uploads/' . $library_imageNewName;
+            }
+        } else {
+            $uploadedFiles = []; // If no new files, keep empty array
+        }
+        
+        // Retrieve existing images from database
+        $existingImages = json_decode($library->library_images ?? '[]', true);
+        
+        // Handle deleted images
+        $deletedImages = $request->input('deleted_images', []);
+        $remainingImages = array_diff($existingImages, $deletedImages);
+        
+        // Merge new and remaining images
+        $finalImages = array_merge($remainingImages, $uploadedFiles);
+        
+        // Update only if images exist
+        if (!empty($finalImages)) {
+            $validated['library_images'] = json_encode($finalImages);
+        } else {
+            unset($validated['library_images']); // Prevent overwriting with null
+        }
         if ($request->hasFile('library_logo')) {
             $library_logo = $request->file('library_logo');
             $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();

@@ -141,6 +141,36 @@
                         <textarea name="google_map" id="google_map" class="form-control no-validate" rows="5" placeholder="Paste Google Map Embed Code here"></textarea>
                         <span class="text-info"><b>Note</b> : Your provided library address will be shown to visitors on your listing, so please mention it correctly (Put Map Embed Code).</span>
                     </div>
+                    <div class="col-lg-4">
+                        <label for="">Library Location Longitude <span>*</span></label>
+                        <input type="text" class="form-control  @error('longitude') is-invalid @enderror" name="longitude" maxlength="6"
+                            value="{{ old('longitude', $library->longitude ?? '') }}">
+                        @error('longitude')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="">Library Location Latitude <span>*</span></label>
+                        <input type="text" class="form-control  @error('latitude') is-invalid @enderror" name="latitude" maxlength="6"
+                            value="{{ old('latitude', $library->latitude ?? '') }}">
+                        @error('latitude')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
+                    <div class="col-lg-4">
+                        <label for="">Library Description <span>*</span></label>
+                        <input type="text" class="form-control  @error('description') is-invalid @enderror" name="description" maxlength="6"
+                            value="{{ old('description', $library->description ?? '') }}">
+                        @error('description')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
+                    </div>
                     
                 </div>
                 <h4 class="py-4">Library Owner Info</h4>

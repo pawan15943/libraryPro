@@ -726,6 +726,9 @@ class LibraryController extends Controller
             'features' => 'nullable|array', 
             'features.*' => 'integer',
             'google_map'=>'nullable',
+            'description'=>'nullable',
+            'latitude'=>'nullable',
+            'longitude'=>'nullable',
             'library_images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
         

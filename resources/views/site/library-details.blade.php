@@ -43,9 +43,13 @@
         <div class="row">
             <div class="col-lg-8">
                 <!-- Library Description -->
+                @if(!empty($library->description))
+                
                 <h4 class="mt-0">Library Description </h4>
-                <p class="m-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe ipsam quod eligendi magnam amet cum quisquam fuga! Ab, eaque reprehenderit eligendi aliquam quisquam odio nisi molestias accusantium quod ipsa consequatur.</p>
 
+                <p class="m-0">{{$library->description}}</p>
+      
+                @endif
                 <div class="row mt-4">
                     <div class="col-lg-12">
                         <ul class="library-anmities">
@@ -76,6 +80,8 @@
 
 
                 <!-- Features -->
+                @if($library->features)
+              
                 <h4 class="mt-5">Library Features</h4>
                 @php
                 $selectedFeatures = $library->features ? json_decode($library->features, true) : [];
@@ -90,7 +96,8 @@
                     @endif
                     @endforeach
                 </ul>
-
+         
+                @endif
                 <!-- Library Plans -->
                 <h4 class="mt-5">Our Library Packages</h4>
                 <div class="row">
@@ -193,10 +200,18 @@
                         <img id="mainImage" src="{{url('public/img/library-image.jpg')}}" alt="libraryImage">
                     </div>
                     <ul class="thumb">
+                        @if(!empty($library->library_images) && is_array(json_decode($library->library_images, true)))
+                        @foreach(json_decode($library->library_images) as $key => $value)
+                        <li><img class="thumb-img" src="{{ url('public/' . $value) }}" alt="Library Image"></li>
+                        @endforeach
+                       @else
+
                         <li><img class="thumb-img" src="{{url('public/img/library-image.jpg')}}" alt="libraryImage"></li>
+
                         <li><img class="thumb-img" src="{{url('public/img/02.jpg')}}" alt="libraryImage"></li>
                         <li><img class="thumb-img" src="{{url('public/img/library-image.jpg')}}" alt="libraryImage"></li>
-                        <li><img class="thumb-img" src="{{url('public/img/library-image.jpg')}}" alt="libraryImage"></li>
+                        <li><img class="thumb-img" src="{{url('public/img/library-image.jpg')}}" alt="libraryImage"></li> 
+                        @endif
                     </ul>
                 </div>
 

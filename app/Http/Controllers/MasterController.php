@@ -621,10 +621,11 @@ class MasterController extends Controller
 
     public function getLibraries(Request $request)
     {
+       
         $query = $request->input('query');
         $suggestion = $request->input('suggestion');
         $city = $request->input('city');
-
+        
         // Base query with necessary joins and selects
         $libraries = Library::leftJoin('seats', 'seats.library_id', '=', 'libraries.id')
             ->leftJoin('library_transactions', 'library_transactions.library_id', '=', 'libraries.id')
@@ -637,6 +638,7 @@ class MasterController extends Controller
                 'libraries.state_id',
                 'libraries.city_id',
                 'libraries.library_logo',
+                'libraries.slug',
                 DB::raw('COUNT(seats.id) as total_seats')
             )
             ->where('libraries.is_paid', 1)
@@ -650,7 +652,8 @@ class MasterController extends Controller
                 'libraries.library_type',
                 'libraries.state_id',
                 'libraries.city_id',
-                'libraries.library_logo'
+                'libraries.library_logo',
+                'libraries.slug',
             );
 
         // Apply filters dynamically
@@ -670,7 +673,18 @@ class MasterController extends Controller
             $libraries->take(5);
         }
 
-        return response()->json($libraries->get());
+            // If no records found and no filters applied, take 5 random libraries
+        $results = $libraries->get();
+
+        if ($results->isEmpty() && !$query && !$suggestion && !$city) {
+            $results = Library::where('is_paid', 1)
+                ->where('is_profile', 1)
+                ->inRandomOrder()
+                ->take(5)
+                ->get();
+        }
+
+        return response()->json($results);
     }
 
    

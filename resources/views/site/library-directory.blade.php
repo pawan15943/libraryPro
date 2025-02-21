@@ -52,31 +52,6 @@
     <div id="map" style="width: 100%; height: 550px;"></div>
 </section>
 
-<!-- <section class="google-map pt-5">
-    <h2 class="mb-4 text-center">Explore Our Libraries Across India – Interactive Map!</h2>
-    
-    @php
-        $libraries = \App\Models\Library::whereNotNull('latitude')
-                    ->whereNotNull('longitude')
-                    ->get();
-       
-        // Generate Google Maps URL with multiple locations
-        $googleMapsUrl = "https://www.google.com/maps/dir/";
-
-        foreach ($libraries as $library) {
-            $googleMapsUrl .= "{$library->latitude},{$library->longitude}/";
-        }
-    @endphp
-
-    <iframe src="{{ $googleMapsUrl }}" width="100%" height="550" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-</section> -->
-
-<!-- <section class="google-map pt-5">
-    <h2 class="mb-4 text-center">Explore Our Libraries Across India – Interactive Map!</h2>
-
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3612.649389374019!2d75.83269327839233!3d25.113727177766872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x396f85c36f29576f%3A0x173a1efae7a53a41!2sNew%20Balaji%20Computer%20Classes%2C%20Kota!5e0!3m2!1sen!2sin!4v1739291970498!5m2!1sen!2sin" width="100%" height="550" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-</section> -->
-
 
 <section class="important-counts">
     <div class="container">
@@ -482,351 +457,35 @@
 
 
 <script>
-    var elements = document.querySelectorAll('.digit-only');
-    for (i in elements) {
-        elements[i].onkeypress = function(e) {
-            this.value = this.value.replace(/^0+/, '');
-            if (isNaN(this.value + "" + String.fromCharCode(e.charCode)))
-                return false;
-        }
-        elements[i].onpaste = function(e) {
-            e.preventDefault();
-        }
-    }
-    $('.digit-only').on('keyup', function(e) {
-        $(this).val($(this).val().replace(/\s/g, ''));
-    });
-
-
-    $('.char-only').keydown(function(e) {
-        if (e.ctrlKey || e.altKey) {
-            e.preventDefault();
-        } else {
-            var key = e.keyCode;
-            if (!((key == 8) || (key == 32) || (key == 46) || (key >= 35 && key <= 40) || (key >= 65 && key <= 90))) {
-                e.preventDefault();
-            }
-        }
-    });
-
+    document.addEventListener("DOMContentLoaded", function () {
+        var map = L.map('map').setView([20.5937, 78.9629], 5); // Default center: India
     
-    $('#feedback').owlCarousel({
-        loop: true,
-        nav: true,
-        dots: true,
-        margin: 20,
-        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-        pagination: true,
-        autoplay: true,
-        autoPlaySpeed: 2000,
-        smartSpeed: 2000,
-        autoplayTimeout: 5000,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1,
-                nav: false,
-            },
-            768: {
-                items: 2,
-                nav: false,
-            },
-            992: {
-                items: 3,
-            },
-            1200: {
-                items: 3,
-            },
-            1920: {
-                items: 4,
-            }
-        }
+        // Load OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+    
+        // Fetch library locations from Laravel route
+        fetch("{{ route('getLibrariesLocations') }}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.length === 0) return; // If no libraries, do nothing
+    
+                var bounds = L.latLngBounds(); // Define a bounding box for fitting markers
+    
+                data.forEach(library => {
+                    var marker = L.marker([library.latitude, library.longitude])
+                        .addTo(map)
+                        .bindPopup(`<strong>${library.library_name}</strong><br>${library.library_address}`);
+    
+                    bounds.extend(marker.getLatLng()); // Expand bounds to include this location
+                });
+    
+                // Auto-fit map to show all markers dynamically
+                map.fitBounds(bounds, { padding: [50, 50] });
+            })
+            .catch(error => console.error("Error loading map data:", error));
     });
-</script>
-
-<script>
-    $(document).ready(function() {
-       
-        let selectedSuggestion = ''; 
-
-        // Trigger search when user types in the search field
-        $('#library-search').on('keyup', function() {
-            let query = $(this).val();
-
-            if (query.length > 2) {
-                showSuggestions(query);
-                fetchLibraries(query);
-            } else {
-                fetchLibraries(selectedSuggestion);
-                $('#suggestions').empty(); // Clear suggestions
-            }
-        });
-
-        // Show suggestions based on the query input
-        function showSuggestions(query) {
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route for library search
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function(data) {
-                    $('#suggestions').empty(); // Clear previous suggestions
-                    if (data.length > 0) {
-                        // Append the suggestions to the suggestion list
-                        $.each(data, function(index, library) {
-                            $('#suggestions').append('<li class="list-group-item suggestion-item" data-suggestion="' + library.library_name + '">' + library.library_name + ' - ' + library.library_address + '</li>');
-                        });
-                    } else {
-                        $('#suggestions').append('<li class="list-group-item">No suggestions found</li>');
-                    }
-                }
-            });
-        }
-
-        // When a suggestion is selected, update the search field and fetch the libraries
-        $(document).on('click', '.suggestion-item', function() {
-            selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
-            $('#library-search').val($(this).text()); // Update search field with selected suggestion
-            $('#suggestions').empty(); // Clear suggestions list
-            fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
-        });
-
-        // Show Library Default Data
-        function fetchLibraries(query) {
-            var baseUrl = "{{ url('/') }}";
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                method: 'GET',
-                data: {
-                    query: query,
-                    suggestion: selectedSuggestion
-                },
-                success: function(data) {
-                    $('#library-list').empty(); // Clear the previous library results
-
-                    if (data.length > 0) {
-                        // Initialize Owl Carousel (destroy if already initialized)
-                        if ($('#library-list').hasClass('owl-carousel')) {
-                            $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-                            $('#library-list').find('.owl-stage-outer').children().unwrap();
-                        }
-
-                        // Add Owl Carousel class
-                        $('#library-list').addClass('owl-carousel');
-
-                        // Loop through each library and append it as a carousel item
-                        $.each(data, function(index, library) {
-                            let libraryHTML = `
-                                <div class="item">
-                                    <div class="featured-library">
-                                        <h4>${library.library_name}</h4>
-                                        <span>${library.library_address}</span>
-                                        <ul class="star-ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-
-                                        <ul class="library-feature">
-                                            <li>
-                                                <span>Pricing Plans</span>
-                                                <h5>${library.moonth==12 ? 'Yearly' : 'Monthly'}</h5>
-                                            </li>
-                                            <li>
-                                                <span>Library Type</span>
-                                                <h5>Public</h5>
-                                            </li>
-                                            <li>
-                                                <span>Avaialble Seats</span>
-                                                <h5 class="text-success">${library.total_seats}</h5>
-                                            </li>
-                                            <li>
-                                                <h5 class="text-success">Verified</h5>
-                                            </li>
-                                        </ul>
-                                        <a href="${baseUrl}/library-details/${library.library_name}" class="view-library">View Details <i class="fa fa-long-arrow-right"></i></a>
-
-                                    </div>
-                                    
-                                </div>
-                                `;
-                            $('#library-list').append(libraryHTML);
-                        });
-
-                        // Re-initialize Owl Carousel after appending items
-                        $('#library-list').owlCarousel({
-                            loop: true,
-                            margin: 30,
-                            nav: true,
-                            dots: true,
-                            autoplay: true,
-                            autoplayTimeout: 3000,
-                            autoplayHoverPause: true,
-                            responsive: {
-                                0: {
-                                    items: 1
-                                },
-                                600: {
-                                    items: 2
-                                },
-                                1000: {
-                                    items: 3
-                                }
-                            }
-                        });
-                    } else {
-                        $('#library-list').append('<p>No libraries found.</p>');
-                    }
-                }
-            });
-        }
-
-
-
-        $(document).on('click', '.city-item', function() {
-            let selectedCity = $(this).data('city'); // Get the city from the data attribute
-            console.log("city", selectedCity)
-            // Fetch libraries based on the selected city
-            fetchLibrariesByCity(selectedCity);
-        });
-
-        // Show Library Data According to City
-
-        function fetchLibrariesByCity(city) {
-            $.ajax({
-                url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                method: 'GET',
-                data: {
-                    city: city
-                },
-                success: function(data) {
-                    $('#library-list').trigger('destroy.owl.carousel'); // Destroy the existing instance
-                    $('#library-list').empty(); // Clear the previous library results
-
-                    if (data.length > 0) {
-                        console.log("bycity", data);
-                        // Append items
-                        $.each(data, function(index, library) {
-                            let libraryHTML = `
-                                            <div class="item">
-                                                <div class="library-box">
-                                                    <div class="image">
-                                                        <img src="{{ asset('public/img/direcotry/02.png') }}" alt="library">
-                                                        <ul class="d-flex g-2">
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                            <li><i class="fa fa-star"></i></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="content p-3">
-                                                        <h4 class="mb-3">${library.library_name}</h4>
-                                                        <p>${library.library_address}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
-                            $('#library-list').append(libraryHTML);
-                        });
-
-                        // Reinitialize the Owl Carousel
-                        $('#library-list').owlCarousel({
-                            items: 3,
-                            loop: true,
-                            margin: 30,
-                            nav: true,
-                            responsive: {
-                                0: {
-                                    items: 1
-                                },
-                                600: {
-                                    items: 2
-                                },
-                                1000: {
-                                    items: 3
-                                }
-                            }
-                        });
-                    } else {
-                        $('#library-list').append('<p>No libraries found.</p>');
-                    }
-                }
-            });
-        }
-        // Initial load of libraries (if no search/query)
-        fetchLibraries('');
-    });
-</script>
-
-<script>
-    $('.owl-carousel').trigger('destroy.owl.carousel');
-    $('#library-list').owlCarousel({
-        loop: true,
-        nav: true,
-        dots: true,
-        margin: 20,
-        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-        pagination: true,
-        autoplay: true,
-        autoPlaySpeed: 2000,
-        smartSpeed: 2000,
-        autoplayTimeout: 5000,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1,
-                nav: false,
-            },
-            768: {
-                items: 2,
-                nav: false,
-            },
-            992: {
-                items: 3,
-            },
-            1200: {
-                items: 3,
-            },
-            1920: {
-                items: 4,
-            }
-        }
-    });
-</script>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    var map = L.map('map').setView([20.5937, 78.9629], 5); // Default center: India
-
-    // Load OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Fetch library locations from Laravel route
-    fetch("{{ route('getLibrariesLocations') }}")
-        .then(response => response.json())
-        .then(data => {
-            if (data.length === 0) return; // If no libraries, do nothing
-
-            var bounds = L.latLngBounds(); // Define a bounding box for fitting markers
-
-            data.forEach(library => {
-                var marker = L.marker([library.latitude, library.longitude])
-                    .addTo(map)
-                    .bindPopup(`<strong>${library.library_name}</strong><br>${library.library_address}`);
-
-                bounds.extend(marker.getLatLng()); // Expand bounds to include this location
-            });
-
-            // Auto-fit map to show all markers dynamically
-            map.fitBounds(bounds, { padding: [50, 50] });
-        })
-        .catch(error => console.error("Error loading map data:", error));
-});
 </script>
 
 

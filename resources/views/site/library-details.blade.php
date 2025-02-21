@@ -138,6 +138,7 @@
                 
                 <form  method="POST" id="reviewForm">
                         @csrf
+                    <input type="hidden" name="library_id" value="{{$library->id}}">
                     <div class="row g-4 justify-content-center">
                         <div class="col-lg-6">
                             <label for="name">Full Name</label>
@@ -174,6 +175,12 @@
                         <div class="review-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
                             <p>{{$value->comments}}</p>
+                            <ul class="customer-ratings">
+                                @for($i = 0; $i < $value->rating; $i++)
+                                <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                @endfor
+                               
+                            </ul>
                             <div class="d-flex mt-4">
                                 <img src="" alt="">
                                 <div class="leaner-info">
@@ -231,62 +238,24 @@
         </div>
     </div>
 </section>
+<!-- Features Library -->
+<section class="popular py-5">
+    <input type="hidden" id="cityId" value="{{$library->city_id}}">
+    <div class="container">
+        <div class="heading mb-5">
+            <h2>Featured & Popular Libraries</h2>
+        </div>
 
-<section></section>
-
-<div class="container">
-    <div class="card shadow-lg p-4">
         <div class="row">
-            <div class="col-md-4 text-center">
-                <img src="{{ asset($library->library_logo) }}" alt="Library Logo" class="img-fluid rounded-circle" width="150">
+            <div class="col-lg-12">
+                <div class="owl-carousel" id="library-list">
+                </div>
             </div>
-            <div class="col-md-8">
-                <h2 class="text-primary"></h2>
-                <p><strong>Library Number:</strong> {{ $library->library_no }}</p>
-                <p><strong>Type:</strong> {{ $library->subscription->name }}</p>
-                <p><strong>Address:</strong> {{ $library->library_address }}, {{ $library->city->name }}, {{ $library->state->name }} - {{ $library->library_zip }}</p>
-                <p><strong>Email:</strong> {{ $library->email }}</p>
-                <p><strong>Phone:</strong> {{ $library->library_mobile }}</p>
-                <p><strong>Google Map:</strong> {!! $library->google_map ? $library->google_map : 'Not Available' !!}</p>
-            </div>
+
         </div>
-
-        <hr>
-
-        <h3 class="mt-4">Owner Details</h3>
-        <p><strong>Name:</strong> {{ $library->library_owner }}</p>
-        <p><strong>Email:</strong> {{ $library->library_owner_email }}</p>
-        <p><strong>Contact:</strong> {{ $library->library_owner_contact }}</p>
-
-        <hr>
-
-        <h3 class="mt-4">Additional Information</h3>
-        <p><strong>Account Status:</strong> {{ $library->status ? 'Active' : 'Inactive' }}</p>
-        <p><strong>Paid Subscription:</strong> {{ $library->is_paid ? 'Yes' : 'No' }}</p>
-        <p><strong>Profile Completed:</strong> {{ $library->is_profile ? 'Yes' : 'No' }}</p>
-        <p><strong>Email Verified:</strong> {{ $library->email_verified_at ? 'Yes ('.$library->email_verified_at.')' : 'No' }}</p>
-
-
-        <div class="col-lg-12 mt-4">
-            <h4 class="mb-4">Library Features</h4>
-            @php
-            $selectedFeatures = $library->features ? json_decode($library->features, true) : [];
-            @endphp
-            <ul class="libraryFeatures">
-                @foreach ($features as $feature)
-                @if (in_array($feature->id, $selectedFeatures ?? []))
-                <li>
-                    <img src="{{ asset('public/'.$feature->image) }}" alt="Feature Image" width="50">
-                    <span>{{ $feature->name }}</span>
-                </li>
-                @endif
-                @endforeach
-            </ul>
-        </div>
-
-
     </div>
-</div>
+</section>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -321,6 +290,7 @@
                     
                     
                     if (response.status === 'success') {
+                  
                         toastr.success(response.message);
                         
                         // Clear error messages and reset form
@@ -354,6 +324,97 @@
                 }
             });
         });
-    });
+
+        let city=$("#cityId").val();
+        fetchLibrariesByCity(city) ;
+        function fetchLibrariesByCity(city) {
+                $.ajax({
+                    url: '{{ route("get-libraries") }}', 
+                    method: 'GET',
+                    data: {
+                        city: city
+                    },
+                    success: function(data) {
+                        $('#library-list').empty(); 
+    
+                        if (data.length > 0) {
+                           
+                            if ($('#library-list').hasClass('owl-carousel')) {
+                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+                                $('#library-list').find('.owl-stage-outer').children().unwrap();
+                            }
+    
+                            // Add Owl Carousel class
+                            $('#library-list').addClass('owl-carousel');
+    
+                            // Loop through each library and append it as a carousel item
+                            $.each(data, function(index, library) {
+                                let libraryHTML = `
+                                    <div class="item">
+                                        <div class="featured-library">
+                                            <h4>${library.library_name}</h4>
+                                            <span>${library.library_address}</span>
+                                            <ul class="star-ratings">
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                                <li><i class="fa fa-star"></i></li>
+                                            </ul>
+    
+                                            <ul class="library-feature">
+                                                <li>
+                                                    <span>Pricing Plans</span>
+                                                    <h5>${library.moonth==12 ? 'Yearly' : 'Monthly'}</h5>
+                                                </li>
+                                                <li>
+                                                    <span>Library Type</span>
+                                                    <h5>Public</h5>
+                                                </li>
+                                                <li>
+                                                    <span>Avaialble Seats</span>
+                                                    <h5 class="text-success">${library.total_seats}</h5>
+                                                </li>
+                                                <li>
+                                                    <h5 class="text-success">Verified</h5>
+                                                </li>
+                                            </ul>
+                                            <a href="${baseUrl}/library-details/${library.slug}" class="view-library city-item">View Details <i class="fa fa-long-arrow-right"></i></a>
+    
+                                        </div>
+                                        
+                                    </div>
+                                    `;
+                                $('#library-list').append(libraryHTML);
+                            });
+    
+                            // Re-initialize Owl Carousel after appending items
+                            $('#library-list').owlCarousel({
+                                loop: true,
+                                margin: 30,
+                                nav: true,
+                                dots: true,
+                                autoplay: true,
+                                autoplayTimeout: 3000,
+                                autoplayHoverPause: true,
+                                responsive: {
+                                    0: {
+                                        items: 1
+                                    },
+                                    600: {
+                                        items: 2
+                                    },
+                                    1000: {
+                                        items: 3
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#library-list').append('<p>No libraries found.</p>');
+                        }
+                    }
+                });
+            }
+        });
     </script>
 @endsection

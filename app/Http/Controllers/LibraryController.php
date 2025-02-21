@@ -170,7 +170,7 @@ class LibraryController extends Controller
         }
 
         $validated['password'] = bcrypt($validated['password']);
-      
+        $validated['slug']=Str::slug($validated['library_name']);
         try {
             $library = Library::create($validated);
 

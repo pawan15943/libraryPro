@@ -1197,6 +1197,12 @@ ul.thumb li img {
     border-radius: 1.5rem;
 }
 
+.plans-box:hover {
+    background: linear-gradient(45deg, #3F51B5, #00BCD4);
+    transform: scale(1.02);
+    transition: all .5s;
+}
+
 .plans-box * {
     color: #fff;
 }

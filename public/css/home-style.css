@@ -1116,6 +1116,10 @@ ul.libraryFeatures {
     list-style: none;
 }
 
+ul.libraryFeatures li:hover {
+    box-shadow: 1px 0 15px #00000021;
+}
+
 ul.libraryFeatures li {
     display: flex;
     flex-direction: column;
@@ -1127,6 +1131,14 @@ ul.libraryFeatures li {
     gap: 1.5rem;
     justify-content: center;
     padding: 1.5rem;
+}
+
+p.opening-hours {
+    background: #18225f;
+    padding: .5rem;
+    text-align: center;
+    border-radius: .5rem;
+    margin-bottom: -.5rem;
 }
 
 ul.libraryFeatures li span {
@@ -1189,12 +1201,14 @@ ul.thumb li img {
     color: #fff;
 }
 
-.plans-box {}
 
 .plans-box h4 {
-    margin: 0;
+    margin: 0 auto;
     margin-bottom: 1.5rem;
     font-size: 1.3rem;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 400;
 }
 
 .plans-box ul {
@@ -1286,6 +1300,14 @@ ul.library-anmities p {
     box-shadow: 1px 0 5px #00000045;
     padding: 1.5rem;
     border-radius: 1.5rem;
+}
+
+ul.customer-ratings {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+    padding: 0;
+    margin-top: .5rem;
 }
 
 /* ====================================================================================

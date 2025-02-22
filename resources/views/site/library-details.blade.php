@@ -18,13 +18,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="#reviewForm">
                             <i class="fa fa-edit"></i>
                             <span>Write a Review</span>
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="https://wa.me/{{$library->library_mobile}}" target="_blank">
                             <i class="fab fa-whatsapp"></i>
                             <span>WhatsApp</span>
                         </a>
@@ -55,7 +55,7 @@
                         <ul class="library-anmities">
                             <li>
                                 <span>Library Type</span>
-                                <p>Public</p>
+                                <p>{{$library->library_category}}</p>
                             </li>
                             <li>
                                 <span>Library Capacity</span>
@@ -63,7 +63,7 @@
                             </li>
                             <li>
                                 <span>Lockers</span>
-                                <p>30</p>
+                                <p>Currently Unavailable</p>
                             </li>
                             <li>
                                 <span>Operations Hourse</span>
@@ -72,7 +72,7 @@
                             </li>
                             <li>
                                 <span>Operating Days</span>
-                                <p>Monday, Tuesday, Wednesday, Thursday, Friday, Saturday</p>
+                                <p>{{$library->working_days}}</p>
                             </li>
                         </ul>
                     </div>
@@ -100,7 +100,7 @@
                 @endif
                 <!-- Library Plans -->
                 <h4 class="mt-5">Our Library Packages</h4>
-                <div class="row">
+                <div class="row g-4">
                     @foreach($our_package as $key => $value)  
                         <div class="col-lg-4">
                             <div class="plans-box">
@@ -123,8 +123,8 @@
                                         <p>{{$value->slot_hours}} Hours</p>
                                     </li>
                                     <li class="w-100">
-                                        
-                                        <p>{{$value->start_time}} - {{$value->end_time}}</p>
+                                        <p class="opening-hours">{{ \Carbon\Carbon::parse($value->start_time)->format('h:i A') }} - {{ \Carbon\Carbon::parse($value->end_time)->format('h:i A') }}
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -169,7 +169,7 @@
                 @if($learnerFeedback->isNotEmpty())
                
                 <h4 class="mt-5">Learners Reviews</h4>
-                <div class="row g-4 justify-content-center">
+                <div class="row g-4 " >
                     @foreach($learnerFeedback as $key => $value)
                     <div class="col-lg-6">
                         <div class="review-box">

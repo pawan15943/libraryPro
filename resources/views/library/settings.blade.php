@@ -25,18 +25,26 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <label for="">Library Fav Icon <span>*</span></label>
-                            <input type="file" class="form-control @error('library_favicon') is-invalid @enderror" name="library_favicon"
+                            <input type="file" class="form-control @error('library_favicon') is-invalid @enderror" name="library_favicon" id="library_favicon"
                                 value="{{ old('library_favicon', $library->library_favicon ?? '') }}">
                             @error('library_favicon')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                            <span class="text-info d-block">The favicon image displayed on your library page is incorrect. Please upload the correct favicon image.</span>
+                            <span class="text-danger d-block">Favicoan icon size must be 64px * 64px</span>
+                            <div class="preview-favicon">
+                                @if(!empty($library->library_favicon))
+                                <img src="{{ asset('path/to/library_favicon/' . $library->library_favicon) }}" id="favicon-preview" width="100">
+                                @endif
+                            </div>
+
                         </div>
                         <div class="col-lg-12">
-                            <label for="">Library Title <span>*</span></label>
+                            <label for="">Library Title (For Library SEO) <span>*</span></label>
                             <input type="text" class="form-control @error('library_title') is-invalid @enderror" name="library_title"
-                                value="{{ old('library_title', $library->library_title ?? '') }}">
+                                value="{{ old('library_title', $library->library_title ?? '') }}" placeholder="Library SEO Title">
                             @error('library_title')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -45,8 +53,8 @@
                         </div>
 
                         <div class="col-lg-12">
-                            <label for="">Library Meta Description <span>*</span></label>
-                            <textarea name="library_meta_description" class="form-control" style="height: 100px !important;">{{ old('library_meta_description', $library->library_meta_description ?? '') }}</textarea>
+                            <label for="">Library Meta Description (For Library SEO) <span>*</span></label>
+                            <textarea name="library_meta_description" class="form-control" style="height: 100px !important;" placeholder="Library SEO Meta Description">{{ old('library_meta_description', $library->library_meta_description ?? '') }}</textarea>
                             @error('library_meta_description')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -64,7 +72,7 @@
                             @enderror
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Library Language <span>*</span></label>
+                            <label for="">Library Language (Hindi Will Available Soon!) <span>*</span></label>
                             <select name="library_language" class="form-select" id="">
                                 <option value="">Select Language</option>
                                 <option value="English" {{ old('library_language', $library->library_language ?? '') == 'English' ? 'selected' : '' }}>English</option>
@@ -91,5 +99,16 @@
 
 </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('#library_favicon').change(function(event) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                $('.preview-favicon').html('<img src="' + e.target.result + '" width="100">');
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    });
+</script>
 @include('library.script')
 @endsection

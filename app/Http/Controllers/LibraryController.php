@@ -709,8 +709,11 @@ class LibraryController extends Controller
 
     public function updateProfile(Request $request)
     {
-        
+       
         $validated = $request->validate([
+            'library_name' => 'required|string|max:255',
+            'library_category' => 'required',
+            'working_days' => 'required',
             'library_name' => 'required|string|max:255',
             'library_mobile' => 'required|string|max:10',
             'email' => 'required|email',

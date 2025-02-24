@@ -283,14 +283,33 @@ class SiteController extends Controller
         return response()->json($libraries);
     }
     public function libraryDetail($slug){
-       
-        $library=Library::where('slug',$slug)->with('state', 'city','subscription')->first();
-        // dd($library);
         $features=DB::table('features')->whereNull('deleted_at')->get();
-        $our_package=PlanPrice::leftJoin('plan_types','plan_prices.plan_type_id','=','plan_types.id')->leftJoin('plans','plan_prices.plan_id','=','plans.id')->select('plans.name as plan_name','plan_types.name as plan_type_name','plan_types.start_time','plan_types.end_time','plan_types.slot_hours','plan_prices.price','plans.plan_id')->where('plan_prices.library_id',$library->id)->where('plans.plan_id',1)->get();
+        $library=Library::where('slug',$slug)->with('state', 'city','subscription')->first();
+        dd($library);
+        if(empty($library)){
+            dd("404");
+        }else{
+
+        $our_package = PlanPrice::leftJoin('plan_types', 'plan_prices.plan_type_id', '=', 'plan_types.id')
+        ->leftJoin('plans', 'plan_prices.plan_id', '=', 'plans.id')
+        ->select(
+            'plans.name as plan_name',
+            'plan_types.name as plan_type_name',
+            'plan_types.start_time',
+            'plan_types.end_time',
+            'plan_types.slot_hours',
+            'plan_prices.price',
+            'plans.plan_id'
+        )
+        ->where('plan_prices.library_id', $library->id) // Specify table name for library_id
+        ->where('plans.plan_id', 1)
+        ->get();
+
+       
         $total_seat=Seat::where('library_id',$library->id)->count();
         $operating=PlanType::where('library_id',$library->id)->where('day_type_id',1)->select('start_time','end_time')->first();
         $learnerFeedback=LearnerFeedback::where('library_id',$library->id)->with(['learner'])->get();
+        }     
         return view('site.library-details',compact('library','features','our_package','total_seat','operating','learnerFeedback'));
     }
 

@@ -311,7 +311,7 @@ class SiteController extends Controller
     ->where('plans.plan_id', 1)
     ->get();
 
-
+        dd($our_package);
         $total_seat=Seat::where('library_id',$library->id)->count();
         $operating=PlanType::where('library_id',$library->id)->where('day_type_id',1)->select('start_time','end_time')->first();
         $learnerFeedback=LearnerFeedback::where('library_id',$library->id)->with(['learner'])->get();

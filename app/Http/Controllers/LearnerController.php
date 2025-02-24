@@ -2116,82 +2116,54 @@ class LearnerController extends Controller
         
     }
 
-    public function getLearnerAttendence(Request $request){
-        $data=Learner::where('library_id', auth()->user()->id)->where('status',1)->pluck('name','id');
-        if($request->has('date')){
-            
-            $learners =  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
-           
-            ->leftJoin('attendances', function ($join) use ($request) {
-                $join->on('learners.id', '=', 'attendances.learner_id')
-                     ->whereDate('attendances.date', '=', $request->date);
-            })
-            ->leftJoin('plans', 'learner_detail.plan_id', '=', 'plans.id') 
+    public function getLearnerAttendence(Request $request)
+    {
+        $data = Learner::where('library_id', auth()->user()->id)
+            ->where('status', 1)
+            ->pluck('name', 'id');
+
+        // Base Query
+        $learners = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+            ->leftJoin('attendances', 'learners.id', '=', 'attendances.learner_id')
+            ->leftJoin('plans', 'learner_detail.plan_id', '=', 'plans.id')
             ->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
             ->where('learners.library_id', auth()->user()->id)
-            ->where('learners.status', 1)
-            ->select(
-                'learners.id as learner_id',
-                'learners.name as name',
-                'learners.email as email',
-                'learners.dob as dob',
-                'learners.mobile',
-                'learners.seat_no',
-                'learner_detail.plan_start_date',
-                'learner_detail.plan_end_date',
-                'learners.library_id',
-                'learners.status',
-               
-                'plans.name as plan_name', 
-              
-                'plan_types.name as plan_type_name', // Fetching plan type name
-                'attendances.in_time',
-                'attendances.out_time',
-                'attendances.attendance',
-                'attendances.date',
-            )
-            ->get();
-        }elseif($request->has('learner_id')){
-            $learners =  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
+            ->where('learners.status', 1);
+
+        // Apply Filters Dynamically
+        if ($request->has('date')) {
            
-            ->leftJoin('attendances', function ($join) use ($request) {
-                $join->on('learners.id', '=', 'attendances.learner_id')
-                     ->where('attendances.learner_id', '=', $request->learner_id);
-            })
-            ->leftJoin('plans', 'learner_detail.plan_id', '=', 'plans.id') 
-            ->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')
-            ->where('learners.library_id', auth()->user()->id)
-            ->where('learners.status', 1)
-            ->select(
-                'learners.id as learner_id',
-                'learners.name as name',
-                'learners.email as email',
-                'learners.dob as dob',
-                'learners.mobile',
-                'learners.seat_no',
-                'learner_detail.plan_start_date',
-                'learner_detail.plan_end_date',
-                'learners.library_id',
-                'learners.status',
-               
-                'plans.name as plan_name', 
-              
-                'plan_types.name as plan_type_name', // Fetching plan type name
-                'attendances.in_time',
-                'attendances.out_time',
-                'attendances.attendance',
-                'attendances.date',
-            )
-            ->get();
-        }else{
-            $learners = null;
-        
+            $learners->whereDate('attendances.date', '=', $request->date);
         }
-       
-       
-        return view('library.learner-attendance',compact('learners','data'));
-     
+
+        if ($request->has('learner_id')) {
+           
+            $learners->where('learners.id', '=', $request->learner_id);
+        }
+
+        // Select required columns
+        $learners = $learners->select(
+            'learners.id as learner_id',
+            'learners.name as name',
+            'learners.email as email',
+            'learners.dob as dob',
+            'learners.mobile',
+            'learners.seat_no',
+            'learner_detail.plan_start_date',
+            'learner_detail.plan_end_date',
+            'learners.library_id',
+            'learners.status',
+            'plans.name as plan_name',
+            'plan_types.name as plan_type_name', 
+            'attendances.in_time',
+            'attendances.out_time',
+            'attendances.attendance',
+            'attendances.date'
+        )->get();
+
+        return view('library.learner-attendance', compact('learners', 'data'));
     }
+
 
 
     public function IdCard(){

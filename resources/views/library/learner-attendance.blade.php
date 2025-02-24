@@ -20,7 +20,7 @@ $current_route = Route::currentRouteName();
                     <div class="col-lg-4">
                         <input type="date" class="form-control" name="date" value="{{ request('date') ?: date('Y-m-d') }}" id="date">
                     </div>
-                    <div class="col-lg-4">
+                    {{-- <div class="col-lg-4">
                         <select name="learner_id" class="form-control">
                             <option value="">Select Learner</option>
                             @foreach($data as $key => $value)
@@ -29,7 +29,7 @@ $current_route = Route::currentRouteName();
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     
                     <div class="col-lg-2">
                         <button class="btn btn-primary button">

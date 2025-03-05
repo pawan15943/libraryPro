@@ -55,11 +55,11 @@
                         <ul class="library-anmities">
                             <li>
                                 <span>Library Type</span>
-                                <p>{{$library->library_category}}</p>
+                                <p>{{$library->library_category ?? ''}}</p>
                             </li>
                             <li>
                                 <span>Library Capacity</span>
-                                <p>{{$total_seat}} Seats</p>
+                                <p>{{$total_seat ?? ''}} Seats</p>
                             </li>
                             <li>
                                 <span>Lockers</span>
@@ -67,12 +67,17 @@
                             </li>
                             <li>
                                 <span>Operations Hourse</span>
+                                @if($operating)
                                 <p>{{ \Carbon\Carbon::parse($operating->start_time)->format('h:i A') }} to {{ \Carbon\Carbon::parse($operating->end_time)->format('h:i A') }}</p>
+ 
+                                @else
+                                   <p>NA</p> 
+                                @endif
 
                             </li>
                             <li>
                                 <span>Operating Days</span>
-                                <p>{{$library->working_days}}</p>
+                                <p>{{$library->working_days ?? ''}}</p>
                             </li>
                         </ul>
                     </div>

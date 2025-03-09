@@ -189,7 +189,7 @@
                             <div class="d-flex mt-4">
                                 <img src="" alt="">
                                 <div class="leaner-info">
-                                    <h4 class="m-0">{{$value->learner->name}}</h4>
+                                    <h4 class="m-0">{{$value->learner ? $value->learner->name : $value->name}}</h4>
                                     <span>Library Learner</span>
                                 </div>
                             </div>

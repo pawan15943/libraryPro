@@ -764,7 +764,7 @@
                                 <input type="text" class="form-control" name="email" id="email">
                             </div>
 
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select name="plan_id" id="plan_id" class="form-select" name="plan_id">
                                     <option value="">Select Plan</option>
@@ -773,7 +773,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <label for="">Plan Type <span>*</span></label>
                                 <select id="plan_type_id" class="form-select" name="plan_type_id">
                                     <option value="">Select Plan Type</option>
@@ -788,12 +788,6 @@
                                 <label for="">Plan Starts On <span>*</span></label>
                                 <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date">
                             </div>
-                            <div class="col-lg-4">
-                                <label for="">Plan Ends On <span></span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_end_date" id="plan_end_date" disabled>
-                            </div>
-
-
                             <div class="col-lg-4">
                                 <label for="">Payment Mode <span>*</span></label>
                                 <select name="payment_mode" id="payment_mode" class="form-select">

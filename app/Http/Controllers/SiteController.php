@@ -321,6 +321,7 @@ class SiteController extends Controller
             'name' => 'required|string|max:255',
             'rating' => 'required|integer|min:1|max:5',
             'comments' => 'required|string',
+            'library_id' => 'required',
         ]);
        
         LearnerFeedback::create($validatedData);

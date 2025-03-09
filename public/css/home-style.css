@@ -899,10 +899,27 @@ section.blog-header h1 {
 Directory
 ================================================================*/
 
+.search {
+    display: flex;
+}
 
+.search input, .search select {
+    height: 55px;
+    border-radius: 0;
+}
+
+.search select {
+    width: 285px;
+    padding-left: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.search-container {
+    width: 100%;
+}
 
 .hero_Section_directory {
-    min-height: 620px;
+    min-height: 400px;
     display: flex;
     align-items: center;
     position: relative;
@@ -1319,6 +1336,14 @@ ul.customer-ratings {
 /* ====================================================================================
                               End
 ======================================================================================*/
+
+@media screen and (max-width:480px) {
+    .search select {
+        width: 200px !important;
+        padding-left: 1.5rem;
+    }
+}
+
 
 @media screen and (max-width:768px) {
     header ul.navbar-nav.ms-auto.mb-lg-0>li+li {

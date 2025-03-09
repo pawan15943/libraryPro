@@ -4,7 +4,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
 <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
 
@@ -15,13 +15,27 @@
         <div class="row h-100 align-items-center">
             <div class="col-lg-12">
                 <div class="row align-items-center justify-content-center">
-                    <div class="col-lg-8">
+                    <div class="col-lg-9">
                         <h1>Find the Best Libraries Near You in India</h1>
 
                         <div class="search">
-                            <input type="text" id="library-search" class="form-control" placeholder="Enter Location or library name to search near you">
-                            <i class="fa fa-search"></i>
-                            <ul id="suggestions" class="list-group mt-2"></ul>
+                            <select name="" id="" class="form-select">
+                                <option value="">Select City</option>
+                                <option value="">KOTA</option>
+                                <option value="">BARAN</option>
+                                <option value="">BUNDI</option>
+                            </select>
+                            <!-- <select name="" id="" class="form-select">
+                                <option value="">Select Price Range</option>
+                                <option value="">200 to 400</option>
+                            </select> -->
+                            <div class="search-container" >
+                                <input type="text" id="library-search" class="form-control" placeholder="Search Libraries near you">
+
+                                <i class="fa fa-search"></i>
+                                <ul id="suggestions" class="list-group mt-2"></ul>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -175,7 +189,7 @@
                         </div>
                     </div>
                     @endforeach
-                    
+
                     @else
                     <div class="item">
                         <div class="feedback-box">
@@ -521,32 +535,34 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         var map = L.map('map').setView([20.5937, 78.9629], 5); // Default center: India
-    
+
         // Load OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
-    
+
         // Fetch library locations from Laravel route
         fetch("{{ route('getLibrariesLocations') }}")
             .then(response => response.json())
             .then(data => {
                 if (data.length === 0) return; // If no libraries, do nothing
-    
+
                 var bounds = L.latLngBounds(); // Define a bounding box for fitting markers
-    
+
                 data.forEach(library => {
                     var marker = L.marker([library.latitude, library.longitude])
                         .addTo(map)
                         .bindPopup(`<strong>${library.library_name}</strong><br>${library.library_address}`);
-    
+
                     bounds.extend(marker.getLatLng()); // Expand bounds to include this location
                 });
-    
+
                 // Auto-fit map to show all markers dynamically
-                map.fitBounds(bounds, { padding: [50, 50] });
+                map.fitBounds(bounds, {
+                    padding: [50, 50]
+                });
             })
             .catch(error => console.error("Error loading map data:", error));
     });

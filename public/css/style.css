@@ -4575,6 +4575,8 @@ ul.activity li span {
 }
 
 @media screen and (max-width:480px) {
+
+
     .table-responsive {
         border-radius: 0 !important;
     }

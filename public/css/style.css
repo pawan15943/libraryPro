@@ -11,6 +11,15 @@
 
 /* Default Css */
 
+h6.text-center.bg-white * {
+    font-size: 1rem !important;
+}
+
+h6.text-center.bg-white {
+    font-size: 1rem;
+    padding: .3rem !important;
+}
+
 .ck-editor__editable {
     min-height: 200px;
     /* Adjust height as needed */

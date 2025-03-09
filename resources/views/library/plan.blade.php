@@ -49,7 +49,16 @@
         <div class="plan-box">
            
                 @if ($subscription->id == Auth::user()->library_type)
-                <h6>{{ Auth::user()->status == 1 ? 'Active' : 'Expired Plan' }}</h6>
+                @php
+                    if(Auth::user()->status == 0){
+                        $text='Expired';
+                        $class='text-danger';
+                    }else{
+                        $text='Active';
+                        $class='text-success';
+                    }
+                @endphp
+                <h6 class="text-center bg-white">Current Plan <span class="{{$class}}">{{$text}} </span></h6>
                 @else
                 <h6></h6>
                 @endif

@@ -400,6 +400,29 @@
                 <div class="owl-carousel" id="clientsFeedback">
 
                     @if(!($happy_customers->isEmpty()))
+                    
+                    @foreach($happy_customers as $key => $value)
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <div class="message">{{$value->description ?? ''}}</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>{{$value->library_owner ?? ''}}</h4>
+                                    <span>{{$value->library_name ?? ''}}</span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
@@ -463,28 +486,6 @@
                             </div>
                         </div>
                     </div>
-                    @foreach($happy_customers as $key => $value)
-                    <div class="item">
-                        <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-                            <div class="message">{{$value->description ?? ''}}</div>
-                            <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
-                                <div class="customer-details">
-                                    <h4>{{$value->library_owner ?? ''}}</h4>
-                                    <span>{{$value->library_name ?? ''}}</span>
-                                </div>
-                                <ul class="customer-ratings">
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
                     @else
                     <div class="item">
                         <div class="feedback-box">

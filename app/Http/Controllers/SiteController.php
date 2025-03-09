@@ -44,7 +44,7 @@ class SiteController extends Controller
     public function home(){
         $happy_customers=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_owner','libraries.library_name','libraries.created_at','feedback.*','cities.city_name')->get();
 
-       
+      
         $subscriptions = Subscription::with('permissions')->get();
         $premiumSub=Subscription::where('id',3)->first();
         return view('site.home',compact('subscriptions','premiumSub','happy_customers'));
@@ -56,7 +56,7 @@ class SiteController extends Controller
         $learner_count=Learner::count();
         $city_count=City::count();
         $feedback_count=Feedback::count();
-        $happy_customers=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_address','libraries.created_at','feedback.*','cities.city_name')->get();
+        $happy_customers=Feedback::leftJoin('libraries','feedback.library_id','=','libraries.id')->leftJoin('cities','cities.id','libraries.city_id')->where('feedback.rating','>',4)->select('libraries.library_owner','libraries.library_name','libraries.created_at','feedback.*','cities.city_name')->get();
        
         return view('site.library-directory' ,compact('cities','topLibraries','learner_count','library_count','city_count','happy_customers','feedback_count'));
     }
@@ -308,7 +308,7 @@ class SiteController extends Controller
         
             $total_seat=Seat::where('library_id',$library->id)->count();
             $operating=PlanType::where('library_id',$library->id)->where('day_type_id',1)->select('start_time','end_time')->first();
-            
+           
             $learnerFeedback=LearnerFeedback::where('library_id',$library->id)->with(['learner'])->get();
         }     
         return view('site.library-details',compact('library','features','our_package','total_seat','operating','learnerFeedback'));

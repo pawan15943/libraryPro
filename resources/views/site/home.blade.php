@@ -397,7 +397,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="feedback">
+                <div class="owl-carousel" id="clientsFeedback">
 
                     @if(!($happy_customers->isEmpty()))
                     @foreach($happy_customers as $key => $value)
@@ -606,8 +606,6 @@
 
 <!-- Quick Support -->
 <section class="inquiry" id="demo">
-
-
     <div class="container">
         <div class="row g-4 align-items-center">
             @if (session('success'))

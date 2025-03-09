@@ -189,7 +189,7 @@
                             <div class="d-flex mt-4">
                                 <img src="" alt="">
                                 <div class="leaner-info">
-                                    <h4 class="m-0">{{$value->learner->name}}</h4>
+                                    <h4 class="m-0">{{$value->learner ? $value->learner->name : $value->name}}</h4>
                                     <span>Library Learner</span>
                                 </div>
                             </div>
@@ -228,17 +228,13 @@
                 </div>
 
                 <!-- location on Map -->
-                @if(!empty($library->google_map))
-                    
-              
-                
+                @if (!empty($library->google_map) && Str::startsWith($library->google_map, 'https://www.google.com/maps/embed?'))
                 <h4>Location On Map</h4>
                 <div class="location">
-                    <!-- Paste Iframe Code -->
-                    
-                    <iframe src="{{$library->google_map}}" width="100%" class="rounded" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="{{ $library->google_map }}" width="100%" class="rounded" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                @endif
+            @endif
+            
             </div>
         </div>
     </div>

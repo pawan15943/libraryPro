@@ -47,6 +47,13 @@
     @foreach($subscriptions as $subscription)
     <div class="col-lg-3">
         <div class="plan-box">
+           
+                @if ($subscription->id == Auth::user()->library_type)
+                <h6>{{ Auth::user()->status == 1 ? 'Active' : 'Expired Plan' }}</h6>
+                @else
+                <h6></h6>
+                @endif
+            
             <h1 id="subscription_fees_{{$subscription->id}}"></h1> 
             <h4>{{$subscription->name}}</h4>
             <ul class="plan-features contents">

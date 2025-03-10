@@ -46,7 +46,7 @@ class SiteController extends Controller
 
       
         $subscriptions = Subscription::with('permissions')->get();
-        $premiumSub=Subscription::where('id',3)->first();
+        $premiumSub=Subscription::orderBy('id','DESC')->first();
         return view('site.home',compact('subscriptions','premiumSub','happy_customers'));
     }
     public function searchLibrary(){

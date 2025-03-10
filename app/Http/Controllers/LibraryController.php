@@ -302,8 +302,9 @@ class LibraryController extends Controller
     {
         
         $subscriptions = Subscription::with('permissions')->get();
+        $premiumSub=Subscription::orderBy('id','DESC')->first();
       
-        return view('library.plan', compact('subscriptions'));
+        return view('library.plan', compact('subscriptions','premiumSub'));
     }
 
 

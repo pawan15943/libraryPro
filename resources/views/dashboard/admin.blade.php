@@ -7,17 +7,8 @@
     use App\Helpers\HelperService; 
 @endphp
 
-<!-- New Design Dahsbard Library -->
-<div class="support-container">
-    <div class="support-icon" onclick="toggleSupportCard()">
-        <i class="fa-solid fa-phone-volume"></i>
-    </div>
-    <div class="support-card" id="supportCard">
-        <p><strong><i class="fa-solid fa-phone-volume"></i> Contact Us:</strong></p>
-        <p>Phone: 123-456-7890</p>
-        <p>Email: support@library.com</p>
-    </div>
-</div>
+
+
 <div class="dashboard learner">
     <div class="row">
         <div class="col-lg-12">
@@ -1394,6 +1385,7 @@
         $icon.toggleClass('fa-eye-slash fa-eye');
     });
 </script>
+
 
 
 @include('learner.script')

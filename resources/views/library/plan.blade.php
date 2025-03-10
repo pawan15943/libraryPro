@@ -47,7 +47,10 @@
     @foreach($subscriptions as $subscription)
     <div class="col-lg-3">
         <div class="plan-box">
-           
+            @php
+
+            $subscribedPermissions = $subscription->permissions->pluck('name')->toArray();
+            @endphp
                 @if ($subscription->id == Auth::user()->library_type)
                 @php
                     if(Auth::user()->status == 0){
@@ -57,6 +60,7 @@
                         $text='Active';
                         $class='text-success';
                     }
+                    
                 @endphp
                 <h6 class="text-center bg-white">Current Plan <span class="{{$class}}">{{$text}} </span></h6>
                 @else
@@ -66,13 +70,20 @@
             <h1 id="subscription_fees_{{$subscription->id}}"></h1> 
             <h4>{{$subscription->name}}</h4>
             <ul class="plan-features contents">
-                @foreach($subscription->permissions as $permission)
+                @foreach($premiumSub->permissions as $permission)
+                @if(in_array($permission->name, $subscribedPermissions))
                 <li>
                     <div class="d-flex">
-                        <i class="fa-solid fa-check"></i>
-                        {{$permission->name}}
+                        <i class="fa-solid fa-check text-success me-2"></i> {{ $permission->name }}
                     </div>
                 </li>
+                @else
+                <li>
+                    <div class="d-flex">
+                        <i class="fa-solid fa-xmark text-danger me-2"></i> {{ $permission->name }}
+                    </div>
+                </li>
+                @endif
                 @endforeach
             </ul>
             <!-- <span class="showmore">Show More </span> -->

@@ -87,6 +87,18 @@
                     };
                     </script>
 
+                    <!-- This Script show below popup only once -->
+                    <!-- <script>
+                        window.onload = function() {
+                            if (!sessionStorage.getItem("planExpiryModalShown")) {
+                                setTimeout(function() {
+                                    var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
+                                    modal.show();
+                                    sessionStorage.setItem("planExpiryModalShown", "true");
+                                }, 1000);
+                            }
+                        };
+                    </script> -->
                     <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
                     
                 @endif

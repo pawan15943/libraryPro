@@ -4577,6 +4577,12 @@ ul.activity li span {
     z-index: -1;
 }
 
+h6.text-center.bg-white {
+    margin-top: -1.8rem;
+    background: #b4f8fc ! IMPORTANT;
+    border-radius: .5rem .5rem 0 0;
+}
+
 @media screen and (max-width:840px) {
     .dashboard-Header h1 * {
         font-size: 1.5rem !important;
@@ -5378,5 +5384,3 @@ img.id-profile {
 .preview-favicon img {
     width: 100%;
 }
-
-

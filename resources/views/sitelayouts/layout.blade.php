@@ -82,9 +82,7 @@
     @include('sitelayouts.header')
     @yield('content')
     @include('sitelayouts.footer')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $('#clientsFeedback').owlCarousel({
@@ -202,7 +200,7 @@
                         },
                         dataType: 'json',
                         success: function(response) {
-                            console.log('plan', response);
+                            // console.log('plan', response);
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
                                 let modeText = plan_mode == 1 ? "<span>/mo</span>" : plan_mode == 2 ? "<span>/yr</span>" : "";

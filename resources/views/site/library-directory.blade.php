@@ -21,6 +21,7 @@
                         <div class="search">
                             <select name="" id="city-item" class="form-select">
                                 <option value="">Select City</option>
+                               
                                 @foreach($cities as $key => $value)
                                 <option value="{{$key}}">{{$value}}</option>  
                                 @endforeach

@@ -464,7 +464,17 @@
                                 }
                             });
                         } else {
-                            $('#library-list').append('<p>No libraries found.</p>');
+                            letblankhtml=
+                            `
+                                    <div class="item">
+                                        <div class="featured-library">
+                                            <h4>No library Found</h4>
+                                          
+                                        </div>
+                                        
+                                    </div>
+                                    `;
+                            $('#library-list').append(letblankhtml);
                         }
                     }
                 });

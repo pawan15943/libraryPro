@@ -21,18 +21,16 @@
                         <div class="search">
                             <select name="" id="city-item" class="form-select">
                                 <option value="">Select City</option>
-                                <option value="1">KOTA</option>
+                                @foreach($cities as $key => $value)
+                                <option value="{{$key}}">{{$value}}</option>  
+                                @endforeach
                                
-                                <option value="2">BUNDI</option>
                             </select>
-                            <!-- <select name="" id="" class="form-select">
-                                <option value="">Select Price Range</option>
-                                <option value="">200 to 400</option>
-                            </select> -->
+                           
                             <div class="search-container" >
                                 <input type="text" id="library-search" class="form-control" placeholder="Search Libraries near you">
 
-                                <i class="fa fa-arrow-right"></i>
+                                <i class="fa fa-arrow-right" id="search-click"></i>
                                 <ul id="suggestions" class="list-group mt-2"></ul>
                             </div>
 

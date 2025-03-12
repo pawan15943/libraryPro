@@ -332,9 +332,9 @@
                 selectedCity = $('#city-item').val(); 
                 if (query.length > 2) {
                     showSuggestions(query, selectedCity);
-                    fetchLibraries(query);
+                    // fetchLibraries(query);
                 } else {
-                    fetchLibraries(selectedSuggestion);
+                    // fetchLibraries(selectedSuggestion);
                     $('#suggestions').empty(); // Clear suggestions
                 }
             });
@@ -367,15 +367,15 @@
                 selectedSuggestion = $(this).data('suggestion'); // Set the selected suggestion (library name)
                 $('#library-search').val($(this).text()); // Update search field with selected suggestion
                 $('#suggestions').empty(); // Clear suggestions list
-                fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
+                // fetchLibraries(selectedSuggestion); 
             });
 
-            $(document).on('change', '#city-item', function() {
-                let selectedCity = $(this).val(); 
-                console.log('city',selectedCity);
-                fetchLibraries('', selectedCity);
+            // $(document).on('change', '#city-item', function() {
+            //     let selectedCity = $(this).val(); 
+            //     console.log('city',selectedCity);
+            //     fetchLibraries('', selectedCity);
              
-            });
+            // });
     
             // Show Library Default Data
             function fetchLibraries(query = '', city = '') {
@@ -472,7 +472,14 @@
     
                 
             // Initial load of libraries (if no search/query)
-            fetchLibraries('');
+            // fetchLibraries('');
+            $(document).on('click', '#search-click', function(){
+                let selectedCity = $('#city-item').val(); 
+                let query = $('#library-search').val(); 
+                fetchLibraries(query, selectedCity);
+            });
+            
+
         });
     </script>
     

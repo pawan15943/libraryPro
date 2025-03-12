@@ -23,6 +23,7 @@ use Exception;
 use DB;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class MasterController extends Controller
 {
@@ -621,11 +622,11 @@ class MasterController extends Controller
 
     public function getLibraries(Request $request)
     {
-       
+        Log::info("No request");
         $query = $request->input('query');
         $suggestion = $request->input('suggestion');
         $city = $request->input('city');
-        
+        Log::info("request", ['query' => $query ,'suggestion' => $suggestion,'city' => $city]);
         // Base query with necessary joins and selects
         $libraries = Library::leftJoin('seats', 'seats.library_id', '=', 'libraries.id')
             ->leftJoin('library_transactions', 'library_transactions.library_id', '=', 'libraries.id')

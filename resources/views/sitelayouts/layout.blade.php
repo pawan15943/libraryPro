@@ -325,13 +325,13 @@
         $(document).ready(function() {
            
             let selectedSuggestion = ''; 
-    
+            let selectedCity = ''; 
             // Trigger search when user types in the search field
             $('#library-search').on('keyup', function() {
                 let query = $(this).val();
-    
+                selectedCity = $('#city-item').val(); 
                 if (query.length > 2) {
-                    showSuggestions(query);
+                    showSuggestions(query, selectedCity);
                     fetchLibraries(query);
                 } else {
                     fetchLibraries(selectedSuggestion);
@@ -340,12 +340,13 @@
             });
     
             // Show suggestions based on the query input
-            function showSuggestions(query) {
+            function showSuggestions(query,selectedCity) {
                 $.ajax({
                     url: '{{ route("get-libraries") }}', // Laravel route for library search
                     method: 'GET',
                     data: {
-                        query: query
+                        query: query,
+                        city: selectedCity,
                     },
                     success: function(data) {
                         $('#suggestions').empty(); // Clear previous suggestions
@@ -368,16 +369,24 @@
                 $('#suggestions').empty(); // Clear suggestions list
                 fetchLibraries(selectedSuggestion); // Fetch libraries based on the selected suggestion
             });
+
+            $(document).on('change', '#city-item', function() {
+                let selectedCity = $(this).val(); 
+                console.log('city',selectedCity);
+                fetchLibraries('', selectedCity);
+             
+            });
     
             // Show Library Default Data
-            function fetchLibraries(query) {
+            function fetchLibraries(query = '', city = '') {
                 var baseUrl = "{{ url('/') }}";
                 $.ajax({
                     url: '{{ route("get-libraries") }}', // Laravel route to get libraries
                     method: 'GET',
                     data: {
                         query: query,
-                        suggestion: selectedSuggestion
+                        suggestion: selectedSuggestion,
+                        city: city,
                     },
                     success: function(data) {
                         $('#library-list').empty(); // Clear the previous library results
@@ -461,105 +470,7 @@
                 });
             }
     
-    
-    
-            // $(document).on('click', '.city-item', function() {
-            //     let selectedCity = $(this).data('city'); 
-            //     console.log("city", selectedCity)
-              
-            //     fetchLibrariesByCity(selectedCity);
-            // });
-    
-            // Show Library Data According to City
-    
-            function fetchLibrariesByCity(city) {
-                $.ajax({
-                    url: '{{ route("get-libraries") }}', // Laravel route to get libraries
-                    method: 'GET',
-                    data: {
-                        city: city
-                    },
-                    success: function(data) {
-                        $('#library-list').empty(); // Clear the previous library results
-    
-                        if (data.length > 0) {
-                            // Initialize Owl Carousel (destroy if already initialized)
-                            if ($('#library-list').hasClass('owl-carousel')) {
-                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-                                $('#library-list').find('.owl-stage-outer').children().unwrap();
-                            }
-    
-                            // Add Owl Carousel class
-                            $('#library-list').addClass('owl-carousel');
-    
-                            // Loop through each library and append it as a carousel item
-                            $.each(data, function(index, library) {
-                                let libraryHTML = `
-                                    <div class="item">
-                                        <div class="featured-library">
-                                            <h4>${library.library_name}</h4>
-                                            <span>${library.library_address}</span>
-                                            <ul class="star-ratings">
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-    
-                                            <ul class="library-feature">
-                                                <li>
-                                                    <span>Pricing Plans</span>
-                                                    <h5>${library.moonth==12 ? 'Yearly' : 'Monthly'}</h5>
-                                                </li>
-                                                <li>
-                                                    <span>Library Type</span>
-                                                    <h5>Public</h5>
-                                                </li>
-                                                <li>
-                                                    <span>Avaialble Seats</span>
-                                                    <h5 class="text-success">${library.total_seats}</h5>
-                                                </li>
-                                                <li>
-                                                    <h5 class="text-success">Verified</h5>
-                                                </li>
-                                            </ul>
-                                            <a href="${baseUrl}/library-details/${library.slug}" class="view-library city-item">View Details <i class="fa fa-long-arrow-right"></i></a>
-    
-                                        </div>
-                                        
-                                    </div>
-                                    `;
-                                $('#library-list').append(libraryHTML);
-                            });
-    
-                            // Re-initialize Owl Carousel after appending items
-                            $('#library-list').owlCarousel({
-                                loop: true,
-                                margin: 30,
-                                nav: true,
-                                dots: true,
-                                autoplay: true,
-                                autoplayTimeout: 3000,
-                                autoplayHoverPause: true,
-                                responsive: {
-                                    0: {
-                                        items: 1
-                                    },
-                                    600: {
-                                        items: 2
-                                    },
-                                    1000: {
-                                        items: 3
-                                    }
-                                }
-                            });
-                        } else {
-                            $('#library-list').append('<p>No libraries found.</p>');
-                        }
-                    }
-                });
-            }
+                
             // Initial load of libraries (if no search/query)
             fetchLibraries('');
         });

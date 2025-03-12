@@ -19,11 +19,11 @@
                         <h1>Find the Best Libraries Near You in India</h1>
 
                         <div class="search">
-                            <select name="" id="" class="form-select">
+                            <select name="" id="city-item" class="form-select">
                                 <option value="">Select City</option>
-                                <option value="">KOTA</option>
-                                <option value="">BARAN</option>
-                                <option value="">BUNDI</option>
+                                <option value="1">KOTA</option>
+                               
+                                <option value="2">BUNDI</option>
                             </select>
                             <!-- <select name="" id="" class="form-select">
                                 <option value="">Select Price Range</option>

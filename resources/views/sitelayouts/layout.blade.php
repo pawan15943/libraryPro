@@ -472,13 +472,13 @@
     
                 
             // Initial load of libraries (if no search/query)
-            // fetchLibraries('');
+           
             $(document).on('click', '#search-click', function(){
                 let selectedCity = $('#city-item').val(); 
                 let query = $('#library-search').val(); 
                 fetchLibraries(query, selectedCity);
             });
-            
+             fetchLibraries('');
 
         });
     </script>

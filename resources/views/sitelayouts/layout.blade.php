@@ -405,7 +405,9 @@
                             $.each(data, function(index, library) {
                                 let libraryHTML = `
                                     <div class="item">
+                                        
                                         <div class="featured-library">
+                                            <img src="{{url('public/img/libraryImg.jpg')}}" class="library-image">
                                             <h4>${library.library_name}</h4>
                                             <span>${library.library_address}</span>
                                             <ul class="star-ratings">

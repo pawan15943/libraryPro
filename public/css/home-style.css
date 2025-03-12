@@ -911,7 +911,7 @@ Directory
     box-shadow: 1px 0 5px #00000045;
 }
 
-.search i.fa.fa-arrow-right:hover{
+.search i.fa.fa-arrow-right:hover {
     transform: scale(1.01);
 }
 
@@ -920,7 +920,8 @@ Directory
     display: flex;
 }
 
-.search input, .search select {
+.search input,
+.search select {
     height: 55px;
     border-radius: 0;
 }
@@ -998,6 +999,17 @@ Directory
     border-radius: 1.5rem;
     box-shadow: 5px 5px 0 #00000045;
     margin: .8rem .3rem !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-library .library-image {
+    width: 200px !IMPORTANT;
+
+    border-radius: 200px;
+    position: absolute;
+    bottom: -8%;
+    right: -18%;
 }
 
 .featured-library:hover {
@@ -1010,7 +1022,8 @@ Directory
 }
 
 .featured-library h4 {
-    font-weight: 900;
+    font-weight: 700;
+    color: #078494;
 }
 
 .featured-library>span,
@@ -1022,9 +1035,52 @@ Directory
 .featured-library .star-ratings {
     list-style: none;
     margin: 0;
-    padding: 1rem 0;
     display: flex;
     gap: .8rem;
+    margin-top: .5rem;
+    padding: 0;
+}
+
+.popular button.owl-prev {
+    background: #18225f ! IMPORTANT;
+    border-radius: 45px;
+    height: 45px ! IMPORTANT;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff ! IMPORTANT;
+}
+
+.popular  button.owl-next {
+    background: #18225f ! IMPORTANT;
+    border-radius: 45px;
+    height: 45px ! IMPORTANT;
+    width: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff ! IMPORTANT;
+}
+
+.popular button span {
+    font-size: 2.5rem;
+    display: block;
+    margin: 0 !IMPORTANT;
+    padding: 0 !IMPORTANT;
+    line-height: 45px;
+    margin-top: -.5rem ! IMPORTANT;
+}
+
+.popular .owl-nav {
+    display: flex;
+    gap: .5rem;
+    justify-content: flex-end;
+}
+
+.featured-library a.view-library:hover {
+    background: #018b9d;
+    box-shadow: 3px 4px 0 #ababab;
 }
 
 .featured-library .star-ratings li .fa {
@@ -1037,7 +1093,7 @@ Directory
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: .8rem;
     margin-top: 1rem;
 }
 
@@ -1047,16 +1103,21 @@ Directory
 
 .featured-library a.view-library {
     text-align: center;
-    padding: .8rem;
+    padding: .5rem 1.5rem;
     background: #18225f;
     color: #fff;
-    border-radius: .8rem;
+    border-radius: 5.8rem;
     text-decoration: none;
-    margin-top: 1.5rem;
-    display: flex;
+    margin-top: 1rem;
+    display: inline-block;
     justify-content: center;
     gap: .8rem;
     align-items: center;
+    width: auto;
+}
+
+.featured-library h5 {
+    font-size: 1.1rem !important;
 }
 
 .important-counts {
@@ -1359,6 +1420,35 @@ ul.customer-ratings {
     .search select {
         width: 200px !important;
         padding-left: 1.5rem;
+    }
+
+    ul.controls {
+        gap: 3rem;
+        justify-content: center;
+    }
+
+    ul.library-anmities li {
+        width: calc(100% / 2 - 1rem);
+    }
+
+    ul.libraryFeatures {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+        justify-content: space-between;
+    }
+
+    ul.libraryFeatures li {
+        width: calc(100% / 2 - .8rem);
+        box-shadow: 1px 0 5px #00000045;
+        padding: 1.5rem 0;
+        border-radius: 1.5rem;
+        gap: 1.5rem;
+        justify-content: center;
+        padding: 1.5rem;
     }
 }
 

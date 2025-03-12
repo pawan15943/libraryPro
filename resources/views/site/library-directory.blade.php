@@ -46,7 +46,7 @@
 <!-- Features Library -->
 <section class="popular py-5">
     <div class="container">
-        <div class="heading mb-5">
+        <div class="heading mb-4">
             <h2>Featured & Popular Libraries</h2>
         </div>
 

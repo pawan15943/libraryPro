@@ -899,6 +899,23 @@ section.blog-header h1 {
 Directory
 ================================================================*/
 
+.search i.fa.fa-arrow-right {
+    background: linear-gradient(45deg, #333fb2, #18225f);
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: .3rem;
+    border-radius: 100px;
+    color: #fff ! IMPORTANT;
+    box-shadow: 1px 0 5px #00000045;
+}
+
+.search i.fa.fa-arrow-right:hover{
+    transform: scale(1.01);
+}
+
+
 .search {
     display: flex;
 }
@@ -957,9 +974,10 @@ Directory
 .hero_Section_directory .search .fa {
     position: absolute;
     right: 20px;
-    top: 18px;
+    top: 12px;
     font-size: 1.5rem;
     color: #ababab;
+    cursor: pointer;
 }
 
 .hero_Section_directory ul:not(.list-group) {

@@ -32,7 +32,7 @@
                             <div class="search-container" >
                                 <input type="text" id="library-search" class="form-control" placeholder="Search Libraries near you">
 
-                                <i class="fa fa-search"></i>
+                                <i class="fa fa-arrow-right"></i>
                                 <ul id="suggestions" class="list-group mt-2"></ul>
                             </div>
 

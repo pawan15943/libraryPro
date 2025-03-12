@@ -11,7 +11,8 @@
     <div style="max-width: 650px; margin: 0 auto; border-radius: 1px solid #ababab;">
         <!-- Header -->
         <div style="margin-top: 1.5rem;">
-           <img src="image/01.png" alt="img" style="width: 100%; border-radius: 1.5rem;">
+            
+           <img src="{{url('/public/img/001.png')}}" alt="img" style="width: 100%; border-radius: 1.5rem;">
         </div>
 
         <!-- Content -->

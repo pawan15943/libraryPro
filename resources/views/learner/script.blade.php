@@ -225,7 +225,6 @@
            
         });
         $('#plan_id,#plan_id2').on('change', function(event) {
-           
             event.preventDefault();
             var plan_id = $(this).val();
             var plan_type_id = $('#plan_type_id').val();

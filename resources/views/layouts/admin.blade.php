@@ -82,18 +82,17 @@
    
 
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    <script src="{{ url('public/js/main-scripts.js') }}"></script>
-    <script src="{{ url('public/js/main-validation.js') }}"></script>
-   
   
     <script src="https://cdn.datatables.net/2.1.6/js/dataTables.js"></script>
         
@@ -102,6 +101,11 @@
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <script src="{{ url('public/js/main-scripts.js') }}"></script>
+    <script src="{{ url('public/js/main-validation.js') }}"></script>
+   
+
 
     <script>
         $(document).ready(function() {

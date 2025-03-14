@@ -450,6 +450,7 @@ class LearnerController extends Controller
 
     public function getPlanTypeSeatWise(Request $request)
     {
+        
         $seatId = $request->seatId;
 
         // Step 1: Retrieve all bookings for the given seat

@@ -28,7 +28,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="features">
+                <div class="owl-carousel" id="featureSlider">
 
                     <div class="item">
                         <div class="product-features-box">
@@ -37,12 +37,14 @@
                             <img src="{{ asset('public/img/01.png') }}" alt="Library management system">
                         </div>
                     </div>
+
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Engage with Our Seat Mapping Feature: Expired and Extended Highlights</h4>
                             <img src="{{ asset('public/img/02.png') }}" alt="Library manager tool">
                         </div>
                     </div>
+
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Efficient & Seamless
@@ -397,7 +399,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="clientsFeedback">
+                <div class="owl-carousel" id="clientsFeedbacks">
 
                     @if(!($happy_customers->isEmpty()))
                     <div class="item">
@@ -772,58 +774,130 @@
 </section>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $('#demoRequest').on('submit', function(e) {
-            e.preventDefault();
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
-            var formData = new FormData(this);
-
-            $.ajax({
-                url: '{{ route("demo-request") }}',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-
-                    if (response.status === 'success') {
-                        toastr.success(response.message);
-
-                        // Clear error messages and reset form
-                        $(".is-invalid").removeClass("is-invalid");
-                        $(".invalid-feedback").remove();
-
-                        // Optionally, reset the form after success
-                        $('#demoRequest')[0].reset();
-                        $("#error-message").hide();
-                    } else {
-                        $("#error-message").text(response.message).show();
-                        $("#success-message").hide();
-                    }
+    <script>
+        $('#featureSlider').owlCarousel({
+            loop: true,
+            nav: true,
+            dots: true,
+            margin: 20,
+            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+            pagination: true,
+            autoplay: true,
+            autoPlaySpeed: 2000,
+            smartSpeed: 2000,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: false,
                 },
-                error: function(xhr) {
-                    var response = xhr.responseJSON;
-
-                    if (xhr.status === 422 && response.errors) { // Validation error check
-                        $(".is-invalid").removeClass("is-invalid");
-                        $(".invalid-feedback").remove();
-
-                        $.each(response.errors, function(key, value) {
-                            var element = $("[name='" + key + "']");
-                            element.addClass("is-invalid");
-                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
-                        });
-                    } else {
-                        console.error('AJAX Error:', xhr.responseText);
-                        alert('There was an error processing the request. Please try again.');
-                    }
+                768: {
+                    items: 2,
+                    nav: false,
+                },
+                992: {
+                    items: 3,
+                },
+                1200: {
+                    items: 3,
+                },
+                1920: {
+                    items: 4,
                 }
+            }
+        });
+    </script>
+
+    <script>
+        $('#clientsFeedbacks').owlCarousel({
+            loop: true,
+            nav: true,
+            dots: true,
+            margin: 20,
+            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+            pagination: true,
+            autoplay: true,
+            autoPlaySpeed: 2000,
+            smartSpeed: 2000,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: false,
+                },
+                768: {
+                    items: 2,
+                    nav: false,
+                },
+                992: {
+                    items: 3,
+                },
+                1200: {
+                    items: 3,
+                },
+                1920: {
+                    items: 4,
+                }
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#demoRequest').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '{{ route("demo-request") }}',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log(response);
+
+                        if (response.status === 'success') {
+                            toastr.success(response.message);
+
+                            // Clear error messages and reset form
+                            $(".is-invalid").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+
+                            // Optionally, reset the form after success
+                            $('#demoRequest')[0].reset();
+                            $("#error-message").hide();
+                        } else {
+                            $("#error-message").text(response.message).show();
+                            $("#success-message").hide();
+                        }
+                    },
+                    error: function(xhr) {
+                        var response = xhr.responseJSON;
+
+                        if (xhr.status === 422 && response.errors) { // Validation error check
+                            $(".is-invalid").removeClass("is-invalid");
+                            $(".invalid-feedback").remove();
+
+                            $.each(response.errors, function(key, value) {
+                                var element = $("[name='" + key + "']");
+                                element.addClass("is-invalid");
+                                element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                            });
+                        } else {
+                            console.error('AJAX Error:', xhr.responseText);
+                            alert('There was an error processing the request. Please try again.');
+                        }
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
 
 @endsection

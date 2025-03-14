@@ -101,7 +101,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="clientsFeedback">
+                <div class="owl-carousel" id="clientsFeedbacks">
                     @if(!($happy_customers->isEmpty()))
                     <div class="item">
                         <div class="feedback-box">
@@ -477,6 +477,7 @@
 </section>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -531,7 +532,40 @@
         });
     });
 </script>
-
+<script>
+        $('#clientsFeedbacks').owlCarousel({
+            loop: true,
+            nav: true,
+            dots: true,
+            margin: 20,
+            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+            pagination: true,
+            autoplay: true,
+            autoPlaySpeed: 2000,
+            smartSpeed: 2000,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1,
+                    nav: false,
+                },
+                768: {
+                    items: 2,
+                    nav: false,
+                },
+                992: {
+                    items: 3,
+                },
+                1200: {
+                    items: 3,
+                },
+                1920: {
+                    items: 4,
+                }
+            }
+        });
+    </script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

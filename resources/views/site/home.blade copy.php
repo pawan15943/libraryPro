@@ -73,8 +73,10 @@
                     <div class="iconbox">
                         <img src="{{ asset('public/img/icons/swap.png') }}" alt="Swap Seat" class="icon">
                     </div>
-                    <h4>End-to-End Encryption & Data Security</h4>
-                    <span>Rest assured, only the library owner has access to learners' email and mobile details, ensuring complete privacy.</span>
+                    <h4>Seamless
+                        Seat Swapping</h4>
+                    <span>Effortlessly switch seats for the perfect spot every time—boost comfort and productivity
+                        with just a click!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -82,8 +84,10 @@
                     <div class="iconbox">
                         <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Easy Plan Upgrades" class="icon">
                     </div>
-                    <h4>Seamless & Intuitive User Interface</h4>
-                    <span>Our platform is designed for an effortless user experience, making navigation smooth and hassle-free.</span>
+                    <h4>Easy
+                        Plan Upgrades</h4>
+                    <span>Instantly upgrade your plan for more access and perks—unlock the best library experience
+                        anytime!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -92,8 +96,10 @@
                         <img src="{{ asset('public/img/icons/reactive.png') }}" alt="Reactivate
                         Seat Access" class="icon">
                     </div>
-                    <h4>Smart Seat Management</h4>
-                    <span>Easily track Expired and Extended seats with a dedicated section for better organization.</span>
+                    <h4>Reactivate
+                        Seat Access</h4>
+                    <span>Quickly reactivate your seat and jump back into your favorite study spot—no waiting, just
+                        instant access!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -102,8 +108,10 @@
 
                         <img src="{{ asset('public/img/icons/closed.png') }}" alt="Close Seat Option" class="icon">
                     </div>
-                    <h4>One-Click Data Import</h4>
-                    <span>Effortlessly migrate your existing data into our system with just a single click.</span>
+                    <h4>Close
+                        Seat Option</h4>
+                    <span>Quickly reactivate your seat and jump back into your favorite study spot—no waiting, just
+                        instant access!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -112,8 +120,9 @@
 
                         <img src="{{ asset('public/img/icons/cancal.png') }}" alt="Swap Seat" class="icon">
                     </div>
-                    <h4>Comprehensive Reports</h4>
-                    <span>Generate detailed reports in seconds to simplify your library management.</span>
+                    <h4>Cancel
+                        Seat Booking</h4>
+                    <span>Cancel your seat booking anytime with ease—flexibility for your changing schedule!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -122,8 +131,9 @@
 
                         <img src="{{ asset('public/img/icons/delete.png') }}" alt="Delete Seat Booking" class="icon">
                     </div>
-                    <h4>Interactive & Insightful Dashboard</h4>
-                    <span>Get a complete overview of your library with an intuitive and visually engaging dashboard.</span>
+                    <h4>Delete Seat Booking</h4>
+                    <span>Easily delete seat bookings you no longer need—maintain a clear and up-to-date booking
+                        history!</span>
                 </div>
             </div>
             <div class="col-lg-3">
@@ -131,25 +141,180 @@
                     <div class="iconbox">
                         <img src="{{ asset('public/img/icons/notification.png') }}" alt="Effortless Communication" class="icon">
                     </div>
-                    <h4>Free Directory Listing</h4>
-                    <span>Boost your library’s visibility by getting a free listing with any of our plans.</span>
+                    <h4>Effortless Communication</h4>
+                    <span>Send updates, notifications, or reminders to students instantly via WhatsApp or email directly from the portal.</span>
                 </div>
             </div>
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
+
                         <img src="{{ asset('public/img/icons/membership-card.png') }}" alt="Flexible Membership Plans" class="icon">
                     </div>
-                    <h4>Attendance & ID Card Management</h4>
-                    <span>Track attendance seamlessly and manage ID cards with ease.</span>
+                    <h4>Flexible Membership Plans</h4>
+                    <span>Modify learner plans seamlessly to fit their changing needs.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/reset.png') }}" alt="Quick Library Reset" class="icon">
+                    </div>
+                    <h4>Quick Library Reset</h4>
+                    <span>Mistakes happen! Reset your library settings with just one click to start fresh.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/import.png') }}" alt="Simple Data Import" class="icon">
+                    </div>
+
+                    <h4>Simple Data Import</h4>
+                    <span>Import existing learner data effortlessly in a single step to get started without delays.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/export.png') }}" alt="Export Data with Ease" class="icon">
+                    </div>
+                    <h4>Export Data with Ease</h4>
+                    <span>Keep complete control by exporting your library data whenever needed.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/icons/report.png') }}" alt="Comprehensive Reporting" class="icon">
+                    </div>
+                    <h4>Comprehensive Reporting</h4>
+                    <span>Get detailed, actionable insights to optimize your library's performance.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/dashboard.png') }}" alt="Interactive Dashboard" class="icon">
+                    </div>
+                    <h4>Interactive Dashboard</h4>
+                    <span>Access everything at a glance with our intuitive and user-friendly dashboard.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/extend.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Extend Seat Usage</h4>
+                    <span>Extend seat access days for learners with just a few clicks.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/backups.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Automated Weekly Backups</h4>
+                    <span>Rest easy knowing your library’s data is backed up automatically every week.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/history.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Maintain Full Seat History</h4>
+                    <span>Keep a detailed record of every seat and its usage history.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/user-interface.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Simplified User Interface</h4>
+                    <span>Enjoy the easiest and most intuitive UI that requires no learning curve.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/direcoty-listing.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Free Directory Listing</h4>
+                    <span>Get a complimentary listing in our library directory to boost visibility.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/login-portal.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Learner Login Portal</h4>
+                    <span>Provide learners with a secure login to access all library features effortlessly.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/activities.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Track Recent Activities</h4>
+                    <span>Monitor all recent activities in your library to stay updated.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/expired.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Quick Action on Expired Seats</h4>
+                    <span>View a dedicated listing of expiring and expired seats to take timely actions.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/simple-setup.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Flexible Setup Options</h4>
+                    <span>Set up your library for half-day, full-day, or hourly operations—all in one step.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/revenue.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Expense and Revenue Management</h4>
+                    <span>Manage your library’s expenses and calculate monthly revenue seamlessly.</span>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/training.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Online Training Videos</h4>
+                    <span>Access training videos anytime to make the most of the software’s features.</span>
                 </div>
             </div>
 
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/icons/id-card.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Easy ID Cards & Smart Attendance Tracking</h4>
+                    <span>Effortless ID cards and smart attendance tracking with Libraro – simple, accurate, and efficient!</span>
+                </div>
+            </div>
         </div>
         <div class="row pt-5">
             <div class="col-lg-12 text-center">
-                <h4 class="text-white">Make library management effortless and efficient</h4>
-                <a href="{{url(path: '/#demo')}}" class="cta mt-4" style="display: inline-block;">Get Started Today!</a>
+                <a href="{{url(path: '/#demo')}}" class="cta">Start Your Free Demo Today!</a>
             </div>
         </div>
     </div>

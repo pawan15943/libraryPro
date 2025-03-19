@@ -6,6 +6,10 @@
     <div class="row">
         @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
+        @elseif(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
+        @elseif(session('warning'))
+        <div class="alert alert-warning">{{ session('warning') }}</div>
         @endif
         <h4 class="mb-4">Add Permissions Category</h4>
         <form action="{{ route('permission-categories.storeOrUpdate', $category->id ?? null) }}" method="POST">

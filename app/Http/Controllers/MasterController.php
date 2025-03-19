@@ -142,13 +142,20 @@ class MasterController extends Controller
         ]);
 
         
+        $exists =  Permission::where('name',$request->name)->where('guard_name',$request->guard_name)->exists();
+      
+        if($exists){
+            $message = $request->name.' Permission is already exists.';
+            return redirect()->route('permissions') ->with('warning', $message);
+        }
+
         if ($permissionId) {
           
             $permission = Permission::findOrFail($permissionId);
             $permission->update($request->only('name', 'description', 'guard_name', 'permission_category_id'));
             $message = 'Permission updated successfully.';
         } else {
-           
+            
             $permission = Permission::create($request->only('name', 'description', 'guard_name', 'permission_category_id'));
           
             $message = 'Permission added successfully.';

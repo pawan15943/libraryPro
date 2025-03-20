@@ -330,8 +330,8 @@ class LearnerController extends Controller
         $customer = Learner::create([
             'seat_no' => $request->input('seat_no'),
             'name' => $request->input('name'),
-            'mobile' => $request->input('mobile'),
-            'email' => $request->input('email'),
+            'mobile' => encryptData($request->input('mobile')),
+            'email' => encryptData($request->input('email')),
             'dob' => $request->input('dob'),
             'id_proof_name' => $request->input('id_proof_name'),
             'id_proof_file' => $id_proof_file,
@@ -533,9 +533,10 @@ class LearnerController extends Controller
                 'learner_detail.id as learner_detail_id',
                 'learner_detail.seat_id'
             ) ->orderBy('seats.seat_no', 'ASC');
-            
+         
         //  Apply dynamic filters if provided
         if (!empty($filters)) {
+           
             // Filter by Plan ID
             if (!empty($filters['plan_id'])) {
                 $query->where('learner_detail.plan_id', $filters['plan_id']);
@@ -565,11 +566,13 @@ class LearnerController extends Controller
                     ->where('learner_detail.status', $detailStatus);
             }
             if (!empty($filters['seat_no'])) {
-                $query->where('learners.seat_no', $filters['seat_no']);
+               
+                $query->where('learner_detail.seat_id', $filters['seat_no']);
             }
             // Search by Name, Mobile, or Email
             if (!empty($filters['search'])) {
                 $search = $filters['search'];
+                
                 $query->where(function ($q) use ($search) {
                     $q->where('learners.name', 'LIKE', "%{$search}%")
                         ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
@@ -602,14 +605,24 @@ class LearnerController extends Controller
                 // Format start and end time
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
+                $customer->email=decryptData($customer->email );
+                $customer->mobile=decryptData($customer->mobile );
             }
 
             return $customer;
         }
       
-        // return $query->paginate(perPage: 10);
+        $query = $query->get(); // ✅ Fetch data as a collection
 
-        return $query->get();
+        $query = $query->map(function ($item) {
+            $item->email = decryptData($item->email ?? '');
+            $item->mobile = decryptData($item->mobile ?? '');
+            return $item;
+        });
+        
+        return $query; // ✅ Return the modified collection
+        
+        
     }
 
 
@@ -1137,6 +1150,23 @@ class LearnerController extends Controller
 
         $learners_seats =  Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
             ->where('learners.library_id', auth()->user()->id)->get();
+           
+     
+            \Log::info("Raw Data Before Decryption", $learners_seats->toArray()); // Log original data
+
+            // ✅ Store the transformed result in the same variable
+            $learners_seats = $learners_seats->map(function ($item) {
+                \Log::info("Before Decryption - Email: {$item->email}, Mobile: {$item->mobile}");
+            
+                // Modify and store decrypted values
+                $item->email = decryptData($item->email ?? '');
+                $item->mobile = decryptData($item->mobile ?? '');
+            
+                \Log::info("After Decryption - Email: {$item->email}, Mobile: {$item->mobile}");
+                return $item;
+            });
+            
+        
         $today = Carbon::today();
         $seats = Seat::get();
         foreach ($seats as $seat) {
@@ -1167,9 +1197,11 @@ class LearnerController extends Controller
                 // Seat is available if no active or expired learners are found
                 $seat->status = 'available';
             }
+
+          
         }
 
-        return view('learner.seatHistory', compact('learners_seats', 'seats'));
+        return view('learner.seatHistory', ['learners_seats' => $learners_seats->toArray(), 'seats'=>$seats]);
     }
     public function history($id)
     {
@@ -1864,38 +1896,7 @@ class LearnerController extends Controller
         }
     }
 
-    // public function incrementMessageCount(Request $request)
-    // {
-
-    //     $id = $request->input('id');
-    //     $type = $request->input('type');
-
-    //     // Find the learner record
-    //     $learner = Learner::find($id);
-
-    //     if ($learner) {
-    //         // Retrieve the relevant row in the email_message table for this learner
-    //         $detailCount = DB::table('email_message')->where('learner_id', $learner->id)->first();
-
-    //         if ($detailCount) {
-    //             if ($type === 'whatsapp') {
-    //                 $newMessageCount = $detailCount->learner_message + 1;
-    //                 DB::table('email_message')->where('learner_id', $learner->id)->update([
-    //                     'learner_message' => $newMessageCount,
-    //                 ]);
-    //             } elseif ($type === 'email') {
-    //                 $newEmailCount = $detailCount->learner_email + 1;
-    //                 DB::table('email_message')->where('learner_id', $learner->id)->update([
-    //                     'learner_email' => $newEmailCount,
-    //                 ]);
-    //             }
-
-    //             return response()->json(['success' => true]);
-    //         }
-    //     }
-
-    //     return response()->json(['success' => false], 404);
-    // }
+    
     public function incrementMessageCount(Request $request)
     {
 
@@ -2054,7 +2055,11 @@ class LearnerController extends Controller
             $learners=null;
         }
        
-        // dd($learners);
+        $learners = $learners->map(function ($item) {
+            $item->email = decryptData($item->email ?? '');
+            $item->mobile = decryptData($item->mobile ?? '');
+            return $item;
+        });
         return view('learner.attendance',compact('learners'));
      
     }
@@ -2161,11 +2166,16 @@ class LearnerController extends Controller
             'attendances.attendance',
             'attendances.date'
         )->get();
-
+        $learners = $learners->map(function ($item) {
+            $item->email = decryptData($item->email ?? '');
+            $item->mobile = decryptData($item->mobile ?? '');
+            return $item;
+        });
         return view('library.learner-attendance', compact('learners', 'data'));
     }
 
 
+    /** Learner Guard and in front learner related function**/
 
     public function IdCard(){
         $data=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id)->where('learner_detail.status',1)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plan_types.name as plan_type_name','plans.name as plan_name','plan_types.start_time','plan_types.end_time')->first();

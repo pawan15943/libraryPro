@@ -331,18 +331,18 @@ class LibraryController extends Controller
         $planId = session('selected_plan_id');
         $planMode = session('selected_plan_mode');
         if($planId && $planMode){
-            dd("1");
+            
             $month=($planMode==2)? 12 : 1;
             $subscription_id=$planId;
             $sub_data=Subscription::where('id',$planId)->first();
             $amount=($planMode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
         }elseif($request){
-            dd("2");
+           
             $month = ($request->plan_mode == 2) ? 12 : 1;
             $subscription_id=$request->subscription_id;
             $amount=$request->price;
         }else{
-            dd("view");
+           
             return redirect('subscriptions.choosePlan')->with('error', 'Plan not selected');
             
         }
@@ -397,7 +397,7 @@ class LibraryController extends Controller
             $transactionId = null;
         
             if ($existingTransaction) {
-                
+                dd("existing ");
                 LibraryTransaction::where('library_id', $library_id)
                     ->where(function($query) use ($today) {
                         $query->where('is_paid', 0)
@@ -424,7 +424,7 @@ class LibraryController extends Controller
                     ->latest('id')
                     ->value('id');
             } else {
-               
+                dd("new ");
                 $transaction = LibraryTransaction::create([
                     'library_id'   => $library_id,
                     'amount'       => $amount,
@@ -457,7 +457,15 @@ class LibraryController extends Controller
             ->where('is_paid', 1)
             ->with(['subscription', 'subscription.permissions'])
             ->get();
-          
+          dd([
+            'transactionId' => $transactionId,
+            'month'         => $month,
+            'plan'          => $plan,
+            'data'          => $data,
+            'all_transaction' => $all_transaction,
+            'discount_amount'  =>$discount_amount,
+            'gst_amount'  =>$gst_amount,
+          ]);
         return view('library.payment', [
             'transactionId' => $transactionId,
             'month'         => $month,

@@ -347,11 +347,7 @@ class LibraryController extends Controller
             
         }
         
-        dd([
-            'month' => $month,
-            'subscription_id' => $subscription_id,
-            'amount' => $amount,
-        ]);
+       
         if ($request->library_id) {
             $library_id = $request->library_id;
         } elseif (Auth::check()) { 

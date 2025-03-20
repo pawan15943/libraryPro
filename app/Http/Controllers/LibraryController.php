@@ -390,7 +390,7 @@ class LibraryController extends Controller
        
            
         if (isset($subscription_id) && !is_null($subscription_id)) {
-           dd("yes");
+          
             Library::where('id', $library_id)->update([
                 'library_type' => $subscription_id,
             ]);

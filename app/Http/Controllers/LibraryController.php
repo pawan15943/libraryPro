@@ -475,7 +475,7 @@ class LibraryController extends Controller
 
     public function paymentStore(Request $request)
     {
-       dd("payment store");
+       dd($request);
         $this->validate($request, [
             'payment_method' => 'required',
            

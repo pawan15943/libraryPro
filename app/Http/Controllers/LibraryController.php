@@ -371,7 +371,7 @@ class LibraryController extends Controller
                     });
             })
             ->exists();
-            dd($existingTransaction);
+           
         $gst_discount = DB::table('gst_discount')->first(); 
 
         if ($gst_discount) {
@@ -390,7 +390,7 @@ class LibraryController extends Controller
        
            
         if (isset($subscription_id) && !is_null($subscription_id)) {
-           
+           dd("yes");
             Library::where('id', $library_id)->update([
                 'library_type' => $subscription_id,
             ]);
@@ -440,6 +440,7 @@ class LibraryController extends Controller
         
             
         } else {
+            dd("no");
             return redirect()->back()->with('error', 'No valid subscription selected.');
         }
         

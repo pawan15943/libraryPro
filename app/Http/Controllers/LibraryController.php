@@ -327,19 +327,22 @@ class LibraryController extends Controller
 
     public function paymentProcess(Request $request)
     {
-       dd("yes");
+       
         $planId = session('selected_plan_id');
         $planMode = session('selected_plan_mode');
         if($planId && $planMode){
+            dd("1");
             $month=($planMode==2)? 12 : 1;
             $subscription_id=$planId;
             $sub_data=Subscription::where('id',$planId)->first();
             $amount=($planMode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
         }elseif($request){
+            dd("2");
             $month = ($request->plan_mode == 2) ? 12 : 1;
             $subscription_id=$request->subscription_id;
             $amount=$request->price;
         }else{
+            dd("view");
             return redirect('subscriptions.choosePlan')->with('error', 'Plan not selected');
             
         }

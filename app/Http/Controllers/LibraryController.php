@@ -441,7 +441,7 @@ class LibraryController extends Controller
         
             
         } else {
-            dd("no");
+           
             return redirect()->back()->with('error', 'No valid subscription selected.');
         }
         

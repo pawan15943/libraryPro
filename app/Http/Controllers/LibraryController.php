@@ -360,7 +360,7 @@ class LibraryController extends Controller
         if (!$library_id) {
             return redirect()->back()->with('error', 'Library ID is missing.');
         }
-
+        dd("yes");
         $today = date('Y-m-d');
         $existingTransaction = LibraryTransaction::where('library_id', $library_id)
             ->where(function($query) use ($today) {

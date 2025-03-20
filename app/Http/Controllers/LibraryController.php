@@ -327,7 +327,7 @@ class LibraryController extends Controller
 
     public function paymentProcess(Request $request)
     {
-       
+       dd("yes");
         $planId = session('selected_plan_id');
         $planMode = session('selected_plan_mode');
         if($planId && $planMode){

@@ -604,7 +604,7 @@ class LibraryController extends Controller
         }
     
         // Verify the payment signature
-        $keySecret =  'nIgv7EaQ3RqyXRe9QAAKf9xD';
+        $keySecret =  config('services.razorpay.secret');
         $generatedSignature = hash_hmac('sha256', $razorpayOrderId . "|" . $razorpayPaymentId, $keySecret);
     
         if ($generatedSignature !== $razorpaySignature) {

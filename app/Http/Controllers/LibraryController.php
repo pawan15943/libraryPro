@@ -426,7 +426,7 @@ class LibraryController extends Controller
                     ->latest('id')
                     ->value('id');
             } else {
-                dd("new ");
+              
                 $transaction = LibraryTransaction::create([
                     'library_id'   => $library_id,
                     'amount'       => $amount,
@@ -475,7 +475,7 @@ class LibraryController extends Controller
 
     public function paymentStore(Request $request)
     {
-       dd($request);
+       
         $this->validate($request, [
             'payment_method' => 'required',
            
@@ -483,6 +483,7 @@ class LibraryController extends Controller
         $library_transaction_id = LibraryTransaction::where('id', $request->library_transaction_id)->first();
 
         if ($request->payment_method == '2') {
+            dd("offline");
             LibraryTransaction::where('id', $request->library_transaction_id)->update([
                 'transaction_id' => $request->transaction_id ?? mt_rand(10000000, 99999999),
             ]);
@@ -490,7 +491,7 @@ class LibraryController extends Controller
            
             $key=config('services.razorpay.key');
             $secret = config('services.razorpay.secret');
-          
+            dd(['key'=>$key,'secret'=>$secret]);
             $amountInPaise = intval($library_transaction_id->paid_amount * 100);
             \Log::info('Razorpay Order Request Parameters', [
                 'amount' => $amountInPaise,
@@ -529,7 +530,7 @@ class LibraryController extends Controller
             return back()->with('error', 'Unable to create Razorpay order.');
         }
 
-        
+        dd("else");
 
         if ($library_transaction_id) {
             

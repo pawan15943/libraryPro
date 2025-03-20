@@ -459,15 +459,7 @@ class LibraryController extends Controller
             ->where('is_paid', 1)
             ->with(['subscription', 'subscription.permissions'])
             ->get();
-          dd([
-            'transactionId' => $transactionId,
-            'month'         => $month,
-            'plan'          => $plan,
-            'data'          => $data,
-            'all_transaction' => $all_transaction,
-            'discount_amount'  =>$discount_amount,
-            'gst_amount'  =>$gst_amount,
-          ]);
+         
         return view('library.payment', [
             'transactionId' => $transactionId,
             'month'         => $month,

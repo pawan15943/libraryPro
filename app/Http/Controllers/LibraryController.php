@@ -481,9 +481,10 @@ class LibraryController extends Controller
                 'transaction_id' => $request->transaction_id ?? mt_rand(10000000, 99999999),
             ]);
         } elseif($request->payment_method=='1'){
-            $key = 'rzp_test_m67hVSALfSsx0w';
-            $secret = 'nIgv7EaQ3RqyXRe9QAAKf9xD';
-            
+           
+            $key=config('services.razorpay.key');
+            $secret = config('services.razorpay.secret');
+          
             $amountInPaise = intval($library_transaction_id->paid_amount * 100);
             \Log::info('Razorpay Order Request Parameters', [
                 'amount' => $amountInPaise,
@@ -745,7 +746,7 @@ class LibraryController extends Controller
                 $uploadedFiles[] = 'uploads/' . $library_imageNewName;
             }
         } else {
-            $uploadedFiles = []; // If no new files, keep empty array
+            $uploadedFiles = []; 
         }
         
         // Retrieve existing images from database
@@ -762,7 +763,7 @@ class LibraryController extends Controller
         if (!empty($finalImages)) {
             $validated['library_images'] = json_encode($finalImages);
         } else {
-            unset($validated['library_images']); // Prevent overwriting with null
+            unset($validated['library_images']); 
         }
         if ($request->hasFile('library_logo')) {
             $library_logo = $request->file('library_logo');

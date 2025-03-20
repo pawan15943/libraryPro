@@ -341,6 +341,10 @@ class LibraryController extends Controller
             $month = ($request->plan_mode == 2) ? 12 : 1;
             $subscription_id=$request->subscription_id;
             $amount=$request->price;
+            dd([
+                'subscription_id'=>$subscription_id,
+                'amount'=>$amount,
+            ]);
         }else{
            
             return redirect('subscriptions.choosePlan')->with('error', 'Plan not selected');
@@ -474,7 +478,7 @@ class LibraryController extends Controller
 
     public function paymentStore(Request $request)
     {
-       
+       dd("payment store");
         $this->validate($request, [
             'payment_method' => 'required',
            

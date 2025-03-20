@@ -398,7 +398,7 @@ class LibraryController extends Controller
             $transactionId = null;
         
             if ($existingTransaction) {
-                dd("existing ");
+               
                 LibraryTransaction::where('library_id', $library_id)
                     ->where(function($query) use ($today) {
                         $query->where('is_paid', 0)

@@ -177,7 +177,7 @@ trait AuthenticatesUsers
             Auth::guard('learner')->logout();
             $redirectTo = '/learner/login';
         } else {
-            $redirectTo = '/library/login'; 
+            $redirectTo = '/'; 
         }
     
      

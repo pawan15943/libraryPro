@@ -137,7 +137,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::post('feedback/store', [LibraryController::class, 'feedbackStore'])->name('library.feedback.store');
       Route::get('list/notification', [NotificationController::class, 'show'])->name('list.notification'); 
       Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
-
+      Route::get('enquiry', [LibraryController::class, 'getEnquiry'])->name('library.enquiry');
   
    
     });

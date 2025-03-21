@@ -12,6 +12,7 @@ use App\Models\LearnerDetail;
 use App\Models\LearnerFeedback;
 use App\Models\LearnerTransaction;
 use App\Models\Library;
+use App\Models\LibraryEnquiry;
 use App\Models\LibrarySetting;
 use App\Models\LibraryTransaction;
 use App\Models\Plan;
@@ -1087,6 +1088,12 @@ class LibraryController extends Controller
         ]);
     }
 
+
+    public function getEnquiry(){
+        $datas=LibraryEnquiry::where('library_id',Auth::user()->id)->with('planType')->get();
+      
+        return view('library.enquery',compact('datas'));
+    }
 
 
 

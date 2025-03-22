@@ -21,11 +21,11 @@
                     </div>
                     <div class="col-lg-6">
                         <span>Mobile Number</span>
-                        <h5>+91-{{ Auth::user()->mobile }}</h5>
+                        <h5>+91-{{ decryptData(Auth::user()->mobile) }}</h5>
                     </div>
                     <div class="col-lg-6">
                         <span>Email Id</span>
-                        <h5>{{ Auth::user()->email }}</h5>
+                        <h5>{{ decryptData(Auth::user()->email) }}</h5>
                     </div>
 
                 </div>

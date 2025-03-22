@@ -62,10 +62,10 @@ $today = Carbon::today();
                         @endif
                         <td><span class="uppercase">{{ $learner->name }}</span><br><small>{{ $learner->dob }}</small></td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{$learner->email }}" data-bs-placement="bottom"><i
+                                data-bs-title="{{decryptData($learner->email) }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                {{$learner->email }}</span> <br>
-                            <small> +91-{{$learner->mobile}}</small>
+                                    {{decryptData($learner->email) }}</span> <br>
+                            <small> +91-{{decryptData($learner->mobile)}}</small>
                         </td>
                         <td>{{ $plantype->name }}<br><small>{{ $plan->name }}</small></td>
 
@@ -78,14 +78,8 @@ $today = Carbon::today();
                         </td>
                         <td>{{ $user->plan_start_date }}</td>
                         <td>{{ $user->plan_end_date }}<br>
-                            {{-- @if ($diffInDays > 0)
-                            <small class="text-success fs-10 d-block ">Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays < 0)
-                                <small class="text-danger fs-10 d-block ">Available for book</small>
-                                @else
-                                <small class="text-warning fs-10 d-block ">Expires today</small>
-                                @endif --}}
-                                @if ($diffInDays > 0)
+                         
+                            @if ($diffInDays > 0)
                                 <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
                             @elseif ($diffInDays <= 0 && $diffExtendDay>0)
                                 <small class="text-danger fs-10 d-block">Extension active! {{ abs($diffExtendDay) }} days left.</small>

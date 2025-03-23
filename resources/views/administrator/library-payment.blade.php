@@ -16,7 +16,7 @@
 
 <!-- Content -->
 
-<form action="{{route('library.payment.store')}}" method="POST" enctype="multipart/form-data">
+<form action="{{route('admin.library.payment.store')}}" method="POST" enctype="multipart/form-data">
     @csrf
     <input name="library_id" value="{{$library_id}}" type="hidden">
     <div class="row mb-4">
@@ -70,53 +70,51 @@
                         @enderror
                     </div>
                 </div>
-                {{-- <div class="col-lg-7">
-                    <div class="payment-detaile ">
-            
-            
-                    </div>
-            
-                </div> --}}
+                
                 <div class="row justify-content-center mb-4">
                 
                     <div class="col-lg-7">
                         <div class="card">
                             <div class="col-lg-12">
-                                <h4 class="text-center mb-4">Order Summery</h4>
+                                <h4 class="text-center mb-4">Order Summary</h4>
                                 <div class="row g-4">
                                     <div class="col-lg-8">
                                         Amount Paid
                                     </div>
                                     <div class="col-lg-4 text-end">
-                                        <i class="fa fa-inr"></i> 
+                                        <i class="fa fa-inr"></i> <span id="amount_paid">0</span>
+                                        <input type="hidden" id="amount" class="form-control" name="amount" >
                                     </div>
-                                    <!--GST and Discount insert in table from API call for created according -->
+                        
                                     <div class="col-lg-8">
-                                        <a href="">Offer & Discounts</a>
+                                        <a href="#">Offer & Discounts</a>
                                     </div>
                                     <div class="col-lg-4 text-end">
-                                        <i class="fa fa-inr"></i> 
+                                        <i class="fa fa-inr"></i> <span id="discount">0</span>
                                     </div>
+                        
                                     <div class="col-lg-8">
-                                        % GST
+                                        GST %
                                     </div>
                                     <div class="col-lg-4 text-end">
-                                        <i class="fa fa-inr"></i> 
+                                        <i class="fa fa-inr"></i> <span id="gst">0</span>
                                     </div>
-                
-                
-                
+                        
                                     <div class="col-lg-8">
                                         <b>Total Amount to Pay</b>
                                     </div>
                                     <div class="col-lg-4 text-end">
-                                        <b><i class="fa fa-inr"></i> </b>
+                                        <b><i class="fa fa-inr"></i> <span id="total_amount">0</span></b>
                                     </div>
-                
+                        
+                                    <div class="col-lg-12 mt-3">
+                                        <label for="paid_amount" class="form-label">Paid Amount</label>
+                                        <input type="text" id="paid_amount" class="form-control" name="paid_amount" readonly>
+                                    </div>
                                 </div>
-                
                             </div>
                         </div>
+                        
                     </div> 
                     <div class="col-lg-5">
                         <div class="card mt-4">
@@ -143,7 +141,7 @@
                                     <span>Payment Method</span>
                                     <select name="payment_method" class="form-select">
                                         <option value="">Select Mode</option>
-                                        <option value="1" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Online</option>
+                                        {{-- <option value="1" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Online</option> --}}
                                         <option value="2" {{ old('payment_method') == 'Offline' ? 'selected' : '' }}>Offline</option>
                                     </select>
                                     @if($errors->has('payment_method'))
@@ -173,31 +171,52 @@
 
 </form>
 <script>
-      $(document.body).on('change', '#library_type', function() {
-            var library_type = $(this).val();
-            var month=$('#month').val();
-            $.ajax({
-                url: '{{ route('get.subscription.fees')}}',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
-                },
-                type: 'GET',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "library_type": library_type,
-                    "month": month,
+    function getFees(library_type, month) {
+        $.ajax({
+            url: '{{ route('get.subscription.fees')}}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+            },
+            type: 'GET',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                "library_type": library_type,
+                "month": month,
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    // Populate order summary
+                    $('#amount_paid').text(response.fees);
+                    $('#discount').text(response.discount);
+                    $('#gst').text(response.gst);
+                    $('#total_amount').text(response.paid_amount);
 
-                },
-
-                dataType: 'json',
-                success: function(response) {
-
-
+                    // Populate paid amount input field
+                    $('#paid_amount').val(response.paid_amount);
+                    $('#amount').val(response.fees);
+                } else {
+                    // Reset all fields if there's an error
+                    $('#amount_paid, #discount, #gst, #total_amount').text('0');
+                    $('#paid_amount').val('');
+                    alert(response.message);
                 }
-            });
-
+            }
         });
+    }
+
+    $(document).ready(function () {
+        $(document.body).on('change', '#library_type, #month', function () {
+            var library_type = $('#library_type').val();
+            var month = $('#month').val();
+            
+            if (library_type && month) {
+                getFees(library_type, month);
+            }
+        });
+    });
 </script>
+
 
 
 @endsection

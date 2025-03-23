@@ -31,7 +31,7 @@
                     <div class="col-lg-12">
                         <label for="">Select File</label>
                         <input type="file" class="form-control" name="csv_file">
-                        <a href="{{ asset('public/sample/sample.csv') }}"><small>Download Sample learnar CSV File</small></a>
+                        <a href="{{ asset('public/sample/sample.csv') }}" download="sample.csv"><small>Download Sample learnar CSV File</small></a>
 
                     </div>
                     <div class="col-lg-12">

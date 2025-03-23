@@ -2195,7 +2195,8 @@ class LearnerController extends Controller
         return view('learner.blog',compact('data'));
     }
     public function feadback(){
-        return view('learner.feadback');
+        $is_feedback=LearnerFeedback::where('learner_id' ,Auth::user()->id)->exists();
+        return view('learner.feadback',compact('is_feedback'));
     }
     public function suggestions(){
         $data=Suggestion::where('learner_id',Auth::user()->id)->get();

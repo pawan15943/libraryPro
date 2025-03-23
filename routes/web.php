@@ -192,7 +192,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
 Route::middleware(['auth:web'])->group(function () {
   Route::post('library/storedata', [LibraryController::class, 'libraryStore'])->name('library.storedata');
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
-    Route::get('library/payment/{id}', [LibraryController::class, 'addPayment'])->name('library.payment');
+    Route::get('library/payment/{id}', [AdminController::class, 'libraryPayment'])->name('library.payment');
     Route::middleware(['role:superadmin'])->group(function () {
         Route::post('library/dashboard/data', [DashboardController::class, 'libraryGetData'])->name('library.dashboard.data.get');
         Route::delete('/activeDeactive/{id}/toggle', [MasterController::class, 'activeDeactive'])->name('activeDeactive');

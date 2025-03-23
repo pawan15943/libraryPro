@@ -13,6 +13,13 @@
     {{ session('success') }}
 </div>
 @endif
+
+@if($is_feedback)
+<div class="alert alert-success">
+    {{ "Your Feedback already Submmitted." }}
+</div>
+@else   
+
 <div>
 <!-- Content -->
 <form action="{{ route('library.feedback.store') }}" class="validateForm" method="POST" enctype="multipart/form-data">
@@ -66,7 +73,7 @@
 
                     <div class="col-lg-6">
                         <label for="">Attachment (If Needed)</label>
-                        <input type="file" name="attachment" class="form-control @error('attachment') is-invalid @enderror">
+                        <input type="file" name="attachment" class="form-control @error('attachment') is-invalid @enderror no-validate">
                         @error('attachment')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -98,5 +105,6 @@
 </form>
 
 </div>
+@endif
 @include('library.script')
 @endsection

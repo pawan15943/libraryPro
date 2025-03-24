@@ -205,13 +205,14 @@
                             // console.log('plan', response);
                             // Loop through each subscription price and dynamically update the HTML
                             response.subscription_prices.forEach(function(subscription) {
-                                let modeText = plan_mode == 1 ? "<span>/mo</span>" : plan_mode == 2 ? "<span>/yr</span>" : "";
+                                let modeText = plan_mode == 1 ? "<span>/month</span>" : plan_mode == 2 ? "<span>/year</span>" : "";
 
                                 $('#subscription_fees_' + subscription.id).html('₹ ' + subscription.fees + modeText);
                                 
                                 $('#plan_mode_' + subscription.id).val(plan_mode);
                                 $('#price_' + subscription.id).val(subscription.fees);
-                                let slash_price = subscription.slash_price ? '₹ ' + subscription.slash_price : '';
+                                let diff = subscription.slash_price - subscription.fees;
+                                let slash_price = subscription.slash_price ? '<span class="slash">₹ ' + subscription.slash_price + '</span> <span class="save">(You Save ₹ ' + diff + ')</span>': '';
                                 $('#before_discount_fees_' + subscription.id).html(slash_price);
                                 $('#planDescription_' + subscription.id).html(subscription.plan_description);
 

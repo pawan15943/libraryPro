@@ -21,14 +21,14 @@
                         <div class="search">
                             <select name="" id="city-item" class="form-select">
                                 <option value="">Select City</option>
-                               
+
                                 @foreach($cities as $key => $value)
-                                <option value="{{$key}}">{{$value}}</option>  
+                                <option value="{{$key}}">{{$value}}</option>
                                 @endforeach
-                               
+
                             </select>
-                           
-                            <div class="search-container" >
+
+                            <div class="search-container">
                                 <input type="text" id="library-search" class="form-control" placeholder="Search Libraries near you">
 
                                 <i class="fa fa-arrow-right" id="search-click"></i>
@@ -277,7 +277,7 @@
                         <div id="faq_01" class="accordion-collapse collapse show"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Libraro is a comprehensive library management portal designed to simplify and automate library operations. It allows you to manage books, track issued and returned items, and generate reports efficiently, all through a user-friendly interface.
+                                <strong>Answer</strong> Libraro is a comprehensive library management portal designed to simplify and automate library operations.
                             </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
                         <div id="faq_02" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Libraro is suitable for schools, colleges, universities, public libraries, and private libraries looking for a modern solution to streamline their library management processes.
+                                <strong>Answer</strong> Libraro is suitable for public libraries, and private libraries looking for a modern solution to streamline their library management processes.
                             </div>
                         </div>
                     </div>
@@ -305,7 +305,7 @@
                         <div id="faq_03" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Yes, Libraro is accessible on desktops, laptops, tablets, and smartphones, ensuring convenience for library staff and users anytime, anywhere.
+                                <strong>Answer</strong> Yes, Libraro is accessible on desktops (Preffered), laptops, tablets, and smartphones (Support Available Soon), ensuring convenience for library staff and users anytime, anywhere.
                             </div>
                         </div>
                     </div>
@@ -319,35 +319,22 @@
                         <div id="faq_04" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Absolutely! Libraro allows you to import existing data in bulk using easy-to-use templates, making the transition seamless for your library.
+                                <strong>Answer</strong> Absolutely! Libraro allows you to import existing data in bulk using easy-to-use templates (.csv file), making the transition seamless for your library.
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="faq_05">
-                                Qus 5: Does Libraro support multiple users and roles?
-                            </button>
-                        </h2>
-                        <div id="faq_05" class="accordion-collapse collapse"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <strong>Answer</strong> Yes, Libraro supports multiple user roles, such as administrators, librarians, and members. Each role has customized permissions to ensure smooth and secure operations.
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#faq_06" aria-expanded="false" aria-controls="faq_06">
-                                Qus 6: Is my library data secure with Libraro?
+                                Qus 5: Is my library data secure with Libraro?
                             </button>
                         </h2>
                         <div id="faq_06" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Security is our top priority. Libraro uses advanced encryption and data protection measures to ensure your library's data is safe and accessible only to authorized users.
+                                <strong>Answer</strong> Security is our top priority. Libraro uses end to end encryption (for Learner Mobile and Email) and data protection measures to ensure your library's data is safe and accessible only to authorized users.
                             </div>
                         </div>
                     </div>
@@ -355,13 +342,13 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#faq_07" aria-expanded="false" aria-controls="faq_07">
-                                Qus 7: How do I get support if I face any issues?
+                                Qus 6: How do I get support if I face any issues?
                             </button>
                         </h2>
                         <div id="faq_07" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> We provide dedicated customer support via email, phone, and chat to assist you with any technical or operational queries. You can also access our online help documentation for quick solutions.
+                                <strong>Answer</strong> We provide dedicated customer support via email (support@libraro.in), phone (+91-8114479678, +91-7737918848), and chat to assist you with any technical or operational queries.
                             </div>
                         </div>
                     </div>
@@ -533,39 +520,39 @@
     });
 </script>
 <script>
-        $('#clientsFeedbacks').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
+    $('#clientsFeedbacks').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 20,
+        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            768: {
+                items: 2,
+                nav: false,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
             }
-        });
-    </script>
+        }
+    });
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -602,4 +589,19 @@
 </script>
 
 
+<!-- scroll offset top -->
+<script>
+    $(document).ready(function() {
+        $('a[href^="#"]').on('click', function(event) {
+            event.preventDefault(); // Prevent default anchor click behavior
+
+            var target = $(this.getAttribute('href')); // Get target element by href ID
+            if (target.length) {
+                $('html, body').animate({
+                    scrollTop: target.offset().top - 60 // Scroll with 60px offset
+                }, 500);
+            }
+        });
+    });
+</script>
 @endsection

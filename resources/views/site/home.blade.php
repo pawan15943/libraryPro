@@ -71,16 +71,18 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/swap.png') }}" alt="Swap Seat" class="icon">
+
+                        <img src="{{ asset('public/img/libraro-features/detailed-dashboard.png') }}" alt="Delete Seat Booking" class="icon">
                     </div>
-                    <h4>End-to-End Encryption & Data Security</h4>
-                    <span>Rest assured, only the library owner has access to learners' email and mobile details, ensuring complete privacy.</span>
+                    <h4>Interactive & Insightful Dashboard</h4>
+                    <span>Get a complete overview of your library with an intuitive and visually engaging dashboard.</span>
                 </div>
             </div>
+
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/upgrade.png') }}" alt="Easy Plan Upgrades" class="icon">
+                        <img src="{{ asset('public/img/libraro-features/user-interface.png') }}" alt="Easy Plan Upgrades" class="icon">
                     </div>
                     <h4>Seamless & Intuitive User Interface</h4>
                     <span>Our platform is designed for an effortless user experience, making navigation smooth and hassle-free.</span>
@@ -89,18 +91,8 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/reactive.png') }}" alt="Reactivate
-                        Seat Access" class="icon">
-                    </div>
-                    <h4>Smart Seat Management</h4>
-                    <span>Easily track Expired and Extended seats with a dedicated section for better organization.</span>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="benefits">
-                    <div class="iconbox">
 
-                        <img src="{{ asset('public/img/icons/closed.png') }}" alt="Close Seat Option" class="icon">
+                        <img src="{{ asset('public/img/libraro-features/import-data.png') }}" alt="Close Seat Option" class="icon">
                     </div>
                     <h4>One-Click Data Import</h4>
                     <span>Effortlessly migrate your existing data into our system with just a single click.</span>
@@ -109,41 +101,55 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
+                        <img src="{{ asset('public/img/libraro-features/seat-management.png') }}" alt="Reactivate
+                        Seat Access" class="icon">
+                    </div>
+                    <h4>Smart Seat Management</h4>
+                    <span>Easily track Expired and Extended seats with a dedicated section for better organization.</span>
+                </div>
+            </div>
 
-                        <img src="{{ asset('public/img/icons/cancal.png') }}" alt="Swap Seat" class="icon">
-                    </div>
-                    <h4>Comprehensive Reports</h4>
-                    <span>Generate detailed reports in seconds to simplify your library management.</span>
-                </div>
-            </div>
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
+                        <img src="{{ asset('public/img/libraro-features/data-security.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>End-to-End Encryption & Data Security</h4>
+                    <span>Rest assured, only the library owner has access to learners' email and mobile details, ensuring complete privacy.</span>
+                </div>
+            </div>
 
-                        <img src="{{ asset('public/img/icons/delete.png') }}" alt="Delete Seat Booking" class="icon">
-                    </div>
-                    <h4>Interactive & Insightful Dashboard</h4>
-                    <span>Get a complete overview of your library with an intuitive and visually engaging dashboard.</span>
-                </div>
-            </div>
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/notification.png') }}" alt="Effortless Communication" class="icon">
-                    </div>
-                    <h4>Free Directory Listing</h4>
-                    <span>Boost your library’s visibility by getting a free listing with any of our plans.</span>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="benefits">
-                    <div class="iconbox">
-                        <img src="{{ asset('public/img/icons/membership-card.png') }}" alt="Flexible Membership Plans" class="icon">
+                        <img src="{{ asset('public/img/libraro-features/identity-card.png') }}" alt="Flexible Membership Plans" class="icon">
                     </div>
                     <h4>Attendance & ID Card Management</h4>
                     <span>Track attendance seamlessly and manage ID cards with ease.</span>
                 </div>
             </div>
+
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+
+                        <img src="{{ asset('public/img/libraro-features/report.png') }}" alt="Swap Seat" class="icon">
+                    </div>
+                    <h4>Comprehensive Reports</h4>
+                    <span>Generate detailed reports in seconds to simplify your library management.</span>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="benefits">
+                    <div class="iconbox">
+                        <img src="{{ asset('public/img/libraro-features/directory-listing.png') }}" alt="Effortless Communication" class="icon">
+                    </div>
+                    <h4>Free Directory Listing</h4>
+                    <span>Boost your library’s visibility by getting a free listing with any of our plans.</span>
+                </div>
+            </div>
+
 
         </div>
         <div class="row pt-5">
@@ -186,7 +192,7 @@
                     <div class="plan-content">
                         <h4>{{$subscription->name}}</h4>
                         <span class="d-block mb-4" id="planDescription_{{$subscription->id}}"></span>
-                        <h4 id="before_discount_fees_{{$subscription->id}}" class="slash"></h4>
+                        <h4 id="before_discount_fees_{{$subscription->id}}"></h4>
                         <h1 id="subscription_fees_{{$subscription->id}}"></h1>
 
                         <button class="btn btn-primary buy-now-btn" data-id="{{ $subscription->id }}" data-plan_mode="">Buy Now</button>
@@ -306,7 +312,7 @@
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
                             <div class="message">{{$value->description ?? ''}}</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
                                 <div class="customer-details">
                                     <h4>{{$value->library_owner ?? ''}}</h4>
                                     <span>{{$value->library_name ?? ''}}</span>
@@ -322,7 +328,7 @@
                         </div>
                     </div>
                     @endforeach
-                    
+
                     @else
                     <div class="item">
                         <div class="feedback-box">
@@ -411,7 +417,7 @@
                         <div id="faq_01" class="accordion-collapse collapse show"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Libraro is a comprehensive library management portal designed to simplify and automate library operations. It allows you to manage books, track issued and returned items, and generate reports efficiently, all through a user-friendly interface.
+                                <strong>Answer</strong> Libraro is a comprehensive library management portal designed to simplify and automate library operations.
                             </div>
                         </div>
                     </div>
@@ -425,7 +431,7 @@
                         <div id="faq_02" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Libraro is suitable for schools, colleges, universities, public libraries, and private libraries looking for a modern solution to streamline their library management processes.
+                                <strong>Answer</strong> Libraro is suitable for public libraries, and private libraries looking for a modern solution to streamline their library management processes.
                             </div>
                         </div>
                     </div>
@@ -439,7 +445,7 @@
                         <div id="faq_03" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Yes, Libraro is accessible on desktops, laptops, tablets, and smartphones, ensuring convenience for library staff and users anytime, anywhere.
+                                <strong>Answer</strong> Yes, Libraro is accessible on desktops (Preffered), laptops, tablets, and smartphones (Support Available Soon), ensuring convenience for library staff and users anytime, anywhere.
                             </div>
                         </div>
                     </div>
@@ -453,35 +459,22 @@
                         <div id="faq_04" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Absolutely! Libraro allows you to import existing data in bulk using easy-to-use templates, making the transition seamless for your library.
+                                <strong>Answer</strong> Absolutely! Libraro allows you to import existing data in bulk using easy-to-use templates (.csv file), making the transition seamless for your library.
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#faq_05" aria-expanded="false" aria-controls="faq_05">
-                                Qus 5: Does Libraro support multiple users and roles?
-                            </button>
-                        </h2>
-                        <div id="faq_05" class="accordion-collapse collapse"
-                            data-bs-parent="#accordionExample">
-                            <div class="accordion-body">
-                                <strong>Answer</strong> Yes, Libraro supports multiple user roles, such as administrators, librarians, and members. Each role has customized permissions to ensure smooth and secure operations.
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#faq_06" aria-expanded="false" aria-controls="faq_06">
-                                Qus 6: Is my library data secure with Libraro?
+                                Qus 5: Is my library data secure with Libraro?
                             </button>
                         </h2>
                         <div id="faq_06" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> Security is our top priority. Libraro uses advanced encryption and data protection measures to ensure your library's data is safe and accessible only to authorized users.
+                                <strong>Answer</strong> Security is our top priority. Libraro uses end to end encryption (for Learner Mobile and Email) and data protection measures to ensure your library's data is safe and accessible only to authorized users.
                             </div>
                         </div>
                     </div>
@@ -489,13 +482,13 @@
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#faq_07" aria-expanded="false" aria-controls="faq_07">
-                                Qus 7: How do I get support if I face any issues?
+                                Qus 6: How do I get support if I face any issues?
                             </button>
                         </h2>
                         <div id="faq_07" class="accordion-collapse collapse"
                             data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <strong>Answer</strong> We provide dedicated customer support via email, phone, and chat to assist you with any technical or operational queries. You can also access our online help documentation for quick solutions.
+                                <strong>Answer</strong> We provide dedicated customer support via email (support@libraro.in), phone (+91-8114479678, +91-7737918848), and chat to assist you with any technical or operational queries.
                             </div>
                         </div>
                     </div>
@@ -610,129 +603,128 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
-    <script>
-        $('#featureSlider').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
+<script>
+    $('#featureSlider').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 20,
+        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            768: {
+                items: 2,
+                nav: false,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
             }
-        });
-    </script>
+        }
+    });
+</script>
 
-    <script>
-        $('#clientsFeedbacks').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
+<script>
+    $('#clientsFeedbacks').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: true,
+        margin: 20,
+        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            768: {
+                items: 2,
+                nav: false,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
             }
-        });
-    </script>
+        }
+    });
+</script>
 
-    <script>
-        $(document).ready(function() {
-            $('#demoRequest').on('submit', function(e) {
-                e.preventDefault();
+<script>
+    $(document).ready(function() {
+        $('#demoRequest').on('submit', function(e) {
+            e.preventDefault();
 
-                var formData = new FormData(this);
+            var formData = new FormData(this);
 
-                $.ajax({
-                    url: '{{ route("demo-request") }}',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    success: function(response) {
-                        console.log(response);
+            $.ajax({
+                url: '{{ route("demo-request") }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
 
-                        if (response.status === 'success') {
-                            toastr.success(response.message);
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
 
-                            // Clear error messages and reset form
-                            $(".is-invalid").removeClass("is-invalid");
-                            $(".invalid-feedback").remove();
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
 
-                            // Optionally, reset the form after success
-                            $('#demoRequest')[0].reset();
-                            $("#error-message").hide();
-                        } else {
-                            $("#error-message").text(response.message).show();
-                            $("#success-message").hide();
-                        }
-                    },
-                    error: function(xhr) {
-                        var response = xhr.responseJSON;
-
-                        if (xhr.status === 422 && response.errors) { // Validation error check
-                            $(".is-invalid").removeClass("is-invalid");
-                            $(".invalid-feedback").remove();
-
-                            $.each(response.errors, function(key, value) {
-                                var element = $("[name='" + key + "']");
-                                element.addClass("is-invalid");
-                                element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
-                            });
-                        } else {
-                            console.error('AJAX Error:', xhr.responseText);
-                            alert('There was an error processing the request. Please try again.');
-                        }
+                        // Optionally, reset the form after success
+                        $('#demoRequest')[0].reset();
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
                     }
-                });
+                },
+                error: function(xhr) {
+                    var response = xhr.responseJSON;
+
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.error('AJAX Error:', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
             });
         });
-    </script>
+    });
+</script>
 
 @endsection

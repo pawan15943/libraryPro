@@ -62,10 +62,10 @@ $today = Carbon::today();
                         @endif
                         <td><span class="uppercase">{{ $learner->name }}</span><br><small>{{ $learner->dob }}</small></td>
                         <td><span class="truncate" data-bs-toggle="tooltip"
-                                data-bs-title="{{decryptData($learner->email) }}" data-bs-placement="bottom"><i
+                                data-bs-title="{{($learner->email) }}" data-bs-placement="bottom"><i
                                     class="fa-solid fa-times text-danger"></i></i>
-                                    {{decryptData($learner->email) }}</span> <br>
-                            <small> +91-{{decryptData($learner->mobile)}}</small>
+                                    {{($learner->email) }}</span> <br>
+                            <small> +91-{{($learner->mobile)}}</small>
                         </td>
                         <td>{{ $plantype->name }}<br><small>{{ $plan->name }}</small></td>
 

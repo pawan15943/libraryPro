@@ -8,18 +8,19 @@
     {{ session('error') }}
 </div>
 @endif
-@if (session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif
+
+
 
 @if($is_feedback)
 <div class="alert alert-success">
     {{ "Your Feedback already Submmitted." }}
 </div>
 @else   
-
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 <div>
 <!-- Content -->
 <form action="{{ route('library.feedback.store') }}" class="validateForm" method="POST" enctype="multipart/form-data">

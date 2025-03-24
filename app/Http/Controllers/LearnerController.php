@@ -572,13 +572,15 @@ class LearnerController extends Controller
             // Search by Name, Mobile, or Email
             if (!empty($filters['search'])) {
                 $search = $filters['search'];
-                
-                $query->where(function ($q) use ($search) {
+                $encryptEmail=encryptData($search);
+                $query->where(function ($q) use ($search, $encryptEmail) {
                     $q->where('learners.name', 'LIKE', "%{$search}%")
                         ->orWhere('learners.mobile', 'LIKE', "%{$search}%")
                         ->orWhere('learners.seat_no', 'LIKE', "%{$search}%")
-                        ->orWhere('learners.email', 'LIKE', "%{$search}%");
+                        ->orWhere('learners.email', $encryptEmail); // 🔍 Exact match for encrypted email
                 });
+
+                
             }
         } else {
             // Apply default status conditions if no filters are provided
@@ -605,8 +607,8 @@ class LearnerController extends Controller
                 // Format start and end time
                 $customer->start_time = Carbon::parse($customer->start_time)->format('g:i A');
                 $customer->end_time = Carbon::parse($customer->end_time)->format('g:i A');
-                $customer->email=decryptData($customer->email );
-                $customer->mobile=decryptData($customer->mobile );
+                // $customer->email=decryptData($customer->email );
+                // $customer->mobile=decryptData($customer->mobile );
             }
 
             return $customer;
@@ -614,11 +616,7 @@ class LearnerController extends Controller
       
         $query = $query->get(); // ✅ Fetch data as a collection
 
-        $query = $query->map(function ($item) {
-            $item->email = decryptData($item->email ?? '');
-            $item->mobile = decryptData($item->mobile ?? '');
-            return $item;
-        });
+    
         
         return $query; // ✅ Return the modified collection
         
@@ -1152,21 +1150,6 @@ class LearnerController extends Controller
             ->where('learners.library_id', auth()->user()->id)->get();
            
      
-            \Log::info("Raw Data Before Decryption", $learners_seats->toArray()); // Log original data
-
-            // ✅ Store the transformed result in the same variable
-            $learners_seats = $learners_seats->map(function ($item) {
-                \Log::info("Before Decryption - Email: {$item->email}, Mobile: {$item->mobile}");
-            
-                // Modify and store decrypted values
-                $item->email = decryptData($item->email ?? '');
-                $item->mobile = decryptData($item->mobile ?? '');
-            
-                \Log::info("After Decryption - Email: {$item->email}, Mobile: {$item->mobile}");
-                return $item;
-            });
-            
-        
         $today = Carbon::today();
         $seats = Seat::get();
         foreach ($seats as $seat) {
@@ -1218,9 +1201,10 @@ class LearnerController extends Controller
 
             ->get();
 
+     
         // Fetch the seat number
         $seat = Seat::find($id, ['seat_no']);
-
+       
         return view('learner.seatHistoryView', compact('learners', 'seat'));
     }
 
@@ -1666,6 +1650,7 @@ class LearnerController extends Controller
                     LearnerTransaction::where('learner_detail_id', $lastLearnerDetail->id)->delete();
 
                     $lastLearnerDetail->delete();
+                    $customer->delete();
                 } else {
 
                     throw new Exception("No LearnerDetail found for learner ID: {$customer->id}");
@@ -2055,11 +2040,11 @@ class LearnerController extends Controller
             $learners=null;
         }
        
-        $learners = $learners->map(function ($item) {
-            $item->email = decryptData($item->email ?? '');
-            $item->mobile = decryptData($item->mobile ?? '');
-            return $item;
-        });
+        // $learners = $learners->map(function ($item) {
+        //     $item->email = decryptData($item->email ?? '');
+        //     $item->mobile = decryptData($item->mobile ?? '');
+        //     return $item;
+        // });
         return view('learner.attendance',compact('learners'));
      
     }
@@ -2166,11 +2151,11 @@ class LearnerController extends Controller
             'attendances.attendance',
             'attendances.date'
         )->get();
-        $learners = $learners->map(function ($item) {
-            $item->email = decryptData($item->email ?? '');
-            $item->mobile = decryptData($item->mobile ?? '');
-            return $item;
-        });
+        // $learners = $learners->map(function ($item) {
+        //     $item->email = decryptData($item->email ?? '');
+        //     $item->mobile = decryptData($item->mobile ?? '');
+        //     return $item;
+        // });
         return view('library.learner-attendance', compact('learners', 'data'));
     }
 

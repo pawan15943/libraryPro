@@ -80,7 +80,7 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
                         </div>
                         <div class="col-lg-6 col-6">
                             <label for="">Email Id <span>*</span></label>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email Id" name="email" id="email" value="{{ old('email', $customer->email) }}" readonly>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>

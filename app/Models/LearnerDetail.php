@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\LibraryScope;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
 class LearnerDetail extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $guarded = []; 
     protected $table = 'learner_detail';
     protected static function booted()

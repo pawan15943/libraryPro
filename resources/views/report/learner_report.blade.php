@@ -30,7 +30,7 @@ $currentMonth = date('m');
                    
                     <div class="col-lg-2">
                         <label for="year">Filter By Year</label>
-                        <select id="year" class="form-select form-control-sm" name="year">
+                        <select id="year" class="form-select " name="year">
                             <option value="">Select Year</option>
                             @foreach($months as $year => $monthData)
                                 <option value="{{ $year }}" {{ $year == $currentYear ? 'selected' : '' }}>
@@ -42,7 +42,7 @@ $currentMonth = date('m');
                     
                     <div class="col-lg-2">
                         <label for="month">Select Month:</label>
-                        <select id="month" class="form-select form-control-sm" name="month">
+                        <select id="month" class="form-select " name="month">
                             <option value="">Select Month</option>
                             @if(isset($months[$currentYear]))
                                 @foreach($months[$currentYear] as $monthNumber => $monthName)

@@ -36,5 +36,13 @@ class Learner extends Authenticatable
         return $this->hasMany(LearnerTransaction::class);
     }
 
-    
+    public function getEmailAttribute($value)
+    {
+        return decryptData($value);
+    }
+
+    public function getMobileAttribute($value)
+    {
+        return decryptData($value);
+    }
 }

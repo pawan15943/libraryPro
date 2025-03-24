@@ -7,7 +7,8 @@ use App\Models\Learner;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 class LoginController extends Controller
 {
     /*
@@ -62,19 +63,33 @@ class LoginController extends Controller
                 break;
     
             case 'admin':
+               
                 if (Auth::guard('library')->attempt($credentials, $remember)) {
+                 
                     $user = Auth::guard('library')->user();
                     if (is_null($user->email_verified_at)) {
+                       
                         Auth::guard('library')->logout();
+                        if ($user) {
+                            $otp = rand(100000, 999999); // Generates a 6-digit numeric OTP
+                            $user->email_otp = $otp;
+                            $user->save();
+            
+                            $this->sendVerificationEmail($user);
+                            session()->flash('library_email', $user->email);
+                        }
                         return redirect()->route('verification.notice')->with('email', $user->email);
 
                     }
-    
+                 
                     if (!$user->hasRole('admin', 'library')) {
+                      
                         $user->assignRole('admin');
                     }
+                  
                     return redirect()->intended(route('library.home'));
                 } else {
+                  
                     return redirect()->back()->withErrors(['error' => 'Invalid email or password for Admin.']);
                 }
                 break;
@@ -159,6 +174,19 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $user->touch(); 
+    }
+
+    public function sendVerificationEmail($library)
+    {
+        $data = [
+            'name' => $library->library_name,
+            'email' => $library->email,
+            'otp' => $library->email_otp,
+        ];
+
+        Mail::send('email.verify-email', $data, function($message) use ($data) {
+            $message->to($data['email'], $data['name'])->subject('Verify Your Email Address');
+        });
     }
 
     

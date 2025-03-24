@@ -1052,7 +1052,7 @@ Directory
     color: #fff ! IMPORTANT;
 }
 
-.popular  button.owl-next {
+.popular button.owl-next {
     background: #18225f ! IMPORTANT;
     border-radius: 45px;
     height: 45px ! IMPORTANT;
@@ -1450,6 +1450,15 @@ ul.customer-ratings {
         gap: 1.5rem;
         justify-content: center;
         padding: 1.5rem;
+    }
+
+
+    .featured-library .library-image {
+        width: 200px !important;
+        border-radius: 200px;
+        position: absolute;
+        bottom: -10%;
+        right: -21%;
     }
 }
 

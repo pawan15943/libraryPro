@@ -31,7 +31,7 @@ $currentMonth = date('m');
                         <!-- Filter By Payment Status -->
                         <div class="col-lg-2">
                             <label for="year">Filter By Year</label>
-                            <select id="year" class="form-select form-control-sm" name="year">
+                            <select id="year" class="form-select " name="year">
                                 <option value="">Select Year</option>
                                 @foreach($dynamicyears as $year)
                                     <!-- Default to current year if no year is selected, else use selected year -->
@@ -45,7 +45,7 @@ $currentMonth = date('m');
                         
                         <div class="col-lg-2">
                             <label for="month">Select Month:</label>
-                            <select id="month" class="form-select form-control-sm" name="month">
+                            <select id="month" class="form-select " name="month">
                                 <option value="">Select Month</option>
                                 @foreach($dynamicmonths as $month)
                                     <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" 

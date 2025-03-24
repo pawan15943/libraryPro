@@ -31,7 +31,7 @@ $currentMonth = date('m');
                     
                     <div class="col-lg-4">
                         <label for="expiredyear">Filter By Year</label>
-                        <select id="expiredyear" class="form-select form-control-sm" name="expiredyear">
+                        <select id="expiredyear" class="form-select " name="expiredyear">
                             <option value="">Select Year</option>
                             @foreach($dynamicyears as $year)
                                 <!-- Default to current year if no year is selected, else use selected year -->
@@ -45,7 +45,7 @@ $currentMonth = date('m');
                     
                     <div class="col-lg-4">
                         <label for="expiredmonth">Select Month:</label>
-                        <select id="expiredmonth" class="form-select form-control-sm" name="expiredmonth">
+                        <select id="expiredmonth" class="form-select " name="expiredmonth">
                             <option value="">Select Month</option>
                             @foreach($dynamicmonths as $month)
                                 <option value="{{ str_pad($month, 2, '0', STR_PAD_LEFT) }}" 

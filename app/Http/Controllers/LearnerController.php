@@ -1218,9 +1218,15 @@ class LearnerController extends Controller
 
             ->get();
 
+        $learners = $learners->map(function ($item) {
+            // Modify and store decrypted values
+            $item->email = decryptData($item->email ?? '');
+            $item->mobile = decryptData($item->mobile ?? '');
+            return $item;
+        });
         // Fetch the seat number
         $seat = Seat::find($id, ['seat_no']);
-
+       
         return view('learner.seatHistoryView', compact('learners', 'seat'));
     }
 

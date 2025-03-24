@@ -722,58 +722,58 @@
 {{-- Display Invalid Records --}}
 <div id="invalid-records-section">
     @if(session('invalidRecords') && count(session('invalidRecords')) > 0)
-    <p class="text-danger">Some records could not be imported:</p>
-    <div class="table table-responsive">
-        <table class="table text-center data-table">
-            <thead>
-                <tr>
-                    <th>Operating Hour</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    <th>Seat</th>
-                    <th>Full day price</th>
-                    <th>Error Message</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (session('invalidRecords') as $record)
-                <tr>
-                    <td>{{ $record['Operating_hour'] ?? 'N/A' }}</td>
-                    <td>{{ $record['start_time'] ?? 'N/A' }}</td>
-                    <td>{{ $record['end_time'] ?? 'N/A' }}</td>
-                    <td>{{ $record['total_seat'] ?? 'N/A' }}</td>
-                    <td>{{ $record['fullday_price'] ?? 'N/A' }}</td>
-                    <td class="text-danger">{{ $record['error'] ?? 'No error provided' }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        <button class="btn btn-danger btn-sm mt-2" id="clearInvalidRecordsButton">Clear Invalid Records</button>
-    </div>
+        <p class="text-danger">Some records could not be imported:</p>
+        <div class="table table-responsive">
+            <table class="table text-center data-table">
+                <thead>
+                    <tr>
+                        <th>Operating Hour</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Seat</th>
+                        <th>Full day price</th>
+                        <th>Error Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (session('invalidRecords') as $record)
+                    <tr>
+                        <td>{{ $record['Operating_hour'] ?? 'N/A' }}</td>
+                        <td>{{ $record['start_time'] ?? 'N/A' }}</td>
+                        <td>{{ $record['end_time'] ?? 'N/A' }}</td>
+                        <td>{{ $record['total_seat'] ?? 'N/A' }}</td>
+                        <td>{{ $record['fullday_price'] ?? 'N/A' }}</td>
+                        <td class="text-danger">{{ $record['error'] ?? 'No error provided' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <button class="btn btn-danger btn-sm mt-2" id="clearInvalidRecordsButton">Clear Invalid Records</button>
+        </div>
 
 
 
-    {{-- Trigger CSV Download Automatically --}}
-    @if(session('autoExportCsv'))
-    <script type="text/javascript">
-        let exportProgressBar = document.getElementById('export-progress-bar');
-        let exportProgressText = document.getElementById('export-progress-text');
-        let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
+        {{-- Trigger CSV Download Automatically --}}
+        @if(session('autoExportCsv'))
+        <script type="text/javascript">
+            let exportProgressBar = document.getElementById('export-progress-bar');
+            let exportProgressText = document.getElementById('export-progress-text');
+            let exportrecordurl = "{{ Auth::guard('library')->check() ? route('library.export.invalid.records') : route('web.export.invalid.records') }}";
 
-        // Set an interval to update the progress bar every 100 ms
-        let progress = 0;
-        let interval = setInterval(function() {
-            progress += 10;
-            exportProgressBar.value = progress;
-            exportProgressText.textContent = `Preparing download: ${progress}%`;
+            // Set an interval to update the progress bar every 100 ms
+            let progress = 0;
+            let interval = setInterval(function() {
+                progress += 10;
+                exportProgressBar.value = progress;
+                exportProgressText.textContent = `Preparing download: ${progress}%`;
 
-            if (progress >= 100) {
-                clearInterval(interval);
-                window.location.href = exportrecordurl;
-            }
-        }, 100); // 100 ms * 10 = 1 second, change as needed
-    </script>
-    @endif
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    window.location.href = exportrecordurl;
+                }
+            }, 100); // 100 ms * 10 = 1 second, change as needed
+        </script>
+        @endif
     @endif
 
     <script>

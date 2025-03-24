@@ -11,6 +11,7 @@ use App\Models\Inquiry;
 use App\Models\Learner;
 use App\Models\LearnerFeedback;
 use App\Models\Library;
+use App\Models\LibraryEnquiry;
 use App\Models\Page;
 use App\Models\PlanPrice;
 use App\Models\PlanType;
@@ -287,7 +288,7 @@ class SiteController extends Controller
         $library=Library::where('slug',$slug)->with('state', 'city','subscription')->first();
       
         if(empty($library)){
-            dd("404");
+           return view('404');
         }else{
 
             $our_package = PlanPrice::leftJoin('plan_types', 'plan_prices.plan_type_id', '=', 'plan_types.id')
@@ -310,8 +311,10 @@ class SiteController extends Controller
             $operating=PlanType::where('library_id',$library->id)->where('day_type_id',1)->select('start_time','end_time')->first();
            
             $learnerFeedback=LearnerFeedback::where('library_id',$library->id)->with(['learner'])->get();
-        }     
-        return view('site.library-details',compact('library','features','our_package','total_seat','operating','learnerFeedback'));
+            $libraryplantype=PlanType::where('library_id',$library->id)->pluck('name','id');
+        }   
+
+        return view('site.library-details',compact('library','features','our_package','total_seat','operating','learnerFeedback','libraryplantype'));
     }
 
     public function reviewstore(Request $request)
@@ -328,6 +331,34 @@ class SiteController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Review submitted successfully!'
+        ]);
+        
+    }
+
+    public function libraryInquerystore(Request $request)
+    {
+       
+        $validator = Validator::make($request->all(),[
+            'name' => 'required|string|max:255',
+            'mobile' => 'required|string|max:15',
+            'enquiry' => 'required|string|max:1000',
+            'shift_time' => 'nullable',
+            'library_id' => 'required',
+          
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+       
+        $data = $validator->validated();
+        LibraryEnquiry::create($data);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Inquiry submitted successfully!'
         ]);
         
     }

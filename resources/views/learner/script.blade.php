@@ -418,7 +418,7 @@
             var user_id = $('#update_user_id').val();
             var plan_id = $('#update_plan_id').val();
            
-           console.log("heena",$('#hidden_plan').val());
+        //    console.log("heena",$('#hidden_plan').val());
           
             var plan_type_id = $('#updated_plan_type_id').val();
             var plan_price_id = $('#updated_plan_price_id').val();

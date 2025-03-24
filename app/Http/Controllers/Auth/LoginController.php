@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Learner;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -77,22 +79,54 @@ class LoginController extends Controller
                 }
                 break;
     
-            case 'learner':
+            // case 'learner':
                 
                
-                if (Auth::guard('learner')->attempt($credentials, $remember)) {
+            //     if (Auth::guard('learner')->attempt($credentials, $remember)) {
                    
-                    $user = Auth::guard('learner')->user();
+            //         $user = Auth::guard('learner')->user();
                   
-                    if (!$user->hasRole('learner')) {
-                        $user->assignRole('learner');
-                    }
+            //         if (!$user->hasRole('learner')) {
+            //             $user->assignRole('learner');
+            //         }
                     
-                    return redirect()->intended(route('learner.home'));
-                } else {
-                    return redirect()->back()->withErrors(['error' => 'Invalid email or password for Learner.']);
+            //         return redirect()->intended(route('learner.home'));
+            //     } else {
+            //         return redirect()->back()->withErrors(['error' => 'Invalid email or password for Learner.']);
+            //     }
+            // break;
+            case 'learner':
+
+                $enteredEmail = $request->email;
+                $password = $request->password;
+                $remember = $request->has('remember');
+            
+                // 🔍 Manually find the user by decrypting stored emails
+                $user = Learner::get()->first(function ($learner) use ($enteredEmail) {
+                    return decryptData($learner->email) === $enteredEmail;
+                });
+            
+                if (!$user) {
+                    return redirect()->back()->withErrors(['error' => 'Invalid email or password']);
                 }
+            
+                // 🛑 Auth::attempt() won't work since email is encrypted, manually verify password
+                if (!Hash::check($password, $user->password)) {
+                    return redirect()->back()->withErrors(['error' => 'Invalid email or password']);
+                }
+            
+                // ✅ Manually log in the user
+                Auth::guard('learner')->login($user, $remember);
+            
+                // 🏆 Assign role if not already assigned
+                if (!$user->hasRole('learner')) {
+                    $user->assignRole('learner');
+                }
+            
+                return redirect()->intended(route('learner.home'));
+            
             break;
+            
     
             default:
                 return back()->withErrors(['error' => 'Invalid user type selected.']);

@@ -12,6 +12,7 @@ use App\Models\LearnerDetail;
 use App\Models\LearnerFeedback;
 use App\Models\LearnerTransaction;
 use App\Models\Library;
+use App\Models\LibraryEnquiry;
 use App\Models\LibrarySetting;
 use App\Models\LibraryTransaction;
 use App\Models\Plan;
@@ -982,7 +983,8 @@ class LibraryController extends Controller
     }
     public function libraryfeedback()
     {
-        return view('library.feedback'); // Adjust the view path as needed
+        $is_feedback=Feedback::where('library_id', Auth::user()->id)->exists();
+        return view('library.feedback',compact('is_feedback')); // Adjust the view path as needed
     }
 
     public function sendSuccessfulEmail($library)
@@ -1001,6 +1003,7 @@ class LibraryController extends Controller
 
     public function feedbackStore(Request $request)
     {
+     
         $validatedData = $request->validate([
             'feedback_type' => 'required',
             'rating' => 'required|integer|min:1|max:5',
@@ -1013,9 +1016,12 @@ class LibraryController extends Controller
       
         $validatedData['library_id'] = Auth::user()->id;
 
-        Feedback::create($validatedData);
-
-        return redirect()->back()->with('success', 'Feedback submitted successfully.');
+        if (!Feedback::where('library_id', Auth::user()->id)->exists()) {
+            Feedback::create($validatedData);
+            return redirect()->back()->with('success', 'Feedback submitted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Feedback already submitted.');
+        }
     }
   
 
@@ -1094,6 +1100,12 @@ class LibraryController extends Controller
         ]);
     }
 
+
+    public function getEnquiry(){
+        $datas=LibraryEnquiry::where('library_id',Auth::user()->id)->with('planType')->get();
+      
+        return view('library.enquery',compact('datas'));
+    }
 
 
 

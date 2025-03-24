@@ -1,18 +1,24 @@
 @extends('layouts.admin')
 @section('content')
-
+@if (session('error'))
+<div class="alert alert-danger">
+    {{ session('error') }}
+</div>
+@endif
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
+@if($is_feedback)
+<div class="alert alert-success">
+    {{ "Your Feedback already Submmitted." }}
+</div>
+@else 
+    
 
 <div class="card mb-4">
-    @if (session('error'))
-    <div class="alert alert-danger">
-        {{ session('error') }}
-    </div>
-    @endif
-    @if (session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
+   
     <form action="{{ route('learner.feedback.store') }}" method="POST" class="validateForm">
         @csrf
         <div class="row g-4">
@@ -104,13 +110,11 @@
             <div class="col-lg-3">
                 <button type="submit" class="btn btn-primary button">Submit Feedback</button>
             </div>
+        </div>
     </form>
 
 </div>
-
-
-
-</div>
+@endif
 
 <script>
     $(document).ready(function() {

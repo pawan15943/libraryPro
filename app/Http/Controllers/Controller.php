@@ -436,11 +436,11 @@ class Controller extends BaseController
             \Log::info('Learner for updated', [ 'status1' => $status]);
             // Check if the learner already exists with active status
             $alreadyLearner = Learner::where('library_id', Auth::user()->id)
-                ->where('email', trim($data['email']))
+                ->where('email', encryptData(trim($data['email'])))
                 ->where('status', 1)
                 ->exists();
             $exist_check = Learner::where('library_id', Auth::user()->id)
-            ->where('email', trim($data['email']))
+            ->where('email', encryptData(trim($data['email'])))
             ->where('status', 0)
             ->exists();
 
@@ -512,7 +512,7 @@ class Controller extends BaseController
                 } elseif($exist_check){
                     \Log::info('for renew data create learner detail and update learner DB', [ 'status1' => $status]);
                     $learnerData = Learner::where('library_id', Auth::user()->id)
-                    ->where('email', trim($data['email']))
+                    ->where('email', encryptData(trim($data['email'])))
                     ->where('status', 0)
                     ->first();
                    
@@ -535,11 +535,11 @@ class Controller extends BaseController
             \Log::info('When Status : 0 Previously Paid Seat info : Leaner', [ 'status0' => $status]);
             // Handling non-active status (status != 1)
             $exist_check = Learner::where('library_id', Auth::user()->id)
-                ->where('email', trim($data['email']))
+                ->where('email', encryptData(trim($data['email'])))
                 ->exists();
         
             if (Learner::where('library_id', Auth::user()->id)
-                ->where('email', trim($data['email']))
+                ->where('email', encryptData(trim($data['email'])))
                 ->where('status', 1)
                 ->exists()) {
                 \Log::info('You are already active');
@@ -549,7 +549,7 @@ class Controller extends BaseController
                 // Check if learner exists and update data
                 $already_data = LearnerDetail::where('plan_start_date', $start_date)->exists();
                 $learnerData = Learner::where('library_id', Auth::user()->id)
-                    ->where('email', trim($data['email']))
+                    ->where('email', encryptData(trim($data['email'])))
                     ->first();
                 if ($already_data) {
                 
@@ -631,9 +631,9 @@ class Controller extends BaseController
             $learner = Learner::create([
                 'library_id' => Auth::user()->id,
                 'name' => trim($data['name']),
-                'email' => trim($data['email']),
+                'email' => encryptData(trim($data['email'])),
                 'password' => bcrypt(trim($data['mobile'])),
-                'mobile' => trim($data['mobile']),
+                'mobile' => encryptData(trim($data['mobile'])),
                 'dob' => $dob,
                 'hours' => trim($hours),
                 'seat_no' => trim($data['seat_no']),
@@ -699,7 +699,7 @@ class Controller extends BaseController
         try {
              // update learner  entry
             Learner::where('id', $learner_id)->update([
-                'mobile' => trim($data['mobile']),
+                'mobile' => encryptData(trim($data['mobile'])),
                 'hours' => trim($hours),
                 'seat_no' => trim($data['seat_no']),
                 'address' => trim($data['address']),
@@ -753,7 +753,7 @@ class Controller extends BaseController
     function updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid) {
        
         Learner::where('id', $learnerData->id)->update([
-            'mobile' => trim($data['mobile']),
+            'mobile' => encryptData(trim($data['mobile'])),
             'dob' => $dob,
             'hours' => trim($hours),
             'seat_no' => trim($data['seat_no']),

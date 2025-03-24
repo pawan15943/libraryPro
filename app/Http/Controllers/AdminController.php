@@ -127,7 +127,8 @@ class AdminController extends Controller
     
         if ($request->payment == 'new') {
             Library::where('id', $request->library_id)->update([
-                'library_type' => $subscription
+                'library_type' => $subscription,
+                'is_paid' => 1,
             ]);
         }
     

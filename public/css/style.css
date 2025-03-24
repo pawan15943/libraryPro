@@ -4588,7 +4588,7 @@ h6.text-center.bg-white {
 @media screen and (max-width:480px) {
 
     .steps {
-        border-radius: 0;
+        border-radius: .5rem;
     }
     .steps ul li {
         margin: .5rem 0;
@@ -4597,6 +4597,7 @@ h6.text-center.bg-white {
 
     .steps ul {
         flex-direction: column;
+        padding: 1rem;
     }
 
     .table-responsive {

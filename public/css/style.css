@@ -3344,11 +3344,7 @@ ul.libraryFeatures li {
     font-size: .8rem;
 }
 
-.steps {
-    background: #e0e0e0;
-    margin-bottom: 1.5rem;
-    border-radius: 3rem;
-}
+
 
 .steps ul {
     list-style: none;
@@ -4591,6 +4587,16 @@ h6.text-center.bg-white {
 
 @media screen and (max-width:480px) {
 
+    .steps {
+        border-radius: 0;
+    }
+    .steps ul li {
+        margin: .5rem 0;
+    }
+
+    .steps ul {
+        flex-direction: column;
+    }
 
     .table-responsive {
         border-radius: 0 !important;

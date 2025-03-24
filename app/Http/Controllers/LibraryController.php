@@ -341,7 +341,8 @@ class LibraryController extends Controller
            
             $month = ($request->plan_mode == 2) ? 12 : 1;
             $subscription_id=$request->subscription_id;
-            $amount=$request->price;
+            $sub_data=Subscription::where('id',$subscription_id)->first();
+            $amount=($request->plan_mode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
            
         }else{
            

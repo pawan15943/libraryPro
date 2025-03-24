@@ -21,7 +21,7 @@
         <!-- No existing expenses, show empty form fields with plus button -->
         <div class="row mt-3">
             <div class="col-lg-6">
-                <select class="form-control" name="expense_id[]">
+                <select class="form-select " name="expense_id[]">
                     <option value="">Select Expense</option>
                     @foreach($expenses as $expense)
                     <option value="{{ $expense->id }}">{{ $expense->name }}</option>

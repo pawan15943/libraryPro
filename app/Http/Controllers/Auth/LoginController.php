@@ -118,7 +118,7 @@ class LoginController extends Controller
             
                 // 🔍 Manually find the user by decrypting stored emails
                 $user = Learner::get()->first(function ($learner) use ($enteredEmail) {
-                    return decryptData($learner->email) === $enteredEmail;
+                    return $learner->email === $enteredEmail;
                 });
             
                 if (!$user) {

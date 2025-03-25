@@ -141,7 +141,7 @@ class LibraryController extends Controller
             'library_zip'    => 'nullable|digits:6',
             'library_type'   => 'nullable|string|max:255',
             'library_owner'  => 'nullable|string|max:255',
-            'library_logo'   => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+           'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
             'password'       => 'required|string|min:8',
             'terms'          => 'accepted',
         ];
@@ -207,7 +207,7 @@ class LibraryController extends Controller
             'library_zip'        => 'nullable|digits:6',
             'library_type'       => 'nullable|string|max:255',
             'library_owner'      => 'nullable|string|max:255',
-            'library_logo'       => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
             'password'           => 'required|string|min:8',
             'library_owner_email'=> 'nullable|email|max:255',
             'library_owner_contact' => 'nullable|digits:10',
@@ -732,8 +732,8 @@ class LibraryController extends Controller
             'library_owner' => 'required|string|max:255',
             'state_id' => 'required|exists:states,id',
             'city_id' => 'required|exists:cities,id',
-            // 'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:1024|dimensions:width=200,height=80',
-            'library_logo' => 'nullable',
+          
+            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
             'library_owner_email' => 'required|email',
             'library_owner_contact' => 'required|string|max:10',
             'features' => 'nullable|array', 
@@ -742,7 +742,7 @@ class LibraryController extends Controller
             'description'=>'nullable',
             'latitude'=>'nullable',
             'longitude'=>'nullable',
-            'library_images.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'library_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
         
         if ($request->hasFile('library_images')) {

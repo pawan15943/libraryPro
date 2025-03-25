@@ -77,6 +77,7 @@ class LoadMenus
                 $diffExtendDay = $today->diffInDays($inextendDate, false);
             }else{
                 $diffExtendDay=0;
+                $diffInDays = 0; 
             }
             $learner_is_renew=LearnerDetail::withoutGlobalScopes()->where('learner_id',Auth::user()->id) ->where('status', 0)
             ->where('plan_start_date', '>=', date('Y-m-d'))
@@ -88,7 +89,7 @@ class LoadMenus
             $iscomp = Library::where('id', Auth::user()->id)->where('status', 1)->exists();
             $isProfile = Library::where('id', Auth::user()->id)->where('is_profile', 1)->exists();
 
-            $diffInDays = 0; // Initialize the variable to a default value
+           
             $today = date('Y-m-d');
 
             $value = LibraryTransaction::where('library_id',  Auth::user()->id)->where('is_paid', 1)->orderBy('id', 'desc')->first();
@@ -243,6 +244,7 @@ class LoadMenus
             View::share('extendDay', $extendDay);
             View::share('diffExtendDay', $diffExtendDay);
             View::share('learner_is_renew', $learner_is_renew);
+            View::share('diffInDays', $diffInDays);
         }
         if (auth()->check() && Auth::guard('library')->check()) {
             $user = Auth::user();

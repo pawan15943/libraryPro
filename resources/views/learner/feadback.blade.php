@@ -5,17 +5,19 @@
     {{ session('error') }}
 </div>
 @endif
+
+@if($is_feedback)
 @if (session('success'))
 <div class="alert alert-success">
     {{ session('success') }}
 </div>
-@endif
-@if($is_feedback)
+@else
 <div class="alert alert-success">
     {{ "Your Feedback already Submmitted." }}
 </div>
+@endif
+
 @else 
-    
 
 <div class="card mb-4">
    
@@ -70,7 +72,7 @@
             <!-- Resource Suggestions -->
             <div class="col-lg-12">
                 <label for="resource_suggestions">Suggestions for new resources or books:</label>
-                <textarea id="resource_suggestions" name="resource_suggestions" class="form-control" rows="3" placeholder="Enter your suggestions">{{ old('resource_suggestions') }}</textarea>
+                <textarea id="resource_suggestions" name="resource_suggestions" class="form-control no-validate" rows="3" placeholder="Enter your suggestions">{{ old('resource_suggestions') }}</textarea>
             </div>
 
             <!-- Library Environment -->
@@ -103,7 +105,7 @@
             <!-- Additional Comments -->
             <div class="col-lg-12">
                 <label for="comments">What do you like most about the library? Any suggestions?</label>
-                <textarea id="comments" name="comments" class="form-control" rows="3" placeholder="Enter your comments">{{ old('comments') }}</textarea>
+                <textarea id="comments" name="comments" class="form-control no-validate" rows="3" placeholder="Enter your comments">{{ old('comments') }}</textarea>
             </div>
 
             <!-- Submit Button -->

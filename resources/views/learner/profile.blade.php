@@ -21,11 +21,11 @@
                     </div>
                     <div class="col-lg-6">
                         <span>Mobile Number</span>
-                        <h5>+91-{{ decryptData(Auth::user()->mobile) }}</h5>
+                        <h5>+91-{{ (Auth::user()->mobile) }}</h5>
                     </div>
                     <div class="col-lg-6">
                         <span>Email Id</span>
-                        <h5>{{ decryptData(Auth::user()->email) }}</h5>
+                        <h5>{{ (Auth::user()->email) }}</h5>
                     </div>
 
                 </div>
@@ -35,23 +35,23 @@
                 <div class="row g-4">
                     <div class="col-lg-4">
                         <span>Plan</span>
-                        <h5>{{ $learner->plan_name }}</h5>
+                        <h5>{{ $learner ? $learner->plan_name : ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Type</span>
-                        <h5>{{ $learner->plan_type_name }}</h5>
+                        <h5>{{ $learner ? $learner->plan_type_name : '' }}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Price</span>
-                        <h5>{{ $learner->plan_price_id }}</h5>
+                        <h5>{{ $learner ? $learner->plan_price_id : ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Start Date</span>
-                        <h5>{{ $learner->plan_start_date }}</h5>
+                        <h5>{{ $learner ? $learner->plan_start_date : ''}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan End Date</span>
-                        <h5>{{ $learner->plan_end_date }}</h5>
+                        <h5>{{ $learner ?  $learner->plan_end_date : ''}}</h5>
                     </div>
                    
                 </div>
@@ -65,8 +65,8 @@
 
             <span class="d-block ">Seat No : {{ Auth::user()->seat_no}}</span>
             <img src="{{ asset('public/img/available.png') }}" alt="Seat" class="seat py-3 ">
-            <p>{{ $learner->plan_name}}</p>
-            <button class="mb-3"> Booked for <b>{{$learner->plan_type_name}}</b></button>
+            <p>{{ $learner ? $learner->plan_name :''}}</p>
+            <button class="mb-3"> Booked for <b>{{$learner ? $learner->plan_type_name : ''}}</b></button>
 
         </div>
 

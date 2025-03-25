@@ -221,7 +221,7 @@
                             @enderror
 
 
-                            <small class="text-info d-block">The logo should be 200px wide and 80px high and must be in one of the following formats: JPG, JPEG, PNG, SVG, or WEBP.</small>
+                            <small class="text-info d-block">The logo should be 250px wide and 250px high and must be in one of the following formats: JPG, JPEG, PNG, SVG, or WEBP.</small>
                         </div>
                         <div class="col-lg-4">
                             <label for="">Logo Image <span>*</span></label>

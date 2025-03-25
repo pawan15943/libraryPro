@@ -320,19 +320,20 @@ class MasterController extends Controller
     }
 
     public function extendDay(Request $request){
+       
         $request->validate([
             'extend_days' => 'required',
         ]);
 
         $id = $request->id;
         $user=Auth::user();
-        if ($user->can('Extend Seat')) {
+        if ($user->can('has-permission', 'Extend Seat')){
             $extend_day = $request->extend_days;
         } else {
             $extend_day = 0;
         }
         
-        
+       
         if(DB::table('hour')->where('library_id', $request->library_id)){
 
             $hourData=DB::table('hour')->where('library_id', $request->library_id)->update([
@@ -408,6 +409,7 @@ class MasterController extends Controller
     }
     
     public function masterEdit(Request $request){
+        
         $id=$request->id;
         try {
            if($request->modeltable=='Seat'){

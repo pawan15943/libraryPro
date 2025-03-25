@@ -64,6 +64,8 @@ class LoadMenus
 
         view()->share('menus', $menus);
 
+        $libraryupdates=DB::table('updates')->whereNull('deleted_at')->where('guard','library')->get();
+        $learnerupdates=DB::table('updates')->whereNull('deleted_at')->where('guard','learner')->get();
         if (Auth::check()) {
             //learner remainig days count
 
@@ -245,6 +247,8 @@ class LoadMenus
             View::share('diffExtendDay', $diffExtendDay);
             View::share('learner_is_renew', $learner_is_renew);
             View::share('diffInDays', $diffInDays);
+            View::share('libraryupdates', $libraryupdates);
+            View::share('learnerupdates', $learnerupdates);
         }
         if (auth()->check() && Auth::guard('library')->check()) {
             $user = Auth::user();

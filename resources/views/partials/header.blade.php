@@ -272,22 +272,27 @@
 
 
     </div>
-    @if($diffInDays <= 0 && Auth::guard('learner')->check())
+    @if($learnerupdates && Auth::guard('learner')->check())
 
    
     <div class="latest-notification">
         <b>Updates :</b>
-        <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form endtime hurdal</marquee>
+        @foreach($learnerupdates as $key => $value)
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">{{$value->message}}</marquee>
+   
+        @endforeach
         <button onclick="closeNotification()" class="close">&times;</button>
     </div>
           
     @endif
-    @if($librarydiffInDays <= 0 && Auth::guard('library')->check())
-
+    @if($libraryupdates  && Auth::guard('library')->check())
    
     <div class="latest-notification">
         <b>Updates :</b>
-        <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form endtime hurdal</marquee>
+        @foreach($libraryupdates as $key => $value)
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">{{$value->message}}</marquee>
+   
+        @endforeach
         <button onclick="closeNotification()" class="close">&times;</button>
     </div>
           

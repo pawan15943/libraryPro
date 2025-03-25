@@ -272,7 +272,7 @@
 
 
     </div>
-    @if($diffInDays <= 0)
+    @if($diffInDays <= 0 && Auth::guard('learner')->check())
 
    
     <div class="latest-notification">
@@ -280,10 +280,19 @@
         <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form endtime hurdal</marquee>
         <button onclick="closeNotification()" class="close">&times;</button>
     </div>
-         
-    @else
-        
+          
     @endif
+    @if($librarydiffInDays <= 0 && Auth::guard('library')->check())
+
+   
+    <div class="latest-notification">
+        <b>Updates :</b>
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form endtime hurdal</marquee>
+        <button onclick="closeNotification()" class="close">&times;</button>
+    </div>
+          
+    @endif
+    
 </div>
 
 <script>

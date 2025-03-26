@@ -71,7 +71,7 @@
                             <td>{{ $record['email'] ?? 'N/A' }}</td>
                             <td>{{ $record['plan_type'] ?? 'N/A' }}</td>
                             <td>{{ $record['start_date'] ?? 'N/A' }}</td>
-                            <td class="text-danger">
+                            <td class="text-danger" style="width:30%;">
                                 {{ is_array($record['error']) ? implode(', ', $record['error']) : ($record['error'] ?? 'No error provided') }}
                             </td>
                             

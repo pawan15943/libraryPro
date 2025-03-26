@@ -362,19 +362,24 @@ class Controller extends BaseController
     protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
     {
     
+
         $validator = Validator::make($data, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'plan' => 'required|int',
+            'plan' => 'required',
+            'start_date' => 'required',
+            'seat_no' => 'required|int',
         ]);
 
         if ($validator->fails()) {
             $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
             return;
         }
+
         $user = Auth::user();
 
-        $dob = $this->parseDate(trim($data['dob']));
+        $dob = !empty($data['dob']) ? $this->parseDate(trim($data['dob'])) : now();
+
         $start_date = $this->parseDate(trim($data['start_date']));
 
         if (!$start_date) {
@@ -386,9 +391,12 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Invalid date of birth format']);
             return;
         }
-      
-
-        $plan = Plan::where('plan_id', trim($data['plan']))->first();
+       
+        !empty( trim($data['plan'])) ?   preg_match('/\d+/', trim($data['plan']), $matches) : 1 ;
+        
+        preg_match('/\d+/',  trim($data['plan']), $matches);
+        $planexplode = $matches[0] ?? 1; 
+        $plan = Plan::where('plan_id',$planexplode)->first();
         $planType = PlanType::where('name', '=', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
@@ -404,7 +412,12 @@ class Controller extends BaseController
             return;
         }
         if ( !$planPrice) {
-            $invalidRecords[] = array_merge($data, ['error' => ' Plan price not found']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan price not found']);
+            return;
+        }
+        $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : $planPrice->price;
+        if($planPrice->price < $paid_amount){
+            $invalidRecords[] = array_merge($data, ['error' => 'Paid amount is greater then plan price']);
             return;
         }
 
@@ -414,7 +427,7 @@ class Controller extends BaseController
             return;
         }
        
-        $payment_mode = $this->getPaymentMode(trim($data['payment_mode']));
+        $payment_mode = !empty($data['payment_mode']) ? $this->getPaymentMode(trim($data['payment_mode'])) : 2;
         $hours = $planType->slot_hours;
         $duration = trim($data['plan']) ?? 0;
         $joinDate = isset($data['join_date']) ? $this->parseDate(trim($data['join_date'])) : $start_date;
@@ -422,7 +435,7 @@ class Controller extends BaseController
         $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
         
 
-        $pending_amount = $planPrice->price - trim($data['paid_amount']);
+        $pending_amount = $planPrice->price - $paid_amount;
         $paid_date = isset($data['paid_date']) ? $this->parseDate(trim($data['paid_date'])) : $start_date;
 
         $extend_days=Hour::select('extend_days')->first();
@@ -632,13 +645,13 @@ class Controller extends BaseController
                 'library_id' => Auth::user()->id,
                 'name' => trim($data['name']),
                 'email' => encryptData(trim($data['email'])),
-                'password' => bcrypt(trim($data['mobile'])),
-                'mobile' => encryptData(trim($data['mobile'])),
+                'password' =>!empty($data['mobile']) ? bcrypt(trim($data['mobile'])) : bcrypt(trim('12345678')),
+                'mobile' =>!empty($data['mobile']) ? encryptData(trim($data['mobile'])) :null,
                 'dob' => $dob,
                 'hours' => trim($hours),
                 'seat_no' => trim($data['seat_no']),
                 
-                'address' => trim($data['address']),
+                'address' => !empty($data['address']) ? trim($data['address']) : null,
                 'status' => $status,
             ]);
     
@@ -658,14 +671,14 @@ class Controller extends BaseController
                 'is_paid' => $is_paid,
                 'status' => $status,
             ]);
-    
+            $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : $planPrice->price;
             // Create learner transaction entry
             LearnerTransaction::create([
                 'learner_id' => $learner->id,
                 'library_id' => Auth::user()->id,
                 'learner_detail_id' => $learner_detail->id,  // Corrected column name
                 'total_amount' => $planPrice->price,
-                'paid_amount' => trim($data['paid_amount']),
+                'paid_amount' => $paid_amount,
                 'pending_amount' => $pending_amount,
                 'paid_date' => $paid_date,
                 'is_paid' => 1,
@@ -699,10 +712,10 @@ class Controller extends BaseController
         try {
              // update learner  entry
             Learner::where('id', $learner_id)->update([
-                'mobile' => encryptData(trim($data['mobile'])),
+                'mobile' =>  !empty($data['mobile']) ? encryptData(trim($data['mobile'])) : null,
                 'hours' => trim($hours),
                 'seat_no' => trim($data['seat_no']),
-                'address' => trim($data['address']),
+                'address' => !empty($data['address']) ? trim($data['address']) : null,
                 'status' => $status,
             ]);
             // Create learner detail entry
@@ -721,14 +734,14 @@ class Controller extends BaseController
                 'is_paid' => $is_paid,
                 'status' => $status,
             ]);
-
+            $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : $planPrice->price;
             // Create learner transaction entry
             LearnerTransaction::create([
                 'learner_id' => $learner_id,
                 'library_id' => Auth::user()->id,
                 'learner_detail_id' => $learner_detail->id,
                 'total_amount' => $planPrice->price,
-                'paid_amount' => trim($data['paid_amount']),
+                'paid_amount' => $paid_amount,
                 'pending_amount' => $pending_amount,
                 'paid_date' => $paid_date,
                 'is_paid' => 1,
@@ -753,11 +766,11 @@ class Controller extends BaseController
     function updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid) {
        
         Learner::where('id', $learnerData->id)->update([
-            'mobile' => encryptData(trim($data['mobile'])),
+            'mobile' => !empty($data['mobile']) ? encryptData(trim($data['mobile'])) : null,
             'dob' => $dob,
             'hours' => trim($hours),
             'seat_no' => trim($data['seat_no']),
-            'address' => trim($data['address']),
+            'address' => !empty($data['address']) ? trim($data['address']) : null,
             'status' => $status,
         ]);
     

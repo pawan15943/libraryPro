@@ -272,7 +272,8 @@
 
 
     </div>
-    @if($learnerupdates && Auth::guard('learner')->check())
+   
+    @if(!$learnerupdates->isEmpty() && Auth::guard('learner')->check())
 
    
     <div class="latest-notification">
@@ -285,7 +286,7 @@
     </div>
           
     @endif
-    @if($libraryupdates  && Auth::guard('library')->check())
+    @if(!$libraryupdates->isEmpty()  && Auth::guard('library')->check())
    
     <div class="latest-notification">
         <b>Updates :</b>

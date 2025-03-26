@@ -415,7 +415,8 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Plan Price Not Found: The price for the selected plan is missing or not defined. Please confirm the correct pricing and re-upload the data.']);
             return;
         }
-        $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : $planPrice->price;
+       
+        $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : 0;
         if($planPrice->price < $paid_amount){
             $invalidRecords[] = array_merge($data, ['error' => 'Paid Amount Exceeds Plan Price: The entered paid amount is greater than the actual plan price. Please verify and enter the correct amount.']);
             return;
@@ -443,8 +444,12 @@ class Controller extends BaseController
        
         $inextendDate = Carbon::parse($endDate)->addDays($extendDay);
         $status = $inextendDate > Carbon::today() ? 1 : 0;
-
-        $is_paid = $pending_amount <= 0 ? 1 : 0;
+        if(empty($data['paid_amount']) || $paid_amount==0){
+            $is_paid =0;
+        }else{
+            $is_paid =1;
+        }
+        // $is_paid = $pending_amount <= 0 ? 1 : 0;
         if ($status == 1) {
             \Log::info('Learner for updated', [ 'status1' => $status]);
             // Check if the learner already exists with active status

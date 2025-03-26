@@ -104,14 +104,20 @@
                 @endif
             @endif
                <!-- learner  -->      
+           
+
             @if(isset($diffExtendDay) && Auth::guard('learner')->check() && !$learner_is_renew )
-                @if($diffExtendDay > 0)
+                   
+              
+                @if ($diffInDays < 0 && $diffExtendDay>0)
+                <h5 class="text-danger fs-10 d-block ">Enjoy your plan in extend {{ abs($diffExtendDay) }} days.</h5>
+                @elseif ($diffInDays < 0 && $diffExtendDay==0)
+                <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
+                @elseif($diffExtendDay > 0)
                 <small class="text-success ml-2"> <i class="fa fa-clock"></i> Enjoy your plan for the next {{$diffExtendDay}} days!</small>
-                @elseif($diffExtendDay < 0)
+                @else
                 <small class="text-danger ml-2"><i class="fa fa-clock"></i> Plan expired {{ abs($diffExtendDay) }} days ago </small>
 
-                @else
-                <small class="text-danger ml-2"> <i class="fa fa-clock"></i> Plan expires today </small>
                 @endif
             @endif
 
@@ -266,11 +272,33 @@
 
 
     </div>
+   
+    @if(!$learnerupdates->isEmpty() && Auth::guard('learner')->check())
+
+   
     <div class="latest-notification">
         <b>Updates :</b>
-        <marquee behavior="" direction="left" class="m-0" scrollamount="5">Your Library plan will expiring soon please check it and renew today to safe form endtime hurdal</marquee>
+        @foreach($learnerupdates as $key => $value)
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">{{$value->message}}</marquee>
+   
+        @endforeach
         <button onclick="closeNotification()" class="close">&times;</button>
     </div>
+          
+    @endif
+    @if(!$libraryupdates->isEmpty()  && Auth::guard('library')->check())
+   
+    <div class="latest-notification">
+        <b>Updates :</b>
+        @foreach($libraryupdates as $key => $value)
+        <marquee behavior="" direction="left" class="m-0" scrollamount="5">{{$value->message}}</marquee>
+   
+        @endforeach
+        <button onclick="closeNotification()" class="close">&times;</button>
+    </div>
+          
+    @endif
+    
 </div>
 
 <script>

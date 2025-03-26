@@ -8,8 +8,14 @@ $current_route = Route::currentRouteName();
 
     <ul class="list-unstyled ps-0 mt-4">
         @foreach($menus as $menu)
+        
+        @php
+            $show = ($menu->name == 'Dashboard' || Auth::user()->is_paid != 0) ? 1 : 0;
+        @endphp
+    
+       
         {{-- Check if it's a parent menu and the guard matches --}}
-        @if(is_null($menu->parent_id) && ($menu->guard === null || Auth::guard($menu->guard)->check()))
+        @if(is_null($menu->parent_id) && $show==1 && ($menu->guard === null || Auth::guard($menu->guard)->check()))
         {{-- Parent menu logic --}}
         @can('has-permission', [$menu->has_permissions])
         <li class="mb-1 {{ $current_route == $menu->url ? 'active' : '' }}">

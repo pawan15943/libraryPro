@@ -288,7 +288,7 @@ class SiteController extends Controller
         $library=Library::where('slug',$slug)->with('state', 'city','subscription')->first();
       
         if(empty($library)){
-           return view('404');
+           return view('errors.404');
         }else{
 
             $our_package = PlanPrice::leftJoin('plan_types', 'plan_prices.plan_type_id', '=', 'plan_types.id')

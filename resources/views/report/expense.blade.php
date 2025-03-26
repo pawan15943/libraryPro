@@ -21,7 +21,7 @@
         <!-- No existing expenses, show empty form fields with plus button -->
         <div class="row mt-3">
             <div class="col-lg-6">
-                <select class="form-control" name="expense_id[]">
+                <select class="form-select " name="expense_id[]">
                     <option value="">Select Expense</option>
                     @foreach($expenses as $expense)
                     <option value="{{ $expense->id }}">{{ $expense->name }}</option>
@@ -74,7 +74,7 @@
         </div>
     </form>
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-lg-12">
             <h5 class="mb-4 mt-4">Monthly Expenses List</h5>
             <div class="table-responsive">
@@ -106,7 +106,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div> --}}
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

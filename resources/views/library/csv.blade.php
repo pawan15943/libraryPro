@@ -65,7 +65,6 @@
                         <label for="">Select File</label>
                         <input type="file" class="form-control" name="csv_file">
 
-
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
@@ -149,7 +148,11 @@
                             <td>{{ $record['email'] ?? 'N/A' }}</td>
                             <td>{{ $record['plan_type'] ?? 'N/A' }}</td>
                             <td>{{ $record['start_date'] ?? 'N/A' }}</td>
-                            <td class="text-danger">{{ $record['error'] ?? 'No error provided' }}</td>
+                            <td class="text-danger" style="width:30%;">
+                                {{ is_array($record['error']) ? implode(', ', $record['error']) : ($record['error'] ?? 'No error provided') }}
+                            </td>
+                            
+                           
                         </tr>
                         @endforeach
                     </tbody>

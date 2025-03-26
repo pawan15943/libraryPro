@@ -26,7 +26,7 @@
                     introduce you to <strong>Libraro</strong>—the ultimate solution to transform your library into a
                     modern, efficient, and visitor-friendly space. Say goodbye to manual processes and hello to seamless
                     library management!</p>
-                <a href="#"
+                <a href="{{route('register')}}"
                     style="display: inline-block; margin: 20px 0; padding: 12px 30px; background-color: #000; color: #ffffff; font-size: 16px; text-decoration: none; border-radius: 5px; font-family: 'Mulish', sans-serif;">Get
                     Started Today</a>
             </div>
@@ -40,7 +40,7 @@
                 <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">Join hundreds of
                     libraries already using Libraro to streamline operations and enhance visitor experiences. Don’t
                     wait—start your journey today!</p>
-                <a href="#"
+                <a href="{{route('register')}}"
                     style="display: inline-block; margin: 20px 0; padding: 12px 30px; background-color: #000; color: #ffffff; font-size: 16px; text-decoration: none; border-radius: 5px; font-family: 'Mulish', sans-serif;">Sign
                     Up Now</a>
             </div>
@@ -52,15 +52,16 @@
             <!-- Logo -->
             <img src="{{url('/public/img/libraro-white.svg')}}" alt="Libraro Logo" style="margin-bottom: 15px; width: 150px;">
 
+
             <!-- Social Links -->
             <p style="margin: 0; margin-bottom: 1rem; font-weight: 800;">Follow us on:</p>
-            <a href="https://facebook.com" target="_blank"
+            <a href="https://www.facebook.com/profile.php?id=61574493811848" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Facebook</a>
-            <a href="https://twitter.com" target="_blank"
+            <a href="https://x.com/libraroindia" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Twitter</a>
-            <a href="https://linkedin.com" target="_blank"
+            <a href="https://www.linkedin.com/in/libraro-india-081580357/" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">LinkedIn</a>
-            <a href="https://instagram.com" target="_blank"
+            <a href="https://www.instagram.com/libraroindia/" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Instagram</a>
 
             <!-- Address -->
@@ -69,8 +70,8 @@
             <!-- Legal Links -->
             <p style="margin: 15px 0; font-size: .7rem;">This email was sent to noreply@libraro.in.</p>
             <p style="margin: 15px 0; font-size: .7rem;">
-                <a href="#" style="text-decoration: none; color: #ffffff; margin: 0 10px;">Privacy Policy</a> |
-                <a href="#" style="text-decoration: none; color: #ffffff; margin-left: 10px;">Terms of Service</a>
+                <a href="{{route('privacy-policy')}}" style="text-decoration: none; color: #ffffff; margin: 0 10px;">Privacy Policy</a> |
+                <a href="{{route('term-and-condition')}}" style="text-decoration: none; color: #ffffff; margin-left: 10px;">Terms of Service</a>
             </p>
 
             <!-- Copyright -->

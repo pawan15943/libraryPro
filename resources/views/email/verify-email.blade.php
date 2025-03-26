@@ -55,13 +55,13 @@
 
             <!-- Social Links -->
             <p style="margin: 0; margin-bottom: 1rem; font-weight: 800;">Follow us on:</p>
-            <a href="https://facebook.com" target="_blank"
+            <a href="https://www.facebook.com/profile.php?id=61574493811848" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Facebook</a>
-            <a href="https://twitter.com" target="_blank"
+            <a href="https://x.com/libraroindia" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Twitter</a>
-            <a href="https://linkedin.com" target="_blank"
+            <a href="https://www.linkedin.com/in/libraro-india-081580357/" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">LinkedIn</a>
-            <a href="https://instagram.com" target="_blank"
+            <a href="https://www.instagram.com/libraroindia/" target="_blank"
                 style="margin: 0 10px; text-decoration: none; color: #ffffff;">Instagram</a>
 
             <!-- Address -->
@@ -70,8 +70,8 @@
             <!-- Legal Links -->
             <p style="margin: 15px 0; font-size: .7rem;">This email was sent to noreply@libraro.in.</p>
             <p style="margin: 15px 0; font-size: .7rem;">
-                <a href="#" style="text-decoration: none; color: #ffffff; margin: 0 10px;">Privacy Policy</a> |
-                <a href="#" style="text-decoration: none; color: #ffffff; margin-left: 10px;">Terms of Service</a>
+                <a href="{{route('privacy-policy')}}" style="text-decoration: none; color: #ffffff; margin: 0 10px;">Privacy Policy</a> |
+                <a href="{{route('term-and-condition')}}" style="text-decoration: none; color: #ffffff; margin-left: 10px;">Terms of Service</a>
             </p>
 
             <!-- Copyright -->

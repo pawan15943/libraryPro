@@ -1609,17 +1609,6 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
 }
 
 
-.import-data {
-    background: var(--c5);
-    padding: 1.5rem 1.5rem;
-    border-radius: 20px;
-    box-shadow: 1px 0 5px #00000029;
-}
-
-.import-data a {
-    text-decoration: none;
-    color: #000;
-}
 
 img#imageDisplay {
     width: 180px;
@@ -1670,6 +1659,7 @@ button#clearInvalidRecordsButton {
     margin: 0;
     height: auto;
     height: 35px !important;
+    border-radius: 2rem;
 }
 
 img.extedned,
@@ -2592,6 +2582,10 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a {
     font-size: 1rem;
     margin: 0;
     padding: 0 1rem;
+}
+
+h6.text-center.text-danger.mb-4 {
+    color: red ! IMPORTANT;
 }
 
 /* Plan */
@@ -3548,17 +3542,7 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
 }
 
 
-.import-data {
-    background: var(--c5);
-    padding: 1.5rem 1.5rem;
-    border-radius: 20px;
-    box-shadow: 1px 0 5px #00000029;
-}
 
-.import-data a {
-    text-decoration: none;
-    color: #000;
-}
 
 img#imageDisplay {
     width: 180px;
@@ -4291,19 +4275,20 @@ a.btn.btn-primary.export:hover {
     }
 }
 
+
+.how-to-upload,
+.import-data {
+    min-height: 360px;
+}
+
 .import-data {
     background: #ffffff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    border-radius: 1rem;
     padding: 20px;
     transition: all 0.3s ease;
-
+    border: 1px solid #c9c9c9;
 }
 
-.import-data:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
 
 .import-data label {
     font-weight: 600;
@@ -4330,6 +4315,7 @@ a.btn.btn-primary.export:hover {
     color: #6c63ff;
     text-decoration: none;
     transition: color 0.3s ease;
+    font-size: .8rem;
 }
 
 .import-data a:hover {
@@ -4358,7 +4344,7 @@ a.btn.btn-primary.export:hover {
 }
 
 #export-progress-container {
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -4388,6 +4374,84 @@ a.btn.btn-primary.export:hover {
     margin-top: 8px;
     display: block;
     animation: fade-in 1.5s ease;
+}
+
+div#guidelines ol {
+    padding: 0 1rem;
+}
+
+div#guidelines ol li+li {
+    margin-top: .8rem;
+}
+
+div#guidelines ol li {
+    font-size: .9rem;
+    color: #414141;
+}
+
+a.guideline {
+    font-weight: 600 !IMPORTANT;
+    display: inline-block;
+    margin: 0rem;
+    color: red;
+    font-size: .9rem;
+    text-decoration: underline;
+}
+
+.sample {
+    font-weight: 600 !IMPORTANT;
+    display: inline-block;
+    font-size: .9rem;
+    text-align: center;
+}
+
+.how-to-upload {
+    border: 1px solid #c9c9c9;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: #fff;
+}
+
+.how-to-upload h4,
+.import-data h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.import-data lable {
+    display: block;
+    text-align: center;
+}
+
+.how-to-upload ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.how-to-upload ul li {
+    border: 1px solid #cccccc;
+    background: #f4f4f4;
+    padding: 0.2rem 1.5rem;
+    border-radius: 1.5rem;
+    font-size: .8rem !IMPORTANT;
+    cursor: pointer;
+}
+
+.how-to-upload table {
+    border-radius: 1rem !important;
+}
+
+li.active {
+    background: var(--c1) ! IMPORTANT;
+    color: #fff;
+    border-color: var(--c1) ! IMPORTANT;
+    box-shadow: 1px 0 5px #0000003b ! IMPORTANT;
 }
 
 @keyframes fade-in {
@@ -4590,6 +4654,7 @@ h6.text-center.bg-white {
     .steps {
         border-radius: .5rem;
     }
+
     .steps ul li {
         margin: .5rem 0;
         width: 100%;

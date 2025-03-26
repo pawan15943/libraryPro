@@ -274,7 +274,7 @@ class Controller extends BaseController
 
             return redirect()->route('library.upload.form')->with([
                 'successCount' => count($successRecords),
-                'autoExportCsv' => true, // This triggers the CSV download
+                // 'autoExportCsv' => true,
             ]);
         }
         
@@ -349,7 +349,7 @@ class Controller extends BaseController
 
             return redirect()->back()->with([
                 'successCount' => count($successRecords),
-                'autoExportCsv' => true, // This triggers the CSV download
+                'autoExportCsv' => true, 
             ]);
         }
         
@@ -383,12 +383,12 @@ class Controller extends BaseController
         $start_date = $this->parseDate(trim($data['start_date']));
 
         if (!$start_date) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Start date not found']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Missing Start Date: Please ensure that the start date field is filled in before proceeding with the upload.']);
             return;
         }
 
         if (!$dob) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Invalid date of birth format']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Invalid Date of Birth Format: The date of birth (DOB) format is incorrect. Please enter it in the correct format (e.g., YYYY-MM-DD or as required).']);
             return;
         }
        
@@ -400,30 +400,30 @@ class Controller extends BaseController
         $planType = PlanType::where('name', '=', trim($data['plan_type']))->first();
         $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
-            $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan type has no permissions']);
+            $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan Type Booking Restriction: The selected plan type does not have the necessary permissions for booking. Please check the plan type settings and try again.']);
             return;
         }
         if (!$plan ) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Plan  not found']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan Not Found: The specified plan does not exist in the system. Please verify the plan name or ID and try again.']);
             return;
         }
         if (!$planType ) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Plan type  not found']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan Type Not Found: The specified plan type is invalid or does not exist. Please check the plan type details and retry.']);
             return;
         }
         if ( !$planPrice) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Plan price not found']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan Price Not Found: The price for the selected plan is missing or not defined. Please confirm the correct pricing and re-upload the data.']);
             return;
         }
         $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : $planPrice->price;
         if($planPrice->price < $paid_amount){
-            $invalidRecords[] = array_merge($data, ['error' => 'Paid amount is greater then plan price']);
+            $invalidRecords[] = array_merge($data, ['error' => 'Paid Amount Exceeds Plan Price: The entered paid amount is greater than the actual plan price. Please verify and enter the correct amount.']);
             return;
         }
 
         $seat = Seat::where('seat_no', trim($data['seat_no']))->first();
         if(!$seat){
-            $invalidRecords[] = array_merge($data, ['error' => 'This Seat No. not exists']);
+            $invalidRecords[] = array_merge($data, ['error' => 'The seat number provided does not exist in the system. Please check and enter a valid seat number.']);
             return;
         }
        
@@ -459,7 +459,7 @@ class Controller extends BaseController
 
             if ($alreadyLearner) {
               
-                $invalidRecords[] = array_merge($data, ['error' => 'This data already exists']);
+                $invalidRecords[] = array_merge($data, ['error' => 'Duplicate Entry: This data already exists in the system. Please avoid duplicate entries and check the existing records before re-uploading.']);
                 return;
             } else {
                
@@ -487,9 +487,10 @@ class Controller extends BaseController
                     ->where('learners.status', 1)
                     ->where('learner_detail.status', 1)->where('learner_detail.plan_type_id',$planType->id)->count();
                     if($planTypeSame > 0){
-                        $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked 1']);
+                        $invalidRecords[] = array_merge($data, ['error' => 'Seat Already Booked: The selected seat (Seat No: ' .$data['seat_no']. ') is already booked under another plan. Please verify the seat availability before proceeding.']);
                         return; 
                     }
+
 
                     // Day Type 1 : FD | 2 : FH | 3 : SH | 4 : H1 | 5: H2 | 6 : H3 | 7 : H4
                     // Here we check if FH is booked then H1 & H2 is Not booked and so on.
@@ -500,7 +501,7 @@ class Controller extends BaseController
                          || (($day_type_id==6 || $day_type_id==7) && ($data_get->planType->day_type_id==3))
                          || (($day_type_id==1 ) && ($data_get->planType->day_type_id==1 || $data_get->planType->day_type_id==2 || $data_get->planType->day_type_id==3 || $data_get->planType->day_type_id==4 ||$data_get->planType->day_type_id==5 ||$data_get->planType->day_type_id==6 ||$data_get->planType->day_type_id==7)))
                         {
-                            $invalidRecords[] = array_merge($data, ['error' => 'Your plan type already booked 2']);
+                            $invalidRecords[] = array_merge($data, ['error' => 'Plan Type Already Booked: The selected plan type is already assigned to another booking. Please choose a different plan type or verify the existing booking details before proceeding.']);
                             return; 
                         }
                     }

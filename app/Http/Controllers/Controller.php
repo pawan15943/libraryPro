@@ -429,7 +429,7 @@ class Controller extends BaseController
        
         $payment_mode = !empty($data['payment_mode']) ? $this->getPaymentMode(trim($data['payment_mode'])) : 2;
         $hours = $planType->slot_hours;
-        $duration = trim($data['plan']) ?? 0;
+        $duration = $planexplode ?? 0;
         $joinDate = isset($data['join_date']) ? $this->parseDate(trim($data['join_date'])) : $start_date;
         // Here we manage end date how it calculated.
         $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');

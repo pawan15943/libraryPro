@@ -104,8 +104,9 @@ $current_route = Route::currentRouteName();
                                     @endif
                         </td>
 
-                        <td>{{$value->in_time ?? 'NA'}}</td>
-                        <td>{{$value->out_time ?? 'NA'}}</td>
+                        <td>{{ $value->in_time ? \Carbon\Carbon::parse($value->in_time)->format('h:i A') : 'NA' }}</td>
+                        <td>{{ $value->out_time ? \Carbon\Carbon::parse($value->out_time)->format('h:i A') : 'NA' }}</td>
+                        
                         <td>{{$value->date ?? 'NA'}}</td>
                         <td>
                             @if($value->attendance==1)

@@ -69,7 +69,7 @@
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
                     </div>
-                    <a href="{{ asset('public/sample/sample.csv') }}" class="sample" download="sample.csv">Download Sample learnar CSV File</a>
+                    <a href="{{ asset('public/sample/learners-data-sample.csv') }}" class="sample" download="learners-data-sample.csv">Download Sample learnar CSV File</a>
                 </div>
             </form>
             <div id="export-progress-container">

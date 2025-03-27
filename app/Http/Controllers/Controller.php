@@ -290,6 +290,7 @@ class Controller extends BaseController
             'name' => 'required|string|max:255',
             'email' => 'required|email',
             'plan' => 'required',
+            'plan_type' => 'required',
             'start_date' => 'required',
             'seat_no' => 'required|int',
         ]);
@@ -321,7 +322,7 @@ class Controller extends BaseController
         $planexplode = $matches[0] ?? 1; 
         $plan = Plan::where('plan_id',$planexplode)->first();
         $planType = PlanType::where('name', '=', trim($data['plan_type']))->first();
-        $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
+        $planPrice = PlanPrice::where('plan_id',$plan->id)->where('plan_type_id',$planType->id)->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan Type Booking Restriction: The selected plan type does not have the necessary permissions for booking. Please check the plan type settings and try again.']);
             return;

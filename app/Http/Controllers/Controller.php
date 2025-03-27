@@ -108,105 +108,28 @@ class Controller extends BaseController
     public function showUploadForm($id = null)
     {
         $library_id=$id;
-        // if (Auth::check('guard') == 'library') {
-        //     dd("1");
-        //     // Handle library specific logic
-        // } elseif (Auth::check('guard') == 'web') {
-        //     dd("2");
-        //     // Handle web specific logic
-        // }
-        // dd("3");
-        return view('library.csv', compact('library_id'));
+        
+        if($library_id==null){
+            $library_id=Auth::user()->id;
+        }
+        
+       $plans=Plan::withoutGlobalScopes()->where('library_id',$library_id)->get();
+       $plan_id_one=Plan::withoutGlobalScopes()->where('library_id',$library_id)->where('plan_id',1)->first();
+       if($plan_id_one){
+        $plantypes = PlanType::withoutGlobalScopes()
+        ->where('plan_types.library_id', $library_id)
+        ->where('plan_prices.plan_id', $plan_id_one->id)
+        ->leftJoin('plan_prices', 'plan_types.id', '=', 'plan_prices.plan_type_id')
+        ->select('plan_types.name as plan_type', 'plan_prices.price as plan_price') // Add specific columns to avoid unnecessary data
+        ->get();
+       }
+
+       
+      
+           return view('library.csv', compact('library_id','plans','plantypes'));
     }
 
-    // protected function validateAndInsert($data, &$successRecords, &$invalidRecords)
-    // {
-    //     // Validate data
-    //     $validator = Validator::make($data, [
-    //         'name' => 'required|string|max:255',
-    //         'email' => 'required|email',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
-    //         return;
-    //     }
-
-    //     $dob = $this->parseDate(trim($data['dob']));
-    //     $start_date = $this->parseDate(trim($data['start_date']));
-
-    //     if (!$start_date) {
-    //         $invalidRecords[] = array_merge($data, ['error' => 'Start date not found']);
-    //         return;
-    //     }
-
-    //     if (!$dob) {
-    //         $invalidRecords[] = array_merge($data, ['error' => 'Invalid date of birth format']);
-    //         return;
-    //     }
-
-    //     $plan = Plan::where('plan_id', trim($data['plan']))->first();
-    //     $planType = PlanType::where('name', 'LIKE', trim($data['plan_type']))->first();
-    //     $planPrice = PlanPrice::where('price', 'LIKE', trim($data['plan_price']))->first();
-
-    //     if (!$plan || !$planType || !$planPrice) {
-    //         $invalidRecords[] = array_merge($data, ['error' => 'Plan, Plan type, or Plan price not found']);
-    //         return;
-    //     }
-
-    //     $seat = Seat::where('seat_no', trim($data['seat_no']))->first();
-    //     $payment_mode = $this->getPaymentMode(trim($data['payment_mode']));
-    //     $hours = $planType->slot_hours;
-    //     $duration = trim($data['plan']) ?? 0;
-    //     $joinDate = isset($data['join_date']) ? $this->parseDate(trim($data['join_date'])) : $start_date;
-    //     if (isset($data['end_date'])) {
-    //         $endDate = $this->parseDate(trim($data['end_date']));
-    //     } else {
-    //         $endDate = Carbon::parse($start_date)->addMonths($duration)->format('Y-m-d');
-    //     }
-
-    //     $learner = Learner::create([
-    //         'library_id' => Auth::user()->id,
-    //         'name' => trim($data['name']),
-    //         'email' => trim($data['email']),
-    //         'password' => bcrypt(trim($data['mobile'])),
-    //         'mobile' => trim($data['mobile']),
-    //         'dob' => $dob,
-    //         'hours' => trim($hours),
-    //         'seat_no' => trim($data['seat_no']),
-    //         'payment_mode' => $payment_mode,
-    //         'address' => trim($data['address']),
-    //     ]);
-    
-    //     LearnerDetail::create([
-    //         'learner_id' => $learner->id,
-    //         'plan_id' => $plan->id,
-    //         'plan_type_id' => $planType->id,
-    //         'plan_price_id' => $planPrice->id,
-    //         'plan_start_date' => $start_date,
-    //         'plan_end_date' => $endDate,
-    //         'join_date' => $joinDate,
-    //         'hour' => $hours,
-    //         'seat_id' => $seat->id,
-    //         'library_id' => Auth::user()->id,
-    //     ]);
-
-    //     $pending_amount = $planPrice->price - trim($data['paid_amount']);
-    //     $paid_date = isset($data['paid_date']) ? $this->parseDate(trim($data['paid_date'])) : $start_date;
-
-    //     // Create related LearnerTransaction record
-    //     LearnerTransaction::create([
-    //         'learner_id' => $learner->id,
-    //         'library_id' => Auth::user()->id,
-    //         'total_amount' => $planPrice->price,
-    //         'paid_amount' => trim($data['paid_amount']),
-    //         'pending_amount' => $pending_amount,
-    //         'paid_date' => $paid_date,
-    //     ]);
-
-    //     $successRecords[] = $data;
-    // }
-
+   
     public function uploadCsv(Request $request)
     {
        

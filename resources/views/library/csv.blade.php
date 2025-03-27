@@ -94,14 +94,14 @@
                         <th class="w-50">S.No.</th>
                         <th>Plan Name</th>
                     </tr>
+                    @foreach($plans as $key => $value)
                     <tr>
-                        <td>1.</td>
-                        <td>1 Monthly</td>
-                    </tr>
-                    <tr>
-                        <td>2. </td>
-                        <td>3 Monthly</td>
-                    </tr>
+                        <td>{{$key+1}}</td>
+                        <td>{{$value->name}} </td>
+                    </tr> 
+                    @endforeach
+                   
+                    
                 </table>
             </div>
 
@@ -111,10 +111,13 @@
                         <th class="w-50">Plan Type (Shift)</th>
                         <th>Price</th>
                     </tr>
+                    @foreach($plantypes as $key => $value)
+                    
                     <tr>
-                        <td>Full Day</td>
-                        <td>INR 800</td>
+                        <td>{{$value->plan_type}}</td>
+                        <td>INR {{$value->plan_price}}</td>
                     </tr>
+                    @endforeach
                 </table>
             </div>
 

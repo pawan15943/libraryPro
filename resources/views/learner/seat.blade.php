@@ -236,7 +236,7 @@ $hourlyCount = 0;
                                 <input type="text" class="form-control" name="email" id="email">
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                 <label for="">Select Plan <span>*</span></label>
                                 <select name="plan_id" id="plan_id" class="form-select" name="plan_id">
                                     <option value="">Select Plan</option>
@@ -245,27 +245,32 @@ $hourlyCount = 0;
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-6">
+
+                            <div class="col-lg-4">
                                 <label for="">Plan Type <span>*</span></label>
                                 <select id="plan_type_id" class="form-select" name="plan_type_id">
                                     <option value="">Select Plan Type</option>
 
                                 </select>
                             </div>
-                            <div class="col-lg-4">
-                                <label for="">Plan Price <span>*</span></label>
-                                <input id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 800 Rs" @readonly(true)>
-                            </div>
+
+                            <input type="hidden" id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs" >
+
                             <div class="col-lg-4">
                                 <label for="">Plan Starts On <span>*</span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date">
+                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date" >
                             </div>
-                            <!-- <div class="col-lg-4">
-                                <label for="">Plan Ends On <span></span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_end_date" id="plan_end_date" disabled>
-                            </div> -->
-
-
+                            <div class="col-lg-4">
+                                <label for="">Paid Amount (INR)<span>*</span></label>
+                                <input id="paid_amount" class="form-control" name="paid_amount" placeholder="Example : 00 Rs">
+                                <span id="pending_amt" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <label for="">Choose Due Date<span>*</span></label>
+                                <input type="date" class="form-control" placeholder="Plan Starts On" name="due_date" id="due_date" readonly>
+                            </div>
+                            
                             <div class="col-lg-4">
                                 <label for="">Payment Mode <span>*</span></label>
                                 <select name="payment_mode" id="payment_mode" class="form-select">
@@ -275,6 +280,7 @@ $hourlyCount = 0;
                                     <option value="3">Pay Later</option>
                                 </select>
                             </div>
+
                         </div>
                         <h4 class="py-4 m-0">Other Important Info
                             <i id="toggleIcon" class="fa fa-plus" style="cursor: pointer;"></i>

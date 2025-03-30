@@ -1,7 +1,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-   
+    $(document).ready(function() {
+        var today = new Date();
+        var formattedDate = today.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        $('#plan_start_date').val(formattedDate); // Set value in input field
+    });
     // jQuery script
     $(document).ready(function() {
         let table = new DataTable('#datatable');
@@ -285,7 +289,8 @@
             var id_proof_name = $('#id_proof_name').val();
             var payment_mode = $('#payment_mode').val();
             var id_proof_file = $("#id_proof_file")[0].files[0];
-
+            var plan_price_value = $('#plan_price_id').val();
+            var paid_amount = $('#paid_amount').val();
             var errors = {};
 
             if (!name) {
@@ -317,7 +322,13 @@
             if (!payment_mode) {
                 errors.payment_mode = 'Payment Mode is required.';
             }
-
+            if (!paid_amount) {
+                errors.paid_amount = 'Paid amount is required.';
+            }
+            if(paid_amount > plan_price_value){
+                errors.paid_amount = 'Paid amount should not be greater than the plan price.';
+            }
+            
             // Remove previous errors
             $(".is-invalid").removeClass("is-invalid");
             $(".invalid-feedback").remove();
@@ -338,7 +349,8 @@
             formData.append('plan_type_id', plan_type_id);
             formData.append('id_proof_name', id_proof_name);
             formData.append('plan_start_date', plan_start_date);
-
+            formData.append('paid_amount', paid_amount);
+           
             $.ajax({
                 url: '{{ route('learners.store') }}',
                 type: 'POST',
@@ -530,11 +542,13 @@
                             if (html && Object.keys(html).length > 0){
                                 $.each(html, function(key, value) {
                                     $("#plan_price_id").val(value);
+                                    $("#paid_amount").val(value);
                                     
                                 });
                                 $("#error-message").hide();
                             }else{
                                 $("#plan_price_id").val("");
+                                $("#paid_amount").val("");
                                 $("#error-message").text("This Plan Type Price not found").show();
                             }
                                 
@@ -543,6 +557,7 @@
                     });
             } else {
                 $("#plan_price_id").empty();
+                $("#paid_amount").empty();
             
             }
         }
@@ -636,7 +651,15 @@
                 });
             }
         });
-
+        $('#paid_amount').on('keyup', function(event) {
+            var paid_amount = parseFloat($('#paid_amount').val()) || 0; 
+            var planPrice = parseFloat($('#plan_price_id').val()) || 0; 
+            var pending_amt = planPrice - paid_amount;
+            $('#pending_amt').html('Pending Amount :' + pending_amt.toFixed(2)); 
+            if(paid_amount < planPrice){
+                $('#due_date').removeAttr('readonly');
+            }
+        });
     });
         
 

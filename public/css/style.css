@@ -4454,6 +4454,11 @@ li.active {
     box-shadow: 1px 0 5px #0000003b ! IMPORTANT;
 }
 
+.error-box {
+    display: flex;
+    flex-direction: column;
+}
+
 @keyframes fade-in {
     0% {
         opacity: 0;

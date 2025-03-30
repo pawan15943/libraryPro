@@ -197,7 +197,7 @@ class Controller extends BaseController
 
             return redirect()->route('library.upload.form')->with([
                 'successCount' => count($successRecords),
-                // 'autoExportCsv' => true,
+                'autoExportCsv' => true,
             ]);
         }
         
@@ -316,12 +316,16 @@ class Controller extends BaseController
             return;
         }
        
-        !empty( trim($data['plan'])) ?   preg_match('/\d+/', trim($data['plan']), $matches) : 1 ;
+        if (!empty(trim($data['plan']))) {
+            preg_match('/\d+/', trim($data['plan']), $matches);
+        } else {
+            $matches = [1]; // Default to 1 if empty
+        }
         
-        preg_match('/\d+/',  trim($data['plan']), $matches);
-        $planexplode = $matches[0] ?? 1; 
+        $planexplode = $matches[0] ?? 1;
+      
         $plan = Plan::where('plan_id',$planexplode)->first();
-        $planType = PlanType::where('name', '=', trim($data['plan_type']))->first();
+        $planType = PlanType::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [strtolower(str_replace(' ', '', trim($data['plan_type'])))])->first();
         $planPrice = PlanPrice::where('plan_id',$plan->id)->where('plan_type_id',$planType->id)->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan Type Booking Restriction: The selected plan type does not have the necessary permissions for booking. Please check the plan type settings and try again.']);
@@ -339,7 +343,7 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Plan Price Not Found: The price for the selected plan is missing or not defined. Please confirm the correct pricing and re-upload the data.']);
             return;
         }
-       
+        $data['plan_price']=$planPrice->price;
         $paid_amount=!empty($data['paid_amount']) ? trim($data['paid_amount']) : 0;
         if($planPrice->price < $paid_amount){
             $invalidRecords[] = array_merge($data, ['error' => 'Paid Amount Exceeds Plan Price: The entered paid amount is greater than the actual plan price. Please verify and enter the correct amount.']);

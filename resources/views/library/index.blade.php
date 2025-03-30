@@ -149,25 +149,25 @@
                                 </li>
 
                                 <!-- Edit Library Info -->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-bs-title="Edit Library Info"><i class="fas fa-edit"></i></a></li>
+                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Library Edit" data-bs-title="Edit Library Info"><i class="fas fa-edit"></i></a></li>
 
                                 <!-- Upgrde Plan-->
-                                <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                <li><a href="{{route('library.upgrade',$value->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
 
                                 <!-- Close Seat -->
                                 <li><a href="#;" class="link-close-plan" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Close Seat"><i class="fas fa-times"></i></a></li>
 
                                 <!-- Deletr learners -->
-                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Lerners" class="delete-learners" data-original-title="Delete Lerners"><i class="fas fa-trash"></i></a></li>
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Library" class="delete-library" data-original-title="Delete Library"><i class="fas fa-trash"></i></a></li>
                                 <!-- Delete masters -->
-                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete masters" class="delete-masters" data-original-title="Delete masters"><i class="fas fa-trash"></i></a></li>
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete library masters" class="delete-masters" data-original-title="Delete masters"><i class="fas fa-trash"></i></a></li>
                                 <!-- Make Payment -->
-                                <li><a href="{{ route('library.payment', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Make Payment"> <i class="fas fa-credit-card"></i> </a></li>
+                                <li><a href="{{ route('library.payment', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Make Payment"> <i class="fas fa-credit-card"></i> </a></li>
 
                                 <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fas fa-envelope"></i></a></li>
+                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Library-message"><i class="fas fa-envelope"></i></a></li>
                                 <!-- Sent Mail -->
-                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" class="delete-customer" data-original-title="Delete Lerners"><i class="fa-brands fa-whatsapp"></i></a></li>
+                                <li><a href="#" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title=""  data-original-title="Library-message-whatsapp"><i class="fa-brands fa-whatsapp"></i></a></li>
                                 <li><a href="{{ route('configration.upload', $value->id) }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="upload library configration" class="configration" data-original-title="upload library configration"> <i class="fas fa-upload"></i> </a></li>
                             </ul>
                         </td>

@@ -109,16 +109,16 @@
                 <div class="row g-4">
                     <div class="col-lg-6">
                         <span>Library Owner Name</span>
-                        <h5 class="uppercase">{{$library_transaction->library_owner ?? ''}}</h5>
+                        <h5 class="uppercase">{{$library->library_owner ?? ''}}</h5>
                     </div>
                     
                     <div class="col-lg-6">
                         <span>Library Number</span>
-                        <h5>+91-{{$library_transaction->library_owner_contact ?? ''}}</h5>
+                        <h5>+91-{{$library->library_owner_contact ?? ''}}</h5>
                     </div>
                     <div class="col-lg-6">
                         <span>Library Email Id</span>
-                        <h5>{{$library_transaction->library_owner_email ?? ''}}</h5>
+                        <h5>{{$library->library_owner_email ?? ''}}</h5>
                     </div>
                 </div>
                 <h4 class="mt-4"> Library Payment Info :</h4>

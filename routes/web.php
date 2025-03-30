@@ -251,7 +251,9 @@ Route::middleware(['auth:web'])->group(function () {
         Route::delete('menu/destroy', [DataController::class, 'delete'])->name('menu.destroy');
         Route::get('inquery/get', [AdminController::class, 'contactInqueryGet'])->name('inquery.list');
         Route::get('demo/request/get', [AdminController::class, 'demoRequestGet'])->name('demo.list');
-        
+        Route::get('library/upgrade/{id?}', [AdminController::class, 'libraryUpgrade'])->name('library.upgrade');
+       
+      
         });
 });
 

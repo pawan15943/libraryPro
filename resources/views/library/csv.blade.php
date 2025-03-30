@@ -69,7 +69,7 @@
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
                     </div>
-                    <a href="{{ asset('public/sample/sample.csv') }}" class="sample" download="sample.csv">Download Sample learnar CSV File</a>
+                    <a href="{{ asset('public/sample/learners-data-sample.csv') }}" class="sample" download="learners-data-sample.csv">Download Sample learnar CSV File</a>
                 </div>
             </form>
             <div id="export-progress-container">
@@ -94,14 +94,14 @@
                         <th class="w-50">S.No.</th>
                         <th>Plan Name</th>
                     </tr>
+                    @foreach($plans as $key => $value)
                     <tr>
-                        <td>1.</td>
-                        <td>1 Monthly</td>
-                    </tr>
-                    <tr>
-                        <td>2. </td>
-                        <td>3 Monthly</td>
-                    </tr>
+                        <td>{{$key+1}}</td>
+                        <td>{{$value->name}} </td>
+                    </tr> 
+                    @endforeach
+                   
+                    
                 </table>
             </div>
 
@@ -111,10 +111,13 @@
                         <th class="w-50">Plan Type (Shift)</th>
                         <th>Price</th>
                     </tr>
+                    @foreach($plantypes as $key => $value)
+                    
                     <tr>
-                        <td>Full Day</td>
-                        <td>INR 800</td>
+                        <td>{{$value->plan_type}}</td>
+                        <td>INR {{$value->plan_price}}</td>
                     </tr>
+                    @endforeach
                 </table>
             </div>
 
@@ -149,8 +152,9 @@
                             <td>{{ $record['plan_type'] ?? 'N/A' }}</td>
                             <td>{{ $record['start_date'] ?? 'N/A' }}</td>
                             <td class="text-danger" style="width:30%;">
-                                {{ is_array($record['error']) ? implode(', ', $record['error']) : ($record['error'] ?? 'No error provided') }}
+                                {{ array_key_exists('error', $record) ? (is_array($record['error']) ? implode(', ', $record['error']) : $record['error']) : 'No error provided' }}
                             </td>
+                            
                             
                            
                         </tr>

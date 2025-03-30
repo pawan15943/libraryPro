@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-           
+          
             <div class="action-box">
                 <h4>Library Plan Info :</h4>
                 <div class="row g-4">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Type</span>
-                        <h5>BASIC PLAN</h5>
+                        <h5>{{getLibraryData()->plan->name}}</h5>
                     </div>
                     <div class="col-lg-4">
                         <span>Plan Price</span>
@@ -114,12 +114,12 @@
             </div>
             <div class="action-box">
             <h4>Actionable :</h4>
-                {{-- <div class="col-lg-4">
+                <div class="col-lg-4">
                     <label for=""> Plan <span>*</span></label>
-                    <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" style="{{ $readonlyStyle }}">
+                    <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
                         <option value="">Select Plan</option>
                         @foreach($plans as $key => $value)
-                        <option value="{{ $value->id }}" {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
+                        <option value="{{ $value->id }}" {{ old('plan_id', getLibraryData()->plan->id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
                         @endforeach
                     </select>
                     @error('plan_id')
@@ -127,7 +127,7 @@
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
-                </div> --}}
+                </div>
             </div>
         </div>
     </div>

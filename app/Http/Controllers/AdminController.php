@@ -190,6 +190,7 @@ class AdminController extends Controller
         if (Library::find($id)) {
             $request->session()->put('selected_library_id', $id);
         }
-        return view('library.library-upgrade');
+        $plans=Subscription::get();
+        return view('library.library-upgrade',compact('plans'));
     }
 }

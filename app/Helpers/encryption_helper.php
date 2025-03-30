@@ -1,4 +1,6 @@
 <?php
+
+use App\Models\LearnerTransaction;
 use Illuminate\Support\Facades\Log;
 use App\Models\Library;
 use App\Models\Subscription;
@@ -59,5 +61,13 @@ if (!function_exists('getLibraryData')) {
             'latest_transaction' => $library_transaction,
             'all_transactions' => $library_all_transaction,
         ];
+    }
+}
+
+if(!function_exists('learnerTransaction') ){
+    function learnerTransaction($id,$detail_id)
+    {
+       $transaction=LearnerTransaction::where('learner_id',$id)->where('learner_detail_id',$detail_id)->first();
+       return  $transaction;
     }
 }

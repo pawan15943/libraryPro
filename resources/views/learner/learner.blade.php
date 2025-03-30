@@ -199,6 +199,7 @@ $current_route = Route::currentRouteName();
                 </thead>
                 <tbody>
                     @php
+                 
                     $user = Auth::user();
                     $permissions = $user->subscription ? $user->subscription->permissions : null;
                     @endphp
@@ -209,6 +210,7 @@ $current_route = Route::currentRouteName();
                     $diffInDays = $today->diffInDays($endDate, false);
                     $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
                     $diffExtendDay= $today->diffInDays($inextendDate, false);
+                   
                     @endphp
                     <tr>
                         <td>{{$value->seat_no}}<br>
@@ -243,6 +245,13 @@ $current_route = Route::currentRouteName();
                             <button class="active-status">Active</button>
                             @else
                             <button class="active-status">InActive</button>
+                            @endif
+                            @if(!empty(learnerTransaction($value->id,$value->learner_detail_id)->pending_amount) && learnerTransaction($value->id,$value->learner_detail_id)->pending_amount==0)
+                                <span class="text-success d-block">Fully Paid</span>
+                            @elseif(empty(learnerTransaction($value->id,$value->learner_detail_id)->pending_amount))
+                                <span></span>
+                            @else
+                                <span class="text-danger d-block">Pending : {{learnerTransaction($value->id,$value->learner_detail_id)->pending_amount?? ''}}</span>
                             @endif
 
                         </td>

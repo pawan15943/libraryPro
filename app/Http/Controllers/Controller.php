@@ -293,6 +293,7 @@ class Controller extends BaseController
             'plan_type' => 'required',
             'start_date' => 'required',
             'seat_no' => 'required|int',
+            'mobile' => 'required|max:10|min:10',
         ]);
 
         if ($validator->fails()) {

@@ -142,6 +142,14 @@
                 <h4 class="mt-4"> Seat Payment Info :</h4>
                 <div class="row g-4">
                     <div class="col-lg-6 col-6 col-6">
+                        <span>Payment Date</span>
+                        @if(isset($transaction->paid_date) && $transaction->paid_date)
+                        <h5>{{$transaction->paid_date}}</h5>
+                        @else
+                        <h5>NA</h5>
+                        @endif
+                    </div>
+                    <div class="col-lg-6 col-6 col-6">
                         <span>Payment Mode</span>
                         @if($customer->payment_mode == 1)
                         <h5>{{ 'Online' }}</h5>
@@ -151,6 +159,18 @@
                         <h5>{{ 'Pay Later' }}</h5>
 
                         @endif
+                    </div>
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Amount Paid</span>
+                        <h5>{{$transaction->paid_amount ?? 'NA'}}</h5>
+                    </div>
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Pending Amount</span>
+                        <h5>
+                           
+                            <h5 class="text-danger">{{$transaction->pending_amount ?? '0'}}</h5>
+
+                        </h5>
                     </div>
                     <div class="col-lg-6 col-6 col-6">
                         <span>Payment Status</span>
@@ -173,14 +193,7 @@
                         @endif
 
                     </div>
-                    <div class="col-lg-6 col-6 col-6">
-                        <span>Payment Date</span>
-                        @if(isset($transaction->paid_date) && $transaction->paid_date)
-                        <h5>{{$transaction->paid_date}}</h5>
-                        @else
-                        <h5>NA</h5>
-                        @endif
-                    </div>
+                   
                 </div>
                 <h4 class="mt-4">Current Seat Owner’s Renewal History</h4>
                 <div class="row g-4">

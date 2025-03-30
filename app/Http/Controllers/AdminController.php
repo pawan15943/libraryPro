@@ -13,6 +13,16 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
+    public function selectLibrary($id, Request $request)
+    {
+        \Log::info("library_id " . $id);
+        // Validate and store selected library ID in session
+        if (Library::find($id)) {
+            $request->session()->put('selected_library_id', $id);
+        }
+
+        return redirect()->back()->with('success', 'Library selected successfully!');
+    }
     public function contactInqueryGet(){
         $data=Inquiry::get();
         return view('administrator.inquery-list',compact('data'));
@@ -173,5 +183,13 @@ class AdminController extends Controller
         }
 
         
+    }
+
+    public function libraryUpgrade($id, Request $request){
+   
+        if (Library::find($id)) {
+            $request->session()->put('selected_library_id', $id);
+        }
+        return view('library.library-upgrade');
     }
 }

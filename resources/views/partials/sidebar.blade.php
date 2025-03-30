@@ -10,7 +10,13 @@ $current_route = Route::currentRouteName();
         @foreach($menus as $menu)
         
         @php
+      
+        if($menu->guard=='web'){
+            $show =1;
+        }else{
             $show = ($menu->name == 'Dashboard' || Auth::user()->is_paid != 0) ? 1 : 0;
+        }
+           
         @endphp
     
        

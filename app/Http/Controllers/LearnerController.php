@@ -254,7 +254,7 @@ class LearnerController extends Controller
     //learner store
     public function learnerStore(Request $request)
     {
-        // dd($request);
+        
         $additionalRules = [
             'payment_mode' => 'required',
             'plan_start_date' => 'required|date',

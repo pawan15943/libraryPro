@@ -6,6 +6,7 @@
 <div class="row">
     <div class="d-flex bradcrumb">
         <h4>Add Library Plan</h4>
+        
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
@@ -17,7 +18,7 @@
 
 <div class="card">
     <div class="row">
-        <form action="{{ route('library.storedata') }}" class="validateForm" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('library.store') }}" class="validateForm" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row g-4">
                 <!-- Library Name -->
@@ -103,14 +104,14 @@
                     </div>
                     <div class="col-lg-6">
                         <label for="">Owner Contact Number (WhatsApp) </label>
-                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" value="{{ old('library_owner_contact') }}">
+                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" maxlength="10" value="{{ old('library_owner_contact') }}">
                         @error('library_owner_contact')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
                     </div>
-  
+                    <input type="hidden" name="terms" value="1">
                
             </div>
 

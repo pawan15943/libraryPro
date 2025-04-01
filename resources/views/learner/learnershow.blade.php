@@ -78,12 +78,12 @@
                         @if ($customer->diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $customer->diffInDays }} days</h5>
                         @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                            <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
-                            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                                <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
-                                @else
-                                <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
-                                @endif
+                        <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
+                        @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+                        <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
+                        @else
+                        <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
+                        @endif
 
                     </div>
                     <div class="col-lg-6 col-6 col-6">
@@ -120,12 +120,7 @@
                             @endif
                         </h5>
                     </div>
-                    <div class="col-lg-6 col-6 col-6">
-                        <span>Id Proof Document</span>
-                        <h5>
-                            NA
-                        </h5>
-                    </div>
+                    
                     <div class="col-lg-6 col-6 col-6">
                         <span>Seat Created At</span>
                         <h5>{{ $customer->created_at }}</h5>
@@ -166,11 +161,7 @@
                     </div>
                     <div class="col-lg-6 col-6 col-6">
                         <span>Pending Amount</span>
-                        <h5>
-                           
-                            <h5 class="text-danger">{{$transaction->pending_amount ?? '0'}}</h5>
-
-                        </h5>
+                        <h5 class="text-danger">{{$transaction->pending_amount ?? '0'}}</h5>
                     </div>
                     <div class="col-lg-6 col-6 col-6">
                         <span>Payment Status</span>
@@ -380,27 +371,27 @@
             @php
             $class='';
             if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
-                $class='extedned';
-                }elseif($customer->diffInDays < 0 ){
-                    $class='expired' ;
-                    }
-                    @endphp
-                    <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
-                    <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
-                    <p>{{ $customer->plan_name}}</p>
-                    <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
-                    <!-- Expire days Info -->
+                 $class='extedned';
+            }elseif($customer->diffInDays < 0 ){
+                $class='expired' ;
+            }
+            @endphp
+            <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+            <p>{{ $customer->plan_name}}</p>
+            <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+            <!-- Expire days Info -->
 
-                    @if ($customer->diffInDays > 0)
-                    <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
-                        @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                            <span class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</span>
-                            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                                <span class="text-warning fs-10 d-block">Plan Expires today</span>
-                                @else
-                                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
-                                @endif
-                                <!-- End -->
+            @if ($customer->diffInDays > 0)
+            <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
+            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
+            <span class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</span>
+            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+            <span class="text-warning fs-10 d-block">Plan Expires today</span>
+            @else
+            <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
+            @endif
+            <!-- End -->
         </div>
         @if($learner_request->isNotEmpty())
         <div class="request-logs mt-4">

@@ -46,9 +46,10 @@ Route::group(['prefix' => 'library'], function () {
 });
 
 
-Route::get('/email/verify', function () {
-  return view('auth.verify');
-})->name('verification.notice');
+// Route::get('/email/verify', function () {
+//   return view('auth.verify');
+// })->name('verification.notice');
+Route::get('/email/verify', [LibraryController::class, 'emailVerification'])->name('verification.notice');
 Route::post('/verify-otp', [LibraryController::class, 'verifyOtp'])->name('verify.otp');
 Route::get('library/choose-plan-price', [LibraryController::class, 'getSubscriptionPrice'])->name('subscriptions.getSubscriptionPrice');
 Route::get('cityGetStateWise', [MasterController::class, 'stateWiseCity'])->name('cityGetStateWise');
@@ -191,6 +192,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {
   Route::post('library/storedata', [LibraryController::class, 'libraryStore'])->name('library.storedata');
+  
+    Route::post('library/verify/otp', [AdminController::class, 'libraryVerify'])->name('library.verify.otp');
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [AdminController::class, 'libraryPayment'])->name('library.payment');
     Route::get('get/subscription/fees', [AdminController::class, 'getSubscriptionFees'])->name('get.subscription.fees');

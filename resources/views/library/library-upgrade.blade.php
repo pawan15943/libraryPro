@@ -116,17 +116,26 @@
             <h4>Actionable :</h4>
                 <div class="col-lg-4">
                     <label for=""> Plan <span>*</span></label>
-                    <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
+                    <select id="subscription" class="form-control @error('subscription') is-invalid @enderror" name="subscription" >
                         <option value="">Select Plan</option>
                         @foreach($plans as $key => $value)
-                        <option value="{{ $value->id }}" {{ old('plan_id', getLibraryData()->plan->id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
+                        <option value="{{ $value->id }}" {{ old('subscription', getLibraryData()->plan->id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
                         @endforeach
                     </select>
-                    @error('plan_id')
+                    @error('subscription')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
+                </div>
+                <div class="col-lg-4">
+                    <label for=""> Plan <span>*</span></label>
+                    <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" >
+                        <option value="">Select Plan</option>
+                        <option value="monthly_fees">Monthly</option>
+                        <option value="yearly_fees">Yearly</option>
+                        
+                    </select>
                 </div>
             </div>
         </div>

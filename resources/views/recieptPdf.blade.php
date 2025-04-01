@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management Software Subscription Receipt</title>
-
     <style>
         body {
             font-size: 13px;
@@ -22,6 +21,7 @@
 
         h2, h3, h4, h5, h6 {
             margin: 0px;
+            font-weight: 700;
         }
 
         p {
@@ -35,7 +35,7 @@
 
         .tab_title {
             font-size: 21px;
-            font-family: 'PT Serif', serif;
+            font-family: 'Roboto', sans-serif;
         }
 
         .logo img {
@@ -47,7 +47,7 @@
         }
 
         .text-right {
-            text-align: right;
+            text-align: left;
         }
 
         .receipt_header {
@@ -57,16 +57,17 @@
             padding-bottom: 30px;
         }
 
-        .address_header h5 {
+        .address_header h4 {
             color: #000;
-            font-size: 15px;
+            font-size: 25px;
             margin-bottom: 15px;
-            font-weight: 500;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+
         }
 
         .address_header .address {
             max-width: 270px;
-            margin-left: auto;
             font-size: 14px;
             line-height: 22px;
             margin-bottom: 15px;
@@ -87,17 +88,18 @@
     <div class="receipt_wrapper">
         <!-- header -->
         <div class="receipt_header">
-            <div class="logo">
-                <img src="{{ asset('img/logo.png') }}" alt="Library Logo">
+            <div class="logo" style="display: flex; gap:1rem; align-items:center;">
+                <img src="{{ asset('public/img/logo-socials.png') }}" alt="Library Logo" style="width: 80px; height:80px; border-radius:100%;">
             </div>
             <div class="address_header text-right">
-                <h5>Library Management System Headquarters:</h5>
+                <h4><?php if(isset($library_name)): echo $library_name; endif;?></h4>
                 <div class="address">
-                    123 Library Road, Knowledge City<br>
-                    Near BookHub Station, Cityville, Countryland
+                     <p><?php if(isset($library_address)): echo $library_address; endif;?></p>
                 </div>
-                <a href="www.librarysystem.com" title="Library System">Website: www.librarysystem.com</a><br>
-                <a href="mailto:support@librarysystem.com" title="Library System">Email: support@librarysystem.com</a>
+                <a href="mailto:<?php if(isset($library_email)): echo $library_email; endif;?>" title="Library Email Id">Email: <?php if(isset($library_email)): echo $library_email; endif;?></a><br>
+                <a href="tel:<?php if(isset($library_mobile)): echo $library_mobile; endif;?>" title="Library Contact info">Contact: <?php if(isset($library_mobile)): echo $library_mobile; endif;?></a><br>
+                <a href="www.librao.in" title="Library System">Website: www.libraro.com</a><br>
+
             </div>
         </div>
 

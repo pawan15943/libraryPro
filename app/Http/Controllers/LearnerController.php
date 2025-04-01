@@ -254,10 +254,11 @@ class LearnerController extends Controller
     //learner store
     public function learnerStore(Request $request)
     {
-
+        // dd($request);
         $additionalRules = [
             'payment_mode' => 'required',
             'plan_start_date' => 'required|date',
+            'paid_amount' => 'required',
         ];
 
         $validator = $this->validateCustomer($request, $additionalRules);
@@ -276,6 +277,14 @@ class LearnerController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors()
+            ], 422);
+            die;
+        }
+
+        if(($request->paid_amount > $request->plan_price_id) || ($request->paid_amount==0)){
+            return response()->json([
+                'error' => true,
+                'message' => 'Paid amount is not valid',
             ], 422);
             die;
         }
@@ -340,7 +349,7 @@ class LearnerController extends Controller
             'library_id' => Auth::user()->id,
             'password' => bcrypt($request->mobile)
         ]);
-
+       
         $learner_detail = LearnerDetail::create([
             'learner_id' => $customer->id,
             'plan_id' => $plan_id,
@@ -356,18 +365,28 @@ class LearnerController extends Controller
             'status' => $status,
             'payment_mode' => $request->input('payment_mode'),
         ]);
-
+        $paid_amount=$request->paid_amount;
+        $pending_amount=$request->input('plan_price_id')-$paid_amount;
         if ($request->payment_mode == 1 || $request->payment_mode == 2) {
             LearnerTransaction::create([
                 'learner_id' => $customer->id,
                 'library_id' => Auth::user()->id,
                 'learner_detail_id' => $learner_detail->id,
                 'total_amount' => $request->input('plan_price_id'),
-                'paid_amount' => $request->input('plan_price_id'),
-                'pending_amount' => 0,
+                'paid_amount' => $paid_amount,
+                'pending_amount' => $pending_amount,
                 'paid_date' => $start_date->format('Y-m-d') ?? date('Y-m-d'),
                 'is_paid' => 1
             ]);
+        }
+        if($pending_amount &&  $request->due_date){
+            $tran=[
+                'learner_id'=>$customer->id,
+                'due_date'=>$request->due_date,
+                'pending_amount'=>$pending_amount,
+                'created_at'=>now(),
+            ];
+            DB::table('learner_pending_transaction')->insert($tran);
         }
         if ($status == 1) {
             $this->seat_availablity($request);

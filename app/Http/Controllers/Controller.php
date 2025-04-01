@@ -48,6 +48,7 @@ class Controller extends BaseController
             $end_date=$data->end_date;
             $name=$user->library_owner;
             $subscription=Subscription::where('id',$user->library_type)->value('name');
+            $library=$user;
         }
         if($request->type=='learner'){
             $learnerDeatail = LearnerDetail::where('id', $request->id)
@@ -77,7 +78,7 @@ class Controller extends BaseController
             }
             $name=$user->name;
            
-           
+           $library=Library::where('id',$learnerDeatail->library_id)->select('library_name','email','library_mobile','library_address')->first();
         }
        
         
@@ -95,6 +96,10 @@ class Controller extends BaseController
             'monthly_amount' => $total_amount ?? 'NA',
             'month' => $month ?? 'NA',
             'currency' => 'Rs.',
+            'library_name'=>$library->library_name,
+            'library_email'=>$library->email,
+            'library_mobile'=>$library->library_mobile,
+            'library_address'=>$library->library_address,
         ];
         
 

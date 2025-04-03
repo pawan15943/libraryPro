@@ -161,6 +161,9 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
       Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
       Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
+      Route::get('/getTransactionDetail', [LearnerController::class, 'getTransactionDetail'])->name('getTransactionDetail');
+      Route::get('learner/pending/payment/{id?}', [LearnerController::class, 'pendingPayment'])->name('learner.pending.payment');
+      Route::post('pending/payment/store', [LearnerController::class, 'pendingPaymentStore'])->name('learner.pending.payment.store');
       
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');

@@ -403,10 +403,11 @@ span {
 input[type="submit"] {
     height: 45px !important;
     border-color: #dcdcdc;
+    font-size: .85rem;
 }
 
 select {
-    font-size: .9rem;
+    font-size: .85rem;
     font-weight: 600;
     height: 45px;
 }
@@ -428,14 +429,7 @@ select {
 }
 
 /* Style input field value */
-input {
-    font-family: 'Mulish', sans-serif !important;
-    color: #000 !important;
-    font-size: 15px !important;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: 600 !important;
-}
+
 
 /* Style placeholder text */
 input::placeholder {
@@ -625,12 +619,8 @@ nav ol {
     background: linear-gradient(180deg, #eafdff, transparent);
 }
 
-.content .card {
-    background: var(--c5);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 1px 0 5px #00000021;
-    border: none;
+.mt-5{
+    margin-top: 1.8rem !important;
 }
 
 label.permission {
@@ -1610,14 +1600,14 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
 
 
 
-img#imageDisplay {
+/* img#imageDisplay {
     width: 180px;
     height: 80px ! IMPORTANT;
     border-radius: .4;
     box-shadow: 1px 0 5px #00000020;
     margin-left: 1rem;
     margin-top: 1rem;
-}
+} */
 
 .boxes.mb-4 {
     position: relative;
@@ -2257,7 +2247,7 @@ select {
 input {
     font-family: 'Mulish', sans-serif !important;
     color: #000 !important;
-    font-size: 15px !important;
+    font-size: .85rem !important;
     padding: 10px;
     border-radius: 5px;
     font-weight: 600 !important;
@@ -2268,6 +2258,50 @@ input::placeholder {
     color: #999 !important;
     opacity: 1;
 }
+
+label.upload-lable {
+    font-weight: 700;
+    font-size: .8rem;
+    margin-bottom: .2rem;
+    border: 2px dashed #00BCD4;
+    display: block;
+    text-align: center;
+    padding: 1rem;
+}
+
+label.libraryImage {
+    font-weight: 700;
+    font-size: .8rem;
+    margin-bottom: .2rem;
+    border: 2px dashed #00BCD4;
+    display: block;
+    text-align: center;
+    padding: 1rem;
+}
+
+label.upload-label input[type=file] {
+    display: block;
+}
+
+img#imageDisplay {
+    width: 120px ;
+    height: 120px !important;
+    border-radius: 120px;
+    object-fit: contain;
+    background: #ababab;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 1.5rem;
+}
+
+
+img.uploaded-image {
+    width: 100px !important;
+    height: 100px !important;
+    border: 1px solid #ababab;
+    padding: .3rem;
+}
+
 
 /* For better browser compatibility */
 input::-webkit-input-placeholder {
@@ -2395,8 +2429,8 @@ nav ol {
     background: var(--c5);
     padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow: 1px 0 5px #00000021;
-    border: none;
+    box-shadow: 1px 0 36px #0000001c;
+    border: 1px solid #dedede;
 }
 
 label.permission {
@@ -3312,7 +3346,7 @@ ul.libraryFeatures {
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
 
@@ -3320,13 +3354,22 @@ ul.libraryFeatures li {
     display: flex;
     flex-direction: column;
     background: #fff;
-    box-shadow: 1px 0 5px #00000045;
     border-radius: .5rem;
     padding: 1.5rem;
     align-items: center;
     gap: 1rem;
     width: calc(100% / 5 - 2rem);
     width: 100%;
+    border: 2px solid #a0f4ff;
+    background: #d7faff;
+}
+
+ul.libraryFeatures li:hover {
+    box-shadow: 1px 0 25px #00000021;
+}
+
+.card h4.mb-4 {
+    color: #00aec4 !important;
 }
 
 /* Library Steps */
@@ -3541,17 +3584,6 @@ ul.btn-toggle-nav.list-unstyled.fw-normal.pb-1.small li a.active {
     }
 }
 
-
-
-
-img#imageDisplay {
-    width: 180px;
-    height: 80px ! IMPORTANT;
-    border-radius: .4;
-    box-shadow: 1px 0 5px #00000020;
-    margin-left: 1rem;
-    margin-top: 1rem;
-}
 
 .boxes.mb-4 {
     position: relative;
@@ -5461,4 +5493,19 @@ img.id-profile {
 
 .preview-favicon img {
     width: 100%;
+}
+
+.card.stick {
+    position: sticky;
+    top: 90px;
+}
+div#preview .preview {
+    width: 100px !important;
+    overflow: hidden;
+    height: 100px !important;
+    background: red;
+    border-radius: 100px !important;
+    border: 1px solid;
+    display: block;
+    margin: 1rem auto;
 }

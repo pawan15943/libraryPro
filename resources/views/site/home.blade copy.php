@@ -12,7 +12,7 @@
                 <a href="{{route('register')}}" class="cta">Sign Up – Manage Effortlessly!</a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
-                <img src="{{ asset('public/img/head.png') }}" alt="Library management software" class="img-fluid">
+                <img src="{{ asset('public/img/head.webp') }}" alt="Library management software" class="img-fluid">
             </div>
         </div>
     </div>

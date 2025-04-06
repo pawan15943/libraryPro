@@ -20,15 +20,15 @@
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/line-awesome/css/line-awesome.min.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
 
     <!-- Libraru Schema -->
     <script type="application/ld+json">
@@ -82,81 +82,13 @@
     @include('sitelayouts.header')
     @yield('content')
     @include('sitelayouts.footer')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
 
-    <script>
-        $('#clientsFeedback').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
-            }
-        });
-    </script>
-    <script>
-        $('#features').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
-            }
-        });
-    </script>
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
 
 
     <script src="{{ url('public/js/main-validation.js') }}"></script>
@@ -228,6 +160,7 @@
             }
         });
     </script>
+
     <script>
         $(window).on('load', function() {
             $('#loader').fadeOut('slow', function() {
@@ -235,6 +168,7 @@
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             $(".buy-now-btn").click(function() {
@@ -259,6 +193,8 @@
             });
         });
     </script>
+
+
     <script>
         var elements = document.querySelectorAll('.digit-only');
         for (i in elements) {
@@ -288,38 +224,7 @@
         });
     
         
-        $('#feedback').owlCarousel({
-            loop: true,
-            nav: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                    nav: false,
-                },
-                768: {
-                    items: 2,
-                    nav: false,
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
-            }
-        });
+        
     </script>
     
     <script>
@@ -400,7 +305,7 @@
                             }
     
                             // Add Owl Carousel class
-                            $('#library-list').addClass('owl-carousel');
+                            $('#library-list').addClass('owl-carousel owl-theme');
     
                             // Loop through each library and append it as a carousel item
                             $.each(data, function(index, library) {
@@ -500,7 +405,6 @@
         $('.owl-carousel').trigger('destroy.owl.carousel');
         $('#library-list').owlCarousel({
             loop: true,
-            nav: true,
             dots: true,
             margin: 20,
             navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
@@ -513,11 +417,11 @@
             responsive: {
                 0: {
                     items: 1,
-                    nav: false,
+                   
                 },
                 768: {
                     items: 2,
-                    nav: false,
+                    
                 },
                 992: {
                     items: 3,
@@ -532,6 +436,167 @@
         });
     </script>
   
+
+
+
+
+  <!-- Home Page Scripts -->
+  <script>
+
+    $('#mainSlider').owlCarousel({
+        loop: true,
+        nav: false,
+        margin: 8,
+        stagePadding:250,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: { items: 1, nav: false,stagePadding:0, margin: 20 },
+            768: { items: 1, nav: false },
+            992: { items: 1 },
+            1200: { items: 1 },
+            1920: { items: 1 }
+        }
+    });
+
+    
+    $('#featureSlider').owlCarousel({
+        loop: true,
+        nav: false,
+        margin: 20,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: { items: 1, nav: false },
+            768: { items: 2, nav: false },
+            992: { items: 3 },
+            1200: { items: 3 },
+            1920: { items: 4 }
+        }
+    });
+
+    
+</script>
+
+<script>
+    $('#clientsFeedbacks').owlCarousel({
+        loop: true,
+        nav: false,
+        dots: true,
+        margin: 20,
+        pagination: true,
+        autoplay: true,
+        autoPlaySpeed: 2000,
+        smartSpeed: 2000,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        responsive: {
+            0: {
+                items: 1,
+            },
+            768: {
+                items: 2,
+            },
+            992: {
+                items: 3,
+            },
+            1200: {
+                items: 3,
+            },
+            1920: {
+                items: 4,
+            }
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#demoRequest').on('submit', function(e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '{{ route("demo-request") }}',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+
+                    if (response.status === 'success') {
+                        toastr.success(response.message);
+
+                        // Clear error messages and reset form
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        // Optionally, reset the form after success
+                        $('#demoRequest')[0].reset();
+                        $("#error-message").hide();
+                    } else {
+                        $("#error-message").text(response.message).show();
+                        $("#success-message").hide();
+                    }
+                },
+                error: function(xhr) {
+                    var response = xhr.responseJSON;
+
+                    if (xhr.status === 422 && response.errors) { // Validation error check
+                        $(".is-invalid").removeClass("is-invalid");
+                        $(".invalid-feedback").remove();
+
+                        $.each(response.errors, function(key, value) {
+                            var element = $("[name='" + key + "']");
+                            element.addClass("is-invalid");
+                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
+                        });
+                    } else {
+                        console.error('AJAX Error:', xhr.responseText);
+                        alert('There was an error processing the request. Please try again.');
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        function updateCountdown() {
+            var targetDate = new Date("April 25, 2025 23:59:59").getTime();
+            var now = new Date().getTime();
+            var timeLeft = targetDate - now;
+
+            if (timeLeft <= 0) {
+                $('#countdown-timer').html("⏳ Offer Expired!");
+                clearInterval(timerInterval); // Stop countdown when expired
+                return;
+            }
+
+            var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            $('#countdown-timer').html(
+                `⏳ Offer Ends In: <strong>${days}d ${hours}h ${minutes}m ${seconds}s</strong>`
+            );
+        }
+
+        // Update every second
+        var timerInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run immediately on page load
+    });
+</script>
 </body>
 
 </html>

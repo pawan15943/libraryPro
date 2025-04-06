@@ -7,6 +7,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
+<title>404 Page Not Found</title>
 
     <title>{{ config('app.name', 'Project') }}</title>
 

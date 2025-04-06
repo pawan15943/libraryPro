@@ -4,45 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revolutionize Your Library with Libraro</title>
+    <title>Reset Your Password - Libraro</title>
 </head>
 
-<body style="margin: 0; padding: 0; font-family: 'Mulish', sans-serif; background-color: #f5f5f5;">
-    <div style="max-width: 650px; margin: 0 auto; border-radius: 1px solid #ababab;">
+<body style="margin: 0; padding: 0; font-family: 'Mulish', sans-serif; background-color: #fff;">
+    <div style="max-width: 650px; margin: 1.5rem auto; border: 1px solid #c9c9c9 !important; border-radius: 1.5rem;">
         <!-- Header -->
-        <div style="margin-top: 1.5rem;">
-            
-           <img src="{{url('/public/img/001.webp')}}" alt="img" style="width: 100%; border-radius: 1.5rem;">
+        <div>
+            <img src="{{url('/public/img/opt-head.png')}}" alt="OTP Verification" style="width: 100%; border-radius: 1.5rem;">
         </div>
 
         <!-- Content -->
         <div style="padding: 20px; color: #333333;">
-            <!-- Welcome Message -->
+            <!-- OTP Message -->
             <div style="text-align: center; margin-bottom: 30px;">
                 <h2
                     style="font-size: 26px; font-weight: 600; font-family: 'Outfit', sans-serif; color: #000; margin-bottom: 15px;">
-                    Dear {{ $name }},</h2>
-                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">We’re excited to
-                    introduce you to <strong>Libraro</strong>—the ultimate solution to transform your library into a
-                    modern, efficient, and visitor-friendly space. Say goodbye to manual processes and hello to seamless
-                    library management!</p>
-                <a href="{{route('register')}}"
-                    style="display: inline-block; margin: 20px 0; padding: 12px 30px; background-color: #000; color: #ffffff; font-size: 16px; text-decoration: none; border-radius: 5px; font-family: 'Mulish', sans-serif;">Get
-                    Started Today</a>
+                    Reset Your Password – Action Required</h2>
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">
+                    Dear [User's Name],
+                    <br>
+                    We received a request to reset your password for your [Your Platform Name] account. If you made this request, please click the link below to set a new password:
+                </p>
+
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">🔗 <a href="" target="_blank">Reset Password</a></p>
+
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">This link will expire in [X] hours for security reasons. If you didn’t request a password reset, please ignore this email—your account remains secure.</p>
+
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">If you need further assistance, feel free to contact our support team.</p>
+
+                
             </div>
 
-            
             <!-- Final CTA -->
             <div style="text-align: center; margin-bottom: 30px;">
-                <h2
-                    style="font-size: 26px; font-weight: 600; font-family: 'Outfit', sans-serif; color: #000; margin-bottom: 15px;">
-                    Ready to Transform Your Library?</h2>
-                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">Join hundreds of
-                    libraries already using Libraro to streamline operations and enhance visitor experiences. Don’t
-                    wait—start your journey today!</p>
-                <a href="{{route('register')}}"
-                    style="display: inline-block; margin: 20px 0; padding: 12px 30px; background-color: #000; color: #ffffff; font-size: 16px; text-decoration: none; border-radius: 5px; font-family: 'Mulish', sans-serif;">Sign
-                    Up Now</a>
+                <p style="font-size: 16px; line-height: 1.8; font-family: 'Mulish', sans-serif;">
+                    Need assistance? Feel free to reach out to us anytime at <a href="mailto:support@libraro.in"
+                        style="color: #000; text-decoration: none; font-weight: bold;">support@libraro.in</a> or call us at <a href="tel:8114479678" style="color: #000; text-decoration: none; font-weight: bold;">+91-8114479678</a>, <a href="tel:7737918848" style="color: #000; text-decoration: none; font-weight: bold;">+91-7737918848 </a>.We’re here to help!
+                </p>
             </div>
         </div>
 
@@ -51,7 +50,6 @@
             style="background-color: #000000; color: #ffffff; text-align: center; padding: 20px; font-size: 14px; font-family: 'Mulish', sans-serif; border-radius: 1rem;">
             <!-- Logo -->
             <img src="{{url('/public/img/libraro-white.svg')}}" alt="Libraro Logo" style="margin-bottom: 15px; width: 150px;">
-
 
             <!-- Social Links -->
             <p style="margin: 0; margin-bottom: 1rem; font-weight: 800;">Follow us on:</p>

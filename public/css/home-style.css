@@ -138,12 +138,11 @@ a.cta:hover {
 }
 
 .heading h2 {
-    color: #293ba4 !important;
-    font-weight: 700 !important;
     font-size: 2.2rem;
     line-height: 2.2rem;
     margin-bottom: 1rem;
 }
+
 
 .heading span {
     color: #34939F !important;
@@ -313,7 +312,7 @@ a.cta:hover {
 
 .customer-feedback {
     padding: 3.5rem 0;
-    background: #fffbe5;
+    background: #fffced;
 }
 
 .feedback-box {
@@ -323,6 +322,7 @@ a.cta:hover {
     height: 100%;
     box-shadow: 5px 5px 0 #00000024;
     margin: 1rem .3rem;
+    border: 1px solid #dbe0ff;
 }
 
 .feedback-box:hover {
@@ -401,6 +401,7 @@ a.cta:hover {
     margin-bottom: 3rem;
     color: #616161;
     font-family: 'Mulish', 'sans-sarif';
+    height: 130px;
 }
 
 .benefits:hover {
@@ -672,9 +673,22 @@ ul.social li a .fab {
     font-size: 1.6rem;
 }
 
+button.accordion-button.collapsed {
+    font-weight: 500 !important;
+    padding: 1.5rem;
+}
+
 .accordion-button:not(.collapsed) {
-    background-color: #fff6db !important;
-    font-weight: 600;
+    background-color: #e6fcff !important;
+    font-weight: 500;
+    padding: 1.5rem;
+}
+
+
+
+.progress,
+.progress-stacked {
+    height: .4rem;
 }
 
 button.accordion-button.collapsed {
@@ -790,7 +804,6 @@ a.nav-link.border-dashed {}
     text-transform: uppercase;
     position: relative;
     display: inline-block;
-    overflow: hidden;
     font-weight: 700 !important;
     background: linear-gradient(90deg, #b09604, #047a8a, #25327a);
     background-size: 200% 100%;
@@ -1024,12 +1037,22 @@ Directory
 .featured-library h4 {
     font-weight: 700;
     color: #078494;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
 }
 
 .featured-library>span,
 .featured-library ul.library-feature span {
     color: #848484;
     font-size: .9rem;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+
 }
 
 .featured-library .star-ratings {
@@ -1041,7 +1064,7 @@ Directory
     padding: 0;
 }
 
-.popular button.owl-prev {
+/* .popular button.owl-prev {
     background: #18225f ! IMPORTANT;
     border-radius: 45px;
     height: 45px ! IMPORTANT;
@@ -1050,9 +1073,9 @@ Directory
     justify-content: center;
     align-items: center;
     color: #fff ! IMPORTANT;
-}
+} */
 
-.popular button.owl-next {
+/* .popular button.owl-next {
     background: #18225f ! IMPORTANT;
     border-radius: 45px;
     height: 45px ! IMPORTANT;
@@ -1061,7 +1084,7 @@ Directory
     justify-content: center;
     align-items: center;
     color: #fff ! IMPORTANT;
-}
+} */
 
 .popular button span {
     font-size: 2.5rem;
@@ -1072,11 +1095,11 @@ Directory
     margin-top: -.5rem ! IMPORTANT;
 }
 
-.popular .owl-nav {
+/* .popular .owl-nav {
     display: flex;
     gap: .5rem;
     justify-content: flex-end;
-}
+} */
 
 .featured-library a.view-library:hover {
     background: #018b9d;
@@ -1411,6 +1434,86 @@ ul.customer-ratings {
     gap: 1rem;
     padding: 0;
     margin-top: .5rem;
+}
+
+div#mainSlider .owl-dots {
+    margin-top: -29px ! IMPORTANT;
+    position: relative;
+}
+
+.offer-box {
+    background: linear-gradient(45deg, #1c2d89, #068494);
+    padding: 1.3rem 1.5rem;
+    border-radius: .8rem;
+    margin-top: 2rem;
+}
+
+.offer-box p {
+    color: #fff;
+    font-size: 1rem;
+}
+
+.offer .text {
+    flex: 1;
+}
+
+.offer-box .d-flex {
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.offer-box .btn-close {
+    position: static !important;
+}
+
+.offer-box a {
+    background: #18225f;
+    border: none;
+    padding: .6rem 1.5rem;
+    color: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 1px 0 30px #0000003b;
+    width: 180px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+div#countdown-timer {
+    margin-top: .5rem;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+div#countdown-timer strong {
+    letter-spacing: 1px;
+    font-family: 'Outfit', 'sans-sarif';
+}
+
+.featureBox {
+    background: #34939f;
+    padding: 1.5rem;
+    border-radius: .8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    gap: 1.5rem;
+}
+
+.featureBox h4 {
+    font-weight: 500;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+img.img-fluid {
+    border-radius: 14px;
+}
+
+.featureBox:hover {
+    transform: translateY(-10px);
+    box-shadow: 1px 0 15px #00000015;
 }
 
 /* ====================================================================================

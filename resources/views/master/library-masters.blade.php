@@ -684,7 +684,7 @@
 
 <div class="row justify-content-center mb-4 mt-4">
     <div class="col-lg-4">
-        <div class="import-data">
+        <div class="import-data" style="min-height: auto;">
             <form action="{{ route('library.master.upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="library_id" value=" {{isset($library_id) ? $library_id : ''}}">
@@ -699,12 +699,12 @@
                         </span>
                         @enderror
 
-                        <a href="{{ url('public/sample/master.csv') }}" download="master.csv"><small>Download Sample library master CSV File</small></a>
+                        
                         
                     </div>
                     <div class="col-lg-12">
                         <button type="submit" class="btn btn-primary button">Import Data</button>
-
+                        <a href="{{ url('public/sample/master.csv') }}" class="sample" download="master.csv">Download Sample library master CSV File</a>
                     </div>
                 </div>
 

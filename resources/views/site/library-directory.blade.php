@@ -1,9 +1,5 @@
 @extends('sitelayouts.layout')
 @section('content')
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
@@ -52,10 +48,9 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="library-list">
+                <div class="owl-carousel owl-theme" id="library-list">
                 </div>
             </div>
-
         </div>
     </div>
 </section>
@@ -101,7 +96,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel" id="clientsFeedbacks">
+                <div class="owl-carousel owl-theme" id="clientsFeedbacks">
                     @if(!($happy_customers->isEmpty()))
                     <div class="item">
                         <div class="feedback-box">
@@ -134,6 +129,27 @@
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+
+                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>Sandeep Rathor</h4>
+                                    <span>Libraro Manager</span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -221,6 +237,27 @@
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
+                                </div>
+                                <ul class="customer-ratings">
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <div class="feedback-box">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+
+                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
+                            <div class="customer-info">
+                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <div class="customer-details">
+                                    <h4>Sandeep Rathor</h4>
+                                    <span>Libraro Manager</span>
                                 </div>
                                 <ul class="customer-ratings">
                                     <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
@@ -463,96 +500,6 @@
     </div>
 </section>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        $('#demoRequest').on('submit', function(e) {
-            e.preventDefault();
-
-            var formData = new FormData(this);
-
-            $.ajax({
-                url: '{{ route("demo-request") }}',
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                success: function(response) {
-                    console.log(response);
-
-                    if (response.status === 'success') {
-                        toastr.success(response.message);
-
-                        // Clear error messages and reset form
-                        $(".is-invalid").removeClass("is-invalid");
-                        $(".invalid-feedback").remove();
-
-                        // Optionally, reset the form after success
-                        $('#demoRequest')[0].reset();
-                        $("#error-message").hide();
-                    } else {
-                        $("#error-message").text(response.message).show();
-                        $("#success-message").hide();
-                    }
-                },
-                error: function(xhr) {
-                    var response = xhr.responseJSON;
-
-                    if (xhr.status === 422 && response.errors) { // Validation error check
-                        $(".is-invalid").removeClass("is-invalid");
-                        $(".invalid-feedback").remove();
-
-                        $.each(response.errors, function(key, value) {
-                            var element = $("[name='" + key + "']");
-                            element.addClass("is-invalid");
-                            element.after('<span class="invalid-feedback" role="alert">' + value[0] + '</span>');
-                        });
-                    } else {
-                        console.error('AJAX Error:', xhr.responseText);
-                        alert('There was an error processing the request. Please try again.');
-                    }
-                }
-            });
-        });
-    });
-</script>
-<script>
-    $('#clientsFeedbacks').owlCarousel({
-        loop: true,
-        nav: true,
-        dots: true,
-        margin: 20,
-        navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-        pagination: true,
-        autoplay: true,
-        autoPlaySpeed: 2000,
-        smartSpeed: 2000,
-        autoplayTimeout: 5000,
-        autoplayHoverPause: true,
-        responsive: {
-            0: {
-                items: 1,
-                nav: false,
-            },
-            768: {
-                items: 2,
-                nav: false,
-            },
-            992: {
-                items: 3,
-            },
-            1200: {
-                items: 3,
-            },
-            1920: {
-                items: 4,
-            }
-        }
-    });
-</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -589,19 +536,5 @@
 </script>
 
 
-<!-- scroll offset top -->
-<script>
-    $(document).ready(function() {
-        $('a[href^="#"]').on('click', function(event) {
-            event.preventDefault(); // Prevent default anchor click behavior
 
-            var target = $(this.getAttribute('href')); // Get target element by href ID
-            if (target.length) {
-                $('html, body').animate({
-                    scrollTop: target.offset().top - 60 // Scroll with 60px offset
-                }, 500);
-            }
-        });
-    });
-</script>
 @endsection

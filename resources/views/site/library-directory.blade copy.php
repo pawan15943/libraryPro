@@ -89,7 +89,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="owl-carousel" id="library-list">
+                    <div class="owl-carousel owl-theme" id="library-list">
                     </div>
                 </div>
 
@@ -214,7 +214,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="owl-carousel" id="feedback">
+                    <div class="owl-carousel owl-theme" id="feedback">
                         @foreach($happy_customer as $key => $value)
                         <div class="item">
                             <div class="feedback-box">

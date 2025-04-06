@@ -272,12 +272,7 @@
                 // fetchLibraries(selectedSuggestion); 
             });
 
-            // $(document).on('change', '#city-item', function() {
-            //     let selectedCity = $(this).val(); 
-            //     console.log('city',selectedCity);
-            //     fetchLibraries('', selectedCity);
-             
-            // });
+
     
             // Show Library Default Data
             function fetchLibraries(query = '', city = '') {

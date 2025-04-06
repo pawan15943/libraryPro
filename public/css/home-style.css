@@ -587,6 +587,7 @@ h2.mb-4 span {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
 /* Inquiry */
 .inquiry {
     padding: 3.5rem 0;
@@ -627,28 +628,39 @@ h2.mb-4 span {
 
 @keyframes floatUpDown {
     0% {
-      transform: translateY(0);
+        transform: translateY(0);
     }
+
     50% {
-      transform: translateY(-15px);
+        transform: translateY(-15px);
     }
+
     100% {
-      transform: translateY(0);
+        transform: translateY(0);
     }
-  }
+}
 
 .main-box>img {
     padding-left: 5rem;
 }
+
 .typing-cursor {
-font-weight: bold;
-animation: blink 0.7s infinite;
+    font-weight: bold;
+    animation: blink 0.7s infinite;
 }
-  
+
 @keyframes blink {
-0%, 100% { opacity: 1; }
-50% { opacity: 0; }
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
 }
+
 footer {
     background: #000;
     padding-top: 2.5rem;
@@ -1543,11 +1555,15 @@ img.img-fluid {
 ======================================================================================*/
 
 @media screen and (max-width:480px) {
+
+    form.me-3{
+        margin-right: 0 !important;
+    }
     .main-box>img {
         padding-left: 0rem;
     }
 
-    .main-box .support{
+    .main-box .support {
         display: none;
     }
 

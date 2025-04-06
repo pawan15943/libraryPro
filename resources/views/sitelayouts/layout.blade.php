@@ -87,10 +87,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
-
-
-
-
     <script src="{{ url('public/js/main-validation.js') }}"></script>
 
     <script>
@@ -295,17 +291,17 @@
                         city: city,
                     },
                     success: function(data) {
-                        $('#library-list').empty(); // Clear the previous library results
+                        $('#library-list1').empty(); // Clear the previous library results
     
                         if (data.length > 0) {
                             // Initialize Owl Carousel (destroy if already initialized)
-                            if ($('#library-list').hasClass('owl-carousel')) {
-                                $('#library-list').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
-                                $('#library-list').find('.owl-stage-outer').children().unwrap();
+                            if ($('#library-list1').hasClass('owl-carousel')) {
+                                $('#library-list1').trigger('destroy.owl.carousel').removeClass('owl-carousel owl-loaded');
+                                $('#library-list1').find('.owl-stage-outer').children().unwrap();
                             }
     
                             // Add Owl Carousel class
-                            $('#library-list').addClass('owl-carousel owl-theme');
+                            $('#library-list1').addClass('owl-carousel');
     
                             // Loop through each library and append it as a carousel item
                             $.each(data, function(index, library) {
@@ -347,11 +343,11 @@
                                         
                                     </div>
                                     `;
-                                $('#library-list').append(libraryHTML);
+                                $('#library-list1').append(libraryHTML);
                             });
     
                             // Re-initialize Owl Carousel after appending items
-                            $('#library-list').owlCarousel({
+                            $('#library-list1').owlCarousel({
                                 loop: true,
                                 margin: 30,
                                 nav: true,
@@ -367,22 +363,19 @@
                                         items: 2
                                     },
                                     1000: {
-                                        items: 3
+                                        items: 3,
+                                        dots: true,
                                     }
                                 }
                             });
                         } else {
                             letblankhtml=
-                            `
-                                    <div class="item">
-                                        <div class="featured-library">
-                                            <h4>No library Found</h4>
-                                          
-                                        </div>
-                                        
-                                    </div>
-                                    `;
-                            $('#library-list').append(letblankhtml);
+                            `<div class="item">
+                                <div class="featured-library">
+                                    <h4>No library Found</h4>
+                                </div>
+                            </div>`;
+                            $('#library-list1').append(letblankhtml);
                         }
                     }
                 });
@@ -401,41 +394,53 @@
         });
     </script>
     
-    <script>
-        $('.owl-carousel').trigger('destroy.owl.carousel');
-        $('#library-list').owlCarousel({
-            loop: true,
-            dots: true,
-            margin: 20,
-            navText: ['<i class="las la-angle-left arrow-left"></i>', '<i class="las la-angle-right arrow-right"></i>'],
-            pagination: true,
-            autoplay: true,
-            autoPlaySpeed: 2000,
-            smartSpeed: 2000,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            responsive: {
-                0: {
-                    items: 1,
-                   
-                },
-                768: {
-                    items: 2,
-                    
-                },
-                992: {
-                    items: 3,
-                },
-                1200: {
-                    items: 3,
-                },
-                1920: {
-                    items: 4,
-                }
-            }
-        });
-    </script>
+    
   
+  <script>
+$(document).ready(function () {
+    let counterRun = false; // Make sure it runs only once
+
+    function runCounter() {
+        $('.counter').each(function () {
+            var $this = $(this),
+                countTo = parseInt($this.attr('data-count'));
+
+            $({ countNum: 0 }).animate(
+                { countNum: countTo },
+                {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function () {
+                        $this.text(Math.floor(this.countNum) + '+');
+                    },
+                    complete: function () {
+                        $this.text(countTo + '+');
+                    }
+                }
+            );
+        });
+    }
+
+    function isElementInView(el) {
+        var elementTop = $(el).offset().top;
+        var elementBottom = elementTop + $(el).outerHeight();
+        var viewportTop = $(window).scrollTop();
+        var viewportBottom = viewportTop + $(window).height();
+        return elementBottom > viewportTop && elementTop < viewportBottom;
+    }
+
+    // Check on scroll and initial load
+    function checkAndRunCounter() {
+        if (!counterRun && isElementInView('.counter')) {
+            runCounter();
+            counterRun = true;
+        }
+    }
+
+    // Run on load and scroll
+    $(window).on('scroll load', checkAndRunCounter);
+});
+</script>
 
 
 
@@ -596,6 +601,22 @@
         var timerInterval = setInterval(updateCountdown, 1000);
         updateCountdown(); // Run immediately on page load
     });
+</script>
+<script>
+    $(function(){
+  var text = "Effortlessly manage your library from seat bookings to reporting all in one place!";
+  var i = 0;
+
+  function type() {
+    if (i < text.length) {
+      $('#typing-text').append(text.charAt(i));
+      i++;
+      setTimeout(type, 50); // speed of typing
+    }
+  }
+
+  type();
+});
 </script>
 </body>
 

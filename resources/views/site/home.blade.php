@@ -6,8 +6,12 @@
         <div class="row g-4 align-items-center">
             <div class="col-lg-6 order-2 order-md-1 text-center text-md-start">
                 <h4 class="head-text-1">Revolutionize Your Library with the Best Library Management Software</h4>
-                <h2 class="head-text-2">Effortlessly manage your library from seat bookings to reporting all in one place!</h2>
-                <p class="head-text-3">Optimize your library operations with our feature-rich, user-friendly software perfect for public and private libraries.</p>
+                
+                <h2 id="typing-text" class="head-text-2 d-inline"></h2>
+                <h2 class="typing-cursor d-inline">|</h2>
+
+                
+                <p class="head-text-3 mt-4">Optimize your library operations with our feature-rich, user-friendly software perfect for public and private libraries.</p>
                 <a href="{{route('register')}}" class="cta">Sign Up – Manage Effortlessly!</a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
@@ -590,7 +594,7 @@
                 {{ session('success') }}
             </div>
             @endif
-            <div class="col-lg-5">
+            <div class="col-lg-5 order-2 order-md-2">
                 <h2 class="mb-4">Would you like to <br><span>Schedule a free Demo?</span></h2>
                 <form class="me-3" id="demoRequest">
                     @csrf
@@ -664,7 +668,7 @@
                 </form>
 
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-7 order-1 order-md-2">
                 <div class="main-box">
                     <div class="support">
                         <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">

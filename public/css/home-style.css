@@ -177,14 +177,14 @@ a.cta:hover {
 }
 
 .product-features-box {
-    background: #ccfff9;
+    background: linear-gradient(322deg, #a6f5ff 10%, transparent 70%);
     padding: 1.5rem;
     border-radius: 1.5rem;
     min-height: 500px;
     margin: 0 .5rem;
     position: relative;
+    border: 1px solid #e4e4e4;
     overflow: hidden;
-
 }
 
 .product-features-box img {
@@ -583,13 +583,14 @@ h2.mb-4 span {
     font-size: inherit;
     font-weight: inherit;
     font-family: inherit;
-    color: #00BCD4;
+    background: -webkit-linear-gradient(45deg, #00BCD4, #21f3bb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
-
 /* Inquiry */
 .inquiry {
     padding: 3.5rem 0;
-    background: #f0fdff;
+    background: linear-gradient(0deg, #cff6ff, #ffffff);
 }
 
 .inquiry .form-control:not(textarea),
@@ -621,12 +622,33 @@ h2.mb-4 span {
     left: 2%;
     width: 228px;
     bottom: 10%;
+    animation: floatUpDown 3s ease-in-out infinite;
 }
+
+@keyframes floatUpDown {
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
 
 .main-box>img {
     padding-left: 5rem;
 }
-
+.typing-cursor {
+font-weight: bold;
+animation: blink 0.7s infinite;
+}
+  
+@keyframes blink {
+0%, 100% { opacity: 1; }
+50% { opacity: 0; }
+}
 footer {
     background: #000;
     padding-top: 2.5rem;
@@ -1521,6 +1543,22 @@ img.img-fluid {
 ======================================================================================*/
 
 @media screen and (max-width:480px) {
+    .main-box>img {
+        padding-left: 0rem;
+    }
+
+    .main-box .support{
+        display: none;
+    }
+
+    h2.mb-4 {
+        text-align: center;
+    }
+
+    ul.social {
+        justify-content: center;
+    }
+
     .search select {
         width: 200px !important;
         padding-left: 1.5rem;
@@ -1585,4 +1623,9 @@ img.img-fluid {
         border: none !important;
         outline: none !important;
     }
+}
+
+small.text-gray {
+    color: red;
+    font-style: italic;
 }

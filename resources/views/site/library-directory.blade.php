@@ -48,7 +48,7 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="owl-carousel owl-theme" id="library-list">
+                <div class="owl-carousel owl-theme" id="library-list1">
                 </div>
             </div>
         </div>
@@ -66,19 +66,19 @@
         <h2 class="mb-5">Important Factors <br>That Make Us the Right Choice</h2>
         <div class="row g-4">
             <div class="col-lg-3 col-md-6 col-6">
-                <h1>{{$library_count}}+</h1>
+                <h1 class="counter" data-count="{{$library_count}}">0</h1>
                 <p>Library Enrolled</p>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
-                <h1>{{$learner_count}}+</h1>
+                <h1 class="counter" data-count="{{$learner_count}}">0</h1>
                 <p>Learner Enrolled</p>
             </div>
             <div class="col-lg-3 col-md-6 col-6">
-                <h1>{{$city_count}}+</h1>
+                <h1 class="counter" data-count="{{$city_count}}">0</h1>
                 <p>Total Cities
             </div>
             <div class="col-lg-3 col-md-6 col-6">
-                <h1>{{$feedback_count}}+</h1>
+                <h1 class="counter" data-count="{{$feedback_count}}">0</h1>
                 <p>Customers trusts</p>
             </div>
         </div>
@@ -397,8 +397,6 @@
 
 <!-- Quick Support -->
 <section class="inquiry" id="demo">
-
-
     <div class="container">
         <div class="row g-4 align-items-center">
             @if (session('success'))
@@ -406,41 +404,38 @@
                 {{ session('success') }}
             </div>
             @endif
-            <div class="col-lg-6">
+            <div class="col-lg-5 order-2 order-md-2">
                 <h2 class="mb-4">Would you like to <br><span>Schedule a free Demo?</span></h2>
                 <form class="me-3" id="demoRequest">
                     @csrf
                     <input type="hidden" name="databasemodel" value="DemoRequest">
                     <div class="form-box">
-                        <div class="row g-3">
+                        <div class="row g-4">
                             <div class="col-lg-12">
-                                <label for="full_name">Full Name <span class="text-danger">*</span></label>
-                                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Enter your Name" autocomplete="off" id="full_name">
+                                <input type="text" name="full_name" class="form-control @error('full_name') is-invalid @enderror char-only" placeholder="Full Name" autocomplete="off" id="full_name">
+                            </div>
+                            
+                            <div class="col-lg-12">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Email ID" autocomplete="off" id="email">
 
                             </div>
-                            <div class="col-lg-12">
-                                <label for="mobile_number">Mobile Number <span class="text-danger">*</span></label>
-                                <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Enter Mobile Number" minlength="8" maxlength="10" autocomplete="off" id="mobile_number">
+                            <div class="col-lg-6">
+                                <input type="text" name="mobile_number" class="form-control @error('mobile_number') is-invalid @enderror digit-only" placeholder="Mobile Number" minlength="8" maxlength="10" autocomplete="off" id="mobile_number">
                                 @error('mobile_number')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
                             </div>
-                            <div class="col-lg-12">
-                                <label for="email">Email Id <span class="text-danger">*</span></label>
-                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="Enter Email Address" autocomplete="off" id="email">
+                            <div class="col-lg-6">
+                                <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror" id="preferred_date" placeholder="Date">
+                                <small class="text-gray" style="font-size: .8rem;">Choose Preffered Slot Date</small>
 
                             </div>
+                            
                             <div class="col-lg-12">
-                                <label for="preferred_date">Preferred Date <span class="text-danger">*</span></label>
-                                <input type="date" name="preferred_date" class="form-control @error('preferred_date') is-invalid @enderror" id="preferred_date">
-
-                            </div>
-                            <div class="col-lg-12">
-                                <label for="timeSlot">Preferred Time (Optional)</label>
                                 <select class="form-select no-validate" id="timeSlot" name="preferred_time">
-                                    <option value="">Select Time Slot</option>
+                                    <option value="">Select Preffered Time Slot</option>
                                     <option value="7:00 AM - 7:30 AM">7:00 AM - 7:30 AM</option>
                                     <option value="7:30 AM - 8:00 AM">7:30 AM - 8:00 AM</option>
                                     <option value="8:00 AM - 8:30 AM">8:00 AM - 8:30 AM</option>
@@ -467,7 +462,6 @@
                                     <option value="6:30 PM - 7:00 PM">6:30 PM - 7:00 PM</option>
                                     <option value="7:00 PM - 7:30 PM">7:00 PM - 7:30 PM</option>
                                 </select>
-                                <small class="text-danger">*We will call you at your preferred time based on our availability.</small>
                             </div>
                             <div class="col-lg-12 form-group">
                                 <input type="checkbox" class="me-2 form-check-input " name="terms" id="terms">
@@ -484,7 +478,7 @@
                 </form>
 
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-7 order-1 order-md-2">
                 <div class="main-box">
                     <div class="support">
                         <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">

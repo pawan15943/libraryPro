@@ -100,28 +100,28 @@ $diffInDays = $today->diffInDays($endDate, false);
                         </select>
                     </div>
                     <div class="row g-4">
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">Plan <span>*</span></label>
                             <input type="text" class="form-control" id="plan_name" readonly>
                         </div>
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">Plan Type <span>*</span></label>
                             <input type="text" class="form-control" id="plan_type_name" readonly >
                            
                         </div>
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">Plan Price <span>*</span></label>
                             <input type="text" class="form-control " id="plan_price" readonly>
                         </div>
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">Start Date <span>*</span></label>
                             <input type="date" class="form-control " name="start_date" id="plan_start_date" value="{{ old('start_date' ) }}" readonly>
                         </div>
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">End Date <span>*</span></label>
                             <input type="date" class="form-control " name="end_date" id="plan_end_date" value="{{ old('end_date' ) }}" readonly>
                         </div>
-                        <div class="col-lg-6 col-6">
+                        <div class="col-lg-4 col-6">
                             <label for="">Transaction Date <span>*</span></label>
                             <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="">
                             @error('paid_date')

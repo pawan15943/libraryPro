@@ -12,7 +12,23 @@
 
     <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .left {
+            position: relative;
+            z-index: 1;
+        }
 
+        .left::after {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: linear-gradient(0deg, black, transparent);
+            content: '';
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -87,6 +103,7 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.21.0/jquery.validate.min.js"></script>
 
@@ -98,7 +115,24 @@
             $('input').attr('autocomplete', 'off');
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            var images = [
+                '{{url("public/img/login-slider/super-admin.webp")}}',
+            ];
 
+            var currentIndex = 0;
+
+            function changeBackground() {
+                $('.left').css('background-image', 'url(' + images[currentIndex] + ')');
+                $('.left').css('background-size', 'cover');
+                currentIndex = (currentIndex + 1) % images.length;
+            }
+
+            changeBackground();
+            setInterval(changeBackground, 5000);
+        });
+    </script>
 </body>
 
 </html>

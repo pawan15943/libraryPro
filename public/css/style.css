@@ -619,7 +619,7 @@ nav ol {
     background: linear-gradient(180deg, #eafdff, transparent);
 }
 
-.mt-5{
+.mt-5 {
     margin-top: 1.8rem !important;
 }
 
@@ -2284,7 +2284,7 @@ label.upload-label input[type=file] {
 }
 
 img#imageDisplay {
-    width: 120px ;
+    width: 120px;
     height: 120px !important;
     border-radius: 120px;
     object-fit: contain;
@@ -5499,6 +5499,7 @@ img.id-profile {
     position: sticky;
     top: 90px;
 }
+
 div#preview .preview {
     width: 100px !important;
     overflow: hidden;
@@ -5508,4 +5509,28 @@ div#preview .preview {
     border: 1px solid;
     display: block;
     margin: 1rem auto;
+}
+
+.QuickAction {
+    display: flex;
+    list-style: none;
+    justify-content: end;
+    gap: 1rem;
+}
+
+ul.QuickAction li {
+    box-shadow: 1px 0 5px #ababab;
+    position: relative;
+    padding: .3rem 1rem;
+    display: table-cell;
+    border-radius: .4rem;
+    overflow: hidden;
+    background: var(--c1);
+}
+
+.QuickAction li a {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
 }

@@ -58,7 +58,7 @@ class ForgotPasswordController extends Controller
         // Send reset email (you can customize this)
         \Mail::send('auth.passwords.reset', ['token' => $token, 'email' => $request->email], function ($message) use ($request) {
             $message->to($request->email);
-            $message->subject('Password Reset Link');
+            $message->subject('Reset Your Account Password');
         });
 
         return back()->with('status', 'Password reset link sent!');

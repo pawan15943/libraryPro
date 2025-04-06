@@ -46,9 +46,10 @@ Route::group(['prefix' => 'library'], function () {
 });
 
 
-Route::get('/email/verify', function () {
-  return view('auth.verify');
-})->name('verification.notice');
+// Route::get('/email/verify', function () {
+//   return view('auth.verify');
+// })->name('verification.notice');
+Route::get('/email/verify', [LibraryController::class, 'emailVerification'])->name('verification.notice');
 Route::post('/verify-otp', [LibraryController::class, 'verifyOtp'])->name('verify.otp');
 Route::get('library/choose-plan-price', [LibraryController::class, 'getSubscriptionPrice'])->name('subscriptions.getSubscriptionPrice');
 Route::get('cityGetStateWise', [MasterController::class, 'stateWiseCity'])->name('cityGetStateWise');
@@ -160,6 +161,9 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::put('/reactive/{id?}', [LearnerController::class, 'reactiveLearner'])->name('learner.reactive.store');
       Route::get('/payment/{id?}', [LearnerController::class, 'makePayment'])->name('learner.payment');
       Route::post('/payment/store', [LearnerController::class, 'paymentStore'])->name('learner.payment.store');
+      Route::get('/getTransactionDetail', [LearnerController::class, 'getTransactionDetail'])->name('getTransactionDetail');
+      Route::get('learner/pending/payment/{id?}', [LearnerController::class, 'pendingPayment'])->name('learner.pending.payment');
+      Route::post('pending/payment/store', [LearnerController::class, 'pendingPaymentStore'])->name('learner.pending.payment.store');
       
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
@@ -191,6 +195,8 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {
   Route::post('library/storedata', [LibraryController::class, 'libraryStore'])->name('library.storedata');
+  
+    Route::post('library/verify/otp', [AdminController::class, 'libraryVerify'])->name('library.verify.otp');
     Route::get('/home', [DashboardController::class, 'index'])->name('home'); // Admin or superadmin home
     Route::get('library/payment/{id}', [AdminController::class, 'libraryPayment'])->name('library.payment');
     Route::get('get/subscription/fees', [AdminController::class, 'getSubscriptionFees'])->name('get.subscription.fees');

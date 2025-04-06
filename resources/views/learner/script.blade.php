@@ -429,8 +429,7 @@
             var seat_no = $('#update_seat_no').val();
             var user_id = $('#update_user_id').val();
             var plan_id = $('#update_plan_id').val();
-           
-        //    console.log("heena",$('#hidden_plan').val());
+       
           
             var plan_type_id = $('#updated_plan_type_id').val();
             var plan_price_id = $('#updated_plan_price_id').val();
@@ -660,6 +659,44 @@
                 $('#due_date').removeAttr('readonly');
             }
         });
+        $('#transaction_id').on('change', function(event) {
+          
+          event.preventDefault();
+          var transaction_id = $(this).val();
+        
+          
+          if (transaction_id) {
+              $.ajax({
+                  url: '{{ route('getTransactionDetail') }}',
+                  headers: {
+                      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                  },
+                  type: 'GET',
+                  data: {
+                      "_token": "{{ csrf_token() }}",
+                      "transaction_id": transaction_id,
+                     
+                  },
+                  dataType: 'json',
+                  success: function(response) {
+                if (response.error) {
+                    alert(response.error);
+                } else {
+                    console.log(response);
+                       
+                        $('#plan_name').val(response.plan.name);
+                        $('#plan_type_name').val(response.plantype.name);
+                        $('#plan_price').val(response.plan_price_id );
+                        $('#plan_start_date ').val(response.plan_start_date );
+                        $('#plan_end_date ').val(response.plan_end_date );
+                    }
+                },
+                error: function(xhr) {
+                    alert('Error fetching transaction details.');
+                }
+              });
+          }
+      });
     });
         
 

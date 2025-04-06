@@ -73,10 +73,11 @@
                 <tbody>
                     @foreach($libraries as $key => $value)
                     @php
+                    
                         $today = Carbon::today();
                          $libraryplan=App\Models\Subscription::where('id',$value->library_type)->value('name');
                          $libraryplanData=DB::table('library_transactions')->where('id',$value->latest_transaction_id)->first();
-
+                        
                          $endDate = ($libraryplanData && $libraryplanData->end_date != null) ? Carbon::parse($libraryplanData->end_date) : null;
                          $diffInDays = $endDate ? $today->diffInDays($endDate, false) : 0;
                    @endphp
@@ -84,7 +85,10 @@
                     <tr>
                         <td>{{$key+1}}</td>
                         <td><span class="uppercase truncate d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->library_name}}" data-bs-placement="bottom"> {{$value->library_name}}</span>
-                            {{-- <small>{{$value->library_owner_contact}}</small> --}}
+                          
+                            <small>{{!empty($libraryplanData) && ($libraryplanData->is_paid==1) ? 'Paid' : 'Not Paid'}}</small>
+                           
+                           
                         </td>
                         <td><span class=" d-block m-auto" data-bs-toggle="tooltip" data-bs-title="{{$value->email}}" data-bs-placement="bottom">
                             @if($value->email_verified_at !='')
@@ -112,15 +116,14 @@
                             
                                 {{ \Carbon\Carbon::parse($libraryplanData->start_date)->toFormattedDateString() }}
                             @else
-                            Start Date : NA
+                             NA
                             @endif
                              </span>
                             @if($value->status==1)
                             <small class="text-success">Active</small>
-                            @elseif($value->status==2)
-                            <small class="text-danger">Expired</small>
+                            
                             @else
-                            <small>Not Paid</small>
+                            <small>Dactive </small>
                             @endif
                            
                         </td>

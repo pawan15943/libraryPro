@@ -144,6 +144,8 @@ class LibraryController extends Controller
             'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200',
             'password'       => 'required|string|min:8',
             'terms'          => 'accepted',
+            'library_owner_email'=> 'nullable|email|max:255',
+            'library_owner_contact' => 'nullable|digits:10',
         ];
         
 
@@ -152,7 +154,7 @@ class LibraryController extends Controller
 
     public function store(Request $request)
     {
-       
+      
         // Validate the request
         $validatedData = $this->libraryValidation($request);
         
@@ -1109,6 +1111,13 @@ class LibraryController extends Controller
     }
 
 
-
+    public function emailVerification(){
+        if(Auth::guard('web')->check()){
+            return view('library.emailVerification');
+        }else{
+            return view('auth.verify');
+        }
+        
+    }
 
 }

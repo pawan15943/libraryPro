@@ -254,7 +254,7 @@ class LearnerController extends Controller
     //learner store
     public function learnerStore(Request $request)
     {
-        // dd($request);
+        
         $additionalRules = [
             'payment_mode' => 'required',
             'plan_start_date' => 'required|date',
@@ -2340,6 +2340,94 @@ class LearnerController extends Controller
         $data=Blog::where('page_slug',$slug)->first();
         return view('site.blog-details',compact('data'));
     }
+
+    public function pendingPayment(Request $request){
+        $learner_id = $request->id;
+        $customer = LearnerDetail::where('learner_id', $learner_id)
+        ->with('learner', 'plan', 'plantype')
+        ->orderBy('id', 'DESC') 
+        ->first();
+         
+        $pendingPayment = LearnerTransaction::where('learner_id', $learner_id)
+        ->where('pending_amount', '!=', 0)
+        ->whereNotNull('pending_amount')
+        ->pluck('pending_amount', 'id');
+            return view('learner.pending-payment',compact('customer','pendingPayment'));
+
+    }
+
+    public function getTransactionDetail(Request $request)
+    {
+        $transaction_id = $request->transaction_id;
+        $transaction = LearnerTransaction::find($transaction_id);
+    
+        if (!$transaction) {
+            return response()->json(['error' => 'Transaction not found'], 404);
+        }
+    
+        $learnerDetail = $transaction->learner_detail_id;
+        $data = LearnerDetail::where('id', $learnerDetail)
+            ->with('learner', 'plan', 'plantype')
+            ->first();
+    
+        return response()->json($data);
+    }
+    
+
+    public function pendingPaymentStore(Request $request)
+    {  
+        $this->validate($request, [
+            'transaction_image' => 'nullable|mimes:webp,png,jpg,jpeg|max:200',
+            'transaction_id' => 'required|exists:learner_transactions,id',
+            'paid_date' => 'required',
+        ]);
+
+        $transaction = LearnerTransaction::find($request->transaction_id);
+        if (!$transaction) {
+            return redirect()->route('learners')->withErrors(['error' => 'Transaction not found.']);
+        }
+
+        $total_amount = $transaction->total_amount;
+        $total_paid_amount = $transaction->paid_amount + $transaction->pending_amount;
+        $new_pending_amount = $total_amount - $total_paid_amount;
+
+        if ($request->hasFile('transaction_image')) {
+            $transaction_image = $request->file('transaction_image');
+            $transaction_imageNewName = 'transaction_image_' . time() . '_' . $transaction_image->getClientOriginalName();
+            $transaction_image->move(public_path('uploads'), $transaction_imageNewName);
+            $transaction_image = 'uploads/' . $transaction_imageNewName;
+        } else {
+            $transaction_image = null;
+        }
+
+        try {
+        
+            $transaction->pending_amount = $new_pending_amount;
+            $transaction->paid_amount = $total_paid_amount;
+            $transaction->save();
+
+            // Check & update pending transaction
+            $pendingTransaction = DB::table('learner_pending_transaction')
+                ->where('learner_id', $transaction->learner_id)
+                ->orderBy('id', 'desc')
+                ->first();
+
+            if ($pendingTransaction) {
+                DB::table('learner_pending_transaction')
+                    ->where('id', $pendingTransaction->id)
+                    ->update([
+                        'paid_date' => $request->paid_date,
+                        'status' => 1
+                    ]);
+            }
+
+            return redirect()->route('learners')->with('success', 'Payment successfully recorded.');
+        } catch (\Exception $e) {
+            \Log::error('Payment Error: ' . $e->getMessage());
+            return redirect()->route('learners')->withErrors(['error' => 'An error occurred while processing the payment.']);
+        }
+    }
+
     
 
 }

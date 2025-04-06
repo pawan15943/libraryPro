@@ -251,7 +251,10 @@ $current_route = Route::currentRouteName();
                             @elseif(empty(learnerTransaction($value->id,$value->learner_detail_id)->pending_amount))
                                 <span></span>
                             @else
-                                <span class="text-danger d-block">Pending : {{learnerTransaction($value->id,$value->learner_detail_id)->pending_amount?? ''}}</span>
+                            <a href="{{ route('learner.pending.payment', ['id' => $value->id]) }}" class="text-danger d-block">
+                                Pending : {{ learnerTransaction($value->id, $value->learner_detail_id)->pending_amount ?? '' }}
+                            </a>
+                                                        
                             @endif
 
                         </td>

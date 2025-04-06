@@ -56,6 +56,9 @@ class AdminController extends Controller
         $start_date = Carbon::now()->format('Y-m-d'); // Default start date
     
         if ($request->payment == 'new') {
+            if ($library_tra &&  Library::withoutGlobalScopes()->where('id', $request->library_id)->where('status',1)->exists()) {
+                return redirect()->back()->with('error', 'You can not pay new transaction');
+            }
             if ($request->month == 'monthly') {
                 $end_date = Carbon::now()->addMonth()->format('Y-m-d');
                 $month = 1;
@@ -192,5 +195,40 @@ class AdminController extends Controller
         }
         $plans=Subscription::get();
         return view('library.library-upgrade',compact('plans'));
+    }
+
+    public function libraryVerify(Request $request)
+    {
+       
+        // Validate the input
+        $request->validate([
+            'email' => 'required|email',
+            'email_otp' => 'required',
+        ]);
+
+        // Find the library by email
+        $library = Library::where('email', $request->email)->first();
+     
+
+        if (!$library) {
+            return redirect()->back()->withErrors(['email' => 'Library not found']);
+        }
+        
+        // Check if the OTP matches
+        if ($library->email_otp == $request->email_otp) {
+            // Mark email as verified
+            $library->email_verified_at = now();
+            $library->save();
+           
+            if ($library && !$library->hasRole('admin', 'library')) {
+                // Assign the 'admin' role to the user under the 'library' guard
+                $library->assignRole('admin');
+            }
+
+            // Redirect to dashboard or wherever you want
+            return redirect()->route('library')->with('success', 'Library Created successfully processed.');
+        } else {
+            return redirect()->back()->withErrors(['email_otp' => 'Invalid OTP. Please try again.']);
+        }
     }
 }

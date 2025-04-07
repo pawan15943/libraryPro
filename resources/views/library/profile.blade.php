@@ -41,7 +41,7 @@
 <form action="{{ route('library.profile.update') }}" class="validateForm profile" method="POST" enctype="multipart/form-data">
     @csrf
 
-    <div class="row mb-4">
+    <div class="row mb-4 g-4">
         <div class="col-lg-8">
             <div class="card">
                 <h4 class="mb-4">Library Details</h4>

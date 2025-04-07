@@ -4707,7 +4707,7 @@ h6.text-center.bg-white {
     }
 
     ul.libraryFeatures {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
     }
 
     th,

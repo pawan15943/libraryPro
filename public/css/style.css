@@ -5534,3 +5534,23 @@ ul.QuickAction li {
     align-items: center;
     gap: .5rem;
 }
+
+button.btn.btn-danger.btn-sm.remove-existing-image {
+    width: 18px !important;
+    height: 18px !important;
+    display: flex;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 25px;
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 2px !important;
+    margin-top: -7px;
+}
+
+.image-container img {
+    width: 150px;
+    height: 150px;
+    padding: 5px ! IMPORTANT;
+    border-radius: 1rem;
+}

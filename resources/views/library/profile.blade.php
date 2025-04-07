@@ -308,7 +308,16 @@
                 <h4 class="mb-4">Library Logo</h4>
                 <div class="row g-4">
                     <div class="col-lg-12">
-                        <div class="preview" id="preview"></div>
+                    <div class="preview" id="preview">
+                        @if(old('library_logo'))
+                            <img src="{{ asset('public/' . old('library_logo')) }}" class="img-thumbnail rounded shadow preview" style="max-width: 250px;">
+                        @elseif(isset($library) && $library->library_logo)
+                            <img src="{{ asset('public/' . $library->library_logo) }}" class="img-thumbnail rounded shadow preview" style="max-width: 250px;">
+                        @else
+                            <!-- Show empty preview or placeholder -->
+                            <p class="text-muted">No logo uploaded</p>
+                        @endif
+                    </div>
                         <div class="progress">
                             <div class="progress-bar" id="progressBar"></div>
                         </div>

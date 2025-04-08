@@ -21,7 +21,7 @@
     </div>
 </section> 
 
-<section class="mt-2 d-none">
+<!-- <section class="mt-2 d-none">
     <div class="owl-carousel owl-theme" id="mainSlider">
         <div class="item">
             <img src="{{ asset('public/img/slider/slider-3.png') }}" loading="lazy" alt="slider" class="img-fluid rounded-4">
@@ -33,9 +33,9 @@
             <img src="{{ asset('public/img/slider/slider-1.png') }}" loading="lazy" alt="slider" class="img-fluid rounded-4">
         </div>
     </div>
-</section>
+</section> -->
 
-<section class="offer d-none">
+<!-- <section class="offer d-none">
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- Section 2 -->
 <section class="product-features">

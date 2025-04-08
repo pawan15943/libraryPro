@@ -15,7 +15,7 @@
                 <a href="{{route('register')}}" class="cta">Sign Up – Manage Effortlessly!</a>
             </div>
             <div class="col-lg-6 order-1 order-md-2 mb-4 mb-md-0">
-                <img src="{{ asset('public/img/head.webp') }}" alt="Library management software" class="img-fluid">
+                <img src="{{ asset('public/img/head.webp') }}" loading="lazy" alt="Library management software" class="img-fluid">
             </div>
         </div>
     </div>
@@ -24,13 +24,13 @@
 <section class="mt-2 d-none">
     <div class="owl-carousel owl-theme" id="mainSlider">
         <div class="item">
-            <img src="{{ asset('public/img/slider/slider-3.png') }}" alt="slider" class="img-fluid rounded-4">
+            <img src="{{ asset('public/img/slider/slider-3.png') }}" loading="lazy" alt="slider" class="img-fluid rounded-4">
         </div>
         <div class="item">
-            <img src="{{ asset('public/img/slider/slider-2.png') }}" alt="slider" class="img-fluid rounded-4">
+            <img src="{{ asset('public/img/slider/slider-2.png') }}" loading="lazy" alt="slider" class="img-fluid rounded-4">
         </div>
         <div class="item">
-            <img src="{{ asset('public/img/slider/slider-1.png') }}" alt="slider" class="img-fluid rounded-4">
+            <img src="{{ asset('public/img/slider/slider-1.png') }}" loading="lazy" alt="slider" class="img-fluid rounded-4">
         </div>
     </div>
 </section>
@@ -65,19 +65,19 @@
         <div class="row d-none">
             <div class="col-lg-4">
                 <div class="featureBox">
-                    <img src="{{ asset('public/img/dashboard.png') }}" alt="Interactive Dashboard" class="img-fluid">
+                    <img src="{{ asset('public/img/dashboard.png') }}" loading="lazy" alt="Interactive Dashboard" class="img-fluid">
                     <h4>Interactive Dashboard with Complete Seat Tracking</h4>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="featureBox">
-                    <img src="{{ asset('public/img/seat-assignment.png') }}" alt="Interactive Dashboard" class="img-fluid">
+                    <img src="{{ asset('public/img/seat-assignment.png') }}" loading="lazy" alt="Interactive Dashboard" class="img-fluid">
                     <h4>Engage with Our Seat Mapping Feature: Expired and Extended Highlights</h4>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="featureBox">
-                    <img src="{{ asset('public/img/reporting.png') }}" alt="Interactive Dashboard" class="img-fluid">
+                    <img src="{{ asset('public/img/reporting.png') }}" loading="lazy" alt="Interactive Dashboard" class="img-fluid">
                     <h4>Efficient & Seamless Reporting that make you Hasselfree</h4>
                 </div>
             </div>
@@ -92,14 +92,14 @@
                         <div class="product-features-box">
                             <h4>Interactive Dashboard with <br>
                                 Complete Seat Tracking</h4>
-                            <img src="{{ asset('public/img/01.webp') }}" alt="Library management system">
+                            <img src="{{ asset('public/img/01.webp') }}" loading="lazy" alt="Library management system">
                         </div>
                     </div>
 
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Engage with Our Seat Mapping Feature: Expired and Extended Highlights</h4>
-                            <img src="{{ asset('public/img/02.webp') }}" alt="Library manager tool">
+                            <img src="{{ asset('public/img/02.webp') }}" loading="lazy" alt="Library manager tool">
                         </div>
                     </div>
 
@@ -107,14 +107,14 @@
                         <div class="product-features-box">
                             <h4>Efficient & Seamless
                                 Reporting that make you Hasselfree</h4>
-                            <img src="{{ asset('public/img/03.webp') }}" alt="Online library system">
+                            <img src="{{ asset('public/img/03.webp') }}" loading="lazy" alt="Online library system">
                         </div>
                     </div>
                     <div class="item">
                         <div class="product-features-box">
                             <h4>Efficient & Seamless
                                 Reporting that make you Hasselfree</h4>
-                            <img src="{{ asset('public/img/03.webp') }}" alt="Online library system">
+                            <img src="{{ asset('public/img/03.webp') }}" loading="lazy" alt="Online library system">
                         </div>
                     </div>
 
@@ -137,7 +137,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="https://www.libraro.in/public/img/libraro-features/detailed-dashboard.png" alt="Delete Seat Booking" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/detailed-dashboard.png" alt="Delete Seat Booking" class="icon" loading="lazy">
                     </div>
                     <h4>Interactive &amp; Insightful Dashboard</h4>
                     <span>Get a complete overview of your library with an intuitive and visually engaging dashboard.</span>
@@ -147,7 +147,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="https://www.libraro.in/public/img/libraro-features/user-interface.png" alt="Easy Plan Upgrades" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/user-interface.png" alt="Easy Plan Upgrades" class="icon" loading="lazy">
                     </div>
                     <h4>Seamless &amp; Intuitive User Interface</h4>
                     <span>Our platform is designed for an effortless user experience, making navigation smooth and hassle-free.</span>
@@ -157,7 +157,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="https://www.libraro.in/public/img/libraro-features/import-data.png" alt="Close Seat Option" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/import-data.png" alt="Close Seat Option" class="icon" loading="lazy">
                     </div>
                     <h4>One-Click Data Import</h4>
                     <span>Effortlessly migrate your existing data into our system with just a single click.</span>
@@ -167,7 +167,7 @@
                 <div class="benefits">
                     <div class="iconbox">
                         <img src="https://www.libraro.in/public/img/libraro-features/seat-management.png" alt="Reactivate
-                        Seat Access" class="icon">
+                        Seat Access" class="icon" loading="lazy">
                     </div>
                     <h4>Smart Seat Management</h4>
                     <span>Easily track Expired and Extended seats with a dedicated section for better organization.</span>
@@ -177,7 +177,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="https://www.libraro.in/public/img/libraro-features/data-security.png" alt="Swap Seat" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/data-security.png" alt="Swap Seat" class="icon" loading="lazy">
                     </div>
                     <h4>End-to-End Encryption &amp; Data Security</h4>
                     <span>Rest assured, only the library owner has access to learners' email and mobile details, ensuring complete privacy.</span>
@@ -187,7 +187,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="https://www.libraro.in/public/img/libraro-features/identity-card.png" alt="Flexible Membership Plans" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/identity-card.png" alt="Flexible Membership Plans" class="icon" loading="lazy">
                     </div>
                     <h4>Attendance &amp; ID Card Management</h4>
                     <span>Track attendance seamlessly and manage ID cards with ease.</span>
@@ -198,7 +198,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="https://www.libraro.in/public/img/libraro-features/report.png" alt="Swap Seat" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/report.png" alt="Swap Seat" class="icon" loading="lazy">
                     </div>
                     <h4>Comprehensive Reports</h4>
                     <span>Generate detailed reports in seconds to simplify your library management.</span>
@@ -208,7 +208,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="https://www.libraro.in/public/img/libraro-features/directory-listing.png" alt="Effortless Communication" class="icon">
+                        <img src="https://www.libraro.in/public/img/libraro-features/directory-listing.png" alt="Effortless Communication" class="icon" loading="lazy">
                     </div>
                     <h4>Free Directory Listing</h4>
                     <span>Boost your library’s visibility by getting a free listing with any of our plans.</span>
@@ -310,11 +310,11 @@
                     @if(!($happy_customers->isEmpty()))
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
 
                             <div class="message">As the <b>Founder & Director</b>, I created Libraro to simplify library operations with automation, seamless bookings, and powerful analytics. It's the all-in-one solution for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" loading="lazy" alt="user" class="profile rounded-circle">
                                 <div class="customer-details">
                                     <h4>Pawan Rathore</h4>
                                     <span>Founder: Libraro</span>
@@ -331,11 +331,11 @@
                     </div>
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
 
                             <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user2.png') }}" loading="lazy" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
@@ -352,11 +352,11 @@
                     </div>
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
 
                             <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user2.png') }}" loading="lazy" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Sandeep Rathor</h4>
                                     <span>Libraro Manager</span>
@@ -375,10 +375,10 @@
                     @foreach($happy_customers as $key => $value)
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
                             <div class="message">{{$value->description ?? ''}}</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" loading="lazy" alt="user" class="profile rounded-circle">
                                 <div class="customer-details">
                                     <h4>{{$value->library_owner ?? ''}}</h4>
                                     <span>{{$value->library_name ?? ''}}</span>
@@ -398,11 +398,11 @@
                     @else
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
 
                             <div class="message">As the <b>Founder & Director</b>, I created Libraro to simplify library operations with automation, seamless bookings, and powerful analytics. It's the all-in-one solution for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" alt="user" class="profile rounded-circle">
+                                <img src="{{ asset('public/img/pawan-profile.jpg') }}" loading="lazy" alt="user" class="profile rounded-circle">
                                 <div class="customer-details">
                                     <h4>Pawan Rathore</h4>
                                     <span>Founder: Libraro</span>
@@ -419,11 +419,11 @@
                     </div>
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" loading="lazy" class="comma">
 
                             <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user2.png') }}" loading="lazy" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
@@ -440,11 +440,11 @@
                     </div>
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" loading="lazy" alt="comma" class="comma">
 
                             <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user2.png') }}" loading="lazy" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Sandeep Rathor</h4>
                                     <span>Libraro Manager</span>
@@ -461,11 +461,11 @@
                     </div>
                     <div class="item">
                         <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
+                            <img src="{{url('public/img/comma.png')}}" alt="comma" loading="lazy" class="comma">
 
                             <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user2.png') }}" loading="lazy" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Sandeep Rathor</h4>
                                     <span>Libraro Manager</span>
@@ -671,13 +671,13 @@
             <div class="col-lg-7 order-1 order-md-2">
                 <div class="main-box">
                     <div class="support">
-                        <img src="{{ asset('public/img/direcotry/call.png') }}" alt="call">
+                        <img src="{{ asset('public/img/direcotry/call.png') }}" loading="lazy" alt="call">
                         <h4>We Are Here
                             to Assist you</h4>
                         <p class="m-0">Call : <a href="tel:91-8114479678">91-8114479678</a></p>
                         <p>Mail : <a href="mailto:info@libraro.in">info@libraro.in</a></p>
                     </div>
-                    <img src="{{ asset('public/img/contact.png') }}" alt="support" class="img-fluid">
+                    <img src="{{ asset('public/img/contact.png') }}" loading="lazy" alt="support" class="img-fluid">
                 </div>
             </div>
         </div>

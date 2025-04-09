@@ -137,7 +137,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="https://www.libraro.in/public/img/libraro-features/detailed-dashboard.png" alt="Delete Seat Booking" class="icon" loading="lazy">
+                        <img src="https://www.libraro.in/public/img/libraro-features/detailed-dashboard.png" alt="Delete Seat Booking" class="icon" >
                     </div>
                     <h4>Interactive &amp; Insightful Dashboard</h4>
                     <span>Get a complete overview of your library with an intuitive and visually engaging dashboard.</span>
@@ -147,7 +147,7 @@
             <div class="col-lg-3">
                 <div class="benefits">
                     <div class="iconbox">
-                        <img src="https://www.libraro.in/public/img/libraro-features/user-interface.png" alt="Easy Plan Upgrades" class="icon" loading="lazy">
+                        <img src="https://www.libraro.in/public/img/libraro-features/user-interface.png" alt="Easy Plan Upgrades" class="icon" >
                     </div>
                     <h4>Seamless &amp; Intuitive User Interface</h4>
                     <span>Our platform is designed for an effortless user experience, making navigation smooth and hassle-free.</span>
@@ -157,7 +157,7 @@
                 <div class="benefits">
                     <div class="iconbox">
 
-                        <img src="https://www.libraro.in/public/img/libraro-features/import-data.png" alt="Close Seat Option" class="icon" loading="lazy">
+                        <img src="https://www.libraro.in/public/img/libraro-features/import-data.png" alt="Close Seat Option" class="icon" >
                     </div>
                     <h4>One-Click Data Import</h4>
                     <span>Effortlessly migrate your existing data into our system with just a single click.</span>
@@ -167,7 +167,7 @@
                 <div class="benefits">
                     <div class="iconbox">
                         <img src="https://www.libraro.in/public/img/libraro-features/seat-management.png" alt="Reactivate
-                        Seat Access" class="icon" loading="lazy">
+                        Seat Access" class="icon" >
                     </div>
                     <h4>Smart Seat Management</h4>
                     <span>Easily track Expired and Extended seats with a dedicated section for better organization.</span>

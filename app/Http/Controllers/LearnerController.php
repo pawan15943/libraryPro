@@ -262,7 +262,9 @@ class LearnerController extends Controller
         ];
 
         $validator = $this->validateCustomer($request, $additionalRules);
-
+        $validator->sometimes('due_date', 'required|date', function ($input) {
+            return $input->paid_amount != $input->plan_price_id;
+        });
         if ($this->getLearnersByLibrary()->where('seat_no', $request->seat_no)->where('plan_type_id', $request->plan_type_id)->where('learners.status', 1)->count() > 0) {
 
             return response()->json([

@@ -69,7 +69,7 @@
                 <div class="col-lg-12">
                     <div class="form-group">
                         <label>Address</label>
-                        <textarea class="form-control h-auto @error('library_address') is-invalid @enderror" name="library_address"
+                        <textarea class="form-control h-auto @error('library_address') is-invalid @enderror no-validate" name="library_address"
                             >{{ old('library_address') }}</textarea>
                         @error('library_address')
                         <span class="invalid-feedback" role="alert">
@@ -86,7 +86,7 @@
         
                     <div class="col-lg-12">
                         <label for="">Owner Name </label>
-                        <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror" name="library_owner" value="{{ old('library_owner') }}">
+                        <input type="text" class="form-control char-only @error('library_owner') is-invalid @enderror no-validate" name="library_owner" value="{{ old('library_owner') }}">
                         @error('library_owner')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="col-lg-6">
                         <label for="">Owner Email Id </label>
-                        <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror" name="library_owner_email" value="{{ old('library_owner_email') }}">
+                        <input type="email" class="form-control @error('library_owner_email') is-invalid @enderror no-validate" name="library_owner_email" value="{{ old('library_owner_email') }}">
                         @error('library_owner_email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="col-lg-6">
                         <label for="">Owner Contact Number (WhatsApp) </label>
-                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror" name="library_owner_contact" maxlength="10" value="{{ old('library_owner_contact') }}">
+                        <input type="text" class="form-control digit-only @error('library_owner_contact') is-invalid @enderror no-validate" name="library_owner_contact" maxlength="10" value="{{ old('library_owner_contact') }}">
                         @error('library_owner_contact')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>

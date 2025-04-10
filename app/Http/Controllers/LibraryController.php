@@ -781,7 +781,8 @@ class LibraryController extends Controller
             $library_logo->move(public_path('uploads'), $library_logoNewName);
             $validated['library_logo'] = 'uploads/' . $library_logoNewName;
         }
-        $featuresJson = $validated['features'] ? json_encode($validated['features']) : null;
+       
+        $featuresJson = (isset($request->features) && $validated['features']) ? json_encode($validated['features']) : null;
       
         $library = Library::where('id', auth()->user()->id)->first();
         $libraryCode = $this->generateLibraryCode();

@@ -291,6 +291,7 @@
             var id_proof_file = $("#id_proof_file")[0].files[0];
             var plan_price_value = $('#plan_price_id').val();
             var paid_amount = $('#paid_amount').val();
+            var due_date = $('#due_date').val();
             var errors = {};
 
             if (!name) {
@@ -327,6 +328,9 @@
             }
             if(paid_amount > plan_price_value){
                 errors.paid_amount = 'Paid amount should not be greater than the plan price.';
+            }
+            if(!due_date && paid_amount != plan_price_value){
+                errors.due_date ='Due Date is required.';
             }
             
             // Remove previous errors

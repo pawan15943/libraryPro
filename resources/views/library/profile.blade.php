@@ -183,8 +183,8 @@
                             <span class="text-info"><b>Note</b> : Your provided library address will be shown to visitors on your listing, so please mention it correctly (Put Map Embed Code).</span>
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Library Location Longitude <span>*</span></label>
-                            <input type="text" class="form-control  @error('longitude') is-invalid @enderror" name="longitude" 
+                            <label for="">Library Location Longitude </label>
+                            <input type="text" class="form-control  @error('longitude') is-invalid @enderror no-validate" name="longitude" 
                                 value="{{ old('longitude', $library->longitude ?? '') }}">
                             @error('longitude')
                             <span class="invalid-feedback" role="alert">
@@ -193,8 +193,8 @@
                             @enderror
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Library Location Latitude <span>*</span></label>
-                            <input type="text" class="form-control  @error('latitude') is-invalid @enderror" name="latitude"
+                            <label for="">Library Location Latitude </label>
+                            <input type="text" class="form-control  @error('latitude') is-invalid @enderror no-validate" name="latitude"
                                 value="{{ old('latitude', $library->latitude ?? '') }}">
                             @error('latitude')
                             <span class="invalid-feedback" role="alert">
@@ -224,7 +224,7 @@
                             <small class="text-info d-block">The logo should be 250px wide and 250px high and must be in one of the following formats: JPG, JPEG, PNG, SVG, or WEBP.</small>
                         </div>
                         <div class="col-lg-4">
-                            <label for="">Logo Image <span>*</span></label>
+                            <label for="">Logo Image </label>
                             <img id="imageDisplay" src="#" alt="Selected Image" style="display: none; max-width: 100%; height: auto;">
                         </div>
                         <div class="col-lg-12">
@@ -274,7 +274,7 @@
                                         type="checkbox"
                                         name="features[]"
                                         value="{{ $feature->id }}"
-                                        {{ in_array($feature->id, old('features', $selectedFeatures ?? [])) ? 'checked' : '' }}>
+                                        {{ in_array($feature->id, old('features', $selectedFeatures ?? [])) ? 'checked' : '' }} class="no-validate">
                                     {{ $feature->name }}
                                 </label>
                             </li>
@@ -285,7 +285,7 @@
                 
 
                 <!-- Add Library Images -->
-                <h4 class="py-4">Add Library Features</h4>
+                <h4 class="py-4">Add Library Images</h4>
                 <div class="card">
                     <div class="row">
                         <div class="col-lg-12">

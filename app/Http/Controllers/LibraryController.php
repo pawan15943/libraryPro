@@ -141,7 +141,7 @@ class LibraryController extends Controller
             'library_zip'    => 'nullable|digits:6',
             'library_type'   => 'nullable|string|max:255',
             'library_owner'  => 'nullable|string|max:255',
-           'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
+            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200',
             'password'       => 'required|string|min:8',
             'terms'          => 'accepted',
             'library_owner_email'=> 'nullable|email|max:255',

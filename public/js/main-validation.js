@@ -93,12 +93,12 @@ $(document).ready(function () {
                 type: 'input[type="file"]',
                 rules: {
                     required: true,
-                    extension: "jpg|jpeg",
+                    extension: "jpg|jpeg|png|webp",
                     filesize: 5242880
                 },
                 messages: {
                     required: "Please upload a file.",
-                    extension: "Only JPG and JPEG files are allowed.",
+                    extension: "Jpg,png & webp files are allowed.",
                     filesize: "File size must be less than 5MB."
                 }
             },

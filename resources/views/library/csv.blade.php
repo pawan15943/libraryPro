@@ -63,7 +63,7 @@
                 <div class="row g-4">
                     <div class="col-lg-12">
                         <label for="">Select File</label>
-                        <input type="file" class="form-control" name="csv_file">
+                        <input type="file" class="form-control " name="csv_file">
 
                     </div>
                     <div class="col-lg-12">

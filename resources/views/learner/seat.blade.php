@@ -18,8 +18,15 @@ $hourlyCount = 0;
         transition: transform 0.5s ease, opacity 0.5s ease;
     }
 </style>
-
 <div class="row mb-4">
+    <div class="col-lg-12 text-end">
+        @can('has-permission', 'Export Library Seats')
+        <a href="{{ route('learners.export-csv') }}" class="btn btn-primary export"><i class="fa-solid fa-file-export"></i> Export All Data in CSV</a>
+        @endcan
+        @can('has-permission', 'Import Library Seats')
+        <a href="{{ route('library.upload.form') }}" class="btn btn-primary export bg-4"><i class="fa-solid fa-file-import"></i> Import Learners Data to Portal</a>
+        @endcan
+    </div>
     <div class="col-lg-12 mb-4">
         <div class="records">
             <p class="mb-2 text-dark"><b>Total Seats : {{$total_seats}} | Available Seats : {{$availble_seats}} | Booked Seats: {{$booked_seats}}</b></p>
@@ -254,23 +261,23 @@ $hourlyCount = 0;
                                 </select>
                             </div>
 
-                            <input type="hidden" id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs" >
+                            <input type="hidden" id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs">
 
                             <div class="col-lg-4">
                                 <label for="">Plan Starts On <span>*</span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date" >
+                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date">
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Paid Amount (INR)<span>*</span></label>
                                 <input id="paid_amount" class="form-control" name="paid_amount" placeholder="Example : 00 Rs">
                                 <span id="pending_amt" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-lg-4">
                                 <label for="">Choose Due Date<span>*</span></label>
                                 <input type="date" class="form-control" placeholder="Plan Starts On" name="due_date" id="due_date" readonly>
                             </div>
-                            
+
                             <div class="col-lg-4">
                                 <label for="">Payment Mode <span>*</span></label>
                                 <select name="payment_mode" id="payment_mode" class="form-select">
@@ -327,7 +334,7 @@ $hourlyCount = 0;
 
         </div>
     </div>
-</div> 
+</div>
 @endcan
 @can('has-permission', 'View Seat')
 <div class="modal fade" id="seatAllotmentModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

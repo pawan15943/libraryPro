@@ -25,11 +25,11 @@
             <div class="col-lg-3">
                 <h4 class="text-center text-md-start">Follow Us On</h4>
                 <ul class="social">
-                    <li><a href="https://www.facebook.com/profile.php?id=61574493811848" target="_blank"><i class="fab fa-facebook"></i></a></li>
+                    <li><a href="https://www.facebook.com/profile.php?id=61574994185097" target="_blank"><i class="fab fa-facebook"></i></a></li>
                     <li><a href="https://www.instagram.com/libraroindia/" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                    <li><a href="https://www.linkedin.com/in/libraro-india-081580357/" target="_blank"><i class="fab fa-linkedin"></i></a></li>
+                    <!-- <li><a href="https://www.linkedin.com/in/libraro-india-081580357/" target="_blank"><i class="fab fa-linkedin"></i></a></li> -->
                     <li><a href="https://www.youtube.com/@Libraroindia" target="_blank"><i class="fab fa-youtube"></i></a></li>
-                    <li><a href="https://x.com/libraroindia" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                    <!-- <li><a href="https://x.com/libraroindia" target="_blank"><i class="fab fa-twitter"></i></a></li> -->
                 </ul>
             </div>
         </div>

@@ -100,7 +100,7 @@
                                 {{$value->email}}</span>
                             <small>+91-{{$value->library_mobile}}</small>
                         </td>
-                        <td>{{$libraryplan}}<br>
+                        <td>{{$libraryplan ?? 'NA'}}<br>
                            
                             @if($libraryplanData && $libraryplanData->month == 12)
                                 <small>Yearly</small>
@@ -155,7 +155,7 @@
                                 <li><a href="#" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Library Edit" data-bs-title="Edit Library Info"><i class="fas fa-edit"></i></a></li>
 
                                 <!-- Upgrde Plan-->
-                                <li><a href="{{route('library.upgrade',$value->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                {{-- <li><a href="{{route('library.upgrade',$value->id)}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li> --}}
 
                                 <!-- Close Seat -->
                                 <li><a href="#;" class="link-close-plan" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Close Seat"><i class="fas fa-times"></i></a></li>

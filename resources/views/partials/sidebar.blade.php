@@ -13,10 +13,12 @@ $current_route = Route::currentRouteName();
       
         if($menu->guard=='web'){
             $show =1;
-        }else{
+        }elseif($menu->guard=='library'){
             $show = ($menu->name == 'Dashboard' || Auth::user()->is_paid != 0) ? 1 : 0;
+        }else{
+            $show = ($menu->name == 'Dashboard' || Auth::user()->status == 1) ? 1 : 0;
         }
-           
+         
         @endphp
     
        

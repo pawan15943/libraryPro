@@ -125,10 +125,11 @@
         });
         $('#upgrade').on('click', function() {
         
-            
+           
             $("#update_plan_id").trigger('change');
            
             var user_id = $('#user_id').val();
+          
             var learner_detail_id = $('#learner_detail_id').val();
            
             var seat_no = $('#seat_name').text().trim();
@@ -148,7 +149,7 @@
            
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
-           
+            console.log('seat_no....',seat_no);
             fetchPlanTypes(seat_no,user_id,learner_detail_id);
         });
 
@@ -291,6 +292,7 @@
             var id_proof_file = $("#id_proof_file")[0].files[0];
             var plan_price_value = $('#plan_price_id').val();
             var paid_amount = $('#paid_amount').val();
+            var due_date = $('#due_date').val();
             var errors = {};
 
             if (!name) {
@@ -327,6 +329,9 @@
             }
             if(paid_amount > plan_price_value){
                 errors.paid_amount = 'Paid amount should not be greater than the plan price.';
+            }
+            if(!due_date && paid_amount != plan_price_value){
+                errors.due_date ='Due Date is required.';
             }
             
             // Remove previous errors
@@ -825,7 +830,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var paidDateInput = document.getElementById('paid_date');
-        if (!paidDateInput.value) { // If no value is already set
+        if (paidDateInput && !paidDateInput.value) { // If no value is already set
             var today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
             paidDateInput.value = today;
         }

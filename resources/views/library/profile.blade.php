@@ -198,8 +198,8 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <label for="">Library Location Longitude <span>*</span></label>
-                        <input type="text" class="form-control  @error('longitude') is-invalid @enderror" name="longitude"
+                        <label for="">Library Location Longitude </label>
+                        <input type="text" class="form-control  @error('longitude') is-invalid @enderror no-validate" name="longitude"
                             value="{{ old('longitude', $library->longitude ?? '') }}">
                         @error('longitude')
                         <span class="invalid-feedback" role="alert">
@@ -209,8 +209,8 @@
                     </div>
 
                     <div class="col-lg-6">
-                        <label for="">Library Location Latitude <span>*</span></label>
-                        <input type="text" class="form-control  @error('latitude') is-invalid @enderror" name="latitude"
+                        <label for="">Library Location Latitude </label>
+                        <input type="text" class="form-control  @error('latitude') is-invalid @enderror no-validate" name="latitude"
                             value="{{ old('latitude', $library->latitude ?? '') }}">
                         @error('latitude')
                         <span class="invalid-feedback" role="alert">
@@ -272,7 +272,7 @@
                                         type="checkbox"
                                         name="features[]"
                                         value="{{ $feature->id }}"
-                                        {{ in_array($feature->id, old('features', $selectedFeatures ?? [])) ? 'checked' : '' }}>
+                                        {{ in_array($feature->id, old('features', $selectedFeatures ?? [])) ? 'checked' : '' }} class="no-validate">
                                     {{ $feature->name }}
                                 </label>
                             </li>

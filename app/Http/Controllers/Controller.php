@@ -303,6 +303,7 @@ class Controller extends BaseController
 
         if ($validator->fails()) {
             $invalidRecords[] = array_merge($data, ['error' => 'Validation failed']);
+            \Log::info('Validation failed');
             return;
         }
 
@@ -332,6 +333,11 @@ class Controller extends BaseController
       
         $plan = Plan::where('plan_id',$planexplode)->first();
         $planType = PlanType::whereRaw('LOWER(REPLACE(name, " ", "")) = ?', [strtolower(str_replace(' ', '', trim($data['plan_type'])))])->first();
+      
+        if (!$planType ) {
+            $invalidRecords[] = array_merge($data, ['error' => 'Plan Type Not Found: The specified plan type is invalid or does not exist. Please check the plan type details and retry.']);
+            return;
+        }
         $planPrice = PlanPrice::where('plan_id',$plan->id)->where('plan_type_id',$planType->id)->first();
         if ((!$user->can('has-permission', 'Full Day') && $planType->day_type_id==1) || (!$user->can('has-permission', 'First Half') && $planType->day_type_id==2) || (!$user->can('has-permission', 'Second Half') && $planType->day_type_id==3) || (!$user->can('has-permission', 'Hourly Slot 1') && $planType->day_type_id==4)|| (!$user->can('has-permission', 'Hourly Slot 2') && $planType->day_type_id==5)|| (!$user->can('has-permission', 'Hourly Slot 3') && $planType->day_type_id==6)|| (!$user->can('has-permission', 'Hourly Slot 4') && $planType->day_type_id==7)){
             $invalidRecords[] = array_merge($data, ['error' => $planType->name.'Plan Type Booking Restriction: The selected plan type does not have the necessary permissions for booking. Please check the plan type settings and try again.']);
@@ -341,10 +347,7 @@ class Controller extends BaseController
             $invalidRecords[] = array_merge($data, ['error' => 'Plan Not Found: The specified plan does not exist in the system. Please verify the plan name or ID and try again.']);
             return;
         }
-        if (!$planType ) {
-            $invalidRecords[] = array_merge($data, ['error' => 'Plan Type Not Found: The specified plan type is invalid or does not exist. Please check the plan type details and retry.']);
-            return;
-        }
+        
         if ( !$planPrice) {
             $invalidRecords[] = array_merge($data, ['error' => 'Plan Price Not Found: The price for the selected plan is missing or not defined. Please confirm the correct pricing and re-upload the data.']);
             return;
@@ -581,6 +584,7 @@ class Controller extends BaseController
     
         try {
             // Create learner entry
+            \Log::info('Learner create function start');
             $learner = Learner::create([
                 'library_id' => Auth::user()->id,
                 'name' => trim($data['name']),
@@ -650,6 +654,7 @@ class Controller extends BaseController
         DB::beginTransaction();
 
         try {
+            \Log::info('Learner detail function start');
              // update learner  entry
             Learner::where('id', $learner_id)->update([
                 'mobile' =>  !empty($data['mobile']) ? encryptData(trim($data['mobile'])) : null,
@@ -704,7 +709,7 @@ class Controller extends BaseController
     }
     
     function updateLearner($learnerData, $data, $dob, $hours, $payment_mode, $status, $plan, $planType, $seat, $start_date, $endDate, $joinDate, $is_paid) {
-       
+        \Log::info('updTE LEARNER function start');
         Learner::where('id', $learnerData->id)->update([
             'mobile' => !empty($data['mobile']) ? encryptData(trim($data['mobile'])) : null,
             'dob' => $dob,

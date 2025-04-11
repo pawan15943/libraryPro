@@ -125,10 +125,11 @@
         });
         $('#upgrade').on('click', function() {
         
-            
+           
             $("#update_plan_id").trigger('change');
            
             var user_id = $('#user_id').val();
+          
             var learner_detail_id = $('#learner_detail_id').val();
            
             var seat_no = $('#seat_name').text().trim();
@@ -148,7 +149,7 @@
            
             // Show the second modal
             $('#seatAllotmentModal3').modal('show');
-           
+            console.log('seat_no....',seat_no);
             fetchPlanTypes(seat_no,user_id,learner_detail_id);
         });
 
@@ -829,7 +830,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         var paidDateInput = document.getElementById('paid_date');
-        if (!paidDateInput.value) { // If no value is already set
+        if (paidDateInput && !paidDateInput.value) { // If no value is already set
             var today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
             paidDateInput.value = today;
         }

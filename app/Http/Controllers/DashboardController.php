@@ -134,17 +134,22 @@ class DashboardController extends Controller
             $extend_days_data = Hour::where('library_id', Auth::user()->id)->first();
             $extend_day = $extend_days_data ? $extend_days_data->extend_days : 0;
             $fiveDaysbetween = $today->copy()->addDays(5);
+           
             $renewSeats = $this->getLearnersByLibrary()
-            ->whereBetween('learner_detail.plan_end_date', [$today->format('Y-m-d'), $fiveDaysbetween->format('Y-m-d')]) // Filter between today and 5 days in the future
+            ->whereBetween('learner_detail.plan_end_date', [$today->format('Y-m-d'), $fiveDaysbetween->format('Y-m-d')])
             ->where('learner_detail.status', 1)
             ->whereNotExists(function ($query) use ($fiveDaysbetween) {
                 $query->select(DB::raw(1))
                     ->from('learner_detail as ld')
                     ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
-                    ->where('ld.plan_end_date', '>', $fiveDaysbetween->format('Y-m-d'));
+                    ->whereColumn('ld.learner_id', 'learner_detail.learner_id') // match same learner
+                    ->where('ld.plan_end_date', '>', DB::raw('learner_detail.plan_end_date')) ;
+                   
             })
             ->with('planType')
             ->get();
+        
+         
             $extend_sets = $this->getLearnersByLibrary()
             ->where('learner_detail.is_paid', 1) // Only paid learners
             ->where('learner_detail.status', 1)  // Only active learners
@@ -152,9 +157,10 @@ class DashboardController extends Controller
             ->whereRaw("DATE_ADD(learner_detail.plan_end_date, INTERVAL ? DAY) >= CURDATE()", [$extend_day]) // Extended date is today or in the future
             ->whereNotExists(function ($query) use ($fiveDaysbetween) {
                 $query->select(DB::raw(1))
-                    ->from('learner_detail as ld')
-                    ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
-                    ->where('ld.plan_end_date', '>', $fiveDaysbetween->format('Y-m-d'));
+                ->from('learner_detail as ld')
+                ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
+                ->whereColumn('ld.learner_id', 'learner_detail.learner_id') // match same learner
+                ->where('ld.plan_end_date', '>', DB::raw('learner_detail.plan_end_date')) ;
             })
             ->with('planType') // Eager load related planType
             ->get();

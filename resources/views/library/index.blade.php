@@ -161,6 +161,8 @@
                                 <li><a href="#;" class="link-close-plan" data-id="11" data-bs-toggle="tooltip" data-bs-placement="bottom" title="" data-original-title="Close Seat"><i class="fas fa-times"></i></a></li>
 
                                 <!-- Deletr learners -->
+                                <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete learners" class="delete-learners" data-original-title="Delete learners"><i class="fas fa-trash"></i></a></li>
+
                                 <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete Library" class="delete-library" data-original-title="Delete Library"><i class="fas fa-trash"></i></a></li>
                                 <!-- Delete masters -->
                                 <li><a href="#" data-id="{{$value->id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete library masters" class="delete-masters" data-original-title="Delete masters"><i class="fas fa-trash"></i></a></li>

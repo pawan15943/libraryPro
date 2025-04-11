@@ -45,6 +45,7 @@
         if ($(this).hasClass('delete-learners')) {
             url = '{{ route('library.learners.destroy', ':id') }}';
         } else if ($(this).hasClass('delete-masters')) {
+            
             url = '{{ route('library.masters.destroy', ':id') }}';
         }
       

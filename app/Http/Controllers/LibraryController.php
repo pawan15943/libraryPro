@@ -833,39 +833,23 @@ class LibraryController extends Controller
         return view('library.view',compact('library','plan','library_transaction','library_all_transaction'));
     }
 
-    public function destroyLearners($id){
-        $libraryId=$id;
+    public function destroyLearners($id)
+    {
+        $libraryId = $id;
+    
         try {
             DB::transaction(function () use ($libraryId) {
-                // Step 1: Delete transactions associated with the learners in the library
-                $learnerTransactionsDeleted = LearnerTransaction::withoutGlobalScopes()
+                // Step 1: Delete learner transactions manually (still needed if not cascaded)
+                LearnerTransaction::withoutGlobalScopes()
                     ->where('library_id', $libraryId)
                     ->delete();
-                
-                if ($learnerTransactionsDeleted === 0) {
-                    throw new \Exception('No learner transactions were deleted.');
-                }
     
-                // Step 2: Delete learner details associated with the learners in the library
-                $learnerDetailsDeleted = LearnerDetail::withoutGlobalScopes()
-                    ->whereIn('learner_id', function($query) use ($libraryId) {
-                        $query->select('id')->from('learners')->where('library_id', $libraryId);
-                    })->delete();
-    
-                if ($learnerDetailsDeleted === 0) {
-                    throw new \Exception('No learner details were deleted.');
-                }
-    
-                // Step 3: Force delete the learners themselves
-                $learnersDeleted = Learner::where('library_id', $libraryId)
+                // Step 2: Force delete the learners — now their learner_detail will auto-delete
+                Learner::where('library_id', $libraryId)
                     ->withTrashed()
                     ->forceDelete();
     
-                if ($learnersDeleted === 0) {
-                    throw new \Exception('No learners were deleted.');
-                }
-    
-                // Step 4: Update the seat availability
+                // Step 3: Update the seat availability
                 Seat::withoutGlobalScopes()
                     ->where('library_id', $libraryId)
                     ->update([
@@ -875,15 +859,12 @@ class LibraryController extends Controller
             });
     
             return response()->json(['message' => 'All learners and related data have been successfully deleted.']);
-
-    
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error occurred: ' . $e->getMessage()], 500);
-            
         }
-        
-    
     }
+    
+
 
     public function destroyAllMasters($id)
     {

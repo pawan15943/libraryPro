@@ -166,6 +166,15 @@
             $('#sidebar').on('click', function() {
                 $('.sidebar').toggleClass('w-120');
             });
+
+            
+        });
+        $(document).ready(function() {
+            $('#sidebar_mob').on('click', function() {
+                $('.sidebar').toggleClass('w-120');
+            });
+
+            
         });
     </script>
     <script>

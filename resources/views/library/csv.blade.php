@@ -94,12 +94,14 @@
                         <th class="w-50">S.No.</th>
                         <th>Plan Name</th>
                     </tr>
+                    @if(!is_null($plans))
                     @foreach($plans as $key => $value)
                     <tr>
                         <td>{{$key+1}}</td>
                         <td>{{$value->name}} </td>
                     </tr> 
                     @endforeach
+                    @endif
                    
                     
                 </table>
@@ -111,6 +113,7 @@
                         <th class="w-50">Plan Type (Shift)</th>
                         <th>Price</th>
                     </tr>
+                    @if(!is_null($plantypes))
                     @foreach($plantypes as $key => $value)
                     
                     <tr>
@@ -118,6 +121,7 @@
                         <td>INR {{$value->plan_price}}</td>
                     </tr>
                     @endforeach
+                    @endif
                 </table>
             </div>
 

@@ -119,7 +119,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item d-none">
+                    <!-- <div class="item d-none">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
@@ -139,7 +139,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
@@ -206,7 +206,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item d-none">
+                    <!-- <div class="item d-none">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
@@ -226,7 +226,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">

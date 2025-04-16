@@ -127,6 +127,8 @@ class Controller extends BaseController
         ->leftJoin('plan_prices', 'plan_types.id', '=', 'plan_prices.plan_type_id')
         ->select('plan_types.name as plan_type', 'plan_prices.price as plan_price') // Add specific columns to avoid unnecessary data
         ->get();
+       }else{
+        $plantypes=null;
        }
 
        

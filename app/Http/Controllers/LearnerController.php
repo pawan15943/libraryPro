@@ -1987,7 +1987,7 @@ class LearnerController extends Controller
 
         // Update customer details only if the field is provided
         $customer->name = $request->input('name', $customer->name);
-        $customer->mobile = $request->input('mobile', $customer->mobile);
+        $customer->mobile = encryptData($request->input('mobile', $customer->mobile));
 
         $customer->dob = $request->input('dob', $customer->dob);
 

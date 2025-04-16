@@ -1555,11 +1555,15 @@ img.img-fluid {
 ======================================================================================*/
 
 @media screen and (max-width:480px) {
+    .customer-info {
+        flex-direction: column;
+        text-align: center;
+    }
 
-    form.me-3{
+    form.me-3 {
         margin-right: 0 !important;
     }
-        
+
     .main-box>img {
         padding-left: 0rem;
     }

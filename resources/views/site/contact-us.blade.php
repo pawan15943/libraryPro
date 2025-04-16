@@ -33,7 +33,7 @@
                 <h4>Corporate Office Address</h4>
                 <p><i class="fa fa-map-marker-alt"></i> 955, Vinoba Bhave Nagar, Kota, <br>Landmark: New Balaji Computer Classes</p>
                 <h6>Contact Us at:</h6>
-                <p><i class="fa fa-phone me-2"></i> <a href="tel:+91-8114479678">+91-8114479678</a>, <a href="tel:+91-7737918848">+91-7737918848</a>, <a href="tel:+91-8386007688">+91-8386007688</a></p>
+                <p><i class="fa fa-phone me-2"></i> <a href="tel:+91-8114479678">+91-8114479678</a>, <a href="tel:+91-8386007688">+91-8386007688</a></p>
                 <p><i class="fa fa-envelope me-2"></i> <a href="mailto:support@libraro.in">support@libraro.in</a></p>
                 <h6>Partner of Techito India</h6>
                 <p>We are proud to be a part of Techito India, delivering innovative IT solutions across various industries.</p>

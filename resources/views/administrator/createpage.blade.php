@@ -115,6 +115,18 @@
                 </span>
                 @enderror
             </div>
+            <div class="col-lg-12">
+                <label for="meta_og">Schema</label>
+                <textarea
+                    id="page_schema"
+                    name="page_schema"
+                    class="form-control @error('page_schema') is-invalid @enderror">{{ old('page_schema', $page->page_schema ?? '') }}</textarea>
+                @error('page_schema')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+                @enderror
+            </div>
             <div class="col-lg-3">
                 <button type="submit" class="btn btn-primary button">
                     {{ isset($page) ? 'Update' : 'Save' }}

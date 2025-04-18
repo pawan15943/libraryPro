@@ -13,10 +13,11 @@
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
 
     <title>{{$page->meta_title ?? ''}}</title>
-
+    {!!$page->meta_og!!}
+  
     <meta name="description" content="{{ $page->meta_description ?? '' }}">
 
-    <meta name="keywords" content="Library management system, Library automation software, Best library management software, Digital library software, Online library system, Library book tracking, Library seat booking software, Online library seat reservation, Book my library seat, Library space management, College library software, School library management system, Public library management system, Best library software in India, Library automation tool India">
+    <meta name="keywords" content="{{$page->meta_keyword ?? ''}}">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
@@ -29,45 +30,16 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-
+    
     <!-- Libraru Schema -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Libraro",
-            "url": "https://www.libraro.in",
-            "applicationCategory": "Library Management Software",
-            "applicationSubCategory": "Library Seat Booking & Automation",
-            "operatingSystem": "Windows, Web-based",
-            "description": "Libraro is an advanced library management software designed to streamline cataloging, membership handling, seat booking, and book tracking for schools, colleges, and public libraries in India.",
-            "offers": {
-                "@type": "Offer",
-                "price": "Contact for pricing",
-                "priceCurrency": "INR",
-                "availability": "https://schema.org/InStock",
-                "eligibleRegion": {
-                    "@type": "Country",
-                    "name": "India"
-                }
-            },
-            "author": {
-                "@type": "Organization",
-                "name": "Techito"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Techito",
-                "url": "https://www.techito.in"
-            },
-            "softwareVersion": "1.0",
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "reviewCount": "256"
-            }
-        }
-    </script>
+    
+
+   {{ $page->schema = html_entity_decode($page->page_schema ) }} 
+
+   {!! $page->schema !!}
+
+
+
 </head>
 
 

@@ -39,7 +39,7 @@
     </div>
 </section>
 
-<!-- Features Library -->
+<!-- Features Library and library -->
 <section class="popular py-5">
     <div class="container">
         <div class="heading mb-4">

@@ -93,8 +93,7 @@
 
                 if (plan_mode) {
                     $.ajax({
-                        url: '{{ route('
-                        subscriptions.getSubscriptionPrice ') }}',
+                        url: '{{ route('subscriptions.getSubscriptionPrice') }}',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                         },

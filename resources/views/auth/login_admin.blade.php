@@ -5,12 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
-    <title>Login Admin</title>
+    <title>Library Login | Access Libraro’s Dashboard & Manage Your Library</title>
+
+    <meta name="description" content="Login to your Libraro dashboard and manage seat bookings, payments, and all your library operations in one place. Smart library software starts here.">
+
+    <meta name="keywords" content="Library Software Login, Libraro Dashboard, Library Management Login, Seat Booking Login">
+
+    <meta name="author" content="TECHITO India Pvt. Ltd.">
+
+    <meta property="og:title" content="Library Login | Manage Your Library with Libraro" />
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
 
     <link href="{{ asset('public/css/style.css') }}" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Library Login",
+            "url": "https://www.libraro.in/library/login",
+            "description": "Login to Libraro to access your library dashboard and manage all library functions like bookings, expenses, and more."
+        }
+    </script>
     <style>
         .left {
             position: relative;

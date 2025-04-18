@@ -119,13 +119,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item">
+                    <!-- <div class="item d-none">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
                             <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
@@ -139,35 +139,14 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
                             <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
-                                <div class="customer-details">
-                                    <h4>Sandeep Rathor</h4>
-                                    <span>Libraro Manager</span>
-                                </div>
-                                <ul class="customer-ratings">
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-
-                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
-                            <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Sandeep Rathor</h4>
                                     <span>Libraro Manager</span>
@@ -188,7 +167,7 @@
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
                             <div class="message">{{$value->description ?? ''}}</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/pawan.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>{{$value->library_owner ?? ''}}</h4>
                                     <span>{{$value->library_name ?? ''}}</span>
@@ -227,13 +206,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item">
+                    <!-- <div class="item d-none">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
                             <div class="message">As the Developer of Libraro, I built this platform to streamline library operations with automation, intuitive booking, and advanced analytics. Designed for efficiency, it's the ultimate tool for modern libraries!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Heena Kaushar</h4>
                                     <span>Developer: Libraro </span>
@@ -247,14 +226,14 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="item">
                         <div class="feedback-box">
                             <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
 
                             <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
                             <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
+                                <img src="{{ asset('public/img/user.png') }}" alt="user" class="profile">
                                 <div class="customer-details">
                                     <h4>Sandeep Rathor</h4>
                                     <span>Libraro Manager</span>
@@ -269,27 +248,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="feedback-box">
-                            <img src="{{url('public/img/comma.png')}}" alt="comma" class="comma">
-
-                            <div class="message">We’ve been using Library Manager for over a year now, and it has exceeded all our expectations. The analytics and reporting features provide valuable insights. It’s an all-in-one solution for modern library management!</div>
-                            <div class="customer-info">
-                                <img src="{{ asset('public/img/user2.png') }}" alt="user" class="profile">
-                                <div class="customer-details">
-                                    <h4>Sandeep Rathor</h4>
-                                    <span>Libraro Manager</span>
-                                </div>
-                                <ul class="customer-ratings">
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                    <li><img src="{{ asset('public/img/star.png') }}" alt="star"></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    
                     @endif
                 </div>
             </div>

@@ -55,13 +55,9 @@ $current_route = Route::currentRouteName();
                 <thead>
                     <tr>
                         <th>Seat No.</th>
-                        <th>Learner Info</th>
-                        <th>Contact Info</th>
-                        <th>Active Plan</th>
-                        <th>Expired On</th>
+                        <th>Learner Name</th>
                         <th>In time</th>
                         <th>Out time</th>
-                        <th>Date</th>
                         <th>Attendance</th>
                     </tr>
                 </thead>
@@ -80,34 +76,17 @@ $current_route = Route::currentRouteName();
                     @endphp
                     <tr>
                         <td>{{$value->seat_no}}<br>
-                            <small>{{$value->plan_type_name}}</small>
                         </td>
-                        <td><span class="uppercase truncate" data-bs-toggle="tooltip" data-bs-title="{{$value->name}}" data-bs-placement="bottom">{{$value->name}}</span>
-                            <br> <small>{{$value->dob}}</small>
+                        <td>
+                           {{$value->name}}
                         </td>
-                        <td><span class="truncate" data-bs-toggle="tooltip" data-bs-title="{{$value->email }}" data-bs-placement="bottom">
-                                {{$value->email }}</span> <br>
-                            <small> +91-{{$value->mobile}}</small>
-                        </td>
-                        <td>{{$value->plan_start_date}}<br>
-                            <small>{{$value->plan_name}}</small>
-                        </td>
-                        <td>{{$value->plan_end_date}}<br>
-
-                            @if ($diffInDays > 0)
-                            <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays <= 0 && $diffExtendDay>0)
-                                <small class="text-danger fs-10 d-block">Extension active! {{ abs($diffExtendDay) }} days left.</small>
-                                @elseif ($diffInDays < 0 && $diffExtendDay==0) <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                                    @else
-                                    <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                                    @endif
-                        </td>
-
-                        <td>{{ $value->in_time ? \Carbon\Carbon::parse($value->in_time)->format('h:i A') : 'NA' }}</td>
-                        <td>{{ $value->out_time ? \Carbon\Carbon::parse($value->out_time)->format('h:i A') : 'NA' }}</td>
                         
-                        <td>{{$value->date ?? 'NA'}}</td>
+
+                        <td>{{ $value->in_time ? \Carbon\Carbon::parse($value->in_time)->format('h:i A') : '-' }}</td>
+
+                        <td>{{ $value->out_time ? \Carbon\Carbon::parse($value->out_time)->format('h:i A') : '-' }}</td>
+                        
+                        
                         <td>
                             @if($value->attendance==1)
                                 Present

@@ -30,45 +30,9 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-    {{$page->page_schema ?? ''}}
+    
     <!-- Libraru Schema -->
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "Libraro",
-            "url": "https://www.libraro.in",
-            "applicationCategory": "Library Management Software",
-            "applicationSubCategory": "Library Seat Booking & Automation",
-            "operatingSystem": "Windows, Web-based",
-            "description": "Libraro is an advanced library management software designed to streamline cataloging, membership handling, seat booking, and book tracking for schools, colleges, and public libraries in India.",
-            "offers": {
-                "@type": "Offer",
-                "price": "Contact for pricing",
-                "priceCurrency": "INR",
-                "availability": "https://schema.org/InStock",
-                "eligibleRegion": {
-                    "@type": "Country",
-                    "name": "India"
-                }
-            },
-            "author": {
-                "@type": "Organization",
-                "name": "Techito"
-            },
-            "publisher": {
-                "@type": "Organization",
-                "name": "Techito",
-                "url": "https://www.techito.in"
-            },
-            "softwareVersion": "1.0",
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "reviewCount": "256"
-            }
-        }
-    </script>
+    {!!$page->page_schema!!}
 </head>
 
 

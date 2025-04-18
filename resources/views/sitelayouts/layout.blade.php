@@ -13,7 +13,7 @@
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
 
     <title>{{$page->meta_title ?? ''}}</title>
-  
+
     {!! !empty($page->meta_og) ? $page->meta_og : '' !!}
     <meta name="description" content="{{ $page->meta_description ?? '' }}">
 
@@ -30,15 +30,14 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-    
-    <!-- Libraru Schema -->
-    
-    @php
-        $schema = html_entity_decode($page->page_schema);
-    @endphp
-   
 
-   {!! $schema !!}
+    <!-- Libraru Schema -->
+
+    @php
+    $schema = !empty($page->page_schema) ? html_entity_decode($page->page_schema) : '';
+    @endphp
+
+    {!! $schema !!}
 
 
 
@@ -56,7 +55,7 @@
     @include('sitelayouts.header')
     @yield('content')
     @include('sitelayouts.footer')
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" defer></script>
@@ -94,7 +93,8 @@
 
                 if (plan_mode) {
                     $.ajax({
-                        url: '{{ route('subscriptions.getSubscriptionPrice') }}',
+                        url: '{{ route('
+                        subscriptions.getSubscriptionPrice ') }}',
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                         },

@@ -33,10 +33,12 @@
     
     <!-- Libraru Schema -->
     
+    @php
+        $schema = html_entity_decode($page->page_schema);
+    @endphp
+   
 
-   {{ $page->schema = html_entity_decode($page->page_schema ) }} 
-
-   {!! $page->schema !!}
+   {!! $schema !!}
 
 
 

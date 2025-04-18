@@ -13,8 +13,8 @@
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
 
     <title>{{$page->meta_title ?? ''}}</title>
-    {!!$page->meta_og!!}
   
+    {!! !empty($page->meta_og) ? $page->meta_og : '' !!}
     <meta name="description" content="{{ $page->meta_description ?? '' }}">
 
     <meta name="keywords" content="{{$page->meta_keyword ?? ''}}">

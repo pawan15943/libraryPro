@@ -13,10 +13,10 @@
     <link rel="icon" href="{{ asset('public/img/favicon.ico') }}" type="image/x-icon">
 
     <title>{{$page->meta_title ?? ''}}</title>
-
+    {{$page->meta_og ?? ''}}
     <meta name="description" content="{{ $page->meta_description ?? '' }}">
 
-    <meta name="keywords" content="Library management system, Library automation software, Best library management software, Digital library software, Online library system, Library book tracking, Library seat booking software, Online library seat reservation, Book my library seat, Library space management, College library software, School library management system, Public library management system, Best library software in India, Library automation tool India">
+    <meta name="keywords" content="{{$page->meta_keyword ?? ''}}">
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css">
@@ -29,7 +29,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
-
+    {{$page->page_schema ?? ''}}
     <!-- Libraru Schema -->
     <script type="application/ld+json">
         {

@@ -32,7 +32,14 @@
     <link rel="stylesheet" href="{{ asset('public/css/home-style.css')}}">
     
     <!-- Libraru Schema -->
-    {!! $page->page_schema !!}
+    
+
+   {{ $page->schema = html_entity_decode($page->page_schema ) }} 
+
+   {!! $page->schema !!}
+
+
+
 </head>
 
 

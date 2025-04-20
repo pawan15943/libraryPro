@@ -929,7 +929,7 @@ class Controller extends BaseController
         $libraryData = Library::where('id', $library_id)->first();
 
         if ($libraryData) {
-            $seatLimit = ($libraryData->library_type == 1) ? 50 : (($libraryData->library_type == 2) ? 75 : null);
+            $seatLimit = ($libraryData->library_type == 1) ? 50 : (($libraryData->library_type == 2) ? 100 : null);
         
             if ($seatLimit !== null && trim($data['total_seat']) > $seatLimit) {
                 $invalidRecords[] = array_merge($data, ['error' => 'Total seats not your Subscription according']);

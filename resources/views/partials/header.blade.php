@@ -9,7 +9,7 @@
         </style>
 
    <!-- Expiry Warning -->
-<div class="modal" id="planExpiryModal" tabindex="-1">
+<div class="modal " id="planExpiryModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             
@@ -78,17 +78,17 @@
             @endif
 
                 @if(($librarydiffInDays <= 5 && !$is_renew && $isProfile))
-                    <script>
+                    {{-- <script>
                     window.onload = function() {
                     setTimeout(function() {
                     var modal = new bootstrap.Modal(document.getElementById('planExpiryModal'));
                     modal.show();
                     }, 1000);
                     };
-                    </script>
+                    </script> --}}
 
                     <!-- This Script show below popup only once -->
-                    <!-- <script>
+                     <script>
                         window.onload = function() {
                             if (!sessionStorage.getItem("planExpiryModalShown")) {
                                 setTimeout(function() {
@@ -98,7 +98,7 @@
                                 }, 1000);
                             }
                         };
-                    </script> -->
+                    </script> 
                     <a href="{{ route('subscriptions.choosePlan') }}" type="button" class="btn btn-primary button">Renew your plan</a>
                     
                 @endif

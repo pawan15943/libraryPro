@@ -105,6 +105,9 @@
                                     <option value="16" {{ old('hour', isset($hour) ? $hour->hour : '') == 16 ? 'selected' : '' }}>16</option>
                                     <option value="14" {{ old('hour', isset($hour) ? $hour->hour : '') == 14 ? 'selected' : '' }}>14</option>
                                     <option value="12" {{ old('hour', isset($hour) ? $hour->hour : '') == 12 ? 'selected' : '' }}>12</option>
+                                    @can('has-permission','All Day')
+                                    <option value="24" {{ old('hour', isset($hour) ? $hour->hour : '') == 24 ? 'selected' : '' }}>24</option>
+                                    @endif
                                 </select>
                                 @error('hour')
                                 <span class="invalid-feedback" role="alert">
@@ -423,6 +426,12 @@
                                     @endcan
                                     @can('has-permission', 'Hourly Slot 4')
                                     <option value="7" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 7 ? 'selected' : '' }}>Hourly Slot 4</option>
+                                    @endcan
+                                    @can('has-permission', 'All Day')
+                                    <option value="8" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 8 ? 'selected' : '' }}>24 hrs</option>
+                                    @endcan
+                                    @can('has-permission', 'Full Night')
+                                    <option value="9" {{ old('day_type_id', isset($planType) ? $planType->day_type_id : '') == 9 ? 'selected' : '' }}>Full Night</option>
                                     @endcan
                                 </select>
                                 {{-- <input type="text" name="name" id="plantype_name" class="form-control char-only @error('name') is-invalid @enderror" placeholder="Enter Plan Type" value="{{ old('name', isset($planType) ? $planType->name : '') }}"> --}}

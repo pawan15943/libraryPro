@@ -959,9 +959,16 @@ class Controller extends BaseController
         // Using database transaction for atomic operations
         DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords,&$successRecords) {
             // Update or create the operating hours
+            if(isset($data['allday']) && (trim($data['allday'])=='yes')){
+                $operatinghour=24;
+                $allday=true;
+            }else{
+                $operatinghour=trim($data['Operating_hour']);
+                $allday=false;
+            }
            $hourData= Hour::withoutGlobalScopes()->updateOrCreate(
                 ['library_id' => $library_id],
-                ['hour' => trim($data['Operating_hour']), 'extend_days' => trim($data['extend_day']) ?? null]
+                ['hour' =>$operatinghour , 'extend_days' => trim($data['extend_day']) ?? null]
             );
             if ($hourData) {
                 
@@ -971,7 +978,7 @@ class Controller extends BaseController
             }
     
             // Define slot configurations
-            $slots = $this->defineSlots($start_time, $end_time, $totalHours);
+            $slots = $this->defineSlots($start_time, $end_time, $totalHours,$allday);
     
             // Check user permissions and handle slot updates
             $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data,$successRecords);
@@ -988,7 +995,7 @@ class Controller extends BaseController
             $this->handlePlanUpdates($plans, $library_id,$invalidRecords,$successRecords);
     
             // Handle price updates
-            $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']));
+            $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']),  trim($data['allday_price']), trim($data['fullnight_price']));
             if( Seat::where('library_id', $library_id)->count() < trim($data['total_seat'])){
                 $this->handelSeats($library_id,trim($data['total_seat']));
             }
@@ -999,10 +1006,9 @@ class Controller extends BaseController
     }
     
     // Function to define plantype
-    private function defineSlots($start_time, $end_time, $totalHours)
+    private function defineSlots($start_time, $end_time, $totalHours, $allday)
     {
-      
-        return [
+        $slots = [
             ['type_id' => 1, 'name' => 'Full Day', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
             ['type_id' => 2, 'name' => 'First Half', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
             ['type_id' => 3, 'name' => 'Second Half', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
@@ -1011,7 +1017,15 @@ class Controller extends BaseController
             ['type_id' => 6, 'name' => 'Hourly Slot 3', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'slot_hours' => $totalHours / 4],
             ['type_id' => 7, 'name' => 'Hourly Slot 4', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'end_time' => $end_time, 'slot_hours' => $totalHours / 4],
         ];
+    
+        if ($allday === true) {
+            $slots[] = ['type_id' => 8, 'name' => 'All Day', 'start_time' => $start_time, 'end_time' => $start_time, 'slot_hours' => 24];
+            $slots[] = ['type_id' => 9, 'name' => 'Full Night', 'start_time' => $end_time, 'end_time' => $start_time, 'slot_hours' => 24 - $totalHours];
+        }
+    
+        return $slots;
     }
+    
     
     // Function to handle plantype updates
     private function handleSlotUpdates($slots, $library_id, &$invalidRecords, $data,&$successRecords)
@@ -1041,6 +1055,10 @@ class Controller extends BaseController
             } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly Slot 3')) {
                 $hasPermission = false;
             } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
+                $hasPermission = false;
+            }elseif ($slot['type_id'] == 8 && !$user->can('has-permission', 'All Day')) {
+                $hasPermission = false;
+            }elseif ($slot['type_id'] == 9 && !$user->can('has-permission', 'Full Night')) {
                 $hasPermission = false;
             }
             if (!$hasPermission) {
@@ -1122,7 +1140,7 @@ class Controller extends BaseController
     
     
     // Function to handle price updates
-    private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price)
+    private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price, $allday_price, $fullnight_price)
     {
        
         $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->get();
@@ -1140,6 +1158,10 @@ class Controller extends BaseController
                     $price = $halfday_price * $plans_price->plan_id;
                 } elseif (in_array($plantype_price->day_type_id, [4, 5, 6, 7])) {
                     $price = $hourly_price * $plans_price->plan_id;
+                }elseif($plantype_price->day_type_id == 8){
+                    $price = $allday_price * $plans_price->plan_id;
+                }elseif($plantype_price->day_type_id == 9){
+                    $price = $fullnight_price * $plans_price->plan_id;
                 }
 
                 // Check if the plan_type_id exists before inserting
@@ -1235,8 +1257,13 @@ class Controller extends BaseController
             $start_time = Carbon::parse($planType->start_time);
             $end_time = Carbon::parse($planType->end_time);
             $totalHours = $planType->slot_hours;
+            if($totalHours==24){
+                $allday=true;
+            }else{
+                $allday=false;
+            }
 
-            $slots = $this->defineSlots($start_time, $end_time, $totalHours);
+            $slots = $this->defineSlots($start_time, $end_time, $totalHours ,$allday);
            
             foreach ($slots as $slot) {
                
@@ -1256,7 +1283,12 @@ class Controller extends BaseController
                     $hasPermission = false;
                 } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
                     $hasPermission = false;
+                }elseif ($slot['type_id'] == 8 && !$user->can('has-permission', 'All Day')) {
+                    $hasPermission = false;
+                }elseif ($slot['type_id'] == 9 && !$user->can('has-permission', 'Full Night')) {
+                    $hasPermission = false;
                 }
+
                 $existPlantype=PlanType::withoutGlobalScopes()->where('library_id',$library_id)->where('day_type_id',$slot['type_id'])->first();
                 $id = $existPlantype ? $existPlantype->id : null;
                 $data = PlanType::withTrashed()->find($id);

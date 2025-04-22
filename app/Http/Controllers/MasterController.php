@@ -276,6 +276,10 @@ class MasterController extends Controller
             $plan_type_name='Hourly Slot 3';
            }elseif($request->day_type_id==7){
             $plan_type_name='Hourly Slot 4';
+           }elseif($request->day_type_id==8){
+            $plan_type_name='All Day';
+           }elseif($request->day_type_id==9){
+            $plan_type_name='Full Night';
            }
 
             
@@ -385,19 +389,19 @@ class MasterController extends Controller
         $seatsToAdd = $totalSeats - $currentSeatCount;
         if ($seatsToAdd > 0) {
          
-        $seats = [];
-    
-        for ($i = 0; $i < $seatsToAdd; $i++) {
-            
-            $seats[] = [
-                'seat_no' => $startSeatNo + $i,
-                'library_id' => $request->library_id,
-                'is_available' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
+            $seats = [];
+        
+            for ($i = 0; $i < $seatsToAdd; $i++) {
+                
+                $seats[] = [
+                    'seat_no' => $startSeatNo + $i,
+                    'library_id' => $request->library_id,
+                    'is_available' => true,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
         }
-    }
   
         // Use insert() for batch insertion
         Seat::insert($seats);
@@ -495,6 +499,7 @@ class MasterController extends Controller
             ]);
         }
 
+        
         
         if ($request->databasemodel == 'Plan' || $request->databasemodel == 'PlanType'  ) {
            

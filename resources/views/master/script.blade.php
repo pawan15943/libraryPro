@@ -34,23 +34,29 @@
     });
 
     function calculateSlotHours() {
-        var startTime = $('#start_time').val();
-        var endTime = $('#end_time').val();
+    var startTime = $('#start_time').val();
+    var endTime = $('#end_time').val();
 
-        if (startTime && endTime) {
-            var start = new Date("1970-01-01T" + startTime + ":00Z");
-            var end = new Date("1970-01-01T" + endTime + ":00Z");
-            var diffInMinutes = (end - start) / 1000 / 60;
+    if (startTime && endTime) {
+        var start = new Date("1970-01-01T" + startTime + ":00Z");
+        var end = new Date("1970-01-01T" + endTime + ":00Z");
 
+        var diffInMinutes = (end - start) / 1000 / 60;
+
+        if (diffInMinutes === 0) {
+            // Start time and end time are equal, count as 24-hour slot
+            $('#slot_hours').val(24);
+        } else {
             if (diffInMinutes < 0) {
                 diffInMinutes += 24 * 60; // Adjust for crossing midnight
             }
 
             var hours = Math.floor(diffInMinutes / 60);
-
             $('#slot_hours').val(hours); // Display only the hours
         }
     }
+}
+
 });
 
    

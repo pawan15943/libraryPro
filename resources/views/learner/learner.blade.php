@@ -269,43 +269,43 @@ $current_route = Route::currentRouteName();
                                 <!-- Edit Seat Info -->
                                 @if($diffExtendDay>0)
 
-                                @can('has-permission', 'Edit Seat')
-                                <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
-                                @endcan
+                                    @can('has-permission', 'Edit Seat')
+                                    <li><a href="{{route('learners.edit',$value->id)}}" title="Edit Seat Booking Details"><i class="fas fa-edit"></i></a></li>
+                                    @endcan
+                                    
+                                    {{-- <li><a href="{{route('learner.expire',$value->id)}}" title="Custom Seat Expire"><i class="fas fa-calendar"></i></a></li> --}}
 
-                                <li><a href="{{route('learner.expire',$value->id)}}" title="Custom Seat Expire"><i class="fas fa-calendar"></i></a></li>
+                                    <!-- Make payment -->
+                                    @can('has-permission','Renew Seat')
+                                    <li><a href="{{route('learner.payment',$value->learner_detail_id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
 
-                                <!-- Make payment -->
-                                @can('has-permission','Renew Seat')
-                                <li><a href="{{route('learner.payment',$value->learner_detail_id)}}" title="Payment Lerners" class="payment-learner"><i class="fas fa-credit-card"></i></a></li>
+                                    @endcan
 
-                                @endcan
+                                    <!-- Swap Seat-->
 
-                                <!-- Swap Seat-->
-
-                                @can('has-permission', 'Swap Seat')
-                                <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
-                                @endcan
+                                    @can('has-permission', 'Swap Seat')
+                                    <li><a href="{{route('learners.swap',$value->id)}}" title="Swap Seat "><i class="fa-solid fa-arrow-right-arrow-left"></i></a></li>
+                                    @endcan
 
                                 
-                                @can('has-permission', 'Change Plan')
-                                <li><a href="{{route('learner.change.plan',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
-                                @endcan
-                                <!---ID Card generate-->
-                                <li>
-                                    <form action="{{ route('generateIdCard') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <input type="hidden" id="custId" name="detail_id" value="{{ $value->learner_detail_id }}">
-                                        <input type="hidden" name="learner_id" value="{{ $value->id }}">
-                                        <button type="submit"><i class="fa fa-print"></i></button>
-                                    </form>
-                                </li>
-                                <!-- upgrade Seat-->
-                                @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5)
-
-                                    @can('has-permission', 'Upgrade Seat Plan')
-                                    <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                    @can('has-permission', 'Change Plan')
+                                    <li><a href="{{route('learner.change.plan',$value->id)}}" title="Change Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
                                     @endcan
+                                    <!---ID Card generate-->
+                                    <li>
+                                        <form action="{{ route('generateIdCard') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" id="custId" name="detail_id" value="{{ $value->learner_detail_id }}">
+                                            <input type="hidden" name="learner_id" value="{{ $value->id }}">
+                                            <button type="submit"><i class="fa fa-print"></i></button>
+                                        </form>
+                                    </li>
+                                    <!-- upgrade Seat-->
+                                    @if($diffInDays <= 0 && $diffExtendDay>0 && $diffExtendDay>5)
+
+                                        @can('has-permission', 'Upgrade Seat Plan')
+                                        <li><a href="{{route('learners.upgrade.renew',$value->id)}}" title="Upgrade Plan"><i class="fa fa-arrow-up-short-wide"></i></a></li>
+                                        @endcan
 
                                     @endif
                                     <!-- Close Seat -->
@@ -313,7 +313,7 @@ $current_route = Route::currentRouteName();
                                     @can('has-permission', 'Close Seat')
                                     <li><a href="javascript:void(0);" class="link-close-plan" data-id="{{ $value->id }}" title="Close" data-plan_end_date="{{$value->plan_end_date}}"><i class="fas fa-times"></i></a></li>
                                     @endcan
-                                    @endif
+                                @endif
                                     <!-- Deletr Seat -->
                                     @can('has-permission', 'Delete Seat')
                                     <li><a href="#" data-id="{{$value->id}}" title="Delete Lerners" class="delete-customer"><i class="fas fa-trash"></i></a></li>

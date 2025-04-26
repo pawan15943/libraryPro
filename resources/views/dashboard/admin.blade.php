@@ -779,22 +779,41 @@
                                 </select>
                             </div>
 
-                            <input type="hidden" id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs" >
-
                             <div class="col-lg-4">
                                 <label for="">Plan Starts On <span>*</span></label>
-                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date" >
+                                <input type="date" class="form-control" placeholder="Plan Starts On" name="plan_start_date" id="plan_start_date">
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="">Plan Price <span>*</span></label>
+                                <input type="text" id="plan_price_id" class="form-control" name="plan_price_id" placeholder="Example : 00 Rs" readonly>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-check mt-3">
+                                    <input class="form-check-input" type="checkbox" value="" id="toggleFieldCheckbox" name="toggleFieldCheckbox">
+                                    <label class="form-check-label" for="toggleFieldCheckbox">
+                                        Locker
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" id="extraFieldContainer" style="display: none;">
+                                <label for="locker_amount">Locker Amount</label>
+                                <input type="text" class="form-control digit-only" name="locker_amount" id="locker_amount" placeholder="Enter Locker Amount">
+                            </div>
+                            <div class="col-lg-4" id="extraFieldContainer" >
+                                <label for="discount_amount">Discount Amount</label>
+                                <input type="text" class="form-control digit-only" name="discount_amount" id="discount_amount" placeholder="Enter Discount Amount">
                             </div>
                             <div class="col-lg-4">
                                 <label for="">Paid Amount (INR)<span>*</span></label>
-                                <input id="paid_amount" class="form-control" name="paid_amount" placeholder="Example : 00 Rs">
+                                <input id="paid_amount" class="form-control digit-only" name="paid_amount" placeholder="Example : 00 Rs">
                                 <span id="pending_amt" class="text-danger"></span>
                             </div>
-                            
+
                             <div class="col-lg-4">
                                 <label for="">Choose Due Date<span>*</span></label>
                                 <input type="date" class="form-control" placeholder="Plan Starts On" name="due_date" id="due_date" readonly>
                             </div>
+                         
                             
                             <div class="col-lg-4">
                                 <label for="">Payment Mode <span>*</span></label>

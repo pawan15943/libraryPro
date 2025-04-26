@@ -101,13 +101,13 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </div>
                     @endif
                  
-                        
-                    
                     </h4>
+                
                     <p class="text-danger">Note : Here we are displaying the active plan Payment information that has been completed.</p>
-                    <input id="user_id" type="hidden" name="learner_id" value="{{ $customer->learner->id}}">
-                    <input id="user_id" type="hidden" name="user_id" value="{{ $customer->learner->id}}">
+                    <input type="hidden" name="learner_id" value="{{ $customer->learner->id}}">
+                    <input  type="hidden" name="user_id" value="{{ $customer->learner->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
+                    <input  type="hidden" name="learner_transaction_id" value="{{ $pending_payment->id ?? ''}}">
                     <div class="row g-4">
                         <div class="col-lg-6 col-6">
                             <label for="">Plan <span>*</span></label>
@@ -158,20 +158,16 @@ $diffInDays = $today->diffInDays($endDate, false);
                            
                             
                         </div>
+     
                         <div class="col-lg-6 col-6">
-                            <label for="">Payment Status</label>
-                            <input type="text" class="form-control"
-                                value="{{ $customer->is_paid == 1 ? 'Paid' : 'Unpaid' }}"
-                                readonly>
-                        </div>
-
-                        <div class="col-lg-6 col-6">
-                            <label for="">Plan Price <span>*</span></label>
                             @if($diffInDays < 0 && $diffExtendDay>0 && !$isRenew)
+                            <label for="">Plan Price <span>*</span></label>
+                           
                             <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id ) }}" @readonly(true)>
 
                             @else
-                            <input type="text" class="form-control " name="paid_amount" id="paid_amount" value="{{ old('paid_amount', $customer->plan_price_id ) }}" readonly>
+                            <label for="">Pending Payment<span>*</span></label>
+                            <input type="text" class="form-control " name="paid_amount"  value="{{ old('pending_amount', $pending_payment->pending_amount ?? 0) }}" >
 
                             @endif
                         </div>
@@ -216,7 +212,7 @@ $diffInDays = $today->diffInDays($endDate, false);
                         <div class="col-lg-3">
                             @if($diffInDays <= 5 && $diffExtendDay > 0 && !$isRenew)
                                 <input type="submit" class="btn btn-primary btn-block button" value="Renew">
-                            @elseif($is_payment_pending)
+                            @elseif($is_payment_pending && $pending_payment->pending_amount)
                                 <input type="submit" class="btn btn-warning btn-block button" value="Make Payment">
                             @endif
                         </div>
@@ -238,7 +234,9 @@ $diffInDays = $today->diffInDays($endDate, false);
                     $class='expired';
                 }
             @endphp
+             @if(Auth::user()->library_seat_type != 'general')
             <span class="d-block">Seat No : {{ $customer->learner->seat_no}}</span>
+            @endif
             <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan->name}}</p>
             <button>Booked for <b>{{ $customer->planType->name}}</b></button>

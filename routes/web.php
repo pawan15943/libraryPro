@@ -145,6 +145,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
    
     Route::prefix('library/learners')->group(function () {
       Route::post('/store', [LearnerController::class, 'learnerStore'])->name('learners.store');
+      Route::post('/generallearner/store', [LearnerController::class, 'generallearnerStore'])->name('genral.learners.store');
       Route::get('/list', [LearnerController::class, 'learnerList'])->name('learners');
       Route::get('/history/list', [LearnerController::class, 'learnerHistory'])->name('learnerHistory');
       Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');

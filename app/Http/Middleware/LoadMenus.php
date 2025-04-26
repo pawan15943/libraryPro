@@ -353,6 +353,9 @@ class LoadMenus
         }
 
         //seat table update
+        if(Auth::user()->library_seat_type != 'general'){
+
+       
         $userS = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')
             ->where('learners.library_id', auth()->user()->id)->where('learners.status', 0)->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->select('learners.*', 'plan_types.day_type_id')->get();
 
@@ -386,6 +389,8 @@ class LoadMenus
 
         foreach ($seats as $seat) {
             Seat::where('library_id', auth()->user()->id)->where('id', $seat->id)->where('total_hours', 0)->where('is_available', '!=', 1)->update(['is_available' => 1]);
+        }
+
         }
     }
 }

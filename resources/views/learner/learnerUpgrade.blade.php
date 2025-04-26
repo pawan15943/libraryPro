@@ -187,7 +187,9 @@ $readonlyStyle = '';
                         $class='expired';
                     }
                 @endphp
+                 @if(Auth::user()->library_seat_type != 'general')
                 <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+                @endif
                 <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
                 <p>{{ $customer->plan_name}}</p>
                 <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>

@@ -43,8 +43,9 @@ class LearnerController extends Controller
 
     protected function validateCustomer(Request $request, array $additionalRules = [])
     {
+        
         $baseRules = [
-            'seat_no' => 'required|integer',
+           
             'email' => [
                 'required',
                 'email',
@@ -56,10 +57,36 @@ class LearnerController extends Controller
             'id_proof_file' => 'nullable|file|mimes:jpg,png,jpeg,webp|max:200',
             'mobile' => 'required|digits:10',
             'dob' => 'required|date',
-            'pin_code' => 'nullable|digits:6',
+            
             'plan_id' => 'required',
             'plan_type_id' => 'required',
-            'plan_price_id' => 'required',
+            'plan_price_id' => 'required|numeric|min:0',
+           
+            'discount_amount' => 'nullable|numeric|min:0',
+            'locker_amount' => [
+                'required_if:toggleFieldCheckbox,1', 
+              
+            ],
+
+
+            'due_date' => [
+            'nullable',
+            'date',
+            function ($attribute, $value, $fail) use ($request) {
+                $planPrice = (float) $request->input('plan_price_id', 0);
+                $paid = (float) $request->input('paid_amount', 0);
+                $locker = (float) $request->input('locker_amount', 0);
+                $discount = (float) $request->input('discount_amount', 0);
+
+                $effectivePaid = $planPrice + $locker - $discount;
+                $pending =  $effectivePaid-$paid;
+
+                if ($pending > 0 && empty($value)) {
+                    $fail('Due date is required if there is any pending amount.');
+                }
+            }
+        ],
+       
 
         ];
 
@@ -249,6 +276,7 @@ class LearnerController extends Controller
         $count_hourly = $this->getLearnersByLibrary()->leftJoin('plan_types', 'learner_detail.plan_type_id', '=', 'plan_types.id')->where('learner_detail.library_id', auth()->user()->id)->whereIn('plan_types.day_type_id', [4, 5, 6, 7])->where('learners.status', 1)->count();
         $available = Seat::where('total_hours', 0)->count();
         $not_available = Seat::where('is_available', 0)->count();
+      
         return view('learner.seat', compact('seats', 'users', 'plans', 'plan_types', 'count_fullday', 'count_firstH', 'count_secondH', 'available', 'not_available', 'total_hour', 'count_hourly'));
     }
     //learner store
@@ -259,12 +287,11 @@ class LearnerController extends Controller
             'payment_mode' => 'required',
             'plan_start_date' => 'required|date',
             'paid_amount' => 'required',
+            'seat_no' => 'required|integer',
         ];
 
         $validator = $this->validateCustomer($request, $additionalRules);
-        $validator->sometimes('due_date', 'required|date', function ($input) {
-            return $input->paid_amount != $input->plan_price_id;
-        });
+       
         if ($this->getLearnersByLibrary()->where('seat_no', $request->seat_no)->where('plan_type_id', $request->plan_type_id)->where('learners.status', 1)->count() > 0) {
 
             return response()->json([
@@ -367,16 +394,23 @@ class LearnerController extends Controller
             'status' => $status,
             'payment_mode' => $request->input('payment_mode'),
         ]);
-        $paid_amount=$request->paid_amount;
-        $pending_amount=$request->input('plan_price_id')-$paid_amount;
+        $planPrice = (float) $request->input('plan_price_id', 0);
+        $paid_amount = (float) $request->input('paid_amount', 0);
+        $locker = (float) $request->input('locker_amount', 0);
+        $discount = (float) $request->input('discount_amount', 0);
+
+        $effectivePaid = $planPrice + $locker - $discount;
+        $pending_amount =  $effectivePaid-$paid_amount;
         if ($request->payment_mode == 1 || $request->payment_mode == 2) {
             LearnerTransaction::create([
                 'learner_id' => $customer->id,
                 'library_id' => Auth::user()->id,
                 'learner_detail_id' => $learner_detail->id,
-                'total_amount' => $request->input('plan_price_id'),
+                'total_amount' => $effectivePaid,
                 'paid_amount' => $paid_amount,
                 'pending_amount' => $pending_amount,
+                'locker_amount' => $locker,
+                'discount_amount' => $discount,
                 'paid_date' => $start_date->format('Y-m-d') ?? date('Y-m-d'),
                 'is_paid' => 1
             ]);
@@ -665,7 +699,9 @@ class LearnerController extends Controller
 
         $plans = $this->learnerService->getPlans();
         $seats = Seat::get();
-        return view('learner.learner', compact('learners', 'plans', 'extendDay', 'seats'));
+       
+        $plan_types = PlanType::get();
+        return view('learner.learner', compact('learners', 'plans', 'extendDay', 'seats','plan_types'));
     }
     public function learnerHistory(Request $request)
     {
@@ -701,6 +737,7 @@ class LearnerController extends Controller
                     return $query->where('library_id', Auth::user()->id);
                 })->ignore($learner->id), // Ignore current learner's email
             ],
+          
         ]));
 
         if ($validator->fails()) {
@@ -719,7 +756,7 @@ class LearnerController extends Controller
 
 
         $customer = Learner::findOrFail($user_id);
-
+    if(Auth::user()->library_seat_type!='general'){
         // Fetch existing bookings for the same seat
         $existingBookings = $this->getLearnersByLibrary()->where('seat_no', $customer->seat_no)
             ->where('learners.id', '!=', $customer->id) // Exclude the current booking
@@ -768,7 +805,7 @@ class LearnerController extends Controller
         } else {
             $plan_type = $request->plan_type_id;
         }
-
+    }
         // Calculate new plan_end_date by adding duration to the current plan_end_date
         $months = Plan::where('id', $request->plan_id)->value('plan_id');
         $duration = $months ?? 0;
@@ -1719,7 +1756,8 @@ class LearnerController extends Controller
         $is_payment_pending = LearnerTransaction::where('learner_detail_id', $customer_detail_id)
             ->where('pending_amount', '!=', 0)
             ->exists();
-
+        $pending_payment=LearnerTransaction::where('learner_detail_id', $customer_detail_id)
+        ->where('pending_amount', '!=', 0)->select('pending_amount','id')->first();
         // $customer = $this->fetchCustomerData($customerId, $isRenew, $status, $detailStatus);
 
         $extend_days = Hour::select('extend_days')->first();
@@ -1735,33 +1773,20 @@ class LearnerController extends Controller
         $diffExtendDay = $today->diffInDays($inextendDate, false);
         $plans = $this->learnerService->getPlans();
         $planTypes = $this->learnerService->getPlanTypes();
-
-        return view('learner.payment', compact('customer', 'diffExtendDay', 'plans', 'planTypes', 'isRenew', 'is_payment_pending'));
+       
+        return view('learner.payment', compact('customer', 'diffExtendDay', 'plans', 'planTypes', 'isRenew', 'is_payment_pending','pending_payment'));
     }
 
     public function paymentStore(Request $request)
     {
+       
         $this->validate($request, [
             'learner_id' => 'required|exists:learners,id',
             'paid_amount' => 'required|numeric',
             'transaction_image' => 'nullable|mimes:webp,png,jpg,jpeg|max:200',
             'payment_mode' => 'required'
         ]);
-        // $data=$request->all();
-
-        $total_amount = 0;
-        $pending_amount = 0;
-
-        $learnerDetail = LearnerDetail::where('learner_id', $request->learner_id)
-            ->where('plan_price_id', $request->paid_amount)
-            ->where('is_paid', 0)
-            ->first();
-
-        if ($learnerDetail) {
-            $total_amount = $learnerDetail->plan_price_id;
-            $pending_amount = $total_amount - $request->paid_amount;
-        }
-
+      
         if ($request->hasFile('transaction_image')) {
             $transaction_image = $request->file('transaction_image');
             $transaction_imageNewName = 'transaction_image_' . time() . '_' . $transaction_image->getClientOriginalName();
@@ -1770,37 +1795,50 @@ class LearnerController extends Controller
         } else {
             $data['transaction_image'] = null;
         }
-
-        if ($pending_amount == 0) {
-            $data['is_paid'] = 1;
-        } else {
-            $data['is_paid'] = 0;
-        }
-        $data['total_amount'] = $total_amount;
-        $data['pending_amount'] = $pending_amount;
-        $data['learner_detail_id'] = $learnerDetail->id;
-        $data['learner_id'] = $request->learner_id;
-        $data['library_id'] = $request->library_id;
-        $data['paid_amount'] = $request->paid_amount;
-        $data['paid_date'] = $request->paid_date;
-        $data['transaction_id'] = $request->transaction_id;
-
-
-        try {
-            $learner_transaction = LearnerTransaction::create($data);
-
-            if ($learner_transaction) {
-                LearnerDetail::where('learner_id', $request->learner_id)->where('plan_price_id', $request->paid_amount)->update([
-                    'is_paid' => 1,
-                    'payment_mode' => $request->payment_mode,
-                ]);
+       
+        if($request->learner_transaction_id && LearnerTransaction::where('id',$request->learner_transaction_id)->exists()){
+         
+            $tranDetail=LearnerTransaction::where('id',$request->learner_transaction_id)->first();
+        
+            $data['pending_amount'] =$tranDetail->pending_amount - $request->paid_amount ;
+            if ($data['pending_amount'] == 0) {
+                $data['is_paid'] = 1;
+            } else {
+                $data['is_paid'] = 0;
             }
+            $data['paid_amount'] = $tranDetail->paid_amount + $request->paid_amount;
+            $traupdate=LearnerTransaction::where('id',$tranDetail->id)->update($data);
+            if($traupdate){
+                if( DB::table('learner_pending_transaction')->where('learner_id', $request->learner_id)->exists()){
+                    DB::table('learner_pending_transaction')->where('learner_id', $request->learner_id)->where('pending_amount' ,'>=', $request->paid_amount)->update([
+                        'pending_amount'=>$data['pending_amount'],
+                        'paid_date'=>date('Y-m-d'),
+                    ]);
+                
+                }elseif( $data['pending_amount'] > 0){
+                    DB::table('learner_pending_transaction')->insert(
+                        [
+                            'learner_id'=>$request->learner_id,
+                            'due_date'=>date("Y-m-d"),
+                            'pending_amount'=> $data['pending_amount'],
+                        ]
+                    );
+                }
+           
+         
 
-            return redirect()->route('learners')->with('success', 'Payment successfully recorded.');
-        } catch (\Exception $e) {
-            \Log::error('Payment Error: ' . $e->getMessage());
-            return redirect()->route('learners')->withErrors(['error' => 'An error occurred while processing the payment.']);
+            }
+            try {
+           
+                return redirect()->route('learners')->with('success', 'Payment successfully recorded.');
+            } catch (\Exception $e) {
+                \Log::error('Payment Error: ' . $e->getMessage());
+                return redirect()->route('learners')->withErrors(['error' => 'An error occurred while processing the payment.']);
+            }
         }
+      
+        return redirect()->route('learners')->with('error', 'Something went wrong');
+       
     }
 
     public function learnerExpire(Request $request, $id = null)
@@ -1941,6 +1979,7 @@ class LearnerController extends Controller
     //learner  update
     public function learnerUpdate(Request $request, $id = null)
     {
+       
         $learner = Learner::find($id);
 
         // Call validateCustomer method to apply default validation
@@ -1957,6 +1996,7 @@ class LearnerController extends Controller
         ]));
 
         if ($validator->fails()) {
+            
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
@@ -2172,11 +2212,7 @@ class LearnerController extends Controller
             'attendances.attendance',
             'attendances.date'
         )->get();
-        // $learners = $learners->map(function ($item) {
-        //     $item->email = decryptData($item->email ?? '');
-        //     $item->mobile = decryptData($item->mobile ?? '');
-        //     return $item;
-        // });
+       
         return view('library.learner-attendance', compact('learners', 'data'));
     }
 
@@ -2430,6 +2466,136 @@ class LearnerController extends Controller
         }
     }
 
-    
+    public function generallearnerStore(Request $request){
+        
+        $additionalRules  = [
+            'payment_mode' => 'required',
+            'plan_start_date' => 'required|date',
+            'paid_amount' => 'required',
+        ];
+        $validator = $this->validateCustomer($request, $additionalRules);
+       
+        if ($validator->fails()) {
+
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+            die;
+        }
+
+        if(($request->paid_amount > ($request->plan_price_id + $request->locker_amount +$request->discount_amount)) || ($request->paid_amount==0)){
+            return response()->json([
+                'error' => true,
+                'message' => 'Paid amount is not valid',
+            ], 422);
+            die;
+        }
+
+
+        if ($request->hasFile('id_proof_file')) {
+            $this->validate($request, ['id_proof_file' => 'mimes:webp,png,jpg,jpeg|max:200']);
+            $id_proof_file = $request->id_proof_file;
+            $id_proof_fileNewName = "id_proof_file" . time() . $id_proof_file->getClientOriginalName();
+            $id_proof_file->move('public/uploade/', $id_proof_fileNewName);
+            $id_proof_file = 'public/uploade/' . $id_proof_fileNewName;
+        } else {
+            $id_proof_file = null;
+        }
+        $first_record = Hour::first();
+
+        $total_hour = $first_record ? $first_record->hour : null;
+
+        if (PlanType::where('id', $request->plan_type_id)->count() > 0) {
+
+            $hours = PlanType::where('id', $request->plan_type_id)->value('slot_hours');
+        }
+
+
+        $plan_id = $request->input('plan_id');
+        $months = Plan::where('id', $plan_id)->value('plan_id');
+        $duration = $months ?? 0;
+
+        $start_date = Carbon::parse($request->input('plan_start_date'));
+        $endDate = $start_date->copy()->addMonths($duration);
+        if ($request->payment_mode == 1 || $request->payment_mode == 2) {
+            $is_paid = 1;
+        } else {
+            $is_paid = 0;
+        }
+
+        $extend_days = Hour::select('extend_days')->first();
+        $extendDay = $extend_days ? $extend_days->extend_days : 0;
+
+        $inextendDate = Carbon::parse($endDate)->addDays($extendDay);
+        $status = $inextendDate > Carbon::today() ? 1 : 0;
+
+        $customer = Learner::create([
+            
+            'name' => $request->input('name'),
+            'mobile' => encryptData($request->input('mobile')),
+            'email' => encryptData($request->input('email')),
+            'dob' => $request->input('dob'),
+            'id_proof_name' => $request->input('id_proof_name'),
+            'id_proof_file' => $id_proof_file,
+            'hours' => $hours,
+            'status' => $status,
+            'library_id' => Auth::user()->id,
+            'password' => bcrypt($request->mobile)
+        ]);
+       
+        $learner_detail = LearnerDetail::create([
+            'learner_id' => $customer->id,
+            'plan_id' => $plan_id,
+            'plan_type_id' => $request->input('plan_type_id'),
+            'plan_price_id' => $request->input('plan_price_id'),
+            'plan_start_date' => $start_date->format('Y-m-d'),
+            'plan_end_date' => $endDate->format('Y-m-d'),
+            'join_date' =>  $start_date->format('Y-m-d'),
+            'hour' => $hours,
+           
+            'library_id' => Auth::user()->id,
+            'is_paid' => $is_paid,
+            'status' => $status,
+            'payment_mode' => $request->input('payment_mode'),
+        ]);
+        $planPrice = (float) $request->input('plan_price_id', 0);
+        $paid_amount = (float) $request->input('paid_amount', 0);
+        $locker = (float) $request->input('locker_amount', 0);
+        $discount = (float) $request->input('discount_amount', 0);
+
+        $effectivePaid = $planPrice + $locker - $discount;
+        $pending_amount =  $effectivePaid-$paid_amount;
+
+        if ($request->payment_mode == 1 || $request->payment_mode == 2) {
+            LearnerTransaction::create([
+                'learner_id' => $customer->id,
+                'library_id' => Auth::user()->id,
+                'learner_detail_id' => $learner_detail->id,
+                'total_amount' => $effectivePaid,
+                'paid_amount' => $paid_amount,
+                'pending_amount' => $pending_amount,
+                'locker_amount' => $locker,
+                'discount_amount' => $discount,
+                'paid_date' => $start_date->format('Y-m-d') ?? date('Y-m-d'),
+                'is_paid' => 1
+            ]);
+        }
+        if($pending_amount &&  $request->due_date){
+            $tran=[
+                'learner_id'=>$customer->id,
+                'due_date'=>$request->due_date,
+                'pending_amount'=>$pending_amount,
+                'created_at'=>now(),
+            ];
+            DB::table('learner_pending_transaction')->insert($tran);
+        }
+       
+        return response()->json([
+            'success' => true,
+            'message' => 'Learner created successfully!',
+        ], 201);
+
+    }
 
 }

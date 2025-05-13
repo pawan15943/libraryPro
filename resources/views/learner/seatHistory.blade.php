@@ -1,12 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
-@php
 
-use App\Models\PlanType;
-use Carbon\Carbon;
-$today = Carbon::today();
-@endphp
 
 <!-- Content Header (Page header) -->
 <!-- Main row -->
@@ -36,12 +31,13 @@ $today = Carbon::today();
                     @foreach($seats as $seat)
                     @php
                     // First, check if there are any customers with status 1 for the given seat
-                    $usersForSeat = App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',1)->get();
+                    $usersForSeat = App\Models\LearnerDetail::where('seat_no',$seat->seat_no)->where('status',1)->get();
                     // If no learners with status 1 are found, check for learners with status 0
                     if ($usersForSeat->isEmpty()) {
-                    $usersForSeat = App\Models\LearnerDetail::where('seat_id',$seat->id)->where('status',0)->get();
+                        $usersForSeat = App\Models\LearnerDetail::where('seat_no',$seat->seat_no)->where('status',0)->get();
 
                     }
+                    
                     @endphp
                     @if($usersForSeat->count() > 0)
 
@@ -49,13 +45,7 @@ $today = Carbon::today();
                         <td rowspan="{{ $usersForSeat->count() }}">{{ $seat->seat_no }}</td>
                         @foreach($usersForSeat as $user)
                         @php
-                        $learner=App\Models\Learner::where('id',$user->learner_id)->first();
-                        $plan = App\Models\Plan::where('id', $user->plan_id)->first();
-                        $plantype = App\Models\PlanType::where('id', $user->plan_type_id)->first();
-                        $endDate = Carbon::parse($user->plan_end_date);
-                        $diffInDays = $today->diffInDays($endDate, false);
-                        $inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
-                        $diffExtendDay= $today->diffInDays($inextendDate, false);
+                        $learner=myLearner($user->learner_id);
                         @endphp
                         @if (!$loop->first)
                     <tr>
@@ -67,8 +57,11 @@ $today = Carbon::today();
                                     {{($learner->email) }}</span> <br>
                             <small> +91-{{($learner->mobile)}}</small>
                         </td>
-                        <td>{{ $plantype->name }}<br><small>{{ $plan->name }}</small></td>
-
+                        <td>
+                            {{ optional(myPlanType($user->plan_type_id))->name }}<br>
+                            <small>{{ optional(myPlan($user->plan_id))->name }}</small>
+                        </td>
+                        
                         <td>{{ $user->join_date }}
                             @if(isset($user->is_paid) && $user->is_paid==1)
                             <small class="fs-10 d-block ">Paid</small>
@@ -78,23 +71,15 @@ $today = Carbon::today();
                         </td>
                         <td>{{ $user->plan_start_date }}</td>
                         <td>{{ $user->plan_end_date }}<br>
-                         
-                            @if ($diffInDays > 0)
-                                <small class="text-success">Plan Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays <= 0 && $diffExtendDay>0)
-                                <small class="text-danger fs-10 d-block">Extension active! {{ abs($diffExtendDay) }} days left.</small>
-                            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                <small class="text-warning fs-10 d-block">Plan Expires today</small>
-                            @else
-                                <small class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</small>
-                            @endif
+                            {!! getUserStatusDetails($user->plan_end_date) !!}
+                       
                         </td>
                         @if ($loop->first)
                         <td rowspan="{{ $usersForSeat->count()  }}">
 
                             <ul class="actionalbls">
                                 <li>
-                                    <a href="{{ url('seats/history', $seat->id) }}" title="View Seat Previous Booking " class="disabled"><i class="fa-solid fa-clock-rotate-left"></i></a>
+                                    <a href="{{ url('seats/history', $user->learner_id) }}" title="View Seat Previous Booking " class="disabled"><i class="fa-solid fa-clock-rotate-left"></i></a>
                                 </li>
                             </ul>
 

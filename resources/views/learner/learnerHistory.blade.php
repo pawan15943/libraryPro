@@ -1,9 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
 <!-- Content Header (Page header) -->
 @php
-use Carbon\Carbon;
+
 $current_route = Route::currentRouteName();
 @endphp
 <style>
@@ -173,12 +173,7 @@ $current_route = Route::currentRouteName();
                
                 <tbody>
                     @foreach($learnerHistory as $key => $value)
-                    @php
-                    $today = Carbon::today();
-                    $endDate = Carbon::parse($value->plan_end_date);
-                    $diffInDays = $today->diffInDays($endDate, false);
-                    @endphp
-
+                  
                     <tr>
                         <td>{{$value->seat_no}}<br>
                             <small>{{$value->plan_type_name}}</small>
@@ -197,13 +192,8 @@ $current_route = Route::currentRouteName();
                             <small>{{$value->plan_name}}</small>
                         </td>
                         <td>{{$value->plan_end_date}}<br>
-                            @if ($diffInDays > 0)
-                            <small class="text-success fs-10 d-block">Expires in {{ $diffInDays }} days</small>
-                            @elseif ($diffInDays < 0)
-                                <small class="text-danger fs-10 d-block">Expired {{ abs($diffInDays) }} days ago</small>
-                                @else
-                                <small class="text-warning fs-10 d-block">Expires today</small>
-                                @endif
+                        
+                        {!! getUserStatusDetails($detail->plan_end_date) !!}
                         </td>
                         <td>
                             <ul class="actionalbls">
@@ -218,13 +208,7 @@ $current_route = Route::currentRouteName();
                 </tbody>
               
             </table>
-            <!-- Add pagination links -->
-            {{-- <div class="d-flex justify-content-center">
-                <div class="pagination-container">
-                    {{ $learnerHistory->links('vendor.pagination.default') }}
-                </div>
-            </div> --}}
-
+         
         </div>
     </div>
 </div>

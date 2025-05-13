@@ -52,6 +52,10 @@ return [
             'provider' => 'learners',
             'session' => 'session_learner',
         ],
+        'library_user' => [
+            'driver' => 'session',
+            'provider' => 'library_users',
+        ],
     ],
 
 
@@ -82,6 +86,10 @@ return [
     'libraries' => [
         'driver' => 'eloquent',
         'model' => App\Models\Library::class,
+    ],
+    'library_users' => [
+        'driver' => 'eloquent',
+        'model' => App\Models\LibraryUser::class,
     ],
 
     'learners' => [

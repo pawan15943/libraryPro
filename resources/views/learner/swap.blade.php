@@ -1,6 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
-
+@php
+    $planDetails = getPlanStatusDetails($customer->plan_end_date);
+    $class=$planDetails['class'];
+@endphp
 
 @if (session('error'))
     <div class="alert alert-danger">
@@ -90,20 +93,20 @@
                         </div>
                         <div class="col-lg-6 col-6">
                             <label for="">Select Seat<span>*</span></label>
-                            <select name="seat_id" id="new_seat_id" class="form-control form-select">
+                            <select name="seat_id" id="new_seat_id" class="form-control form-select @error('seat_id') is-invalid @enderror">
                                 <option>Select Seat</option>
-                                @foreach($available_seat as $id => $seat_no)
-                                <option value="{{ $id }}"> {{ $seat_no }}</option>
+                                @foreach($availableseats as  $seat_no)
+                                <option value="{{ $seat_no }}"> {{ $seat_no }}</option>
                                 @endforeach
                               
                             </select>
-                            @error('seat_no')
+                            @error('seat_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
-                        <input type="hidden" value="{{ $customer->seat_id }}" id="swap_old_value">
+                        <input type="hidden" value="{{ $customer->seat_no }}" id="swap_old_value">
 
                     </div>
                     <div class="row mt-3">
@@ -124,30 +127,15 @@
     </div>
     <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
-            @php 
-                $class='';  
-                if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
-                    $class='extedned';
-                }elseif($customer->diffInDays < 0 ){
-                    $class='expired';
-                }
-            @endphp
+              
+            @if($customer->seat_no)
             <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+            @endif
             <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan_name}}</p>
             <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <!-- Expire days Info -->
-           
-            @if ($customer->diffInDays > 0)
-                <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                <span class="text-danger fs-10 d-block">{{$learnerExtendText}}  {{ abs($customer->diffExtendDay) }} days.</span>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                <span class="text-warning fs-10 d-block">Plan Expires today</span>
-            @else
-                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
-            @endif
-            <!-- End -->
+            {!! getUserStatusWithSpan($customer->plan_end_date) !!}
+            
         </div>
     </div>
 </div>

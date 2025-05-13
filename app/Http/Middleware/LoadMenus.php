@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Branch;
 use App\Models\Hour;
 use App\Models\Learner;
 use App\Models\LearnerDetail;
@@ -201,7 +202,7 @@ class LoadMenus
             $hourly2Count = $counts['hourly2Count'];
             $hourly3Count = $counts['hourly3Count'];
             $hourly4Count = $counts['hourly4Count'];
-            $extend_days = Hour::select('extend_days')->first();
+            $extend_days = Branch::where('library_id',Auth::user()->id)->select('extend_days')->first();
             if ($extend_days) {
                 $extendDay = $extend_days->extend_days;
             } else {
@@ -261,24 +262,28 @@ class LoadMenus
 
     public function updateLibraryStatus()
     {
+        
+            \Log::info('Start library status');
+        
+      
         $today = Carbon::today();
-        $hourexist = Hour::count();
-        $extendexist = Hour::whereNotNull('extend_days')->count();
-        $seatExist = Seat::count();
+        $hourexist = Hour::withoutGlobalScopes()->where('library_id', getLibraryId())->count();
+        $extendexist = Branch::where('library_id',getLibraryId())->whereNotNull('extend_days')->count();
+       
         $plan = Plan::count();
-        $plantype = PlanType::where('library_id', auth()->user()->id)
+        $plantype = PlanType::where('library_id', getLibraryId())
             ->where(function ($query) {
                 $query->where('day_type_id', 1)
                     ->orWhere('day_type_id', 2)
                     ->orWhere('day_type_id', 3);
             })
             ->count();
-        $planPrice = PlanPrice::count();
-        $is_active = LibraryTransaction::where('library_id', Auth::user()->id)->where('is_paid', 1)->where('end_date', '>', $today->format('Y-m-d'))->exists();
-        if ($hourexist > 0 && $extendexist > 0 && $seatExist > 0 && $plan > 0 && $plantype >= 3 && $planPrice >= 3 && $is_active) {
-            $id = Auth::user()->id;
+        $planPrice = PlanPrice::withoutGlobalScopes()->where('library_id', getLibraryId())->count();
+        $is_active = LibraryTransaction::where('library_id', getLibraryId())->where('is_paid', 1)->where('end_date', '>', $today->format('Y-m-d'))->exists();
+        if ($hourexist > 0 && $extendexist > 0 && $plan > 0 && $plantype >= 3 && $planPrice >= 3 && $is_active) {
+            $id = getLibraryId();
             $library = Library::findOrFail($id);
-
+           
             if ($library->status != 1) {
                 $library->status = 1;
                 $library->save();
@@ -353,7 +358,8 @@ class LoadMenus
         }
 
         //seat table update
-        if(Auth::user()->library_seat_type != 'general'){
+      
+        if(Auth::guard('library')->check() ){
 
        
         $userS = Learner::leftJoin('learner_detail', 'learner_detail.learner_id', '=', 'learners.id')

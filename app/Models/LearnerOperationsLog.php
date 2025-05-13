@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\HasBranch;
 class LearnerOperationsLog extends Model
 {
     use HasFactory;
+    use HasBranch;
     protected $guarded = [];
     protected $table = 'learner_operations_log';
     public function learner()

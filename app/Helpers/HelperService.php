@@ -16,7 +16,7 @@ use Auth;
 
 class HelperService
 {
-    
+   
     protected static $titleMap = [
         'dashboard' => 'Dashboard',
         'student.index' => 'Student List',

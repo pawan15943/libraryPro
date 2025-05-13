@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.learner')
 @section('content')
 @if (session('error'))
 <div class="alert alert-danger">

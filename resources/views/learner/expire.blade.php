@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 @php
 $current_route = Route::currentRouteName();

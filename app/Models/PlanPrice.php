@@ -14,9 +14,13 @@ class PlanPrice extends Model
     protected $guarded = []; 
     protected static function booted()
     {
-        
-        static::addGlobalScope(new LibraryScope());
+        if (auth()->check()) {
+            static::addGlobalScope('branch', function ($builder) {
+                $builder->where('branch_id', getCurrentBranch());
+            });
+        }
     }
+    
 
      // Relationship to the Plan model
      public function plan()

@@ -2,11 +2,16 @@
 
 namespace App\Providers;
 
+use App\Models\Hour;
+use App\Models\LearnerDetail;
+use App\Models\Plan;
+use App\Models\PlanType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use DB;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,8 +27,50 @@ class AppServiceProvider extends ServiceProvider
             $breadcrumb = $this->getBreadcrumb($routeName);
             $pageTitle = $this->getPageTitle($routeName);
 
-            $view->with(compact('breadcrumb', 'pageTitle'));
+            $data = compact('breadcrumb', 'pageTitle');
+
+            if (auth()->check() && function_exists('getLibraryId')) {
+                $data['planTypes'] = PlanType::where('library_id', getLibraryId())->get();
+                $data['plans'] = Plan::where('library_id', getLibraryId())->get();
+                $first_record = Hour::first();
+                $data['totalSeats']=$first_record ? $first_record->seats : null;
+                $data['total_hour']= $first_record ? $first_record->hour : null;
+
+
+                if (!$first_record) return collect();
+
+                $totalHour = $first_record->hour;
+                $totalSeats = $first_record->seats;
+
+                // Step 1: Get used hours for each seat
+                $usedSeats = LearnerDetail::select('seat_no', DB::raw('SUM(hour) as used_hours'))
+                    ->whereNotNull('seat_no')
+                    ->groupBy('seat_no')
+                    ->pluck('used_hours', 'seat_no'); // [seat_no => used_hours]
+
+                $availableSeats = collect();
+
+                // Step 2: Loop through all seat numbers and apply logic
+                for ($seatNo = 1; $seatNo <= $totalSeats; $seatNo++) {
+                    $usedHours = $usedSeats[$seatNo] ?? 0;
+
+                    if ($usedHours < $totalHour) {
+                        $availableSeats->push($seatNo);
+                    }
+                }
+                $exams=DB::table('exams')->get();
+                $data['exams']=$exams;
+                $data['availableseats']=$availableSeats;
+            }
+
+            $view->with($data);
         });
+        View::composer('layouts.library', function($view){
+            // only branches for this library/admin:
+            $view->with('branches', auth()->user()->branches);
+        });
+
+      
     }
 
     private function getBreadcrumb($routeName, $parameters = [])

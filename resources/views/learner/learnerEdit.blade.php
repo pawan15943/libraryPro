@@ -1,23 +1,10 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 @php
 
 $current_route = Route::currentRouteName();
-@endphp
-@php
-use Carbon\Carbon;
-$today = Carbon::today();
-$endDate = Carbon::parse($customer->plan_end_date);
-$diffInDays = $today->diffInDays($endDate, false);
-$extend_days=App\Models\Hour::select('extend_days')->first();
-if($extend_days){
-$extendDay=$extend_days->extend_days;
-}else{
-$extendDay=0;
-}
-$inextendDate = $endDate->copy()->addDays($extendDay); // Preserving the original $endDate
-$diffExtendDay= $today->diffInDays($inextendDate, false);
-
+$planDetails = getPlanStatusDetails($customer->plan_end_date);
+$class=$planDetails['class'];
 @endphp
 @if (session('error'))
 <div class="alert alert-danger">
@@ -139,35 +126,19 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
         </div>
         <div class="col-lg-3 order-1 order-md-2">
             <div class="seat--info">
-                @php
-                $class='';
-                if($diffInDays < 0 && $diffExtendDay>0){
-                    $class='extedned';
-                    }elseif($diffInDays < 0 ){
-                        $class='expired' ;
-                        }
-                        @endphp
-                         @if(Auth::user()->library_seat_type != 'general')
-                        <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
-                        @endif
-                        <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
-                        <p>{{ $customer->plan_name}}</p>
-                        <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
-                        <!-- Expire days Info -->
-
-                        @if ($diffInDays > 0)
-                        <span class="text-success">Plan Expires in {{ $diffInDays }} days</sp>
-                            @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                                <span class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($diffExtendDay) }} days.</span>
-                                @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                                    <span class="text-warning fs-10 d-block">Plan Expires today</span>
-                        @else
-                        <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
-                        @endif
-                        <!-- End -->
+              
+                @if($customer->seat_no)
+                <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+                @endif
+                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+                <p>{{ $customer->plan_name}}</p>
+                <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+                <!-- Expire days Info -->
+                {!! getUserStatusWithSpan($customer->plan_end_date) !!}
+                
             </div>
            
-    </div>
+         </div>
     </div>
 
 </form>
@@ -378,13 +349,16 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
         </div>
         <div class="col-lg-3">
             <div class="seat--info">
-                @if(Auth::user()->library_seat_type != 'general')
-                <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
+              
+                @if($customer->seat_no)
+                <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
                 @endif
-                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+                <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
                 <p>{{ $customer->plan_name}}</p>
-                <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-                <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+                <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+                <!-- Expire days Info -->
+                {!! getUserStatusWithSpan($customer->plan_end_date) !!}
+                
             </div>
         </div>
     </div>
@@ -489,20 +463,21 @@ $diffExtendDay= $today->diffInDays($inextendDate, false);
     </div>
     <div class="col-lg-3">
         <div class="seat--info">
-            @if(Auth::user()->library_seat_type != 'general')
-            <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
+          
+            @if($customer->seat_no)
+            <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
             @endif
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3">
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan_name}}</p>
-            <button>Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <span class="text-success">Plan Expires in {{$diffInDays}} Days</span>
+            <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
+            <!-- Expire days Info -->
+            {!! getUserStatusWithSpan($customer->plan_end_date) !!}
+            
         </div>
     </div>
 </div>
 
 @endif
-<script>
-   
-</script>
+
 @include('learner.script')
 @endsection

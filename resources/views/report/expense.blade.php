@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 <div class="card">
     <div class="row mb-4">

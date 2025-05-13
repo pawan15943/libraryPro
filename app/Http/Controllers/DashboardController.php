@@ -42,10 +42,11 @@ class DashboardController extends Controller
     }
     public function index()
     {
-       
+        
         $user=Auth::user();
-     
+      
         if ($user->hasRole('superadmin')) {
+           
            $totalregistration=Library::count();
            $paidregistration=Library::where('is_paid',1)->count();
            $unpaidregistration=Library::where('is_paid',0)->count();
@@ -141,7 +142,7 @@ class DashboardController extends Controller
             ->whereNotExists(function ($query) use ($fiveDaysbetween) {
                 $query->select(DB::raw(1))
                     ->from('learner_detail as ld')
-                    ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
+                    // ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
                     ->whereColumn('ld.learner_id', 'learner_detail.learner_id') // match same learner
                     ->where('ld.plan_end_date', '>', DB::raw('learner_detail.plan_end_date')) ;
                    
@@ -158,7 +159,7 @@ class DashboardController extends Controller
             ->whereNotExists(function ($query) use ($fiveDaysbetween) {
                 $query->select(DB::raw(1))
                 ->from('learner_detail as ld')
-                ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
+                // ->whereColumn('ld.seat_id', 'learner_detail.seat_id')
                 ->whereColumn('ld.learner_id', 'learner_detail.learner_id') // match same learner
                 ->where('ld.plan_end_date', '>', DB::raw('learner_detail.plan_end_date')) ;
             })
@@ -249,7 +250,7 @@ class DashboardController extends Controller
     public function learnerDashboard(){
         $user=Auth::user();
        
-        $learners = LearnerDetail::withoutGlobalScopes()->where('learner_id', Auth::user()->id)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->leftJoin('seats','learner_detail.seat_id','=','seats.id')->select('learner_detail.*','plans.name as plan_name','plan_types.name as plan_type_name','seats.seat_no')->get();
+        $learners = LearnerDetail::withoutGlobalScopes()->where('learner_id', Auth::user()->id)->leftJoin('plans','learner_detail.plan_id','=','plans.id')->leftJoin('plan_types','learner_detail.plan_type_id','=','plan_types.id')->select('learner_detail.*','plans.name as plan_name','plan_types.name as plan_type_name','seats.seat_no')->get();
        $library_name=Library::where('id',Auth::user()->library_id)->select('library_name','features')->first();
   
        $learner_request = DB::table('learner_request')->where('learner_id', Auth::user()->id)->get();
@@ -329,7 +330,7 @@ class DashboardController extends Controller
                     ->where('plan_end_date', '>=', $startOfGivenMonth);
             });
         }
-        $booked_seats=$query->distinct('seat_id')->count('seat_id');
+        $booked_seats=$query->distinct('seat_no')->count('seat_no');
 
         // available slot
         if($total_seats!=0){

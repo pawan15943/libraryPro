@@ -7,12 +7,14 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Controllers\LibraryController;
+use App\Http\Controllers\LibraryUserController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ReportController;
@@ -77,7 +79,10 @@ Route::post('/store/library/inquiry', [SiteController::class, 'libraryInquerysto
 
 // Routes for library users with 'auth:library' guard
 Route::middleware(['auth:library', 'verified','log.requests'])->group(function () {
-  
+  Route::get('/library-users', [LibraryUserController::class, 'index'])->name('library-users.index');
+    Route::post('/library-users/store', [LibraryUserController::class, 'store'])->name('library-users.store');
+    Route::post('/library-users/toggle-status/{id}', [LibraryUserController::class, 'toggleStatus']);
+
     Route::post('/library/master/upload', [Controller::class, 'uploadmastercsv'])->name('library.master.upload');
     Route::post('/dashboard/data', [DashboardController::class, 'getData'])->name('dashboard.data.get');
     Route::get('export-learners-csv', [Controller::class, 'exportLearnerCSV'])->name('learners.export-csv');
@@ -140,7 +145,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::post('/notifications/read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
       Route::get('enquiry', [LibraryController::class, 'getEnquiry'])->name('library.enquiry');
   
-   
+      Route::post('branch/switch', [BranchController::class, 'switch'])->name('branch.switch');
     });
    
     Route::prefix('library/learners')->group(function () {
@@ -151,6 +156,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       Route::get('/booking-info/{id?}', [LearnerController::class, 'showLearner'])->name('learners.show');
       Route::get('/edit/{id?}', [LearnerController::class, 'getUser'])->name('learners.edit');
       Route::put('/upgrade/update/{id?}', [LearnerController::class, 'userUpdate'])->name('learners.update.upgrade');
+      Route::put('/change/plan/update/{id?}', [LearnerController::class, 'changePlanUpdate'])->name('learners.update.changePlan');
       Route::put('/update/{id?}', [LearnerController::class, 'learnerUpdate'])->name('learners.update');
       
       Route::get('/swap/{id?}', [LearnerController::class, 'getSwapUser'])->name('learners.swap');
@@ -168,6 +174,7 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
       
       Route::get('/seats/view', [DashboardController::class, 'viewSeats'])->name('learners.list.view');
       Route::get('/upgrade/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learners.upgrade.renew');
+      Route::get('/renew/{id?}', [LearnerController::class, 'getLearner'])->name('learner.renew.plan');
       Route::post('/upgrade/renew/store', [LearnerController::class, 'learnerUpgradeRenew'])->name('learner.upgrade.renew.store');
       Route::get('/attendance', [LearnerController::class, 'learnerAttendence'])->name('attendance');
       Route::get('get/learner/attendance', [LearnerController::class, 'getLearnerAttendence'])->name('get.learner.attendance');
@@ -191,7 +198,13 @@ Route::middleware(['auth:library', 'verified','log.requests'])->group(function (
     Route::get('getPrice', [LearnerController::class, 'getPrice'])->name('getPricePlanwise');
     Route::get('getPricePlanwiseUpgrade', [LearnerController::class, 'getPricePlanwiseUpgrade'])->name('getPricePlanwiseUpgrade');
     Route::post('generateIdCard', [LearnerController::class, 'generateIdCard'])->name('generateIdCard');
-    
+
+    Route::get('/locker-price', function (\Illuminate\Http\Request $req) {
+    return response()->json([
+        'price' => getLockerPrice($req->query('plan_id'))
+        ]);
+    })->name('locker.price');
+        
 });
 // Routes for superadmin and admin users
 Route::middleware(['auth:web'])->group(function () {

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 
 @section('content')
 
@@ -36,8 +36,12 @@
     <div class="col-lg-4 payment-mode">
         <label for="" class="m-auto d-block">Select Plan Mode <span>*</span></label>
         <select name="plan_mode" id="plan_mode" class="form-select">
-            <option value="1">MONTHLY</option>
-            <option value="2">YEARLY</option>
+            <option value="1">1 MONTHLY</option>
+            <option value="3">3 MONTHLY</option>
+            <option value="4">6 MONTHLY</option>
+            <option value="2">1 YEARLY </option>
+            <option value="5">2 YEARLY</option>
+           
         </select>
     </div>
 </div>
@@ -131,10 +135,12 @@
         
         $('#plan_mode').on('change', function() {
             var plan_mode = $(this).val();
+            
             subscription_price(plan_mode);
            
         });
         function subscription_price(plan_mode){
+           
             if (plan_mode) {
                 $.ajax({
                     url: '{{ route('subscriptions.getSubscriptionPrice') }}',
@@ -147,6 +153,7 @@
                     },
                     dataType: 'json',
                     success: function(response) {
+                        console.log('response',response);
                         // Loop through each subscription price and dynamically update the HTML
                         response.subscription_prices.forEach(function(subscription) {
                             $('#subscription_fees_' + subscription.id).text(subscription.fees); 

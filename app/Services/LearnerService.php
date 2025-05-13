@@ -20,18 +20,38 @@ class LearnerService
         $futureDate = Carbon::today()->addDays(6)->format('Y-m-d');
        
        
-        return LearnerDetail::where('library_id', auth()->user()->id)->where('learner_id', $customerId)
+        return LearnerDetail::where('learner_id', $customerId)
             ->whereBetween('plan_start_date', [$today, $futureDate])
             ->exists() ? 1 : 0;
     }
 
     public function getAvailableSeats()
     {
-        $firstRecord = Hour::where('library_id', auth()->user()->id)->first();
-        $totalHour = $firstRecord ? $firstRecord->hour : null;
-        
-        return Seat::where('total_hours', '!=', $totalHour)
-            ->where('library_id', auth()->user()->id)->pluck('seat_no', 'id');
+        $firstRecord = Hour::first(); 
+
+        if (!$firstRecord) return collect();
+
+        $totalHour = $firstRecord->hour;
+        $totalSeats = $firstRecord->seats;
+
+        // Step 1: Get used hours for each seat
+        $usedSeats = LearnerDetail::select('seat_no', DB::raw('SUM(hour) as used_hours'))
+            ->whereNotNull('seat_no')
+            ->groupBy('seat_no')
+            ->pluck('used_hours', 'seat_no'); // [seat_no => used_hours]
+
+        $availableSeats = collect();
+
+        // Step 2: Loop through all seat numbers and apply logic
+        for ($seatNo = 1; $seatNo <= $totalSeats; $seatNo++) {
+            $usedHours = $usedSeats[$seatNo] ?? 0;
+
+            if ($usedHours < $totalHour) {
+                $availableSeats->push($seatNo);
+            }
+        }
+
+        return $availableSeats;
     }
 
     public function getPlans()

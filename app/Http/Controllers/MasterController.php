@@ -17,6 +17,7 @@ use App\Models\PlanType;
 use App\Models\Seat;
 use App\Models\Subscription;
 use App\Models\User;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Exception;
@@ -234,7 +235,7 @@ class MasterController extends Controller
         $total_seat=Seat::where('library_id',auth()->user()->id)->count();
         $seat_button=Library::where('id',Auth::user()->id)->where('status',1)->exists();
        $expenses=Expense::get();
-       $is_extendday=Hour::whereNotNull('extend_days')->exists();
+       $is_extendday=Branch::where('library_id',Auth::user()->id)->whereNotNull('extend_days')->exists();
        $notleaner=Learner::where('id',Auth::user()->id)->count();
         return view('master.library-masters',compact('total_seat','plans','hours','plantype','planprice','plantypes','seat_button','expenses','is_extendday','notleaner'));
     }

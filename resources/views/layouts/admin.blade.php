@@ -138,8 +138,6 @@
             });
         });
     </script>
-
-
     <!-- jQuery -->
     <script>
         $(document).ready(function() {
@@ -243,18 +241,18 @@
         });
     </script>
 
-<script>
-    $(document).ready(function(){
-    function toggleSupportCard() {
-        $('#supportCard').toggle();
-    }
+    <script>
+        $(document).ready(function(){
+            function toggleSupportCard() {
+                $('#supportCard').toggle();
+            }
 
-    $('.support-icon').on('click', function() {
-        toggleSupportCard();
-    });
-});
+            $('.support-icon').on('click', function() {
+                toggleSupportCard();
+            });
+        });
 
-</script>
+    </script>
 
 </body>
 

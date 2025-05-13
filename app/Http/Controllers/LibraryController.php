@@ -165,12 +165,12 @@ class LibraryController extends Controller
         $validated = $validatedData->validated();
         unset($validated['terms']);
 
-        if ($request->hasFile('library_logo')) {
-            $library_logo = $request->file('library_logo');
-            $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();
-            $library_logo->move(public_path('uploads'), $library_logoNewName);
-            $validated['library_logo'] = 'uploads/' . $library_logoNewName;
-        }
+        // if ($request->hasFile('library_logo')) {
+        //     $library_logo = $request->file('library_logo');
+        //     $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();
+        //     $library_logo->move(public_path('uploads'), $library_logoNewName);
+        //     $validated['library_logo'] = 'uploads/' . $library_logoNewName;
+        // }
 
         $validated['password'] = bcrypt($validated['password']);
         $validated['slug']=Str::slug($validated['library_name']);
@@ -306,7 +306,7 @@ class LibraryController extends Controller
         
         $subscriptions = Subscription::with('permissions')->get();
         $premiumSub=Subscription::orderBy('id','DESC')->first();
-      
+        
         return view('library.plan', compact('subscriptions','premiumSub'));
     }
 
@@ -320,6 +320,15 @@ class LibraryController extends Controller
         }elseif($request->plan_mode==2){
             $subscription_prices = Subscription::with('permissions')->select('yearly_fees as fees','id','yearly_slash_price as slash_price','plan_description')->get();
 
+        }elseif($request->plan_mode==3){
+            $subscription_prices = Subscription::with('permissions')->select('three_monthly_fees as fees','id','three_monthly_slash_price as slash_price','plan_description')->get();
+
+        }elseif($request->plan_mode==4){
+            $subscription_prices = Subscription::with('permissions')->select('six_monthly_fees as fees','id','six_monthly_slash_price as slash_price','plan_description')->get();
+
+        }elseif($request->plan_mode==5){
+            $subscription_prices = Subscription::with('permissions')->select('two_yearly_fees as fees','id','two_yearly_slash_price as slash_price','plan_description')->get();
+
         }
         
         return response()->json([
@@ -330,21 +339,34 @@ class LibraryController extends Controller
 
     public function paymentProcess(Request $request)
     {
-       
-        $planId = session('selected_plan_id');
-        $planMode = session('selected_plan_mode');
+      
+        if(session('selected_plan_id') && session('selected_plan_mode')){
+            $planId = session('selected_plan_id');
+            $planMode = session('selected_plan_mode');
+        }elseif($request){
+            $planId=$request->subscription_id;
+            $planMode=$request->plan_mode;
+        }
         if($planId && $planMode){
-            
-            $month=($planMode==2)? 12 : 1;
             $subscription_id=$planId;
             $sub_data=Subscription::where('id',$planId)->first();
-            $amount=($planMode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
-        }elseif($request){
-           
-            $month = ($request->plan_mode == 2) ? 12 : 1;
-            $subscription_id=$request->subscription_id;
-            $sub_data=Subscription::where('id',$subscription_id)->first();
-            $amount=($request->plan_mode==2)? $sub_data->yearly_fees : $sub_data->monthly_fees;
+            if($planMode==1){
+                $month=1;
+                $amount=$sub_data->monthly_fees;
+            }elseif($planMode==2){
+                $month=12;
+                $amount=$sub_data->yearly_fees;
+            }elseif($planMode==3){
+                $month=3;
+                $amount=$sub_data->three_monthly_fees;
+            }elseif($planMode==4){
+                $month=6;
+                $amount=$sub_data->six_monthly_fees;
+            }elseif($planMode==5){
+                $month=24;
+                $amount=$sub_data->two_yearly_fees;
+            }
+            
            
         }else{
            
@@ -723,66 +745,10 @@ class LibraryController extends Controller
     {
        
         $validated = $request->validate([
-            'library_name' => 'required|string|max:255',
-            'library_category' => 'required',
-            'working_days' => 'required',
-            'library_name' => 'required|string|max:255',
-            'library_mobile' => 'required|string|max:10',
-            'email' => 'required|email',
-            'library_address' => 'required|string',
-            'library_zip' => 'required|string|max:6',
             'library_owner' => 'required|string|max:255',
-            'state_id' => 'required|exists:states,id',
-            'city_id' => 'required|exists:cities,id',
-          
-            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
-            'library_owner_email' => 'required|email',
-            'library_owner_contact' => 'required|string|max:10',
-            'features' => 'nullable|array', 
-            'features.*' => 'integer',
-            'google_map'=>'nullable',
-            'description'=>'nullable',
-            'latitude'=>'nullable',
-            'longitude'=>'nullable',
-            'library_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+           
         ]);
         
-        if ($request->hasFile('library_images')) {
-            $uploadedFiles = [];
-            
-            foreach ($request->file('library_images') as $file) {
-                $library_imageNewName = "library_img_" . uniqid() . '.' . $file->getClientOriginalExtension();
-                $file->move(public_path('uploads'), $library_imageNewName);
-                $uploadedFiles[] = 'uploads/' . $library_imageNewName;
-            }
-        } else {
-            $uploadedFiles = []; 
-        }
-        
-        // Retrieve existing images from database
-        $existingImages = json_decode($library->library_images ?? '[]', true);
-        
-        // Handle deleted images
-        $deletedImages = $request->input('deleted_images', []);
-        $remainingImages = array_diff($existingImages, $deletedImages);
-        
-        // Merge new and remaining images
-        $finalImages = array_merge($remainingImages, $uploadedFiles);
-        
-        // Update only if images exist
-        if (!empty($finalImages)) {
-            $validated['library_images'] = json_encode($finalImages);
-        } else {
-            unset($validated['library_images']); 
-        }
-        if ($request->hasFile('library_logo')) {
-            $library_logo = $request->file('library_logo');
-            $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();
-            $library_logo->move(public_path('uploads'), $library_logoNewName);
-            $validated['library_logo'] = 'uploads/' . $library_logoNewName;
-        }
-       
-        $featuresJson = (isset($request->features) && $validated['features']) ? json_encode($validated['features']) : null;
       
         $library = Library::where('id', auth()->user()->id)->first();
         $libraryCode = $this->generateLibraryCode();
@@ -1100,6 +1066,90 @@ class LibraryController extends Controller
             return view('auth.verify');
         }
         
+    }
+
+    public function branchupdateProfile(Request $request)
+    {
+       
+        $validated = $request->validate([
+            'library_name' => 'required|string|max:255',
+            'library_category' => 'required',
+            'working_days' => 'required',
+            'library_name' => 'required|string|max:255',
+            'library_mobile' => 'required|string|max:10',
+            'email' => 'required|email',
+            'library_address' => 'required|string',
+            'library_zip' => 'required|string|max:6',
+            'library_owner' => 'required|string|max:255',
+            'state_id' => 'required|exists:states,id',
+            'city_id' => 'required|exists:cities,id',
+          
+            'library_logo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:200|dimensions:width=250,height=250',
+            'library_owner_email' => 'required|email',
+            'library_owner_contact' => 'required|string|max:10',
+            'features' => 'nullable|array', 
+            'features.*' => 'integer',
+            'google_map'=>'nullable',
+            'description'=>'nullable',
+            'latitude'=>'nullable',
+            'longitude'=>'nullable',
+            'library_images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ]);
+        
+        if ($request->hasFile('library_images')) {
+            $uploadedFiles = [];
+            
+            foreach ($request->file('library_images') as $file) {
+                $library_imageNewName = "library_img_" . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move(public_path('uploads'), $library_imageNewName);
+                $uploadedFiles[] = 'uploads/' . $library_imageNewName;
+            }
+        } else {
+            $uploadedFiles = []; 
+        }
+        
+        // Retrieve existing images from database
+        $existingImages = json_decode($library->library_images ?? '[]', true);
+        
+        // Handle deleted images
+        $deletedImages = $request->input('deleted_images', []);
+        $remainingImages = array_diff($existingImages, $deletedImages);
+        
+        // Merge new and remaining images
+        $finalImages = array_merge($remainingImages, $uploadedFiles);
+        
+        // Update only if images exist
+        if (!empty($finalImages)) {
+            $validated['library_images'] = json_encode($finalImages);
+        } else {
+            unset($validated['library_images']); 
+        }
+        if ($request->hasFile('library_logo')) {
+            $library_logo = $request->file('library_logo');
+            $library_logoNewName = "library_logo_" . time() . '.' . $library_logo->getClientOriginalExtension();
+            $library_logo->move(public_path('uploads'), $library_logoNewName);
+            $validated['library_logo'] = 'uploads/' . $library_logoNewName;
+        }
+       
+        $featuresJson = (isset($request->features) && $validated['features']) ? json_encode($validated['features']) : null;
+      
+        $library = Library::where('id', auth()->user()->id)->first();
+        $libraryCode = $this->generateLibraryCode();
+       
+        $update=$library->update($validated);
+      
+        if ($update) {
+            $library->update(['is_profile' => 1]);
+            if (empty($library->library_no)) {
+                $libraryCode = $this->generateLibraryCode();
+                $library->library_no = $libraryCode;
+                $library->save();
+                $this->sendSuccessfulEmail($library);
+            }
+        }
+        
+
+        return redirect()->route('library.master')->with('success', 'Profile updated successfully!');
     }
 
 }

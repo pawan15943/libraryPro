@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
 @php
@@ -87,99 +87,49 @@ $diffInDays = $today->diffInDays($endDate, false);
                             </div>
                         </div>
                     </h4>
-                    <p class="text-danger">Note : Here we are displaying the active plan Payment information that has been completed.</p>
+                    <p class="text-danger">Note : Here you can receive the pending payment of learners.</p>
                   
-                    <div class="col-lg-6 col-6">
-                        <label for="">Pending Payment </label>
-                        
-                        <select  id="transaction_id" class="form-control @error('transaction_id') is-invalid @enderror" name="transaction_id" >
-                            <option value="">Select Payment</option>
-                            @foreach($pendingPayment as $key => $value)
-                            <option value="{{ $key }}" >{{ $value }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
                     <div class="row g-4">
+                          
+                            <div class="col-lg-4 col-6">
+                                <label for="">Pending Payment </label>
+                                
+                                <input  id="pending_amount" class="form-control @error('pending_amount') is-invalid @enderror" name="pending_amount" value="{{$pendingPayment->pending_amount}}">
+                                <input  type="hidden" name="transaction_id" value="{{$pendingPayment->id}}">
+                            
+                            </div>
+                                
+                            <div class="col-lg-4 col-6">
+                                <label for="">Due Date <span>*</span></label>
+                                <input type="date" class="form-control @error('due_date') is-invalid @enderror"  name="due_date" id="due_date" value="{{$pendingPayment->due_date}}" disabled>
+                                @error('due_date')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div> 
+                          
                         <div class="col-lg-4 col-6">
-                            <label for="">Plan <span>*</span></label>
-                            <input type="text" class="form-control" id="plan_name" readonly>
-                        </div>
-                        <div class="col-lg-4 col-6">
-                            <label for="">Plan Type <span>*</span></label>
-                            <input type="text" class="form-control" id="plan_type_name" readonly >
-                           
-                        </div>
-                        <div class="col-lg-4 col-6">
-                            <label for="">Plan Price <span>*</span></label>
-                            <input type="text" class="form-control " id="plan_price" readonly>
-                        </div>
-                        <div class="col-lg-4 col-6">
-                            <label for="">Start Date <span>*</span></label>
-                            <input type="date" class="form-control " name="start_date" id="plan_start_date" value="{{ old('start_date' ) }}" readonly>
-                        </div>
-                        <div class="col-lg-4 col-6">
-                            <label for="">End Date <span>*</span></label>
-                            <input type="date" class="form-control " name="end_date" id="plan_end_date" value="{{ old('end_date' ) }}" readonly>
-                        </div>
-                        <div class="col-lg-4 col-6">
-                            <label for="">Transaction Date <span>*</span></label>
-                            <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="">
-                            @error('paid_date')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        {{-- <div class="col-lg-6 col-6">
                             <label for="">Payment Mode</label>
-                           
                             <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
                                 <option value="">Select Payment Mode</option>
-                                <option value="1" {{ $customer->payment_mode == 1 ? 'selected' : '' }}>Online</option>
-                                <option value="2" {{ $customer->payment_mode == 2 ? 'selected' : '' }}>Offline</option>
-                                <option value="3" {{ $customer->payment_mode == 3 ? 'selected' : '' }}>Pay Later</option>
+                                <option value="Online" >Online</option>
+                                <option value="Offline" >Offline</option>
+                                <option value="Other" >Pay Later</option>
                             </select>
                             @error('payment_mode')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
-                           
-                            
-                        </div> --}}
-                        
-                      
+                        </div>
                     </div>
-                    {{-- <div class="row mt-3">
-                        @if($customer->payment_mode==3)
+                    
 
-                        <div class="col-lg-6 col-6">
-                            <label for="">Transaction Number <span>*</span></label>
-                            <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
-                            @error('transaction_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        @endif
-
-                        <div class="col-lg-6 col-12">
-                            <label for="">Upload Payment Proof </label>
-                            <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">
-                            @error('transaction_image')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                    </div> --}}
-
-                    <div class="row mt-3">
+                    <div class="row mt-4">
                         <div class="col-lg-3">
-                            <input type="submit" class="btn btn-warning btn-block button" value="Make Payment">
+                            <input type="submit" class="btn btn-primary button" value="Make Payment">
                         </div>
                     </div>
                     

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <!-- Main content -->

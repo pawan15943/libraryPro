@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
 @if (session('error'))
@@ -18,8 +18,7 @@
             <div class="upper-box">
                 <div class="d-flex">
                     <h4 class="mb-3">Leraners Info</h4>
-                    <a href="javascript:void(0);" class="go-back"
-                        onclick="window.history.back();">Go
+                    <a href="javascript:void(0);" class="go-back" onclick="window.history.back();">Go
                         Back <i class="fa-solid fa-backward pl-2"></i></a>
                 </div>
                 <div class="row g-4">
@@ -78,12 +77,12 @@
                         @if ($customer->diffInDays > 0)
                         <h5 class="text-success">Plan Expires in {{ $customer->diffInDays }} days</h5>
                         @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-                        <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
-                        @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-                        <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
-                        @else
-                        <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
-                        @endif
+                            <h5 class="text-danger fs-10 d-block ">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</h5>
+                            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
+                                <h5 class="text-warning fs-10 d-block">Plan Expires today</h5>
+                                @else
+                                <h5 class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</h5>
+                                @endif
 
                     </div>
                     <div class="col-lg-6 col-6 col-6">
@@ -120,7 +119,7 @@
                             @endif
                         </h5>
                     </div>
-                    
+
                     <div class="col-lg-6 col-6 col-6">
                         <span>Seat Created At</span>
                         <h5>{{ $customer->created_at }}</h5>
@@ -134,6 +133,23 @@
                         <h5> {{ $customer->deleted_at ? $customer->deleted_at : 'NA'}}</h5>
                     </div>
                 </div>
+                {{-- Locker Info --}}
+                @if($transaction->locker_amount)
+                <h4 class="mt-4"> Locker Info :</h4>
+                <div class="row g-4">
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Is Locker </span>
+                        <h5>{{ $transaction->locker_amount ? 'Yes' : 'No' }}</h5>
+                    </div>
+
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Locker Number</span>
+                        <h5> {{ $customer->locker_no ? $customer->locker_no : 'NA'}}</h5>
+                    </div>
+                   
+                </div>
+                @endif
+                {{-- Seat Payment Info --}}
                 <h4 class="mt-4"> Seat Payment Info :</h4>
                 <div class="row g-4">
                     <div class="col-lg-6 col-6 col-6">
@@ -155,14 +171,46 @@
 
                         @endif
                     </div>
+
+                  
                     <div class="col-lg-6 col-6 col-6">
-                        <span>Amount Paid</span>
-                        <h5>{{$transaction->paid_amount ?? 'NA'}}</h5>
+                        <span>Total Amount to Pay
+                            @if($transaction->locker_amount !=0 && $transaction->discount_amount ==0)
+                            (Plan Price + locker Amt.)
+                            @elseif($transaction->discount_amount !=0 && $transaction->locker_amount !=0)
+                            (Plan Price + Locker Amt. - Discount Amt.)
+                            @elseif($transaction->discount_amount !=0 && $transaction->locker_amount ==0)
+                            (Plan Price - Discount Amt.)
+                            @endif
+                        </span>
+                        <h5>
+                           
+                            {{ $transaction->total_amount ?? 'NA'}}</h5>
+                    </div>
+                      @if($transaction->discount_amount)
+
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Discount Amount</span>
+                        <h5 class="text-success">{{$transaction->discount_amount ?? '0'}}</h5>
+                    </div>
+                    @endif
+                     @if($transaction->locker_amount)
+                     <div class="col-lg-6 col-6 col-6">
+                        <span>Locker Amt.</span>
+                        <h5> {{$transaction->locker_amount ?? '0'}}</h5>
+                    </div>
+                    @endif
+                    <div class="col-lg-6 col-6 col-6">
+                        <span>Paid Amt.</span>
+                        <h5 class="text-success">{{ $transaction->paid_amount ?? 'NA'}}</h5>
                     </div>
                     <div class="col-lg-6 col-6 col-6">
-                        <span>Pending Amount</span>
+                        <span>Pending Amt.</span>
                         <h5 class="text-danger">{{$transaction->pending_amount ?? '0'}}</h5>
                     </div>
+
+
+
                     <div class="col-lg-6 col-6 col-6">
                         <span>Payment Status</span>
                         <h5>
@@ -184,7 +232,7 @@
                         @endif
 
                     </div>
-                   
+
                 </div>
                 <h4 class="mt-4">Current Seat Owner’s Renewal History</h4>
                 <div class="row g-4">
@@ -304,7 +352,7 @@
                                                 @can('has-permission', 'View Seat')
                                                 <li><a href="{{route('learners.show',$firstDetail->learner_id)}}" title="View Seat Booking Full Details"><i class="fas fa-eye"></i></a></li>
                                                 @endcan
-                                                
+
                                                 @can('has-permission', 'Receipt Generation')
                                                 <li>
                                                     <form action="{{ route('fee.generateReceipt') }}" method="POST" enctype="multipart/form-data">
@@ -342,7 +390,7 @@
                                                     </form>
                                                 </li>
                                                 @endcan
-                                                
+
                                                 @can('has-permission', 'Download Payment Receipt')
                                                 <li><a href="" title="Download Receipt"><i class="fa-solid fa-download"></i></a></li>
                                                 @endcan
@@ -369,30 +417,17 @@
     <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
             @php
-            $class='';
-            if($customer->diffInDays < 0 && $customer->diffExtendDay>0){
-                 $class='extedned';
-            }elseif($customer->diffInDays < 0 ){
-                $class='expired' ;
-            }
+            $planDetails = getPlanStatusDetails($customer->plan_end_date);
+
             @endphp
-             @if(Auth::user()->library_seat_type != 'general')
+            @if(Auth::user()->isNotGeneralBranch())
             <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
             @endif
-            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+            <img src="{{ asset($customer->image) }}" alt="Seat" class="seat py-3 {{ $planDetails['class']}}">
             <p>{{ $customer->plan_name}}</p>
             <button class="mb-3"> Booked for <b>{{ $customer->plan_type_name}}</b></button>
-            <!-- Expire days Info -->
 
-            @if ($customer->diffInDays > 0)
-            <span class="text-success">Plan Expires in {{ $customer->diffInDays }} days</sp>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay>0)
-            <span class="text-danger fs-10 d-block">{{$learnerExtendText}} {{ abs($customer->diffExtendDay) }} days.</span>
-            @elseif ($customer->diffInDays < 0 && $customer->diffExtendDay==0)
-            <span class="text-warning fs-10 d-block">Plan Expires today</span>
-            @else
-            <span class="text-danger fs-10 d-block">Plan Expired {{ abs($customer->diffInDays) }} days ago</span>
-            @endif
+            {!! getUserStatusDetails($customer->plan_end_date) !!}
             <!-- End -->
         </div>
         @if($learner_request->isNotEmpty())
@@ -424,6 +459,9 @@
             </ul>
         </div>
         @endif
+        @if($learnerlog->count() >0)
+
+
         <div class="seat-activity">
             <h5 class="py-4">All Activity Logs:</h5>
             <ul class="activity-log">
@@ -448,7 +486,7 @@
 
             </ul>
         </div>
-
+        @endif
     </div>
 </div>
 <script>
@@ -462,6 +500,7 @@
             searching: false, // This option hides the search bar
         });
     });
+
 </script>
 
 

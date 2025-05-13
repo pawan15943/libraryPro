@@ -65,12 +65,13 @@ class LoginController extends Controller
                 break;
 
             case 'admin':
-
+                
                 if (Auth::guard('library')->attempt($credentials, $remember)) {
-
+                    
                     $user = Auth::guard('library')->user();
+                   
                     if (is_null($user->email_verified_at)) {
-
+                        
                         Auth::guard('library')->logout();
                         if ($user) {
                             $otp = rand(100000, 999999); // Generates a 6-digit numeric OTP
@@ -82,15 +83,15 @@ class LoginController extends Controller
                         }
                         return redirect()->route('verification.notice')->with('email', $user->email);
                     }
-
+                    
                     if (!$user->hasRole('admin', 'library')) {
-
+                     
                         $user->assignRole('admin');
                     }
-
+                
                     return redirect()->intended(route('library.home'));
                 } else {
-
+                    
                     return redirect()->back()->withErrors(['error' => 'Invalid email or password for Admin.']);
                 }
                 break;

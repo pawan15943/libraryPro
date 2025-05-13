@@ -46,6 +46,30 @@ class Library extends Authenticatable implements MustVerifyEmail
         return $this->belongsTo(City::class, 'city_id');
     }
 
+    public function branches()
+    {
+        return $this->hasMany(Branch::class, 'library_id');
+    }
+
+    public function isNotGeneralBranch()
+{
+    $branchId = session('branch_id', 0); // session branch_id
+
+    // If specific branch is selected
+    if ($branchId > 0) {
+        $branch = $this->branches->where('id', $branchId)->first();
+        return $branch && $branch->seat_type != 'general';
+    }
+
+    // If "All Branches" selected (branch_id = 0)
+    // Check if ANY branch is not 'general'
+    return $this->branches->contains(function($branch) {
+        return $branch->seat_type != 'general';
+    });
+}
+
+
+ 
   
     
 }

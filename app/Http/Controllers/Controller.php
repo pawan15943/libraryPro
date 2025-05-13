@@ -26,6 +26,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Http\Middleware\LoadMenus;
+use App\Models\Branch;
 use App\Models\Expense;
 use App\Models\Subscription;
 use App\Traits\LearnerQueryTrait;
@@ -894,6 +895,7 @@ class Controller extends BaseController
        
       
         $validator = Validator::make($data, [
+            'branch_name'=>'required',
             'Operating_hour' => 'required|integer',
             'start_time' => ['required', function($attribute, $value, $fail) {
                 if (!preg_match('/^(?:[01]?\d|2[0-3]):[0-5]\d$/', $value)) {
@@ -908,7 +910,7 @@ class Controller extends BaseController
             'total_seat' => 'required|integer',
             'fullday_price' => 'required|integer',
             'halfday_price' => 'required|integer',
-            'hourly_price' => 'required|integer',
+            
             
         ]);
       
@@ -957,50 +959,85 @@ class Controller extends BaseController
         }
        
         // Using database transaction for atomic operations
-        DB::transaction(function () use ($data, $library_id, $start_time, $end_time, $totalHours,&$invalidRecords,&$successRecords) {
-            // Update or create the operating hours
-            if(isset($data['allday']) && (trim($data['allday'])=='yes')){
-                $operatinghour=24;
-                $allday=true;
-            }else{
-                $operatinghour=trim($data['Operating_hour']);
-                $allday=false;
-            }
-           $hourData= Hour::withoutGlobalScopes()->updateOrCreate(
-                ['library_id' => $library_id],
-                ['hour' =>$operatinghour , 'extend_days' => trim($data['extend_day']) ?? null]
-            );
-            if ($hourData) {
+        DB::transaction(function () use ($data, $library_id,$start_time, $end_time, $totalHours,&$invalidRecords,&$successRecords) {
+          
+              // Update or create the operating hours
+                if(isset($data['allday']) && (trim($data['allday'])=='yes')){
+                    $operatinghour=24;
+                    $allday=true;
+                }else{
+                    $operatinghour=trim($data['Operating_hour']);
+                    $allday=false;
+                }
+                $branch_name=trim($data['branch_name']);
+                $branch = Branch::updateOrCreate(
+                    ['name' => $branch_name, 'library_id' => $library_id],
                 
-                $successRecords[] = array_merge($data, ['success' => 'Operating Hour added successfully']);
-            } else {
-                $invalidRecords[] = array_merge($data, ['error' => 'Failed to add/update Operating Hour']);
-            }
-    
+                );
+            
+                if (!$branch) {
+                    \Log::info('Branch creation returned null');
+                
+                }
+            
+                $branch_id = $branch->id;
+                
+                $hourData = Hour::withoutGlobalScopes()->updateOrCreate(
+                    [
+                        'library_id' => $library_id,
+                        'branch_id' => $branch_id
+                    ],
+                    [
+                        'hour' => $operatinghour,
+                        'seats' => trim($data['total_seat']),
+                    ]
+                );
+            
+                if (!$hourData) {
+                    \Log::info('Hour creation returned null', [
+                        'branch_id' => $branch_id,
+                        'library_id' => $library_id,
+                        'data' => $data,
+                    ]);
+                    
+                }
+
+                if($branch_id && trim($data['locker_amount'])){
+                    Branch::updateOrCreate(
+                        [
+                            'id' => $branch_id
+                        ],
+                        [
+                            
+                            'locker_amount' => trim($data['locker_amount']),
+                        ]
+                    );
+                }
+          
             // Define slot configurations
             $slots = $this->defineSlots($start_time, $end_time, $totalHours,$allday);
-    
+           
             // Check user permissions and handle slot updates
             $this->handleSlotUpdates($slots, $library_id, $invalidRecords, $data,$successRecords);
     
             // Define plans
             $plans = [
-                ['name' => '1 MONTHS', 'plan_id' => 1],
-                ['name' => '3 MONTHS', 'plan_id' => 3],
-                ['name' => '6 MONTHS', 'plan_id' => 6],
-                ['name' => '12 MONTHS', 'plan_id' => 12],
+                ['name' => '1 MONTHS', 'plan_id' => 1,'type'=>'MONTH'],
+                ['name' => '3 MONTHS', 'plan_id' => 3, 'type'=>'MONTH'],
+                ['name' => '6 MONTHS', 'plan_id' => 6,'type'=>'MONTH' ],
+                ['name' => '12 MONTHS', 'plan_id' => 12, 'type'=>'MONTH'],
+                // ['name' => '1 WEEK', 'plan_id' => 1, 'type'=>'WEEK'],
+                // ['name' => '5 DAY', 'plan_id' => 5, 'type'=>'DAY'],
+                
             ];
-    
+           
             // Handle plans updates
             $this->handlePlanUpdates($plans, $library_id,$invalidRecords,$successRecords);
     
             // Handle price updates
-            $this->handlePlanPrices($library_id, trim($data['fullday_price']), trim($data['halfday_price']), trim($data['hourly_price']),  trim($data['allday_price']), trim($data['fullnight_price']));
-            if( Seat::where('library_id', $library_id)->count() < trim($data['total_seat'])){
-                $this->handelSeats($library_id,trim($data['total_seat']));
-            }
+            $this->handlePlanPrices($library_id,$branch_id, trim($data['fullday_price']), trim($data['halfday_price']),trim($data['allday_price']), trim($data['fullnight_price']));
+            
            
-            $this->expenseAdd($library_id);
         });
         
     }
@@ -1012,10 +1049,10 @@ class Controller extends BaseController
             ['type_id' => 1, 'name' => 'Full Day', 'start_time' => $start_time, 'end_time' => $end_time, 'slot_hours' => $totalHours],
             ['type_id' => 2, 'name' => 'First Half', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 2), 'slot_hours' => $totalHours / 2],
             ['type_id' => 3, 'name' => 'Second Half', 'start_time' => $start_time->copy()->addHours($totalHours / 2), 'end_time' => $end_time, 'slot_hours' => $totalHours / 2],
-            ['type_id' => 4, 'name' => 'Hourly Slot 1', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 4), 'slot_hours' => $totalHours / 4],
-            ['type_id' => 5, 'name' => 'Hourly Slot 2', 'start_time' => $start_time->copy()->addHours($totalHours / 4), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'slot_hours' => $totalHours / 4],
-            ['type_id' => 6, 'name' => 'Hourly Slot 3', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'slot_hours' => $totalHours / 4],
-            ['type_id' => 7, 'name' => 'Hourly Slot 4', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'end_time' => $end_time, 'slot_hours' => $totalHours / 4],
+            // ['type_id' => 4, 'name' => 'Hourly Slot 1', 'start_time' => $start_time, 'end_time' => $start_time->copy()->addHours($totalHours / 4), 'slot_hours' => $totalHours / 4],
+            // ['type_id' => 5, 'name' => 'Hourly Slot 2', 'start_time' => $start_time->copy()->addHours($totalHours / 4), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'slot_hours' => $totalHours / 4],
+            // ['type_id' => 6, 'name' => 'Hourly Slot 3', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 2), 'end_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'slot_hours' => $totalHours / 4],
+            // ['type_id' => 7, 'name' => 'Hourly Slot 4', 'start_time' => $start_time->copy()->addHours(($totalHours / 4) * 3), 'end_time' => $end_time, 'slot_hours' => $totalHours / 4],
         ];
     
         if ($allday === true) {
@@ -1036,7 +1073,7 @@ class Controller extends BaseController
 
         $user = Library::withoutGlobalScopes()->find($library_id);
         Log::info('User fetched', ['user' => $user]);
-
+      
         foreach ($slots as $slot) {
             Log::info('Processing slot', ['slot' => $slot]);
 
@@ -1048,19 +1085,21 @@ class Controller extends BaseController
                 $hasPermission = false;
             } elseif ($slot['type_id'] == 3 && !$user->can('has-permission', 'Second Half')) {
                 $hasPermission = false;
-            } elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly Slot 1')) {
-                $hasPermission = false;
-            } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly Slot 2')) {
-                $hasPermission = false;
-            } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly Slot 3')) {
-                $hasPermission = false;
-            } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
-                $hasPermission = false;
-            }elseif ($slot['type_id'] == 8 && !$user->can('has-permission', 'All Day')) {
+            } elseif ($slot['type_id'] == 8 && !$user->can('has-permission', 'All Day')) {
                 $hasPermission = false;
             }elseif ($slot['type_id'] == 9 && !$user->can('has-permission', 'Full Night')) {
                 $hasPermission = false;
             }
+            //  elseif ($slot['type_id'] == 4 && !$user->can('has-permission', 'Hourly Slot 1')) {
+            //     $hasPermission = false;
+            // } elseif ($slot['type_id'] == 5 && !$user->can('has-permission', 'Hourly Slot 2')) {
+            //     $hasPermission = false;
+            // } elseif ($slot['type_id'] == 6 && !$user->can('has-permission', 'Hourly Slot 3')) {
+            //     $hasPermission = false;
+            // } elseif ($slot['type_id'] == 7 && !$user->can('has-permission', 'Hourly Slot 4')) {
+            //     $hasPermission = false;
+            // }
+           
             if (!$hasPermission) {
                 // $invalidRecords[] = array_merge($data, ['error' => 'No permission for slot ' . $slot['type_id']]);
                 continue; 
@@ -1082,6 +1121,7 @@ class Controller extends BaseController
                 ]
             );
             if ($planType) {
+              
                 $successRecords[] = array_merge($data, ['success' => 'Plan type updated or created']);
             } else {
                 $invalidRecords[] = array_merge($data, ['error' => 'Failed to update or create plan type']);
@@ -1098,16 +1138,18 @@ class Controller extends BaseController
     // Function to handle plan updates
     private function handlePlanUpdates($plans, $library_id, &$invalidRecords, &$successRecords)
     {
+        
         foreach ($plans as $plan) {
             try {
                 // Update or create a plan based on library_id and plan_id
                 $updatedPlan = Plan::withoutGlobalScopes()->updateOrCreate(
                     ['library_id' => $library_id, 'plan_id' => $plan['plan_id']],
-                    ['name' => $plan['name']]
+                    ['name' => $plan['name'], 'type'=>$plan['type']]
                 );
     
                 // If plan is successfully created or updated, add to success records
                 if ($updatedPlan) {
+                    
                     $successRecords[] = [
                         'library_id' => $library_id,
                         'plan_id' => $plan['plan_id'],
@@ -1140,12 +1182,15 @@ class Controller extends BaseController
     
     
     // Function to handle price updates
-    private function handlePlanPrices($library_id, $fullday_price, $halfday_price, $hourly_price, $allday_price, $fullnight_price)
+    private function handlePlanPrices($library_id,$branch_id, $fullday_price, $halfday_price, $allday_price, $fullnight_price)
     {
        
-        $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->get();
-        $plantype_prices = PlanType::withoutGlobalScopes()->where('library_id', $library_id)->get();
+        $plans_prices = Plan::withoutGlobalScopes()->where('library_id', $library_id)->where('plan_id',1)->where('type', 'LIKE', '%MONTH%')->get();
+ 
         
+       
+        $plantype_prices = PlanType::withoutGlobalScopes()->where('library_id', $library_id)->get();
+
         foreach ($plans_prices as $plans_price) {
             foreach ($plantype_prices as $plantype_price) {
                 // Initialize price variable
@@ -1156,19 +1201,21 @@ class Controller extends BaseController
                     $price = $fullday_price * $plans_price->plan_id;
                 } elseif ($plantype_price->day_type_id == 2 || $plantype_price->day_type_id == 3) {
                     $price = $halfday_price * $plans_price->plan_id;
-                } elseif (in_array($plantype_price->day_type_id, [4, 5, 6, 7])) {
-                    $price = $hourly_price * $plans_price->plan_id;
-                }elseif($plantype_price->day_type_id == 8){
+                }
+                
+                elseif($plantype_price->day_type_id == 8){
                     $price = $allday_price * $plans_price->plan_id;
                 }elseif($plantype_price->day_type_id == 9){
                     $price = $fullnight_price * $plans_price->plan_id;
                 }
-
+                // elseif (in_array($plantype_price->day_type_id, [4, 5, 6, 7])) {
+                //     $price = $hourly_price * $plans_price->plan_id;
+                // }
                 // Check if the plan_type_id exists before inserting
                 if (PlanType::withoutGlobalScopes()->where('id', $plantype_price->id)->exists()) {
                     // Update or create plan type price
                     PlanPrice::withoutGlobalScopes()->updateOrCreate(
-                        ['library_id' => $library_id, 'plan_id' => $plans_price->id, 'plan_type_id' => $plantype_price->id],
+                        ['library_id' => $library_id,'branch_id'=>$branch_id, 'plan_id' => $plans_price->id, 'plan_type_id' => $plantype_price->id],
                         ['price' => $price]
                     );
                 } else {

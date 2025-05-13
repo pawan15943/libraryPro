@@ -1,12 +1,21 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
 @php
-use Carbon\Carbon;
-$today = Carbon::today();
-$endDate = Carbon::parse($customer->plan_end_date);
-$diffInDays = $today->diffInDays($endDate, false);
-// dd($customer);
+$planDetails = getPlanStatusDetails($customer->plan_end_date);
+$class=$planDetails['class'];
+
+if (Route::currentRouteName() == 'learner.renew.plan') {
+$displayNone = 'style="display: none;"';
+
+$readonlyStyle = 'pointer-events: none; background-color: #e9ecef;';
+
+} else {
+$displayNone = '';
+
+$readonlyStyle = '';
+}
+
 @endphp
 
 @if (session('error'))
@@ -27,6 +36,7 @@ $diffInDays = $today->diffInDays($endDate, false);
             <div class="upper-box">
                 <div class="d-flex">
                     <h4 class="mb-3">Leraners Info</h4>
+                   
                     <a href="javascript:void(0);" class="go-back"
                         onclick="window.history.back();">Go
                         Back <i class="fa-solid fa-backward pl-2"></i></a>
@@ -77,8 +87,14 @@ $diffInDays = $today->diffInDays($endDate, false);
                 @method('POST')
                 <div class="action-box">
 
-                    <h4 class="mb-4 d-block">Upgrade Plan
-                        <p class="mt-2 text-danger"><b>Note:</b> Any learner can upgrade their plan only renewing seat in their extend period.</p>
+                    <h4 class="mb-4 d-block">
+                        @if(Route::currentRouteName() == 'learner.renew.plan')
+                              Renew Plan
+                        @else
+                              Upgrade Plan
+                        @endif
+                      
+                        <p class="mt-2 text-danger"><b>Note:</b> Any learner can upgrade their plan only renewing seat in their extend period. If the seat not have that paln type available then first need to perform swap seat operation then you do change plan.</p>
 
 
                     </h4>
@@ -87,44 +103,106 @@ $diffInDays = $today->diffInDays($endDate, false);
                     <input id="user_id" type="hidden" name="user_id" value="{{ $customer->id}}">
                     <input id="library_id" type="hidden" name="library_id" value="{{ $customer->library_id}}">
                     <div class="row g-4">
-                        <div class="col-lg-6 col-6">
-                            <label for="">Plan <span>*</span></label>
-
-                            <select id="update_plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id">
+                       <div class="col-lg-4">
+                            <label for=""> Plan <span>*</span></label>
+                            <select id="plan_id" class="form-control @error('plan_id') is-invalid @enderror" name="plan_id" {{ Route::currentRouteName() == 'learner.renew.plan' ? 'disabled' : '' }}>
                                 <option value="">Select Plan</option>
                                 @foreach($plans as $key => $value)
                                 <option value="{{ $value->id }}" {{ old('plan_id', $customer->plan_id) == $value->id ? 'selected' : '' }}>{{ $value->name }}</option>
                                 @endforeach
                             </select>
+                              @if(Route::currentRouteName() == 'learner.renew.plan')
+                                <input type="hidden" name="plan_id" value="{{ old('plan_id', $customer->plan_id) }}">
+                            @endif
                             @error('plan_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    
+                        <div class="col-lg-4">
+                            <label for="">Plan Type <span>*</span></label>
+                            <select id="plan_type_id2" class="form-select @error('plan_type_id') is-invalid @enderror" name="plan_type_id"  {{ Route::currentRouteName() == 'learner.renew.plan' ? 'disabled' : '' }}>
+                                @foreach($filteredPlanTypes as $planType)
+                                    <option value="{{ $planType['id'] }}"
+                                        {{ ($customer->plan_type_id == $planType['id']) ? 'selected' : (old('plan_type_id') == $planType['id'] ? 'selected' : '') }}>
+                                        {{ $planType['name'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            @if(Route::currentRouteName() == 'learner.renew.plan')
+                                <input type="hidden" name="plan_type_id" value="{{ old('plan_type_id', $customer->plan_type_id) }}">
+                            @endif
+                            @error('plan_type_id')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
 
                         </div>
-                        <div class="col-lg-6 col-6">
-                            <label for="">Plan Type <span>*</span></label>
+                        <div class="col-lg-4">
+                            <label for="">Plan Price <span>*</span></label>
+                            <input id="plan_price_id" class="form-control @error('plan_price_id') is-invalid @enderror"  value="{{ old('plan_price_id', $customer->plan_price_id) }}" readonly name="plan_price_id">
+                            @error('plan_price_id')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        @php
+                            $hasLocker = currentTransaction($customer->learner_detail_id)->locker_amount > 0 ? 'yes' : 'no';
+                            $discountAmount = currentTransaction($customer->learner_detail_id)->discount_amount ?? null;
+                            $selectedDiscountType = $discountAmount ? 'amount' : '';
+                        @endphp
 
-                            <select id="updated_plan_type_id" class="form-control @error('plan_type_id') is-invalid @enderror" name="plan_type_id">
-
-                                @foreach($planTypes as $planType)
-                                <option value="{{ $planType->id }}"
-                                    {{ old('plan_type_id',$customer->plan_type_id) == $planType->id ? 'selected' : '' }}>
-                                    {{ $planType->name }}
-                                </option>
-                                @endforeach
-
+                        <div class="col-lg-4">
+                            <label for="locker">Locker?</label>
+                            <select name="locker" id="toggleFieldCheckbox" class="form-select">
+                                <option value="no" {{ $hasLocker === 'no' ? 'selected' : '' }}>No</option>
+                                <option value="yes" {{ $hasLocker === 'yes' ? 'selected' : '' }}>Yes, I Need a Locker</option>
                             </select>
                         </div>
-                        <div class="col-lg-6 col-6">
-                            <label for="">Plan Price <span>*</span></label>
-
-                            <input id="updated_plan_price_id" class="form-control" placeholder="Plan Price" name="plan_price_id" value="{{ old('plan_price_id', $customer->plan_price_id ) }}" @readonly(true)>
-
-
+                          <div class="col-lg-4">
+                            <label for="">Locker Amount <span>*</span></label>
+                            <input type="text" class="form-control @error('locker_amount') is-invalid @enderror"  name="locker_amount" id="locker_amount" value="{{ currentTransaction($customer->learner_detail_id)->locker_amount }}" readonly>
+                            @error('locker_amount')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
-                        <div class="col-lg-6 col-6">
+                     
+
+                          <div class="col-lg-4">
+                            <label for="discount_amount">Discount Amount ( <span id="typeVal">INR / %</span> )</label>
+                            <input type="text" class="form-control @error('discount_amount') is-invalid @enderror"  name="discount_amount" id="discount_amount" value="{{ currentTransaction($customer->learner_detail_id)->discount_amount ?? 0 }}" >
+                            @error('discount_amount')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="discount_amount">Discount Type</label>
+                            <select id="discountType" class="form-select" name="discountType">
+                                <option value="">Select Discount Type</option>
+                                <option value="amount" {{ $selectedDiscountType == 'amount' ? 'selected' : '' }}>Amount</option>
+                                <option value="percentage" {{ $selectedDiscountType == 'percentage' ? 'selected' : '' }}>Percentage</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="">Total Amount <span>*</span></label>
+                            <input type="text" class="form-control @error('total_amount') is-invalid @enderror"  name="total_amount" id="new_plan_price" value="{{ currentTransaction($customer->learner_detail_id)->total_amount }}" readonly>
+                            @error('total_amount')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                        <div class="col-lg-4 col-6">
                             <label for="">Payment Mode<span>*</span></label>
 
                             <select name="payment_mode" id="payment_mode" class="form-select @error('payment_mode') is-invalid @enderror">
@@ -142,42 +220,11 @@ $diffInDays = $today->diffInDays($endDate, false);
 
                         </div>
 
-
-                        <div class="col-lg-6 col-6">
-                            <label for="">Transaction Date <span>*</span></label>
-                            <input type="date" class="form-control @error('paid_date') is-invalid @enderror" placeholder="Transaction Date" name="paid_date" id="paid_date" value="">
-                            @error('paid_date')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        @if($customer->payment_mode==3)
-                        <div class="col-lg-6 col-6">
-                            <label for="">Transaction Number <span>*</span></label>
-                            <input type="text" class="form-control @error('transaction_id') is-invalid @enderror digit-only" placeholder="Transaction Number" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}">
-                            @error('transaction_id')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                        @endif
-
-                        <div class="col-lg-6 col-6">
-                            <label for="">Upload Payment Proof </label>
-                            <input type="file" class="form-control @error('transaction_image') is-invalid @enderror " placeholder="Transaction Number" name="transaction_image" id="transaction_image" value="{{ old('transaction_image') }}">
-                            @error('transaction_image')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
                     </div>
                
                     <div class="row mt-3">
                         <div class="col-lg-3">
-                            @if($diffInDays <= 0 && $diffExtendDay > 0 && !$is_renew )
+                            @if($planDetails['diff_in_days'] <=5 && $planDetails['diff_extend_day'] > 0 && !$is_renew && !$isalreadyRenew)
 
                                 <input type="submit" class="btn btn-primary btn-block button" value="Renew Upgrade">
 
@@ -192,29 +239,14 @@ $diffInDays = $today->diffInDays($endDate, false);
     </div>
     <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
-            @php
-            $class='';
-
-            if($diffInDays <= 5 && $diffExtendDay>0){
-                $class='extedned';
-                }elseif($diffInDays < 0 ){
-                    $class='expired' ;
-                    }
-                    @endphp
-                    <span class="d-block">Seat No : {{ $customer->seat_no}}</span>
-                    <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
-                    <p>{{ $customer->plan->name}}</p>
-                    <button>Booked for <b>{{ $customer->planType->name}}</b></button>
-
-                    @if ($diffInDays > 0)
-                    <span class="text-success">Plan Expires in {{ $diffInDays }} days</span>
-                    @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                        <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
-                        @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                            <span class="text-warning fs-10 d-block">Plan Expires today</span>
-                            @else
-                            <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
-                            @endif
+          
+            @if($customer->seat_no)
+            <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
+            @endif
+            <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
+            <p>{{ $customer->plan->name}}</p>
+            <button>Booked for <b>{{ $customer->planType->name}}</b></button>
+            {!! getUserStatusWithSpan($customer->plan_end_date) !!}
         </div>
     </div>
 </div>

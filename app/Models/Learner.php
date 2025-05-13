@@ -8,10 +8,17 @@ use App\Models\Scopes\LibraryScope;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Traits\HasBranch;
+use App\Traits\HasSeatType;
+
+
 class Learner extends Authenticatable
 {
     use HasRoles;
     use HasFactory,SoftDeletes;
+    use HasBranch;
+    use HasSeatType;
+    
     protected $guarded = [];
     
     public function planType()
@@ -45,4 +52,6 @@ class Learner extends Authenticatable
     {
         return decryptData($value);
     }
+
+  
 }

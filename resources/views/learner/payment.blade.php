@@ -1,11 +1,9 @@
-@extends('layouts.admin')
+@extends('layouts.library')
 @section('content')
 
 @php
-use Carbon\Carbon;
-$today = Carbon::today();
-$endDate = Carbon::parse($customer->plan_end_date);
-$diffInDays = $today->diffInDays($endDate, false);
+$planDetails = getPlanStatusDetails($customer->plan_end_date);
+$class=$planDetails['class'];
 @endphp
 
 @if (session('error'))
@@ -225,31 +223,14 @@ $diffInDays = $today->diffInDays($endDate, false);
     </div>
     <div class="col-lg-3 order-1 order-md-2">
         <div class="seat--info">
-            @php 
-            $class='';  
-           
-                if($diffInDays <= 5 && $diffExtendDay>0){
-                    $class='extedned';
-                }elseif($diffInDays < 0 ){
-                    $class='expired';
-                }
-            @endphp
-             @if(Auth::user()->library_seat_type != 'general')
-            <span class="d-block">Seat No : {{ $customer->learner->seat_no}}</span>
+          
+            @if($customer->seat_no)
+            <span class="d-block ">Seat No : {{ $customer->seat_no}}</span>
             @endif
             <img src="{{ asset($customer->planType->image) }}" alt="Seat" class="seat py-3 {{$class}}">
             <p>{{ $customer->plan->name}}</p>
             <button>Booked for <b>{{ $customer->planType->name}}</b></button>
-           
-            @if ($diffInDays > 0)
-                <span class="text-success">Plan Expires in {{ $diffInDays }} days</span>
-            @elseif ($diffInDays < 0 && $diffExtendDay>0)
-                <span class="text-danger fs-10 d-block">Extend Days are Active Now & Remaining Days are {{ abs($diffExtendDay) }} days.</span>
-            @elseif ($diffInDays < 0 && $diffExtendDay==0)
-                <span class="text-warning fs-10 d-block">Plan Expires today</span>
-            @else
-                <span class="text-danger fs-10 d-block">Plan Expired {{ abs($diffInDays) }} days ago</span>
-            @endif
+            {!! getUserStatusWithSpan($customer->plan_end_date) !!}
         </div>
     </div>
 </div>
